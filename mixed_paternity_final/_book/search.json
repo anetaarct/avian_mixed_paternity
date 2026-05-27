@@ -1,0 +1,502 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Explaining variation in mixed paternity across birds: a global comparative meta-analysis",
+    "section": "",
+    "text": "A global comparative phylogenetic meta-analysis of mixed-paternity prevalence across avian species.\n375 species · 619 population estimates · 46,249 broods\n\n\n\nThis website presents the complete reproducible workflow for the flobal comparative meta-analysis of mixed-paternity prevalence across birds.\n\n\n\n\n\n\nCore idea\n\n\n\nBirds are central model systems for studying sexual selection and reproductive conflict, yet mixed-paternity prevalence is often comparatively low across species. This study aims to understand which ecological, social, and methodological factors explain variation in mixed paternity across birds.\n\n\n\n\nWebsite structure\n\n\n1. Analysis metadata\nDescription of analytical variables used in the statistical models.\nOpen chapter\n\n\n2. Database preparation\nScreening workflow, data extraction, and taxonomic harmonisation.\nOpen chapter\n\n\n3. Overall model\nIntercept-only models estimating overall mixed-paternity prevalence.\nOpen chapter\n\n\n4. Methodological moderators\nSingle-moderator models for methodological predictors.\nOpen chapter\n\n\n5. Breeding-system moderators\nSingle-moderator analyses for breeding-system classifications.\nOpen chapter\n\n\n6. Biological moderators\nSingle-moderator models for biological predictors.\nOpen chapter\n\n\n7. Figures\nReproducible figures used in the manuscript and supplement.\nOpen chapter",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Overview</span>"
+    ]
+  },
+  {
+    "objectID": "01_analysis_metadata.html",
+    "href": "01_analysis_metadata.html",
+    "title": "2  Analytical variables",
+    "section": "",
+    "text": "2.1 References\nThe table below summarises the main variables used directly in the statistical analyses. Some categorical variables were collapsed into reduced analytical categories following the criteria described in the manuscript.\nBen Mocha, Y., Woith, M., Scemama de Gialluly, S., Bruscagnin, L., Kestel, N., Markman, S., … & Griesser, M. (2025). An integrative, peer‐reviewed and open‐source cooperative‐breeding database (Co‐BreeD). Journal of Animal Ecology, 94(12), 2597-2614.\nBrouwer, L., & Griffith, S. C. (2019). Extra‐pair paternity in birds. Molecular ecology, 28(22), 4864-4882.\nCockburn, A. (2006). Prevalence of different modes of parental care in birds. Proceedings of the Royal Society B: Biological Sciences, 273(1592), 1375-1383.\nGriesser, M., Drobniak, S. M., Nakagawa, S., & Botero, C. A. (2017). Family living sets the stage for cooperative breeding and ecological resilience in birds. PLoS biology, 15(6), e2000483.\nMcTavish, E. J., Gerbracht, J. A., Holder, M. T., Iliff, M. J., Lepage, D., Rasmussen, P. C., … & Miller, E. T. (2025). A complete and dynamic tree of birds. Proceedings of the National Academy of Sciences, 122(18), e2409658122.\nŞekercioğlu, Ç. H., Kittelberger, K. D., Mota, F. M., Buxton, A. N., Orton, N., DeNiro, A., … & Neate-Clegg, M. H. (2025). BIRDBASE: A global dataset of avian biogeography, conservation, ecology and life history traits. Scientific Data, 12(1), 1558.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Analytical variables</span>"
+    ]
+  },
+  {
+    "objectID": "02_data_preparation.html",
+    "href": "02_data_preparation.html",
+    "title": "3  Data preparation",
+    "section": "",
+    "text": "3.1 Packeges\nThe R packages required for data preparation.\nCode\nlibrary(tidyverse)\nlibrary(ape)\nlibrary(brms)\nlibrary(maps)\nlibrary(knitr)\n\noptions(mc.cores = parallel::detectCores())",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Data preparation</span>"
+    ]
+  },
+  {
+    "objectID": "02_data_preparation.html#import-data",
+    "href": "02_data_preparation.html#import-data",
+    "title": "3  Data preparation",
+    "section": "3.2 Import data",
+    "text": "3.2 Import data\n\n3.2.1 The input files used in the analysis: the mixed-paternity dataset and the dated Clements phylogenetic tree.\nThis table summarises the main input files used in the analysis, including the size of the raw dataset and the number of tips and internal nodes in the phylogenetic tree.\n\n\n\n\n\nItem\nSummary\n\n\n\n\nRaw dataset\n676 rows and 39 columns\n\n\nPhylogenetic tree\n11167 tips and 11166 internal nodes",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Data preparation</span>"
+    ]
+  },
+  {
+    "objectID": "02_data_preparation.html#prepare-data",
+    "href": "02_data_preparation.html#prepare-data",
+    "title": "3  Data preparation",
+    "section": "3.3 Prepare data",
+    "text": "3.3 Prepare data\n\n3.3.1 Population identifier\nPopulation identity was defined using study identity and rounded geographic coordinates, with latitude and longitude rounded to two decimal places prior to constructing the population identifier.\n\n\nCode\nmixed_pat &lt;- mixed_pat_raw %&gt;%\n  mutate(\n    Lat_round = round(Lat, 2),\n    Long_round = round(Long, 2),\n    population_id = paste(Study_ID, Lat_round, Long_round, sep = \"_\"),\n    population_id = as.factor(population_id)\n  )\n\n\n\n\n3.3.2 Study and species formatting\nThe following step formats the main grouping variables used in the models and calculates the total number of broods by combining mixed- and non-mixed-brood counts.\n\n\nCode\nmixed_pat &lt;- mixed_pat %&gt;%\n  mutate(\n    Study_ID = as.factor(Study_ID),\n    species_phylo_brms = as.factor(Clements_name),\n    species_nonphylo = as.factor(Clements_name),\n\n    n_mixed_broods = as.numeric(n_mixed_broods),\n    n_non_mixed_broods = as.numeric(n_non_mixed_broods),\n    n_total_broods = n_mixed_broods + n_non_mixed_broods\n  )\n\n\n\n\n3.3.3 Phylogeny preparation\nSpecies names were harmonised between the mixed-paternity dataset and the phylogenetic tree prior to pruning the tree and generating the phylogenetic covariance matrix used in the Bayesian models.\n\n\nCode\nspecies_data &lt;- mixed_pat %&gt;%\n  filter(!is.na(species_phylo_brms)) %&gt;%\n  pull(species_phylo_brms) %&gt;%\n  as.character() %&gt;%\n  unique()\n\nspecies_tree &lt;- tree$tip.label\n\nspecies_for_tree &lt;- intersect(species_data, species_tree)\n\ntree_analysis &lt;- ape::keep.tip(tree, species_for_tree)\n\nphylo_mat &lt;- ape::vcv.phylo(tree_analysis, corr = TRUE)\n\nphylo_mat &lt;- phylo_mat[\n  sort(rownames(phylo_mat)),\n  sort(colnames(phylo_mat))\n]\n\nmixed_pat &lt;- mixed_pat %&gt;%\n  filter(species_phylo_brms %in% rownames(phylo_mat)) %&gt;%\n  mutate(\n    species_phylo_brms = droplevels(species_phylo_brms),\n    species_nonphylo = droplevels(species_nonphylo)\n  )\n\n\n\n\n3.3.4 Phylogeny - summary\n\n\nCode\nphylo_summary &lt;- tibble::tibble(\n  Item = c(\n    \"Species matched to phylogeny\",\n    \"Tips in source tree\",\n    \"Species retained after phylogenetic filtering\"\n  ),\n  Value = c(\n    length(species_for_tree),\n    length(tree$tip.label),\n    n_distinct(mixed_pat$species_phylo_brms)\n  )\n)\n\nknitr::kable(phylo_summary)\n\n\n\n\n\nItem\nValue\n\n\n\n\nSpecies matched to phylogeny\n393\n\n\nTips in source tree\n11167\n\n\nSpecies retained after phylogenetic filtering\n393\n\n\n\n\n\n\n\n3.3.5 Moderator variable preparation\n\n\nCode\nmin_n &lt;- 5\n\nmixed_pat &lt;- mixed_pat %&gt;%\n  mutate(\n    marker_type_model = as.factor(marker_type_model),\n    nest_box_model = as.factor(nest_box_model),\n    nest_type_model = as.factor(nest_type_model),\n\n    breeding_system = as.factor(breeding_system),\n    mono_poly_model = as.factor(mono_poly_model),\n    parental_care = as.factor(parental_care),\n    cooperative_breeding = as.factor(cooperative_breeding),\n\n    migration = as.factor(migration),\n    coloniality = as.factor(coloniality),\n\n    CS_max = as.numeric(CS_max),\n    body_mass = as.numeric(body_mass),\n    study_duration = as.numeric(study_duration_num),\n\n    Lat_round = round(as.numeric(Lat), 2),\n    abs_lat = abs(Lat_round),\n\n    CS_max_sc = as.numeric(scale(CS_max)),\n    body_mass_sc = as.numeric(scale(body_mass)),\n    study_duration_sc = as.numeric(scale(study_duration)),\n    abs_lat_sc = as.numeric(scale(abs_lat))\n  )",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Data preparation</span>"
+    ]
+  },
+  {
+    "objectID": "02_data_preparation.html#preparation-of-the-database",
+    "href": "02_data_preparation.html#preparation-of-the-database",
+    "title": "3  Data preparation",
+    "section": "3.4 Preparation of the database",
+    "text": "3.4 Preparation of the database\n\n3.4.1 Database overall study\n\n\nCode\ndata_overall_study &lt;- mixed_pat %&gt;%\n  filter(\n    !is.na(n_mixed_broods),\n    !is.na(n_non_mixed_broods),\n    !is.na(n_total_broods),\n    n_total_broods &gt; 0,\n    !is.na(Study_ID),\n    !is.na(species_phylo_brms)\n  ) %&gt;%\n  mutate(\n    Study_ID = droplevels(Study_ID),\n    species_nonphylo = droplevels(species_nonphylo),\n    species_phylo_brms = droplevels(species_phylo_brms),\n    population_id = droplevels(population_id)\n  )\n\n\n\n\n3.4.2 Database single moderators\n\n\nCode\ndata_nest_box &lt;- data_overall_study %&gt;%\n  filter(!is.na(nest_box_model)) %&gt;%\n  droplevels()\n\n\ndata_migration &lt;- data_overall_study %&gt;%\n  filter(!is.na(migration)) %&gt;%\n  droplevels()\n\ndata_coloniality &lt;- data_overall_study %&gt;%\n  filter(!is.na(coloniality)) %&gt;%\n  droplevels()\n\n\ndata_cooperative &lt;- data_overall_study %&gt;%\n  filter(!is.na(cooperative_breeding)) %&gt;%\n  droplevels()\n\ndata_study_duration &lt;- data_overall_study %&gt;%\n  filter(!is.na(study_duration_sc)) %&gt;%\n  droplevels()\n\ndata_clutch_size &lt;- data_overall_study %&gt;%\n  filter(!is.na(CS_max_sc)) %&gt;%\n  droplevels()\n\ndata_body_mass &lt;- data_overall_study %&gt;%\n  filter(!is.na(body_mass), body_mass &gt; 0) %&gt;%\n  mutate(\n    body_mass = as.numeric(body_mass),\n    log_body_mass = log10(body_mass),\n    log_body_mass_sc = as.numeric(scale(log_body_mass))\n  ) %&gt;%\n  filter(\n    is.finite(log_body_mass),\n    is.finite(log_body_mass_sc)\n  ) %&gt;%\n  droplevels()\n\ndata_abs_latitude &lt;- data_overall_study %&gt;%\n  filter(!is.na(abs_lat_sc)) %&gt;%\n  droplevels()\n\ndata_marker_type &lt;- data_overall_study %&gt;%\n  filter(!is.na(marker_type_model)) %&gt;%\n  droplevels()\n\n\ndata_nest_type &lt;- data_overall_study %&gt;%\n  filter(!is.na(nest_type_model)) %&gt;%\n  droplevels()\n\n\nvalid_breeding_levels &lt;- data_overall_study %&gt;%\n  count(breeding_system) %&gt;%\n  filter(!is.na(breeding_system), n &gt;= 5) %&gt;%\n  pull(breeding_system)\n\ndata_breeding_system &lt;- data_overall_study %&gt;%\n  filter(\n    !is.na(breeding_system),\n    breeding_system %in% valid_breeding_levels\n  ) %&gt;%\n  droplevels()\n\ndata_mono_poly &lt;- data_overall_study %&gt;%\n  filter(!is.na(mono_poly_model)) %&gt;%\n  droplevels()\n\ndata_parental_care &lt;- data_overall_study %&gt;%\n  filter(!is.na(parental_care)) %&gt;%\n  droplevels()",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Data preparation</span>"
+    ]
+  },
+  {
+    "objectID": "02_data_preparation.html#relationship-among-candidate-random-effects-grouping-factors",
+    "href": "02_data_preparation.html#relationship-among-candidate-random-effects-grouping-factors",
+    "title": "3  Data preparation",
+    "section": "3.5 Relationship among candidate random-effects grouping factors",
+    "text": "3.5 Relationship among candidate random-effects grouping factors\nBefore fitting the models, we evaluated the degree of overlap and nesting among candidate random-effects grouping factors, including species identity, study identity, and the pragmatic population identifier.\n\n\n\n\n\n\n\n\n\n\n\nComparison\nGroups_with_only_one_match\nTotal_groups\nPercent_only_one_match\n\n\n\n\nPopulations per species\n275\n375\n73.3\n\n\nSpecies per population\n581\n597\n97.3\n\n\nPopulations per reference\n524\n554\n94.6\n\n\nReferences per population\n597\n597\n100.0\n\n\nReferences per species\n282\n375\n75.2\n\n\nSpecies per reference\n527\n554\n95.1",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Data preparation</span>"
+    ]
+  },
+  {
+    "objectID": "02_data_preparation.html#reproducibility-information",
+    "href": "02_data_preparation.html#reproducibility-information",
+    "title": "3  Data preparation",
+    "section": "3.6 Reproducibility information",
+    "text": "3.6 Reproducibility information\n\n## R version 4.5.1 (2025-06-13 ucrt)\n## Platform: x86_64-w64-mingw32/x64\n## Running under: Windows 11 x64 (build 26200)\n## \n## Matrix products: default\n##   LAPACK version 3.12.1\n## \n## locale:\n## [1] LC_COLLATE=Polish_Poland.utf8  LC_CTYPE=Polish_Poland.utf8   \n## [3] LC_MONETARY=Polish_Poland.utf8 LC_NUMERIC=C                  \n## [5] LC_TIME=Polish_Poland.utf8    \n## \n## time zone: America/Edmonton\n## tzcode source: internal\n## \n## attached base packages:\n## [1] stats     graphics  grDevices utils     datasets  methods   base     \n## \n## other attached packages:\n##  [1] knitr_1.50      maps_3.4.3      brms_2.23.0     Rcpp_1.1.0     \n##  [5] ape_5.8-1       lubridate_1.9.4 forcats_1.0.1   stringr_1.5.2  \n##  [9] dplyr_1.1.4     purrr_1.1.0     readr_2.1.5     tidyr_1.3.1    \n## [13] tibble_3.3.0    ggplot2_4.0.0   tidyverse_2.0.0\n## \n## loaded via a namespace (and not attached):\n##  [1] gtable_0.3.6          tensorA_0.36.2.1      xfun_0.57            \n##  [4] htmlwidgets_1.6.4     lattice_0.22-7        tzdb_0.5.0           \n##  [7] vctrs_0.6.5           tools_4.5.1           generics_0.1.4       \n## [10] parallel_4.5.1        pkgconfig_2.0.3       Matrix_1.7-3         \n## [13] checkmate_2.3.4       RColorBrewer_1.1-3    S7_0.2.0             \n## [16] distributional_0.6.0  RcppParallel_5.1.11-1 lifecycle_1.0.4      \n## [19] compiler_4.5.1        farver_2.1.2          Brobdingnag_1.2-9    \n## [22] htmltools_0.5.8.1     bayesplot_1.15.0      yaml_2.3.10          \n## [25] crayon_1.5.3          pillar_1.11.1         bridgesampling_1.2-1 \n## [28] abind_1.4-8           nlme_3.1-168          posterior_1.6.1      \n## [31] tidyselect_1.2.1      digest_0.6.37         mvtnorm_1.3-3        \n## [34] stringi_1.8.7         fastmap_1.2.0         grid_4.5.1           \n## [37] cli_3.6.5             magrittr_2.0.4        loo_2.9.0            \n## [40] withr_3.0.2           scales_1.4.0          backports_1.5.0      \n## [43] bit64_4.6.0-1         timechange_0.3.0      estimability_1.5.1   \n## [46] rmarkdown_2.30        matrixStats_1.5.0     emmeans_2.0.3        \n## [49] bit_4.6.0             hms_1.1.4             coda_0.19-4.1        \n## [52] evaluate_1.0.5        rstantools_2.6.0      rlang_1.1.6          \n## [55] xtable_1.8-4          glue_1.8.0            rstudioapi_0.17.1    \n## [58] vroom_1.6.6           jsonlite_2.0.0        R6_2.6.1",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Data preparation</span>"
+    ]
+  },
+  {
+    "objectID": "03_overall_model.html",
+    "href": "03_overall_model.html",
+    "title": "4  Overall model",
+    "section": "",
+    "text": "4.1 Packages\nThe R packages required for model fitting and diagnostics.\nCode\nlibrary(tidyverse)\nlibrary(brms)\nlibrary(posterior)\nlibrary(bayesplot)\nlibrary(loo)\n\noptions(mc.cores = parallel::detectCores())",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Overall model</span>"
+    ]
+  },
+  {
+    "objectID": "03_overall_model.html#load-prepared-objects",
+    "href": "03_overall_model.html#load-prepared-objects",
+    "title": "4  Overall model",
+    "section": "4.2 Load prepared objects",
+    "text": "4.2 Load prepared objects\n\n\nCode\ndata_overall_study &lt;- readRDS(\"data/data_overall_study.rds\")\nphylo_mat &lt;- readRDS(\"data/phylo_mat.rds\")",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Overall model</span>"
+    ]
+  },
+  {
+    "objectID": "03_overall_model.html#overall-dataset",
+    "href": "03_overall_model.html#overall-dataset",
+    "title": "4  Overall model",
+    "section": "4.3 Overall dataset",
+    "text": "4.3 Overall dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\nObservations\nStudies\nSpecies\nTotal broods\nMixed-paternity broods\nRaw prevalence (%)\n\n\n\n\n619\n554\n375\n46249\n16089\n34.79",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Overall model</span>"
+    ]
+  },
+  {
+    "objectID": "03_overall_model.html#modelling-framework",
+    "href": "03_overall_model.html#modelling-framework",
+    "title": "4  Overall model",
+    "section": "4.4 Modelling framework",
+    "text": "4.4 Modelling framework\nBecause brood-level paternity data are expected to exhibit substantial extra-binomial heterogeneity across references, populations, and species, we modelled mixed-paternity prevalence using beta-binomial generalised linear mixed-effects models with a logit link:\n\\[y_i \\sim \\mathrm{BetaBinomial}(n_i, \\mu_i, \\phi)\\]\nwhere \\(y_i\\) is the number of broods with mixed paternity, \\(n_i\\) is the total number of broods genotyped, \\(\\mu_i\\) is the expected mixed-paternity prevalence, and the precision parameter \\(\\phi\\) describes extra-binomial variation among study units.\nThe linear predictor was modelled as:\n\\[\\mathrm{logit}(\\mu_i) = \\alpha + \\mathbf{X}_i \\boldsymbol{\\beta} + u_{\\mathrm{reference}[i]} + u_{\\mathrm{species}[i]} + u_{\\mathrm{phylo}[i]}\\]\nwhere \\(\\alpha\\) is the intercept, \\(\\mathbf{X}_i \\boldsymbol{\\beta}\\) represents fixed biological and methodological moderators, and \\(u_{\\mathrm{reference}}\\), \\(u_{\\mathrm{species}}\\), and \\(u_{\\mathrm{phylo}}\\) represent reference-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Overall model</span>"
+    ]
+  },
+  {
+    "objectID": "03_overall_model.html#overall-mixed-paternity-prevalence",
+    "href": "03_overall_model.html#overall-mixed-paternity-prevalence",
+    "title": "4  Overall model",
+    "section": "4.5 Overall mixed-paternity prevalence",
+    "text": "4.5 Overall mixed-paternity prevalence\n\n4.5.1 Model\nThe intercept-only model estimated the average mixed-paternity prevalence across studies and species while accounting for study-level, non-phylogenetic species-level, and phylogenetically structured species-level variation.\n\n\nCode\nmodel_overall_study &lt;- brm(\n  n_mixed_broods | trials(n_total_broods) ~\n    1 +\n    (1 | Study_ID) +\n    (1 | species_nonphylo) +\n    (1 | gr(species_phylo_brms, cov = phylo_mat)),\n  family = beta_binomial(link = \"logit\"),\n  data = data_overall_study,\n  data2 = list(phylo_mat = phylo_mat),\n  chains = 4,\n  cores = 4,\n  iter = 10000,\n  warmup = 5000,\n  control = list(adapt_delta = 0.99, max_treedepth = 15),\n  seed = 123\n)\n\n\n\n\n4.5.2 Figure\n\n\nCode\nknitr::include_graphics(\n  \"Figures/model_diagnostics/overall_prevalence_plot.png\"\n)\n\n\n\n\n\n\n\n\n\n\n\n4.5.3 Model sumamry\n\n\nCode\nmodel_overall_study &lt;- readRDS(\"models/model_overall_study.rds\")\nsummary(model_overall_study)\n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ 1 + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_overall_study (Number of observations: 619) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 375) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.68      0.11     0.45     0.88 1.00     2213     3428\n\n~species_phylo_brms (Number of levels: 375) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.82      0.23     1.40     2.30 1.00     2604     3966\n\n~Study_ID (Number of levels: 554) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.24      0.13     0.01     0.48 1.00      785     1498\n\nRegression Coefficients:\n          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nIntercept    -0.73      0.87    -2.43     1.00 1.00    11802    12348\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    18.57      5.57    12.07    32.96 1.00      931     1424\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n4.5.4 Model estimates\n\n\n\n\n\n\n\n\n\n\n\nParameter\nEstimate\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\nIntercept (logit scale)\n-0.732\n-2.426\n1.003\n\n\nOverall prevalence (%)\n32.472\n8.119\n73.156\n\n\nStudy-level SD\n0.238\n0.013\n0.484\n\n\nNon-phylogenetic species-level SD\n0.678\n0.451\n0.885\n\n\nPhylogenetic species-level SD\n1.820\n1.395\n2.305\n\n\nBeta-binomial precision (phi)\n18.568\n12.075\n32.961\n\n\n\n\n\n\n\n\n4.5.5 Phylogenetic signal\nWe quantified the phylogenetic signal in between-species variation as the proportion of species-level variance attributable to the phylogenetically structured random effect:\n\\[\n\\nu =\n\\frac{\\sigma^2_{\\mathrm{phylo}}}\n{\\sigma^2_{\\mathrm{phylo}} + \\sigma^2_{\\mathrm{nonphylo}}}\n\\]\nwhere \\(\\sigma^2_{\\mathrm{phylo}}\\) is the variance of the phylogenetically structured species-level random effect and \\(\\sigma^2_{\\mathrm{nonphylo}}\\) is the variance of the non-phylogenetic species-level random effect.\nThe table below summarises the relative contribution of the phylogenetic and non-phylogenetic species-level variance components in the overall model.\n\n\n\nBayesian estimate of the phylogenetic signal with 95% Highest Density Interval (HDI).\n\n\nStatistic\nEstimate\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\nPhylogenetic signal (ν)\n0.876\n0.76\n0.968",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Overall model</span>"
+    ]
+  },
+  {
+    "objectID": "03_overall_model.html#diagnostics",
+    "href": "03_overall_model.html#diagnostics",
+    "title": "4  Overall model",
+    "section": "4.6 Diagnostics",
+    "text": "4.6 Diagnostics\n\n4.6.1 Posterior predictive checks\n\n\nCode\npp_check(model_overall_study)\n\n\nUsing 10 posterior draws for ppc type 'dens_overlay' by default.\n\n\n\n\n\n\n\n\n\n\n\n4.6.2 Divergences\n\n\n\n\n\nValue\nn\n\n\n\n\nNon-divergent\n20000\n\n\n\n\n\n\n\n4.6.3 Traceplots\n\n\npng \n  2 \n\n\n\n\nCode\n#| label: show-overall-traceplot\n#| echo: false\n#| out-width: \"100%\"\n\nknitr::include_graphics(\n  \"Figures/model_diagnostics/model_overall_traceplots.png\"\n)",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Overall model</span>"
+    ]
+  },
+  {
+    "objectID": "04_methodological_moderators.html",
+    "href": "04_methodological_moderators.html",
+    "title": "5  Methodological moderators",
+    "section": "",
+    "text": "5.1 Packages\nThe R packages required for model fitting.\nCode\nlibrary(tidyverse)\nlibrary(brms)\nlibrary(posterior)\nlibrary(bayesplot)\nlibrary(loo)\nlibrary(emmeans)\n\noptions(mc.cores = parallel::detectCores())",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>**Methodological moderators**</span>"
+    ]
+  },
+  {
+    "objectID": "04_methodological_moderators.html#load-prepared-objects",
+    "href": "04_methodological_moderators.html#load-prepared-objects",
+    "title": "5  Methodological moderators",
+    "section": "5.2 Load prepared objects",
+    "text": "5.2 Load prepared objects\n\n\nCode\n#| message: false\n#| warning: false\n\ndata_overall_study &lt;- readRDS(\"data/data_overall_study.rds\")\nphylo_mat &lt;- readRDS(\"data/phylo_mat.rds\")\n\n\n\n\nCode\ndata_marker_type &lt;- readRDS(\"data/data_marker_type.rds\")\ndata_study_duration &lt;- readRDS(\"data/data_study_duration.rds\")\ndata_nest_box &lt;- readRDS(\"data/data_nest_box.rds\")",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>**Methodological moderators**</span>"
+    ]
+  },
+  {
+    "objectID": "04_methodological_moderators.html#dataset-sizes",
+    "href": "04_methodological_moderators.html#dataset-sizes",
+    "title": "5  Methodological moderators",
+    "section": "5.3 Dataset sizes",
+    "text": "5.3 Dataset sizes\nThe table below shows the number of observations available for each methodological moderator after removing missing values and, where relevant, rare categories.\n\n\nCode\n#| echo: false\n#| message: false\n#| warning: false\n\nmethodological_dataset_sizes &lt;- tibble(\n  Moderator = c(\n    \"Marker type\",\n    \"Nest box\",\n    \"Study duration\"\n  ),\n  Observations = c(\n    nrow(data_marker_type),\n    nrow(data_nest_box),\n    nrow(data_study_duration)\n  )\n)\n\nknitr::kable(methodological_dataset_sizes)\n\n\n\n\n\nModerator\nObservations\n\n\n\n\nMarker type\n614\n\n\nNest box\n606\n\n\nStudy duration\n607",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>**Methodological moderators**</span>"
+    ]
+  },
+  {
+    "objectID": "04_methodological_moderators.html#model",
+    "href": "04_methodological_moderators.html#model",
+    "title": "5  Methodological moderators",
+    "section": "5.4 Model",
+    "text": "5.4 Model\nThis helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as .rds files.\n\n\nCode\n#| eval: false\n#| echo: true\n\nfit_single_moderator &lt;- function(formula, data) {\n  brm(\n    formula = formula,\n    data = data,\n    family = beta_binomial(link = \"logit\"),\n    data2 = list(phylo_mat = phylo_mat),\n    chains = 4,\n    cores = 4,\n    iter = 10000,\n    warmup = 5000,\n    control = list(\n      adapt_delta = 0.99,\n      max_treedepth = 15\n    ),\n    seed = 123\n  )\n}",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>**Methodological moderators**</span>"
+    ]
+  },
+  {
+    "objectID": "04_methodological_moderators.html#marker-type",
+    "href": "04_methodological_moderators.html#marker-type",
+    "title": "5  Methodological moderators",
+    "section": "5.5 Marker type",
+    "text": "5.5 Marker type\nThis model tested whether estimated mixed-paternity prevalence differed among molecular marker types.\n\n5.5.1 Figure\n\n\nCode\nknitr::include_graphics(\"Figures/Figuresmarker_type.png\")\n\n\n\n\n\n\n\n\n\n\n\n5.5.2 Model summary\n\n\nCode\n#| #| message: false\n#| #| warning: false\n#| #| code-fold: true\nmodel_marker_type_0 &lt;- readRDS(\"models/model_marker_type_0.rds\")\nsummary(model_marker_type_0)\n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ 0 + marker_type_model + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_marker_type (Number of observations: 614) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 373) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.66      0.11     0.44     0.87 1.00     2255     3570\n\n~species_phylo_brms (Number of levels: 373) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.76      0.23     1.33     2.23 1.00     2263     4517\n\n~Study_ID (Number of levels: 550) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.28      0.13     0.02     0.51 1.00      750     2019\n\nRegression Coefficients:\n                                    Estimate Est.Error l-95% CI u-95% CI Rhat\nmarker_type_modelDNA_fingerprinting    -1.27      0.92    -3.04     0.55 1.00\nmarker_type_modelmicrosatellite        -0.79      0.92    -2.56     1.01 1.00\nmarker_type_modelmixed_other           -0.67      0.96    -2.54     1.22 1.00\nmarker_type_modelSNPs                  -0.77      0.94    -2.60     1.11 1.00\n                                    Bulk_ESS Tail_ESS\nmarker_type_modelDNA_fingerprinting     4174     6978\nmarker_type_modelmicrosatellite         4222     6955\nmarker_type_modelmixed_other            4481     7958\nmarker_type_modelSNPs                   4330     7889\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    20.29      6.41    12.52    36.43 1.00      874     2089\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n5.5.3 Prevalence table\n\n\n\n\n\n\n\n\n\n\n\nMarker type\nEstimated prevalence (%)\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\nDNA_fingerprinting\n21.89\n4.57\n63.36\n\n\nmicrosatellite\n31.17\n7.15\n73.39\n\n\nmixed_other\n33.96\n7.34\n77.16\n\n\nSNPs\n31.69\n6.94\n75.15\n\n\n\n\n\n\n\n5.5.4 Post-hoc comparisons\nPairwise contrasts among marker-type categories were calculated from the zero-intercept marker-type model. Estimates are shown on the logit scale.\n\n\nCode\n#| echo: false\n#| message: false\n#| warning: false\n\npairwise_marker_type_0 &lt;- readRDS(\"models/pairwise_marker_type_0.rds\")\n\npairwise_marker_type_table &lt;- as.data.frame(pairwise_marker_type_0)\n\nknitr::kable(pairwise_marker_type_table, digits = 3)\n\n\n\n\n\ncontrast\nestimate\nlower.HPD\nupper.HPD\n\n\n\n\nDNA_fingerprinting - microsatellite\n-0.479\n-0.669\n-0.295\n\n\nDNA_fingerprinting - mixed_other\n-0.605\n-1.207\n-0.009\n\n\nDNA_fingerprinting - SNPs\n-0.505\n-1.027\n-0.032\n\n\nmicrosatellite - mixed_other\n-0.127\n-0.710\n0.461\n\n\nmicrosatellite - SNPs\n-0.027\n-0.498\n0.443\n\n\nmixed_other - SNPs\n0.105\n-0.631\n0.865",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>**Methodological moderators**</span>"
+    ]
+  },
+  {
+    "objectID": "04_methodological_moderators.html#study-duration",
+    "href": "04_methodological_moderators.html#study-duration",
+    "title": "5  Methodological moderators",
+    "section": "5.6 Study duration",
+    "text": "5.6 Study duration\nStudy duration was included as a methodological moderator because longer studies may provide more stable estimates of mixed-paternity prevalence and may differ from short-term studies in sampling intensity and temporal coverage.\n\n5.6.1 Figure\n\n\nCode\nknitr::include_graphics(\"Figures/Figuresstudy_duration.png\")\n\n\n\n\n\n\n\n\n\n\n\n5.6.2 Model summary\n\n\nCode\nmodel_study_duration &lt;- readRDS(\"models/model_study_duration.rds\")\nsummary(model_study_duration)\n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ study_duration_sc + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_study_duration (Number of observations: 607) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 373) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.70      0.11     0.48     0.90 1.00     2172     3470\n\n~species_phylo_brms (Number of levels: 373) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.86      0.24     1.42     2.34 1.00     2894     6980\n\n~Study_ID (Number of levels: 545) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.21      0.12     0.01     0.45 1.00      885     2029\n\nRegression Coefficients:\n                  Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nIntercept            -0.77      0.90    -2.52     1.04 1.00    10038    12223\nstudy_duration_sc    -0.10      0.04    -0.19    -0.01 1.00    25931    16914\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    20.10      5.76    13.21    35.07 1.00     1074     1870\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n5.6.3 Model estimates\n\n\n\n\n\nParameter\nEstimate\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\nStudy duration\n-0.097\n-0.185\n-0.011",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>**Methodological moderators**</span>"
+    ]
+  },
+  {
+    "objectID": "04_methodological_moderators.html#nest-box",
+    "href": "04_methodological_moderators.html#nest-box",
+    "title": "5  Methodological moderators",
+    "section": "5.7 Nest box",
+    "text": "5.7 Nest box\nNest-box use was included as a methodological moderator because studies conducted in nest-box populations may differ from studies of natural nests in monitoring accessibility, sampling completeness, and opportunities for detecting mixed paternity. This variable may also capture biological differences associated with nesting-site availability, breeding density, and local neighbourhood structure.\nThe intercept represents the reference category - natural nests .\n\n5.7.1 Figure\n\n\nCode\nknitr::include_graphics(\"Figures/Figuresnest_box.png\")\n\n\n\n\n\n\n\n\n\n\n\n5.7.2 Model summary\n\n\nCode\nmodel_nest_box &lt;- readRDS(\"models/model_nest_box.rds\")\nsummary(model_nest_box)\n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ nest_box_model + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_nest_box (Number of observations: 606) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 368) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.69      0.11     0.46     0.91 1.00     1896     2886\n\n~species_phylo_brms (Number of levels: 368) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.81      0.23     1.37     2.29 1.00     2969     5180\n\n~Study_ID (Number of levels: 543) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.26      0.13     0.02     0.50 1.00      668     2003\n\nRegression Coefficients:\n                  Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nIntercept            -0.79      0.87    -2.46     0.97 1.00    11029    12530\nnest_box_modelyes     0.29      0.18    -0.06     0.63 1.00    18775    13978\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    18.84      5.93    11.95    34.33 1.00      825     1545\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n5.7.3 Model estimates\n\n\n\n\n\nParameter\nEstimate\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\nIntercept\n-0.789\n-2.460\n0.968\n\n\nnest_box_modelyes\n0.285\n-0.062\n0.632\n\n\n\n\n\nThe nest-box model estimated a positive but uncertain association between nest-box use and mixed-paternity prevalence. Compared with natural nests, nest-box studies had a higher estimated log-odds of mixed paternity, although the 95% credible interval overlapped zero.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>**Methodological moderators**</span>"
+    ]
+  },
+  {
+    "objectID": "04_methodological_moderators.html#heterogeneity-summary",
+    "href": "04_methodological_moderators.html#heterogeneity-summary",
+    "title": "5  Methodological moderators",
+    "section": "5.8 Heterogeneity summary",
+    "text": "5.8 Heterogeneity summary\n\n\n\n\n\n\n\n\n\n\n\n\nModel\nStudy SD\nNon-phylogenetic species SD\nPhylogenetic species SD\nPhi\n\n\n\n\nOverall model\n0.238\n0.678\n1.820\n18.568\n\n\nMarker type\n0.282\n0.664\n1.755\n20.285\n\n\nNest box\n0.260\n0.695\n1.806\n18.841\n\n\nStudy duration\n0.214\n0.698\n1.859\n20.100",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>**Methodological moderators**</span>"
+    ]
+  },
+  {
+    "objectID": "05_breeding_system_moderators.html",
+    "href": "05_breeding_system_moderators.html",
+    "title": "6  Breeding system moderators",
+    "section": "",
+    "text": "6.1 Packages\nThe R packages required for model fitting.\nCode\nlibrary(tidyverse)\nlibrary(brms)\nlibrary(posterior)\nlibrary(bayesplot)\nlibrary(loo)\nlibrary(emmeans)\n\noptions(mc.cores = parallel::detectCores())",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Breeding system moderators</span>"
+    ]
+  },
+  {
+    "objectID": "05_breeding_system_moderators.html#load-prepared-objects",
+    "href": "05_breeding_system_moderators.html#load-prepared-objects",
+    "title": "6  Breeding system moderators",
+    "section": "6.2 Load prepared objects",
+    "text": "6.2 Load prepared objects\n\n\nCode\n#| message: false\n#| warning: false\n\ndata_overall_study &lt;- readRDS(\"data/data_overall_study.rds\")\nphylo_mat &lt;- readRDS(\"data/phylo_mat.rds\")\n\n\n\n\nCode\nmixed_pat &lt;- readRDS(\"data/mixed_pat_prepared.rds\")\ndata_overall_study &lt;- readRDS(\"data/data_overall_study.rds\")\n\ndata_cooperative &lt;- readRDS(\"data/data_cooperative.rds\")\ndata_mono_poly &lt;- readRDS(\"data/data_mono_poly.rds\")\ndata_parental_care &lt;- readRDS(\"data/data_parental_care.rds\")\ndata_breeding_system &lt;- readRDS(\"data/data_breeding_system.rds\")\n\nphylo_mat &lt;- readRDS(\"data/phylo_mat.rds\")\ntree_analysis &lt;- readRDS(\"data/tree_analysis.rds\")",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Breeding system moderators</span>"
+    ]
+  },
+  {
+    "objectID": "05_breeding_system_moderators.html#dataset-sizes",
+    "href": "05_breeding_system_moderators.html#dataset-sizes",
+    "title": "6  Breeding system moderators",
+    "section": "6.3 Dataset sizes",
+    "text": "6.3 Dataset sizes\n\n\n\n\n\nModerator\nObservations\n\n\n\n\nBreeding system: Brouwer and Griffith\n605\n\n\nBreeding system: BIRDBASE\n510\n\n\nParental care\n605\n\n\nCooperative breeding\n259",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Breeding system moderators</span>"
+    ]
+  },
+  {
+    "objectID": "05_breeding_system_moderators.html#model",
+    "href": "05_breeding_system_moderators.html#model",
+    "title": "6  Breeding system moderators",
+    "section": "6.4 Model",
+    "text": "6.4 Model\nThis helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as .rds files.\n\n\nCode\nfit_single_moderator &lt;- function(formula, data) {\n  brm(\n    formula = formula,\n    data = data,\n    family = beta_binomial(link = \"logit\"),\n    data2 = list(phylo_mat = phylo_mat),\n    chains = 4,\n    cores = 4,\n    iter = 10000,\n    warmup = 5000,\n    control = list(\n      adapt_delta = 0.99,\n      max_treedepth = 15\n    ),\n    seed = 123\n  )\n}",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Breeding system moderators</span>"
+    ]
+  },
+  {
+    "objectID": "05_breeding_system_moderators.html#breeding-system-brouwer-and-griffith-classification",
+    "href": "05_breeding_system_moderators.html#breeding-system-brouwer-and-griffith-classification",
+    "title": "6  Breeding system moderators",
+    "section": "6.5 Breeding system: Brouwer and Griffith classification",
+    "text": "6.5 Breeding system: Brouwer and Griffith classification\nThis model tested whether mixed-paternity prevalence differed among breeding-system categories based on the Brouwer and Griffith classification. Rare categories with fewer than five observations were excluded before model fitting.\n\n6.5.1 Figure\n\n\nCode\nknitr::include_graphics(\"Figures/Figuresbreeding_system.png\")\n\n\n\n\n\n\n\n\n\n\n\n6.5.2 Model summary\n\n\nCode\nmodel_breeding_system_0 &lt;- readRDS(\"models/model_breeding_system_0.rds\")\nsummary(model_breeding_system_0)\n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ 0 + breeding_system + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_breeding_system (Number of observations: 605) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 368) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.71      0.11     0.48     0.92 1.00     1998     3819\n\n~species_phylo_brms (Number of levels: 368) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.78      0.25     1.33     2.29 1.00     2097     5100\n\n~Study_ID (Number of levels: 541) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.24      0.12     0.02     0.46 1.01      799     2219\n\nRegression Coefficients:\n                                   Estimate Est.Error l-95% CI u-95% CI Rhat\nbreeding_systemcooperative_breeder    -1.46      0.97    -3.34     0.46 1.00\nbreeding_systemlekking                -0.03      1.17    -2.32     2.30 1.00\nbreeding_systemmonogamy               -1.24      0.94    -3.09     0.63 1.00\nbreeding_systemno_social_bond         -0.29      1.02    -2.28     1.73 1.00\nbreeding_systempolyandry              -0.56      0.97    -2.45     1.35 1.00\n                                   Bulk_ESS Tail_ESS\nbreeding_systemcooperative_breeder     4406     7647\nbreeding_systemlekking                 5144     8924\nbreeding_systemmonogamy                4296     6807\nbreeding_systemno_social_bond          4609     7956\nbreeding_systempolyandry               4582     7925\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    20.62      5.91    13.35    36.11 1.01      864     1835\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n6.5.3 Prevalence table\n\n\n\n\n\n\n\n\n\n\n\nBreeding-system category\nEstimated prevalence (%)\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\ncooperative_breeder\n18.88\n3.42\n61.33\n\n\nlekking\n49.20\n8.92\n90.86\n\n\nmonogamy\n22.49\n4.34\n65.24\n\n\nno_social_bond\n42.82\n9.25\n84.91\n\n\npolyandry\n36.37\n7.91\n79.36\n\n\n\n\n\n\n\n6.5.4 Post-hoc pairwise contrasts\nPairwise contrasts among breeding-system categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.\n\n\n\n\n\ncontrast\nestimate\nlower.HPD\nupper.HPD\n\n\n\n\ncooperative_breeder - lekking\n-1.416\n-2.818\n0.041\n\n\ncooperative_breeder - monogamy\n-0.217\n-0.681\n0.222\n\n\ncooperative_breeder - no_social_bond\n-1.160\n-2.133\n-0.241\n\n\ncooperative_breeder - polyandry\n-0.895\n-1.760\n0.006\n\n\nlekking - monogamy\n1.200\n-0.159\n2.588\n\n\nlekking - no_social_bond\n0.252\n-1.243\n1.744\n\n\nlekking - polyandry\n0.526\n-1.023\n2.032\n\n\nmonogamy - no_social_bond\n-0.946\n-1.788\n-0.078\n\n\nmonogamy - polyandry\n-0.678\n-1.498\n0.107\n\n\nno_social_bond - polyandry\n0.266\n-0.833\n1.359",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Breeding system moderators</span>"
+    ]
+  },
+  {
+    "objectID": "05_breeding_system_moderators.html#birdbase-breeding-system-classification",
+    "href": "05_breeding_system_moderators.html#birdbase-breeding-system-classification",
+    "title": "6  Breeding system moderators",
+    "section": "6.6 BIRDBASE breeding-system classification",
+    "text": "6.6 BIRDBASE breeding-system classification\nThis model tested whether mixed-paternity prevalence differed among monogamous, polygamous, and mixed mating-system categories derived from the BIRDBASE breeding-system classification. The mixed category was created during data preparation for cases in which both monogamous and polygamous classifications were simultaneously assigned in the original BIRDBASE coding.\n\n6.6.1 Figure\n\n\nCode\nknitr::include_graphics(\"Figures/Figuresmono_poly.png\")\n\n\n\n\n\n\n\n\n\n\n\n6.6.2 Model summary\n\n\nCode\nmodel_mono_poly_0 &lt;- readRDS(\"models/model_mono_poly_0.rds\")\nsummary(model_mono_poly_0)\n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ 0 + mono_poly_model + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_mono_poly (Number of observations: 510) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 287) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.47      0.16     0.11     0.75 1.00     1256     1363\n\n~species_phylo_brms (Number of levels: 287) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.89      0.26     1.40     2.41 1.00     1941     3568\n\n~Study_ID (Number of levels: 458) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.37      0.13     0.06     0.58 1.00      706     1469\n\nRegression Coefficients:\n                        Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS\nmono_poly_modelmixed       -0.91      0.98    -2.80     1.07 1.00     6918\nmono_poly_modelmonogamy    -0.97      0.98    -2.86     1.00 1.00     6931\nmono_poly_modelpolygamy    -0.38      0.98    -2.26     1.60 1.00     6967\n                        Tail_ESS\nmono_poly_modelmixed        9367\nmono_poly_modelmonogamy     9679\nmono_poly_modelpolygamy     9754\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    25.09      9.76    12.99    49.39 1.00      725     2112\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n6.6.3 Prevalence table\n\n\n\n\n\n\n\n\n\n\n\nMono-/polygamy category\nEstimated prevalence (%)\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\nmixed\n28.63\n5.73\n74.42\n\n\nmonogamy\n27.50\n5.40\n73.18\n\n\npolygamy\n40.68\n9.43\n83.13\n\n\n\n\n\n\n\n6.6.4 Post-hoc pairwise contrasts\nPairwise contrasts among breeding system categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.\n\n\n\n\n\ncontrast\nestimate\nlower.HPD\nupper.HPD\n\n\n\n\nmixed - monogamy\n0.056\n-0.247\n0.374\n\n\nmixed - polygamy\n-0.534\n-1.049\n-0.029\n\n\nmonogamy - polygamy\n-0.588\n-1.093\n-0.085",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Breeding system moderators</span>"
+    ]
+  },
+  {
+    "objectID": "05_breeding_system_moderators.html#parental-care",
+    "href": "05_breeding_system_moderators.html#parental-care",
+    "title": "6  Breeding system moderators",
+    "section": "6.7 Parental care",
+    "text": "6.7 Parental care\nThis model tested whether mixed-paternity prevalence differed among parental-care categories.\n\n6.7.1 Figure\n\n\nCode\nknitr::include_graphics(\"Figures/Figuresparental_care.png\")\n\n\n\n\n\n\n\n\n\n\n\n6.7.2 Model summary\n\n\nCode\nmodel_parental_care_0 &lt;- readRDS(\"models/model_parental_care_0.rds\")\nsummary(model_parental_care_0)\n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ 0 + parental_care + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_parental_care (Number of observations: 605) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 364) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.69      0.11     0.47     0.90 1.00     2842     5695\n\n~species_phylo_brms (Number of levels: 364) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.77      0.23     1.33     2.24 1.00     3535     7977\n\n~Study_ID (Number of levels: 544) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.27      0.13     0.02     0.50 1.01      722     2539\n\nRegression Coefficients:\n                            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS\nparental_carebiparental        -1.19      0.92    -3.00     0.64 1.00     5790\nparental_carebroodparasite     -0.66      1.21    -3.06     1.74 1.00     8132\nparental_carecooperation       -1.44      0.94    -3.28     0.44 1.00     5835\nparental_carenk_cooperation    -0.83      0.97    -2.73     1.10 1.00     6095\nparental_carepair              -0.34      1.26    -2.81     2.14 1.00     8272\nparental_careuniparental       -0.30      0.94    -2.13     1.55 1.00     6067\n                            Tail_ESS\nparental_carebiparental         9380\nparental_carebroodparasite     12431\nparental_carecooperation        9690\nparental_carenk_cooperation     9722\nparental_carepair              11716\nparental_careuniparental       10040\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    20.09      6.44    12.39    36.59 1.01      810     1878\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n6.7.3 Prevalence table\nEstimated mixed-paternity prevalence for each parental-care category was obtained from the zero-intercept model and back-transformed from the logit scale to percentages.\n\n\n\n\n\n\n\n\n\n\n\nParental-care category\nEstimated prevalence (%)\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\nbiparental\n23.25\n4.75\n65.56\n\n\nbroodparasite\n34.08\n4.48\n85.05\n\n\ncooperation\n19.14\n3.61\n60.93\n\n\nnk_cooperation\n30.30\n6.12\n74.93\n\n\npair\n41.52\n5.67\n89.43\n\n\nuniparental\n42.51\n10.63\n82.55\n\n\n\n\n\n\n\n6.7.4 Post-hoc pairwise contrasts\nPairwise contrasts among parental-care categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.\n\n\nCode\n#| echo: false\n#| message: false\n#| warning: false\n\npairwise_parental_care_0 &lt;- readRDS(\"models/pairwise_parental_care_0.rds\")\n\nparental_care_posthoc_table &lt;- as.data.frame(pairwise_parental_care_0)\n\nknitr::kable(parental_care_posthoc_table, digits = 3)\n\n\n\n\n\ncontrast\nestimate\nlower.HPD\nupper.HPD\n\n\n\n\nbiparental - broodparasite\n-0.545\n-2.172\n1.085\n\n\nbiparental - cooperation\n0.244\n-0.191\n0.690\n\n\nbiparental - nk_cooperation\n-0.359\n-0.968\n0.284\n\n\nbiparental - pair\n-0.853\n-2.547\n0.791\n\n\nbiparental - uniparental\n-0.892\n-1.494\n-0.273\n\n\nbroodparasite - cooperation\n0.785\n-0.871\n2.448\n\n\nbroodparasite - nk_cooperation\n0.179\n-1.584\n1.849\n\n\nbroodparasite - pair\n-0.321\n-2.647\n1.993\n\n\nbroodparasite - uniparental\n-0.354\n-2.097\n1.352\n\n\ncooperation - nk_cooperation\n-0.608\n-1.355\n0.113\n\n\ncooperation - pair\n-1.103\n-2.829\n0.592\n\n\ncooperation - uniparental\n-1.138\n-1.865\n-0.398\n\n\nnk_cooperation - pair\n-0.487\n-2.217\n1.301\n\n\nnk_cooperation - uniparental\n-0.532\n-1.381\n0.289\n\n\npair - uniparental\n-0.040\n-1.818\n1.721",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Breeding system moderators</span>"
+    ]
+  },
+  {
+    "objectID": "05_breeding_system_moderators.html#cooperative-breeding",
+    "href": "05_breeding_system_moderators.html#cooperative-breeding",
+    "title": "6  Breeding system moderators",
+    "section": "6.8 Cooperative breeding",
+    "text": "6.8 Cooperative breeding\nThis model tested whether mixed-paternity prevalence differed between cooperative and non-cooperative breeding species. The intercept represents the reference category - non-cooperative breeders.\n\n6.8.1 Figure\n\n\nCode\nknitr::include_graphics(\"Figures/Figurescooperative_breeding.png\")\n\n\n\n\n\n\n\n\n\n\n\n6.8.2 Model-summary\n\n\nCode\nmodel_cooperative &lt;- readRDS(\"models/model_cooperative.rds\")\nsummary(model_cooperative)\n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ cooperative_breeding + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_cooperative (Number of observations: 259) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 115) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.55      0.20     0.11     0.92 1.00     2093     2576\n\n~species_phylo_brms (Number of levels: 115) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.89      0.34     1.28     2.61 1.00     3905     8378\n\n~Study_ID (Number of levels: 228) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.31      0.16     0.02     0.60 1.00      985     2931\n\nRegression Coefficients:\n                        Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS\nIntercept                  -2.09      1.23    -4.56     0.28 1.00    12128\ncooperative_breedingyes    -0.21      0.26    -0.72     0.30 1.00    16075\n                        Tail_ESS\nIntercept                  13006\ncooperative_breedingyes    14804\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    18.97      8.23    10.14    41.04 1.00     1135     2475\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n6.8.3 Model estimates\n\n\n\n\n\nParameter\nEstimate\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\nIntercept\n-2.092\n-4.564\n0.284\n\n\ncooperative_breedingyes\n-0.209\n-0.716\n0.304",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Breeding system moderators</span>"
+    ]
+  },
+  {
+    "objectID": "05_breeding_system_moderators.html#heterogeneity-summary",
+    "href": "05_breeding_system_moderators.html#heterogeneity-summary",
+    "title": "6  Breeding system moderators",
+    "section": "6.9 Heterogeneity summary",
+    "text": "6.9 Heterogeneity summary\nThe table below compares residual heterogeneity across breeding-system, parental-care, and cooperative-breeding moderator models.\n\n\n\n\n\n\n\n\n\n\n\n\nModel\nStudy SD\nNon-phylogenetic species SD\nPhylogenetic species SD\nPhi\n\n\n\n\nOverall model\n0.238\n0.678\n1.820\n18.568\n\n\nBreeding system\n0.236\n0.707\n1.779\n20.624\n\n\nMono-/polygamy\n0.367\n0.472\n1.885\n25.094\n\n\nParental care\n0.274\n0.694\n1.765\n20.088\n\n\nCooperative breeding\n0.311\n0.548\n1.892\n18.972",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Breeding system moderators</span>"
+    ]
+  },
+  {
+    "objectID": "06_biological_moderators.html",
+    "href": "06_biological_moderators.html",
+    "title": "7  Biological moderators",
+    "section": "",
+    "text": "7.1 Packages\nThe R packages required for model fitting.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Biological moderators</span>"
+    ]
+  },
+  {
+    "objectID": "06_biological_moderators.html#load-prepared-objects",
+    "href": "06_biological_moderators.html#load-prepared-objects",
+    "title": "7  Biological moderators",
+    "section": "7.2 Load prepared objects",
+    "text": "7.2 Load prepared objects\n\n\nCode\nmixed_pat &lt;- readRDS(\"data/mixed_pat_prepared.rds\")\ndata_overall_study &lt;- readRDS(\"data/data_overall_study.rds\")\n\ndata_abs_latitude &lt;- readRDS(\"data/data_abs_latitude.rds\")\ndata_body_mass &lt;- readRDS(\"data/data_body_mass_log.rds\")\ndata_clutch_size &lt;- readRDS(\"data/data_clutch_size.rds\")\ndata_coloniality &lt;- readRDS(\"data/data_coloniality.rds\")\ndata_migration &lt;- readRDS(\"data/data_migration.rds\")\ndata_nest_type &lt;- readRDS(\"data/data_nest_type.rds\")\n\n\nphylo_mat &lt;- readRDS(\"data/phylo_mat.rds\")\ntree_analysis &lt;- readRDS(\"data/tree_analysis.rds\")\n\n\n\n7.2.1 Dataset sizes\nThe table below shows the number of observations available for each biological moderator after removing missing values.\n\n\nCode\n#| label: bio-dataset-sizes\n#| echo: false\n#| message: false\n#| warning: false\n\nbio_dataset_sizes &lt;- tibble::tibble(\n  Moderator = c(\n    \"Nest type\",\n    \"Migration\",\n    \"Coloniality\",\n    \"Maximum clutch size\",\n    \"Body mass\",\n    \"Absolute latitude\"\n  ),\n  Observations = c(\n    nrow(data_nest_type),\n    nrow(data_migration),\n    nrow(data_coloniality),\n    nrow(data_clutch_size),\n    nrow(data_body_mass),\n    nrow(data_abs_latitude)\n  )\n)\n\nknitr::kable(bio_dataset_sizes)\n\n\n\n\n\nModerator\nObservations\n\n\n\n\nNest type\n587\n\n\nMigration\n619\n\n\nColoniality\n619\n\n\nMaximum clutch size\n618\n\n\nBody mass\n619\n\n\nAbsolute latitude\n592",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Biological moderators</span>"
+    ]
+  },
+  {
+    "objectID": "06_biological_moderators.html#model",
+    "href": "06_biological_moderators.html#model",
+    "title": "7  Biological moderators",
+    "section": "7.3 Model",
+    "text": "7.3 Model\nThis helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as .rds files.\n\n\nCode\n#| eval: false\n#| echo: true\n\nfit_single_moderator &lt;- function(formula, data) {\n  brm(\n    formula = formula,\n    data = data,\n    family = beta_binomial(link = \"logit\"),\n    data2 = list(phylo_mat = phylo_mat),\n    chains = 4,\n    cores = 4,\n    iter = 10000,\n    warmup = 5000,\n    control = list(\n      adapt_delta = 0.99,\n      max_treedepth = 15\n    ),\n    seed = 123\n  )\n}",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Biological moderators</span>"
+    ]
+  },
+  {
+    "objectID": "06_biological_moderators.html#nest-type-architecture",
+    "href": "06_biological_moderators.html#nest-type-architecture",
+    "title": "7  Biological moderators",
+    "section": "7.4 Nest type architecture",
+    "text": "7.4 Nest type architecture\nThis model tested whether mixed-paternity prevalence differed among nest-type categories. Nest type was derived from BIRDBASE and simplified into four broad nest-architecture categories: cavity, ground, open, and other enclosed nests. Cavity nests included tree cavities and crevices; ground nests included burrows, scrapes, mounds, and nests placed directly on or in the ground; open nests included cups, saucers, platforms, and half-cups; and other enclosed nests included domes, pendant and globular nests, as well as nests built in other birds’ nests.\n\n7.4.1 Figure\n\n\nCode\nknitr::include_graphics(\"Figures/Figuresnest_type.png\")\n\n\n\n\n\n\n\n\n\n\n\n7.4.2 Model summary\n\n\nCode\nmodel_nest_type &lt;- readRDS(\"models/model_nest_type_0.rds\")\nsummary(model_nest_type)\n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ 0 + nest_type_model + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_nest_type (Number of observations: 587) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 350) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.62      0.12     0.36     0.85 1.00     1992     3313\n\n~species_phylo_brms (Number of levels: 350) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.97      0.26     1.48     2.49 1.00     2289     5076\n\n~Study_ID (Number of levels: 526) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.24      0.13     0.02     0.49 1.00      771     1783\n\nRegression Coefficients:\n                              Estimate Est.Error l-95% CI u-95% CI Rhat\nnest_type_modelcavity            -0.94      1.03    -2.97     1.11 1.00\nnest_type_modelground            -0.66      1.02    -2.65     1.36 1.00\nnest_type_modelopen              -0.96      1.03    -2.96     1.09 1.00\nnest_type_modelother_enclosed    -1.16      1.05    -3.22     0.92 1.00\n                              Bulk_ESS Tail_ESS\nnest_type_modelcavity             5227     7804\nnest_type_modelground             5318     7939\nnest_type_modelopen               5274     7519\nnest_type_modelother_enclosed     5209     7308\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    19.44      6.27    12.27    36.14 1.00      853     1554\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n7.4.3 Nest type model estimates\n\n\n\n\n\n\n\n\n\n\n\nNest-type category\nEstimated prevalence (%)\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\ncavity\n28.00\n4.87\n75.28\n\n\nground\n33.97\n6.59\n79.60\n\n\nopen\n27.62\n4.91\n74.76\n\n\nother_enclosed\n23.90\n3.84\n71.42\n\n\n\n\n\n\n\n7.4.4 Post-hoc pairwise contrasts\nPairwise contrasts among nest-type categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.\n\n\n\n\n\ncontrast\nestimate\nlower.HPD\nupper.HPD\n\n\n\n\ncavity - ground\n-0.280\n-0.807\n0.278\n\n\ncavity - open\n0.019\n-0.421\n0.452\n\n\ncavity - other_enclosed\n0.212\n-0.421\n0.838\n\n\nground - open\n0.298\n-0.203\n0.799\n\n\nground - other_enclosed\n0.494\n-0.175\n1.134\n\n\nopen - other_enclosed\n0.196\n-0.374\n0.783",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Biological moderators</span>"
+    ]
+  },
+  {
+    "objectID": "06_biological_moderators.html#migration",
+    "href": "06_biological_moderators.html#migration",
+    "title": "7  Biological moderators",
+    "section": "7.5 Migration",
+    "text": "7.5 Migration\nThis model tested whether mixed-paternity prevalence differed between strong and weak migrant categories. Migration status was analysed using two categories following BIRDBASE database: strong migrants and weak migrants. Here, strong migrants represent regular seasonal or long-distance migration, whereas weak migrants correspond to partial migration.\n\n7.5.1 Figure\n\n\nCode\nknitr::include_graphics(\"Figures/Figuresmigration.png\")\n\n\n\n\n\n\n\n\n\n\n\n7.5.2 Model summary\n\n\nCode\nmodel_migration &lt;- readRDS(\"models/model_migration.rds\")\nsummary(model_migration)\n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ migration + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_migration (Number of observations: 619) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 375) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.66      0.11     0.43     0.87 1.00     2294     4142\n\n~species_phylo_brms (Number of levels: 375) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.83      0.23     1.39     2.31 1.00     2781     6528\n\n~Study_ID (Number of levels: 554) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.23      0.13     0.02     0.48 1.01      742     1854\n\nRegression Coefficients:\n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nIntercept        -0.44      0.89    -2.17     1.31 1.00    12596    13157\nmigrationWeak    -0.39      0.16    -0.70    -0.07 1.00    19290    15611\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    18.06      5.06    11.97    31.35 1.01      803     1845\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n7.5.3 Model estimates\nThe intercept represents the reference migration category, while the remaining coefficients describe differences relative to that reference category on the logit scale.\n\n\n\n\n\nParameter\nEstimate\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\nIntercept\n-0.439\n-2.171\n1.314\n\n\nmigrationWeak\n-0.387\n-0.704\n-0.066",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Biological moderators</span>"
+    ]
+  },
+  {
+    "objectID": "06_biological_moderators.html#coloniality",
+    "href": "06_biological_moderators.html#coloniality",
+    "title": "7  Biological moderators",
+    "section": "7.6 Coloniality",
+    "text": "7.6 Coloniality\nThis model tested whether mixed-paternity prevalence differed between colonial and non-colonial species following BIRDBASE database.\n\n7.6.1 Figures\n\n\nCode\nknitr::include_graphics(\"Figures/Figurescoloniality.png\")\n\n\n\n\n\n\n\n\n\n\n\n7.6.2 Model summary\n\n\nCode\n#| message: false\n#| warning: false\n#| code-fold: true\n\nmodel_coloniality &lt;- readRDS(\"models/model_coloniality.rds\")\nsummary(model_coloniality)\n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ coloniality + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_coloniality (Number of observations: 619) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 375) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.68      0.11     0.46     0.89 1.00     2546     5066\n\n~species_phylo_brms (Number of levels: 375) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.81      0.23     1.38     2.30 1.00     3193     6255\n\n~Study_ID (Number of levels: 554) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.24      0.13     0.01     0.47 1.00      843     2485\n\nRegression Coefficients:\n             Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nIntercept       -0.71      0.87    -2.42     1.04 1.00    12867    13988\ncoloniality1    -0.14      0.20    -0.54     0.26 1.00    18449    16191\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    18.43      5.17    12.11    31.61 1.00     1006     2210\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n7.6.3 Model estimates\n\n\n\n\n\nParameter\nEstimate\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\nIntercept\n-0.711\n-2.424\n1.036\n\n\ncoloniality1\n-0.142\n-0.540\n0.260",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Biological moderators</span>"
+    ]
+  },
+  {
+    "objectID": "06_biological_moderators.html#clutch-size",
+    "href": "06_biological_moderators.html#clutch-size",
+    "title": "7  Biological moderators",
+    "section": "7.7 Clutch size",
+    "text": "7.7 Clutch size\nThis model tested whether mixed-paternity prevalence was associated with maximum clutch size. Clutch size was scaled before model fitting, so the effect represents the change in log-odds of mixed paternity per one standard deviation increase in maximum clutch size.\n\n7.7.1 Figure\n\n\nCode\nknitr::include_graphics(\"Figures/Figuresclutch_size.png\")\n\n\n\n\n\n\n\n\n\n\n\n7.7.2 Model summary\n\n\nCode\nmodel_clutch_size &lt;- readRDS(\"models/model_clutch_size.rds\")\nsummary(model_clutch_size)\n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ CS_max_sc + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_clutch_size (Number of observations: 618) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 374) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.68      0.11     0.45     0.88 1.00     2351     4534\n\n~species_phylo_brms (Number of levels: 374) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.79      0.23     1.37     2.26 1.00     2692     5330\n\n~Study_ID (Number of levels: 553) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.23      0.13     0.01     0.47 1.00      823     1957\n\nRegression Coefficients:\n          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nIntercept    -0.88      0.88    -2.62     0.85 1.00     8670    11179\nCS_max_sc     0.33      0.11     0.12     0.55 1.00    12371    13993\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    18.27      5.24    12.06    31.86 1.00      935     1639\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n7.7.3 Model estimates\n\n\nCode\n#| echo: false\n#| message: false\n#| warning: false\n\ns_clutch_size &lt;- summary(model_clutch_size)\n\nclutch_size_table &lt;- tibble::tibble(\n  Parameter = rownames(s_clutch_size$fixed),\n  Estimate = s_clutch_size$fixed[, \"Estimate\"],\n  `Lower 95% CrI` = s_clutch_size$fixed[, \"l-95% CI\"],\n  `Upper 95% CrI` = s_clutch_size$fixed[, \"u-95% CI\"]\n)\n\nknitr::kable(clutch_size_table, digits = 3)\n\n\n\n\n\nParameter\nEstimate\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\nIntercept\n-0.878\n-2.622\n0.848\n\n\nCS_max_sc\n0.333\n0.115\n0.548",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Biological moderators</span>"
+    ]
+  },
+  {
+    "objectID": "06_biological_moderators.html#body-mass",
+    "href": "06_biological_moderators.html#body-mass",
+    "title": "7  Biological moderators",
+    "section": "7.8 Body mass",
+    "text": "7.8 Body mass\nThis model tested whether mixed-paternity prevalence was associated with adult body mass. Body mass was scaled before model fitting, so the effect represents the change in log-odds of mixed paternity per one standard deviation increase in body mass. Body mass was strongly right-skewed across species; therefore, body mass values were log10-transformed and standardised prior to analysis. Model coefficients thus represent the change in log-odds of mixed paternity associated with a one standard deviation increase in log-transformed body mass.\n\n7.8.1 Figure\n\n\nCode\nknitr::include_graphics(\"Figures/Figuresbody_mass.png\")\n\n\n\n\n\n\n\n\n\n\n\n7.8.2 Model summary\n\n\nCode\nmodel_body_mass_log &lt;- readRDS(\"models/model_log_body_mass.rds\")\nsummary(model_body_mass_log)\n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ log_body_mass_sc + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_body_mass (Number of observations: 619) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 375) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.67      0.11     0.45     0.88 1.00     2028     3134\n\n~species_phylo_brms (Number of levels: 375) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.85      0.24     1.40     2.34 1.00     2322     4103\n\n~Study_ID (Number of levels: 554) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.24      0.13     0.01     0.48 1.00      791     1719\n\nRegression Coefficients:\n                 Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nIntercept           -0.72      0.93    -2.56     1.13 1.00     7249    10135\nlog_body_mass_sc    -0.01      0.15    -0.30     0.29 1.00     9337    13400\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    18.74      5.42    12.16    32.91 1.00      973     1703\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n7.8.3 Model estimates\n\n\nCode\n#| echo: false\n#| message: false\n#| warning: false\n\ns_body_mass &lt;- summary(model_body_mass_log)\n\nbody_mass_table &lt;- tibble::tibble(\n  Parameter = rownames(s_body_mass$fixed),\n  Estimate = s_body_mass$fixed[, \"Estimate\"],\n  `Lower 95% CrI` = s_body_mass$fixed[, \"l-95% CI\"],\n  `Upper 95% CrI` = s_body_mass$fixed[, \"u-95% CI\"]\n)\n\nknitr::kable(body_mass_table, digits = 3)\n\n\n\n\n\nParameter\nEstimate\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\nIntercept\n-0.722\n-2.559\n1.126\n\n\nlog_body_mass_sc\n-0.008\n-0.303\n0.289",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Biological moderators</span>"
+    ]
+  },
+  {
+    "objectID": "06_biological_moderators.html#absolute-latitude",
+    "href": "06_biological_moderators.html#absolute-latitude",
+    "title": "7  Biological moderators",
+    "section": "7.9 Absolute latitude",
+    "text": "7.9 Absolute latitude\nThis model tested whether mixed-paternity prevalence varied with absolute latitude. Absolute latitude was used to examine broad geographic patterns independent of hemisphere, with larger values corresponding to populations located farther from the equator. Absolute latitude was scaled before model fitting, so the effect represents the change in log-odds of mixed paternity per one standard deviation increase in absolute latitude.\n\n7.9.1 Figure\n\n\nCode\nknitr::include_graphics(\"Figures/Figuresabs_latitude.png\")\n\n\n\n\n\n\n\n\n\n\n\n7.9.2 Model summary\n\n\nCode\nmodel_abs_latitude &lt;- readRDS(\"models/model_abs_latitude.rds\") \nsummary(model_abs_latitude) \n\n\n Family: beta_binomial \n  Links: mu = logit \nFormula: n_mixed_broods | trials(n_total_broods) ~ abs_lat_sc + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) \n   Data: data_abs_latitude (Number of observations: 592) \n  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;\n         total post-warmup draws = 20000\n\nMultilevel Hyperparameters:\n~species_nonphylo (Number of levels: 363) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.70      0.11     0.47     0.91 1.00     1902     2613\n\n~species_phylo_brms (Number of levels: 363) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     1.85      0.24     1.40     2.35 1.00     2205     3787\n\n~Study_ID (Number of levels: 532) \n              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nsd(Intercept)     0.21      0.12     0.01     0.45 1.01      695     1519\n\nRegression Coefficients:\n           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nIntercept     -0.80      0.90    -2.57     1.01 1.00     7529    10504\nabs_lat_sc    -0.13      0.06    -0.25    -0.01 1.00    15544    15085\n\nFurther Distributional Parameters:\n    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS\nphi    19.26      5.45    12.81    33.89 1.01      759     1252\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1).\n\n\n\n\n7.9.3 Model estimates\n\n\n\n\n\nParameter\nEstimate\nLower 95% CrI\nUpper 95% CrI\n\n\n\n\nIntercept\n-0.798\n-2.571\n1.008\n\n\nabs_lat_sc\n-0.128\n-0.251\n-0.007",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Biological moderators</span>"
+    ]
+  },
+  {
+    "objectID": "06_biological_moderators.html#heterogeneity-summary",
+    "href": "06_biological_moderators.html#heterogeneity-summary",
+    "title": "7  Biological moderators",
+    "section": "7.10 Heterogeneity summary",
+    "text": "7.10 Heterogeneity summary\n\n\n\n\n\n\n\n\n\n\n\n\nModel\nStudy SD\nNon-phylogenetic species SD\nPhylogenetic species SD\nPhi\n\n\n\n\nOverall model\n0.238\n0.678\n1.820\n18.568\n\n\nNest type\n0.243\n0.620\n1.968\n19.435\n\n\nMigration\n0.229\n0.657\n1.828\n18.063\n\n\nColoniality\n0.237\n0.680\n1.815\n18.434\n\n\nClutch size\n0.233\n0.676\n1.788\n18.265\n\n\nBody mass\n0.244\n0.674\n1.849\n18.735\n\n\nAbsolute latitude\n0.206\n0.701\n1.854\n19.259",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Biological moderators</span>"
+    ]
+  },
+  {
+    "objectID": "07_figures.html",
+    "href": "07_figures.html",
+    "title": "8  Figures",
+    "section": "",
+    "text": "8.1 Packages\nCode\nlibrary(tidyverse)\nlibrary(ape)\n\nlibrary(brms)\nlibrary(posterior)\nlibrary(bayesplot)\nlibrary(loo)\nlibrary(tidybayes)\n\nlibrary(patchwork)\nlibrary(maps)\n\nlibrary(ggtree)\nlibrary(ggtreeExtra)\nlibrary(ggnewscale)\nlibrary(viridis)\n\n# for PhyloPic silhouettes\nlibrary(rphylopic)\nlibrary(ggimage)\n\n# for plotting/export helpers\nlibrary(scales)\nlibrary(grid)\n\noptions(mc.cores = parallel::detectCores())",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Figures</span>"
+    ]
+  },
+  {
+    "objectID": "07_figures.html#data-import",
+    "href": "07_figures.html#data-import",
+    "title": "8  Figures",
+    "section": "8.2 Data import",
+    "text": "8.2 Data import\n\n8.2.1 Load data\n\n\nCode\nmixed_pat &lt;- readRDS(\"data/mixed_pat_prepared.rds\")\ndata_overall_study &lt;- readRDS(\"data/data_overall_study.rds\")\n\ndata_abs_latitude &lt;- readRDS(\"data/data_abs_latitude.rds\")\ndata_body_mass &lt;- readRDS(\"data/data_body_mass_log.rds\")\ndata_clutch_size &lt;- readRDS(\"data/data_clutch_size.rds\")\ndata_coloniality &lt;- readRDS(\"data/data_coloniality.rds\")\ndata_cooperative &lt;- readRDS(\"data/data_cooperative.rds\")\ndata_marker_type &lt;- readRDS(\"data/data_marker_type.rds\")\ndata_migration &lt;- readRDS(\"data/data_migration.rds\")\ndata_mono_poly &lt;- readRDS(\"data/data_mono_poly.rds\")\ndata_nest_box &lt;- readRDS(\"data/data_nest_box.rds\")\ndata_nest_type &lt;- readRDS(\"data/data_nest_type.rds\")\ndata_parental_care &lt;- readRDS(\"data/data_parental_care.rds\")\ndata_study_duration &lt;- readRDS(\"data/data_study_duration.rds\")\ndata_breeding_system &lt;- readRDS(\"data/data_breeding_system.rds\")\n\nphylo_mat &lt;- readRDS(\"data/phylo_mat.rds\")\ntree_analysis &lt;- readRDS(\"data/tree_analysis.rds\")\n\n\n\n\n8.2.2 Load models\n\n\nCode\nmodel_overall_study &lt;- readRDS(\"models/model_overall_study.rds\")\nmodel_abs_latitude &lt;- readRDS(\"models/model_abs_latitude.rds\")\nmodel_clutch_size &lt;- readRDS(\"models/model_clutch_size.rds\")\nmodel_body_mass_log &lt;- readRDS(\"models/model_log_body_mass.rds\")\nmodel_nest_type &lt;- readRDS(\"models/model_nest_type_0.rds\")\nmodel_migration &lt;- readRDS(\"models/model_migration.rds\")\nmodel_coloniality &lt;- readRDS(\"models/model_coloniality.rds\")\nmodel_breeding_system_0 &lt;- readRDS(\"models/model_breeding_system_0.rds\")\nmodel_mono_poly_0 &lt;- readRDS(\"models/model_mono_poly_0.rds\")\nmodel_parental_care_0 &lt;- readRDS(\"models/model_parental_care_0.rds\")\nmodel_cooperative &lt;- readRDS(\"models/model_cooperative.rds\")\nmodel_marker_type_0 &lt;- readRDS(\"models/model_marker_type_0.rds\")\nmodel_nest_box &lt;- readRDS(\"models/model_nest_box.rds\")\nmodel_study_duration &lt;- readRDS(\"models/model_study_duration.rds\")",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Figures</span>"
+    ]
+  },
+  {
+    "objectID": "07_figures.html#phylogeny-plot",
+    "href": "07_figures.html#phylogeny-plot",
+    "title": "8  Figures",
+    "section": "8.3 Phylogeny plot",
+    "text": "8.3 Phylogeny plot\n\n\nCode\nspecies_mp_plot &lt;- mixed_pat %&gt;%\n  group_by(species_phylo_brms) %&gt;%\n  summarise(\n    total_mixed_broods = sum(n_mixed_broods, na.rm = TRUE),\n    total_broods = sum(n_total_broods, na.rm = TRUE),\n    mixed_paternity_proportion = total_mixed_broods / total_broods,\n    .groups = \"drop\"\n  ) %&gt;%\n  mutate(\n    tip_label = as.character(species_phylo_brms)\n  ) %&gt;%\n  filter(tip_label %in% tree_analysis$tip.label)\n\n\n\n\nCode\nspecies_mp_plot &lt;- species_mp_plot %&gt;%\n  filter(!is.na(mixed_paternity_proportion))\n\n\n\n\nCode\np_tree_base &lt;- ggtree(\n  tree_analysis,\n  layout = \"circular\",\n  size = 0.15\n) %&lt;+% species_mp_plot +\n  geom_tippoint(\n    aes(color = mixed_paternity_proportion),\n    size = 1.1,\n    alpha = 0.9\n  ) +\n  scale_color_viridis_c(\n    option = \"plasma\",\n    name = \"Mixed paternity\\nproportion\",\n    limits = c(0, 1),\n    labels = scales::percent\n  ) +\n  theme_void() +\n  theme(\n    legend.position = \"right\",\n    plot.margin = margin(20, 20, 20, 20)\n  )\n\n\nWarning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.\nℹ Please use `linewidth` instead.\nℹ The deprecated feature was likely used in the ggtree package.\n  Please report the issue at &lt;https://github.com/YuLab-SMU/ggtree/issues&gt;.\n\n\nCode\np_tree_base",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Figures</span>"
+    ]
+  },
+  {
+    "objectID": "07_figures.html#geographic-distribution-of-study-populations",
+    "href": "07_figures.html#geographic-distribution-of-study-populations",
+    "title": "8  Figures",
+    "section": "8.4 Geographic distribution of study populations",
+    "text": "8.4 Geographic distribution of study populations\n\n\nCode\nworld_map &lt;- map_data(\"world\")\n\nmap_data_points &lt;- mixed_pat %&gt;%\n  filter(!is.na(Lat_round), !is.na(Long_round)) %&gt;%\n  group_by(Lat_round, Long_round) %&gt;%\n  summarise(\n    n_studies = n_distinct(Study_ID),\n    .groups = \"drop\"\n  )\n\n\n\n\nCode\np_map &lt;- ggplot() +\n  geom_polygon(\n    data = world_map,\n    aes(x = long, y = lat, group = group),\n    fill = \"grey90\",\n    colour = \"white\",\n    linewidth = 0.2\n  ) +\n  geom_point(\n    data = map_data_points,\n    aes(x = Long_round, y = Lat_round, size = n_studies),\n    alpha = 0.7,\n    colour = \"#1f3b73\"\n  ) +\n  coord_quickmap() +\n  theme_minimal() +\n  labs(\n    x = \"Longitude\",\n    y = \"Latitude\",\n    size = \"Number of studies\",\n  )\n\ndir.create(\"figures\", showWarnings = FALSE)\n\nggsave(\n  \"figures/geographic_distribution_mixed_paternity.pdf\",\n  plot = p_map,\n  width = 9,\n  height = 5.5,\n  units = \"in\",\n  device = cairo_pdf\n)\np_map",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Figures</span>"
+    ]
+  },
+  {
+    "objectID": "07_figures.html#figure-preparation",
+    "href": "07_figures.html#figure-preparation",
+    "title": "8  Figures",
+    "section": "8.5 Figure preparation",
+    "text": "8.5 Figure preparation\nPoints represent observed brood-level mixed-paternity prevalence across study populations, scaled by sample size. Dark points and vertical intervals represent posterior predicted prevalence and 95% credible intervals from the fitted beta-binomial phylogenetic model.\n\n\n\n\n\nObserved mixed-paternity prevalence across study populations and the estimated overall prevalence from the intercept-only model.\n\n\n\n\n\n\nCode\nplot_categorical_moderator &lt;- function(data, model, cat_var, x_lab, labels = NULL) {\n  \n  pred_data &lt;- data %&gt;%\n    distinct(.data[[cat_var]]) %&gt;%\n    rename(category = .data[[cat_var]]) %&gt;%\n    mutate(n_total_broods = 1)\n  \n  names(pred_data)[names(pred_data) == \"category\"] &lt;- cat_var\n  \n  pred &lt;- pred_data %&gt;%\n    tidybayes::add_epred_draws(model, re_formula = NA) %&gt;%\n    tidybayes::mean_qi(.epred)\n  \n  plot_data &lt;- data %&gt;%\n    mutate(\n      observed_prev = n_mixed_broods / n_total_broods\n    )\n  \n  if (!is.null(labels)) {\n    pred[[cat_var]] &lt;- factor(pred[[cat_var]], levels = names(labels), labels = labels)\n    plot_data[[cat_var]] &lt;- factor(plot_data[[cat_var]], levels = names(labels), labels = labels)\n  }\n  \n  ggplot() +\n    geom_jitter(\n      data = plot_data,\n      aes(\n        x = .data[[cat_var]],\n        y = observed_prev,\n        size = n_total_broods\n      ),\n      width = 0.12,\n      alpha = 0.25,\n      colour = \"#5AA6C8\"\n    ) +\n    geom_pointrange(\n      data = pred,\n      aes(\n        x = .data[[cat_var]],\n        y = .epred,\n        ymin = .lower,\n        ymax = .upper\n      ),\n      colour = \"#1F3B73\",\n      linewidth = 0.9,\n      size = 0.9\n    ) +\n    scale_y_continuous(\n  labels = scales::percent_format(accuracy = 1)\n) +\ncoord_cartesian(ylim = c(0, 1)) +\n    scale_size_continuous(\n      name = \"Sample size\",\n      range = c(1.5, 6)\n    ) +\n    labs(\n      x = x_lab,\n      y = \"Mixed-paternity prevalence\"\n    ) +\n    theme_classic(base_size = 13)\n}\n\n\n\n\nCode\nplot_continuous_moderator &lt;- function(data, model, raw_var, sc_var, x_lab) {\n  \n  mean_x &lt;- mean(data[[raw_var]], na.rm = TRUE)\n  sd_x &lt;- sd(data[[raw_var]], na.rm = TRUE)\n  \n  pred_data &lt;- tibble(\n    x_raw = seq(\n      min(data[[raw_var]], na.rm = TRUE),\n      max(data[[raw_var]], na.rm = TRUE),\n      length.out = 100\n    )\n  ) %&gt;%\n    mutate(\n      !!sc_var := (x_raw - mean_x) / sd_x,\n      n_total_broods = 1\n    )\n  \n  pred &lt;- pred_data %&gt;%\n    tidybayes::add_epred_draws(model, re_formula = NA) %&gt;%\n    tidybayes::mean_qi(.epred)\n  \n  ggplot() +\n    geom_ribbon(\n      data = pred,\n      aes(x = x_raw, ymin = .lower, ymax = .upper),\n      fill = \"#2C4A7A\",\n      alpha = 0.18\n    ) +\n    geom_point(\n      data = data,\n      aes(\n        x = .data[[raw_var]],\n        y = n_mixed_broods / n_total_broods,\n        size = n_total_broods\n      ),\n      colour = \"#5AA6C8\",\n      alpha = 0.30\n    ) +\n    geom_line(\n      data = pred,\n      aes(x = x_raw, y = .epred),\n      colour = \"#1F3B73\",\n      linewidth = 1.2\n    ) +\n    scale_y_continuous(\n      labels = scales::percent_format(accuracy = 1)\n    ) +\n    coord_cartesian(ylim = c(0, 1)) +\n    scale_size_continuous(\n      name = \"Sample size\",\n      range = c(1.5, 6)\n    ) +\n    labs(\n      x = x_lab,\n      y = \"Mixed-paternity prevalence\"\n    ) +\n    theme_classic(base_size = 13)\n}",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Figures</span>"
+    ]
+  },
+  {
+    "objectID": "07_figures.html#figures-for-methodological-moderators",
+    "href": "07_figures.html#figures-for-methodological-moderators",
+    "title": "8  Figures",
+    "section": "8.6 Figures for methodological moderators",
+    "text": "8.6 Figures for methodological moderators\n\n\nCode\np_marker_type &lt;- plot_categorical_moderator(\n  data_marker_type,\n  model_marker_type_0,\n  cat_var = \"marker_type_model\",\n  x_lab = \"Marker type\",\n  labels = c(\n    \"DNA_fingerprinting\" = \"DNA fingerprinting\",\n    \"microsatellite\" = \"Microsatellite\",\n    \"mixed_other\" = \"Mixed / other\",\n    \"SNPs\" = \"SNPs\"\n  )\n)\n\n\nWarning: Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.\nℹ Please use `all_of(var)` (or `any_of(var)`) instead of `.data[[var]]`\n\n\nCode\np_marker_type\n\n\n\n\n\n\n\n\nFigure 8.1: Predicted mixed-paternity prevalence across marker types.\n\n\n\n\n\n\n\nCode\np_nest_box &lt;- plot_categorical_moderator(\n  data_nest_box,\n  model_nest_box,\n  cat_var = \"nest_box_model\",\n  x_lab = \"Nest-box use\",\n  labels = c(\n    \"no\" = \"Natural nests\",\n    \"yes\" = \"Nest boxes\"\n  )\n)\np_nest_box\n\n\n\n\n\n\n\n\nFigure 8.2: Predicted mixed-paternity prevalence in natural nests and in nest-boxs studies.\n\n\n\n\n\n\n\nCode\np_study_duration &lt;- plot_continuous_moderator(\n  data_study_duration,\n  model_study_duration,\n  raw_var = \"study_duration\",\n  sc_var = \"study_duration_sc\",\n  x_lab = \"Study duration (years)\"\n)\np_study_duration\n\n\n\n\n\n\n\n\nFigure 8.3: Predicted mixed-paternity prevalence across study duration.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Figures</span>"
+    ]
+  },
+  {
+    "objectID": "07_figures.html#figures-for-biological-moderator",
+    "href": "07_figures.html#figures-for-biological-moderator",
+    "title": "8  Figures",
+    "section": "8.7 Figures for biological moderator",
+    "text": "8.7 Figures for biological moderator\n\n\nCode\np_abs_lat &lt;- plot_continuous_moderator(\n  data = data_abs_latitude,\n  model = model_abs_latitude,\n  raw_var = \"abs_lat\",\n  sc_var = \"abs_lat_sc\",\n  x_lab = \"Absolute latitude (°)\"\n)\n\np_abs_lat\n\n\n\n\n\n\n\n\nFigure 8.4: Predicted mixed-paternity prevalence across absolute latitude.\n\n\n\n\n\n\n\nCode\np_clutch_size &lt;- plot_continuous_moderator(\n  data = data_clutch_size,\n  model = model_clutch_size,\n  raw_var = \"CS_max\",\n  sc_var = \"CS_max_sc\",\n  x_lab = \"Maximum clutch size\"\n)\n\np_clutch_size\n\n\n\n\n\n\n\n\nFigure 8.5: Predicted mixed-paternity prevalence across clutch size.\n\n\n\n\n\n\n\nCode\np_body_mass &lt;- plot_continuous_moderator(\n  data = data_body_mass,\n  model = model_body_mass_log,\n  raw_var = \"log_body_mass\",\n  sc_var = \"log_body_mass_sc\",\n  x_lab = expression(Log[10]~\"body mass (g)\")\n)\n\np_body_mass\n\n\n\n\n\n\n\n\nFigure 8.6: Predicted mixed-paternity prevalence across body mass.\n\n\n\n\n\n\n\nCode\np_migration &lt;- plot_categorical_moderator(\n  data_migration,\n  model_migration,\n  cat_var = \"migration\",\n  x_lab = \"Migration status\",\n  labels = c(\n    \"Strong\" = \"Regular migrant\",\n    \"Weak\" = \"Partial migrant\"\n  )\n)\np_migration\n\n\n\n\n\n\n\n\nFigure 8.7: Predicted mixed-paternity prevalence across migration categories.\n\n\n\n\n\n\n\nCode\np_coloniality &lt;- plot_categorical_moderator(\n  data_coloniality,\n  model_coloniality,\n  cat_var = \"coloniality\",\n  x_lab = \"Coloniality\",\n  labels = c(\n    \"0\" = \"Non-colonial\",\n    \"1\" = \"Colonial\"\n  )\n)\np_coloniality\n\n\n\n\n\n\n\n\nFigure 8.8: Predicted mixed-paternity prevalence across coloniality categories.\n\n\n\n\n\n\n\nCode\ndata_nest_type &lt;- data_overall_study %&gt;%\n  filter(!is.na(nest_type_model)) %&gt;%\n  mutate(\n    nest_type_model = factor(\n      as.character(nest_type_model),\n      levels = c(\"cavity\", \"ground\", \"open\", \"other_enclosed\", \"zero__\")\n    )\n  ) %&gt;%\n  droplevels()\n\np_nest_type &lt;- plot_categorical_moderator(\n  data_nest_type,\n  model_nest_type,\n  cat_var = \"nest_type_model\",\n  x_lab = \"Nest type\"\n) +\n  scale_x_discrete(\n    labels = c(\n      \"cavity\" = \"Cavity\",\n      \"ground\" = \"Ground\",\n      \"open\" = \"Open\",\n      \"other_enclosed\" = \"Other enclosed\",\n      \"zero__\" = \"Zero\"\n    )\n  )\n\np_nest_type\n\n\n\n\n\n\n\n\nFigure 8.9: Predicted mixed-paternity prevalence across nest types.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Figures</span>"
+    ]
+  },
+  {
+    "objectID": "07_figures.html#figures-for-breedingparental-system-modeartaors-figures",
+    "href": "07_figures.html#figures-for-breedingparental-system-modeartaors-figures",
+    "title": "8  Figures",
+    "section": "8.8 Figures for breeding/parental system modeartaors figures",
+    "text": "8.8 Figures for breeding/parental system modeartaors figures\n\n\nCode\nplot_social_moderator &lt;- function(data, model, cat_var, x_lab, labels = NULL) {\n  \n  pred_data &lt;- data %&gt;%\n    distinct(.data[[cat_var]]) %&gt;%\n    rename(category = .data[[cat_var]]) %&gt;%\n    mutate(n_total_broods = 1)\n  \n  names(pred_data)[names(pred_data) == \"category\"] &lt;- cat_var\n  \n  pred &lt;- pred_data %&gt;%\n    tidybayes::add_epred_draws(model, re_formula = NA) %&gt;%\n    tidybayes::mean_qi(.epred)\n  \n  plot_data &lt;- data %&gt;%\n    mutate(observed_prev = n_mixed_broods / n_total_broods)\n  \n  if (!is.null(labels)) {\n    pred[[cat_var]] &lt;- factor(pred[[cat_var]], levels = names(labels), labels = labels)\n    plot_data[[cat_var]] &lt;- factor(plot_data[[cat_var]], levels = names(labels), labels = labels)\n  }\n  \n  ggplot() +\n    geom_jitter(\n      data = plot_data,\n      aes(x = .data[[cat_var]], y = observed_prev, size = n_total_broods),\n      width = 0.12,\n      alpha = 0.25,\n      colour = \"#F4A261\"\n    ) +\n    geom_pointrange(\n      data = pred,\n      aes(x = .data[[cat_var]], y = .epred, ymin = .lower, ymax = .upper),\n      colour = \"#9D174D\",\n      linewidth = 0.9,\n      size = 0.9\n    ) +\n    scale_y_continuous(\n  labels = scales::percent_format(accuracy = 1)\n) +\ncoord_cartesian(ylim = c(0, 1)) +\n    scale_size_continuous(\n      name = \"Sample size\",\n      range = c(1.5, 6)\n    ) +\n    labs(\n      x = x_lab,\n      y = \"Mixed-paternity prevalence\"\n    ) +\n    theme_classic(base_size = 13)\n}\n\n\n\n\nCode\ndata_breeding_system &lt;- readRDS(\"data/data_breeding_system.rds\") %&gt;%\n  mutate(\n    breeding_system = factor(\n      breeding_system,\n      levels = c(\n        \"cooperative_breeder\",\n        \"lekking\",\n        \"monogamy\",\n        \"no_social_bond\",\n        \"polyandry\"\n      )\n    )\n  )\n\np_breeding_system &lt;- plot_social_moderator(\n  data = data_breeding_system,\n  model = model_breeding_system_0,\n  cat_var = \"breeding_system\",\n  x_lab = \"Breeding system\",\n  labels = c(\n    \"cooperative_breeder\" = \"Cooperative breeder\",\n    \"lekking\" = \"Lekking\",\n    \"monogamy\" = \"Monogamy\",\n    \"no_social_bond\" = \"No social bond\",\n    \"polyandry\" = \"Polyandry\"\n  )\n)\n\np_breeding_system\n\n\n\n\n\n\n\n\nFigure 8.10: Predicted mixed-paternity prevalence across breeding-system categories.\n\n\n\n\n\n\n\nCode\np_mono_poly &lt;- plot_social_moderator(\n  data_mono_poly,\n  model_mono_poly_0,\n  cat_var = \"mono_poly_model\",\n  x_lab = \"Breeding system BIRDBASE classification\",\n  labels = c(\n    \"monogamy\" = \"Monogamy\",\n    \"polygamy\" = \"Polygamy\",\n    \"mixed\" = \"Mixed\"\n  )\n)\np_mono_poly\n\n\n\n\n\n\n\n\nFigure 8.11: Predicted mixed-paternity prevalence across mono-/polygamy categories.\n\n\n\n\n\n\n\nCode\np_parental_care &lt;- plot_social_moderator(\n  data_parental_care,\n  model_parental_care_0,\n  cat_var = \"parental_care\",\n  x_lab = \"Parental care\",\n  labels = c(\n    \"biparental\" = \"Biparental\",\n    \"broodparasite\" = \"Brood parasite\",\n    \"cooperation\" = \"Cooperative care\",\n    \"nk_cooperation\" = \"No known coop.\",\n    \"pair\" = \"Pair\",\n    \"uniparental\" = \"Uniparental\"\n  )\n) +\n  theme(\n    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)\n  )\np_parental_care \n\n\n\n\n\n\n\n\nFigure 8.12: Predicted mixed-paternity prevalence across parental-care categories.\n\n\n\n\n\n\n\nCode\np_cooperative &lt;- plot_social_moderator(\n  data_cooperative,\n  model_cooperative,\n  cat_var = \"cooperative_breeding\",\n  x_lab = \"Cooperative breeding\",\n  labels = c(\n    \"no\" = \"Non-cooperative\",\n    \"yes\" = \"Cooperative\"\n  )\n)\n\np_cooperative\n\n\n\n\n\n\n\n\nFigure 8.13: Predicted mixed-paternity prevalence across cooperative-breeding categories.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Figures</span>"
+    ]
+  },
+  {
+    "objectID": "07_figures.html#forest-plot",
+    "href": "07_figures.html#forest-plot",
+    "title": "8  Figures",
+    "section": "8.9 Forest plot",
+    "text": "8.9 Forest plot\n\n\nCode\nknitr::include_graphics(\"Figures/Forest_plot8.png\")\n\n\n\n\n\n\n\n\nFigure 8.14: Summary forest plot of moderator effects on mixed-paternity prevalence.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Figures</span>"
+    ]
+  }
+]

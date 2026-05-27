@@ -1,0 +1,26 @@
+{
+  "index.qmd": {
+    "index.html": "5ffc0238"
+  },
+  "01_analysis_metadata.qmd": {
+    "01_analysis_metadata.html": "ddd400da"
+  },
+  "02_data_preparation.qmd": {
+    "02_data_preparation.html": "a99c1778"
+  },
+  "03_overall_model.qmd": {
+    "03_overall_model.html": "d1b6d7c5"
+  },
+  "04_methodological_moderators.qmd": {
+    "04_methodological_moderators.html": "feb6b56c"
+  },
+  "05_breeding_system_moderators.qmd": {
+    "05_breeding_system_moderators.html": "f0123832"
+  },
+  "06_biological_moderators.qmd": {
+    "06_biological_moderators.html": "fc5f47cf"
+  },
+  "07_figures.qmd": {
+    "07_figures.html": "3d3b3535"
+  }
+}

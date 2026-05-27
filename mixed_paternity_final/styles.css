@@ -1,0 +1,86 @@
+.hero-banner {
+  padding: 4rem 3rem;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #244b5a, #3f7c85);
+  color: white;
+  margin-bottom: 3rem;
+}
+
+.hero-banner h1 {
+  color: white;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.chapter-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chapter-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.08);
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.stat-box {
+  background: #f7fafb;
+  border-radius: 18px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.stat-box h1 {
+  font-size: 3rem;
+  color: #244b5a;
+  margin-bottom: 0.5rem;
+}
+
+
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.overview-figure img {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.chapter-card {
+  background: white;
+  border: 1px solid #e5ecef;
+  border-radius: 18px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+}
+.chapter-card {
+  background: white;
+  border: 1px solid #e5ecef;
+  border-radius: 18px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chapter-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.08);
+}

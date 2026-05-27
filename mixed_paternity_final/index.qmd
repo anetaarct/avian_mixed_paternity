@@ -1,0 +1,84 @@
+---
+title: "Overview"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+::: hero-banner
+A global comparative phylogenetic meta-analysis of mixed-paternity prevalence across avian species.
+
+**375 species · 619 population estimates · 46,249 broods**
+:::
+
+::::: hero-banner
+
+:::: overview-text
+This website presents the complete reproducible workflow for the flobal comparative meta-analysis of mixed-paternity prevalence across birds.
+
+::: {.callout-important title="Core idea"}
+Birds are central model systems for studying sexual selection and reproductive conflict, yet mixed-paternity prevalence is often comparatively low across species. This study aims to understand which ecological, social, and methodological factors explain variation in mixed paternity across birds.
+:::
+::::
+:::::
+
+**Website structure**
+
+:::::::::: card-grid
+::: chapter-card
+1\. Analysis metadata
+
+Description of analytical variables used in the statistical models.
+
+[Open chapter](01_analysis_metadata.html)
+:::
+
+::: chapter-card
+2\. Database preparation
+
+Screening workflow, data extraction, and taxonomic harmonisation.
+
+[Open chapter](02_database_preparation.html)
+:::
+
+::: chapter-card
+3\. Overall model
+
+Intercept-only models estimating overall mixed-paternity prevalence.
+
+[Open chapter](03_overall_modell.html)
+:::
+
+::: chapter-card
+4\. Methodological moderators
+
+Single-moderator models for methodological predictors.
+
+[Open chapter](04_methodological_moderators.html)
+:::
+
+::: chapter-card
+5\. Breeding-system moderators
+
+Single-moderator analyses for breeding-system classifications.
+
+[Open chapter](05_breeding_system_moderators.html)
+:::
+
+::: chapter-card
+6\. Biological moderators
+
+Single-moderator models for biological predictors.
+
+[Open chapter](06_biological_moderators.html)
+:::
+
+::: chapter-card
+7\. Figures
+
+Reproducible figures used in the manuscript and supplement.
+
+[Open chapter](07_figures.html)
+:::
+::::::::::

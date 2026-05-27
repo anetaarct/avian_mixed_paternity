@@ -1,0 +1,343 @@
+---
+format: 
+ html:
+    toc: true
+    toc-depth: 3
+---
+
+::: section-card
+## Data preparation
+
+This section documents the construction of the analytical dataset, including population identifiers, taxonomic matching, phylogenetic filtering, moderator preparation, and random-effect structure checks.
+:::
+
+## Packeges
+
+The R packages required for data preparation.
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(ape)
+library(brms)
+library(maps)
+library(knitr)
+
+options(mc.cores = parallel::detectCores())
+```
+
+## Import data
+
+### The input files used in the analysis: the mixed-paternity dataset and the dated Clements phylogenetic tree.
+
+```{r}
+#| label: load-data
+#| include: false
+
+data_file <- "mixed_pat_final.csv"
+tree_file <- "summary_dated_clements.nex"
+
+mixed_pat_raw <- readr::read_csv(data_file, show_col_types = FALSE)
+tree <- ape::read.nexus(tree_file)
+```
+
+This table summarises the main input files used in the analysis, including the size of the raw dataset and the number of tips and internal nodes in the phylogenetic tree.
+
+```{r}
+#| label: data-summary-table
+#| echo: false
+#| message: false
+#| warning: false
+
+data_summary <- tibble::tibble(
+  Item = c("Raw dataset", "Phylogenetic tree"),
+  Summary = c(
+    paste0(nrow(mixed_pat_raw), " rows and ", ncol(mixed_pat_raw), " columns"),
+    paste0(length(tree$tip.label), " tips and ", tree$Nnode, " internal nodes")
+  )
+)
+
+knitr::kable(data_summary)
+```
+
+## Prepare data
+
+### Population identifier
+
+Population identity was defined using study identity and rounded geographic coordinates, with latitude and longitude rounded to two decimal places prior to constructing the population identifier.
+
+```{r}
+
+mixed_pat <- mixed_pat_raw %>%
+  mutate(
+    Lat_round = round(Lat, 2),
+    Long_round = round(Long, 2),
+    population_id = paste(Study_ID, Lat_round, Long_round, sep = "_"),
+    population_id = as.factor(population_id)
+  )
+```
+
+### Study and species formatting
+
+The following step formats the main grouping variables used in the models and calculates the total number of broods by combining mixed- and non-mixed-brood counts.
+
+```{r}
+#| label: study-species-formatting
+
+mixed_pat <- mixed_pat %>%
+  mutate(
+    Study_ID = as.factor(Study_ID),
+    species_phylo_brms = as.factor(Clements_name),
+    species_nonphylo = as.factor(Clements_name),
+
+    n_mixed_broods = as.numeric(n_mixed_broods),
+    n_non_mixed_broods = as.numeric(n_non_mixed_broods),
+    n_total_broods = n_mixed_broods + n_non_mixed_broods
+  )
+```
+
+### Phylogeny preparation
+
+Species names were harmonised between the mixed-paternity dataset and the phylogenetic tree prior to pruning the tree and generating the phylogenetic covariance matrix used in the Bayesian models.
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| message: false
+#| warning: false
+
+species_data <- mixed_pat %>%
+  filter(!is.na(species_phylo_brms)) %>%
+  pull(species_phylo_brms) %>%
+  as.character() %>%
+  unique()
+
+species_tree <- tree$tip.label
+
+species_for_tree <- intersect(species_data, species_tree)
+
+tree_analysis <- ape::keep.tip(tree, species_for_tree)
+
+phylo_mat <- ape::vcv.phylo(tree_analysis, corr = TRUE)
+
+phylo_mat <- phylo_mat[
+  sort(rownames(phylo_mat)),
+  sort(colnames(phylo_mat))
+]
+
+mixed_pat <- mixed_pat %>%
+  filter(species_phylo_brms %in% rownames(phylo_mat)) %>%
+  mutate(
+    species_phylo_brms = droplevels(species_phylo_brms),
+    species_nonphylo = droplevels(species_nonphylo)
+  )
+```
+
+### Phylogeny - summary
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| message: false
+#| warning: false
+
+phylo_summary <- tibble::tibble(
+  Item = c(
+    "Species matched to phylogeny",
+    "Tips in source tree",
+    "Species retained after phylogenetic filtering"
+  ),
+  Value = c(
+    length(species_for_tree),
+    length(tree$tip.label),
+    n_distinct(mixed_pat$species_phylo_brms)
+  )
+)
+
+knitr::kable(phylo_summary)
+```
+
+### Moderator variable preparation
+
+```{r}
+
+min_n <- 5
+
+mixed_pat <- mixed_pat %>%
+  mutate(
+    marker_type_model = as.factor(marker_type_model),
+    nest_box_model = as.factor(nest_box_model),
+    nest_type_model = as.factor(nest_type_model),
+
+    breeding_system = as.factor(breeding_system),
+    mono_poly_model = as.factor(mono_poly_model),
+    parental_care = as.factor(parental_care),
+    cooperative_breeding = as.factor(cooperative_breeding),
+
+    migration = as.factor(migration),
+    coloniality = as.factor(coloniality),
+
+    CS_max = as.numeric(CS_max),
+    body_mass = as.numeric(body_mass),
+    study_duration = as.numeric(study_duration_num),
+
+    Lat_round = round(as.numeric(Lat), 2),
+    abs_lat = abs(Lat_round),
+
+    CS_max_sc = as.numeric(scale(CS_max)),
+    body_mass_sc = as.numeric(scale(body_mass)),
+    study_duration_sc = as.numeric(scale(study_duration)),
+    abs_lat_sc = as.numeric(scale(abs_lat))
+  )
+```
+
+## Preparation of the database
+
+### Database overall study
+
+```{r}
+#| label: data-overall-study
+
+data_overall_study <- mixed_pat %>%
+  filter(
+    !is.na(n_mixed_broods),
+    !is.na(n_non_mixed_broods),
+    !is.na(n_total_broods),
+    n_total_broods > 0,
+    !is.na(Study_ID),
+    !is.na(species_phylo_brms)
+  ) %>%
+  mutate(
+    Study_ID = droplevels(Study_ID),
+    species_nonphylo = droplevels(species_nonphylo),
+    species_phylo_brms = droplevels(species_phylo_brms),
+    population_id = droplevels(population_id)
+  )
+```
+
+### Database single moderators
+
+```{r}
+
+data_nest_box <- data_overall_study %>%
+  filter(!is.na(nest_box_model)) %>%
+  droplevels()
+
+
+data_migration <- data_overall_study %>%
+  filter(!is.na(migration)) %>%
+  droplevels()
+
+data_coloniality <- data_overall_study %>%
+  filter(!is.na(coloniality)) %>%
+  droplevels()
+
+
+data_cooperative <- data_overall_study %>%
+  filter(!is.na(cooperative_breeding)) %>%
+  droplevels()
+
+data_study_duration <- data_overall_study %>%
+  filter(!is.na(study_duration_sc)) %>%
+  droplevels()
+
+data_clutch_size <- data_overall_study %>%
+  filter(!is.na(CS_max_sc)) %>%
+  droplevels()
+
+data_body_mass <- data_overall_study %>%
+  filter(!is.na(body_mass), body_mass > 0) %>%
+  mutate(
+    body_mass = as.numeric(body_mass),
+    log_body_mass = log10(body_mass),
+    log_body_mass_sc = as.numeric(scale(log_body_mass))
+  ) %>%
+  filter(
+    is.finite(log_body_mass),
+    is.finite(log_body_mass_sc)
+  ) %>%
+  droplevels()
+
+data_abs_latitude <- data_overall_study %>%
+  filter(!is.na(abs_lat_sc)) %>%
+  droplevels()
+
+data_marker_type <- data_overall_study %>%
+  filter(!is.na(marker_type_model)) %>%
+  droplevels()
+
+
+data_nest_type <- data_overall_study %>%
+  filter(!is.na(nest_type_model)) %>%
+  droplevels()
+
+
+valid_breeding_levels <- data_overall_study %>%
+  count(breeding_system) %>%
+  filter(!is.na(breeding_system), n >= 5) %>%
+  pull(breeding_system)
+
+data_breeding_system <- data_overall_study %>%
+  filter(
+    !is.na(breeding_system),
+    breeding_system %in% valid_breeding_levels
+  ) %>%
+  droplevels()
+
+data_mono_poly <- data_overall_study %>%
+  filter(!is.na(mono_poly_model)) %>%
+  droplevels()
+
+data_parental_care <- data_overall_study %>%
+  filter(!is.na(parental_care)) %>%
+  droplevels()
+
+
+```
+
+## Relationship among candidate random-effects grouping factors
+
+Before fitting the models, we evaluated the degree of overlap and nesting among candidate random-effects grouping factors, including species identity, study identity, and the pragmatic population identifier.
+
+```{r}
+#| label: random-effect-structure
+#| echo: false
+#| message: false
+#| warning: false
+
+count_one_match <- function(data, group_var, match_var, comparison_label) {
+  data %>%
+    distinct({{ group_var }}, {{ match_var }}) %>%
+    count({{ group_var }}, name = "n_matches") %>%
+    summarise(
+      Comparison = comparison_label,
+      Groups_with_only_one_match = sum(n_matches == 1),
+      Total_groups = n(),
+      Percent_only_one_match = round(mean(n_matches == 1) * 100, 1),
+      .groups = "drop"
+    )
+}
+
+random_effect_structure <- bind_rows(
+  count_one_match(data_overall_study, species_nonphylo, population_id, "Populations per species"),
+  count_one_match(data_overall_study, population_id, species_nonphylo, "Species per population"),
+  count_one_match(data_overall_study, Study_ID, population_id, "Populations per reference"),
+  count_one_match(data_overall_study, population_id, Study_ID, "References per population"),
+  count_one_match(data_overall_study, species_nonphylo, Study_ID, "References per species"),
+  count_one_match(data_overall_study, Study_ID, species_nonphylo, "Species per reference")
+)
+
+knitr::kable(random_effect_structure)
+```
+
+## Reproducibility information
+
+```{r}
+#| echo: false
+#| collapse: true
+
+sessionInfo()
+```
