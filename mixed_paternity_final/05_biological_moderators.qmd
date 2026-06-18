@@ -1,0 +1,730 @@
+﻿---
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+::: section-card
+## Biological moderators
+
+This section presents single-moderator models for biological predictors of brood-level mixed paternity, combining breeding-system, parental-care, ecological, life-history, and geographic moderators. These models evaluate whether mixed-paternity prevalence varies with breeding-system classifications, parental care, cooperative breeding, nest type, migration status, coloniality, clutch size, body mass, and absolute latitude, while retaining the same multilevel phylogenetic beta-binomial structure used in the overall model.
+:::
+
+## Classification sources
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+classification_sources <- tibble::tribble(
+  ~Moderator, ~Classification_source, ~Notes,
+  "Breeding system", "Brouwer and Griffith (2019)", "Rare categories with fewer than five observations were excluded.",
+  "Mono-/polygamy", "BIRDBASE Sekercioglu et al. 2025", "A mixed category was created for records coded as both monogamous and polygamous.",
+  "Parental care", "Cockburn (2006); Griesser et al. (2017)", "Used to represent variation in parental-care organisation.",
+  "Cooperative breeding", "Co-BreeD Mocha et al. 2025", "Used to classify cooperative-breeding status.",
+  "Nest type", "BIRDBASE", "Simplified into broad nest-architecture categories.",
+  "Migration", "BIRDBASE", "Analysed as strong versus weak migrant categories.",
+  "Coloniality", "BIRDBASE", "Analysed as colonial versus non-colonial species.",
+  "Clutch size", "Species-level life-history data", "Maximum clutch size, scaled before model fitting.",
+  "Body mass", "Species-level life-history data", "Adult body mass, log10-transformed and scaled before model fitting.",
+  "Absolute latitude", "Population-level geographic data", "Absolute latitude, scaled before model fitting."
+)
+
+knitr::kable(classification_sources)
+```
+
+## Packages
+
+The R packages required for model fitting.
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(brms)
+library(posterior)
+library(bayesplot)
+library(loo)
+library(emmeans)
+library(ggplot2)
+
+options(mc.cores = parallel::detectCores())
+```
+
+## Load prepared objects
+
+```{r}
+#| include: false
+
+mixed_pat <- readRDS("data/mixed_pat_prepared.rds")
+data_overall_study <- readRDS("data/data_overall_study.rds")
+
+data_breeding_system <- readRDS("data/data_breeding_system.rds")
+data_mono_poly <- readRDS("data/data_mono_poly.rds")
+data_parental_care <- readRDS("data/data_parental_care.rds")
+data_cooperative <- readRDS("data/data_cooperative.rds")
+data_nest_type <- readRDS("data/data_nest_type.rds")
+data_migration <- readRDS("data/data_migration.rds")
+data_coloniality <- readRDS("data/data_coloniality.rds")
+data_clutch_size <- readRDS("data/data_clutch_size.rds")
+data_body_mass <- readRDS("data/data_body_mass_log.rds")
+data_abs_latitude <- readRDS("data/data_abs_latitude.rds")
+
+phylo_mat <- readRDS("data/phylo_mat.rds")
+tree_analysis <- readRDS("data/tree_analysis.rds")
+```
+
+## Dataset sizes
+
+The table below shows the number of observations available for each biological moderator after removing missing values.
+
+```{r}
+#| label: biological-dataset-sizes
+#| echo: false
+#| message: false
+#| warning: false
+
+biological_dataset_sizes <- tibble::tibble(
+  Moderator = c(
+    "Breeding system: Brouwer and Griffith",
+    "Breeding system: BIRDBASE",
+    "Parental care",
+    "Cooperative breeding",
+    "Nest type",
+    "Migration",
+    "Coloniality",
+    "Maximum clutch size",
+    "Body mass",
+    "Absolute latitude"
+  ),
+  Observations = c(
+    nrow(data_breeding_system),
+    nrow(data_mono_poly),
+    nrow(data_parental_care),
+    nrow(data_cooperative),
+    nrow(data_nest_type),
+    nrow(data_migration),
+    nrow(data_coloniality),
+    nrow(data_clutch_size),
+    nrow(data_body_mass),
+    nrow(data_abs_latitude)
+  )
+)
+
+knitr::kable(biological_dataset_sizes)
+```
+
+## Model
+
+This helper function documents the shared model structure used for all single-moderator models.
+
+```{r}
+#| label: single-moderator-helper
+#| eval: false
+#| echo: true
+
+fit_single_moderator <- function(formula, data) {
+  brm(
+    formula = formula,
+    data = data,
+    family = beta_binomial(link = "logit"),
+    data2 = list(phylo_mat = phylo_mat),
+    chains = 4,
+    cores = 4,
+    iter = 10000,
+    warmup = 5000,
+    control = list(
+      adapt_delta = 0.99,
+      max_treedepth = 15
+    ),
+    seed = 123
+  )
+}
+```
+## Breeding system: Brouwer and Griffith classification
+
+This model tested whether mixed-paternity prevalence differed among breeding-system categories based on the Brouwer and Griffith classification. Rare categories with fewer than five observations were excluded before model fitting.
+
+### Figure
+
+```{r}
+knitr::include_graphics("Figures/Figuresbreeding_system.png")
+```
+
+Light points show observed study-level prevalence, with point size proportional to the number of sampled broods; dark points and vertical intervals show model-predicted prevalence and 95% credible intervals for each category.
+
+### Model summary
+
+```{r}
+#| label: breeding-system-model-summary
+#| message: false
+#| warning: false
+#| code-fold: true
+
+model_breeding_system_0 <- readRDS("models/model_breeding_system_0.rds")
+summary(model_breeding_system_0)
+```
+
+### Prevalence table
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+breeding_system_prevalence <- posterior_summary(model_breeding_system_0) %>%
+  as.data.frame() %>%
+  rownames_to_column("parameter") %>%
+  filter(str_detect(parameter, "^b_breeding_system")) %>%
+  mutate(
+    breeding_system = str_remove(parameter, "b_breeding_system"),
+    estimate_percent = plogis(Estimate) * 100,
+    l95_percent = plogis(`Q2.5`) * 100,
+    u95_percent = plogis(`Q97.5`) * 100
+  ) %>%
+  select(
+    `Breeding-system category` = breeding_system,
+    `Estimated prevalence (%)` = estimate_percent,
+    `Lower 95% CrI` = l95_percent,
+    `Upper 95% CrI` = u95_percent
+  )
+
+knitr::kable(breeding_system_prevalence, digits = 2)
+```
+
+### Post-hoc pairwise contrasts
+
+Pairwise contrasts among breeding-system categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+pairwise_breeding_system_0 <- readRDS("models/pairwise_breeding_system_0.rds")
+
+breeding_posthoc <- as.data.frame(pairwise_breeding_system_0)
+
+knitr::kable(breeding_posthoc, digits = 3)
+```
+
+## BIRDBASE breeding-system classification
+
+This model tested whether mixed-paternity prevalence differed among monogamous, polygamous, and mixed mating-system categories derived from the BIRDBASE breeding-system classification. The mixed category was created during data preparation for cases in which both monogamous and polygamous classifications were simultaneously assigned in the original BIRDBASE coding.
+
+### Figure
+
+```{r}
+knitr::include_graphics("Figures/Figuresmono_poly.png")
+```
+
+Light points show observed study-level prevalence by BIRDBASE mating-system category, with point size proportional to the number of sampled broods; dark points and vertical intervals show model-predicted prevalence and 95% credible intervals.
+
+### Model summary
+
+```{r}
+#| message: false
+#| warning: false
+
+model_mono_poly_0 <- readRDS("models/model_mono_poly_0.rds")
+summary(model_mono_poly_0)
+```
+
+### Prevalence table
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+mono_poly_prevalence <- posterior_summary(model_mono_poly_0) %>%
+  as.data.frame() %>%
+  rownames_to_column("parameter") %>%
+  filter(str_detect(parameter, "^b_mono_poly_model")) %>%
+  mutate(
+    mono_poly_category = str_remove(parameter, "b_mono_poly_model"),
+    estimate_percent = plogis(Estimate) * 100,
+    l95_percent = plogis(`Q2.5`) * 100,
+    u95_percent = plogis(`Q97.5`) * 100
+  ) %>%
+  select(
+    `Mono-/polygamy category` = mono_poly_category,
+    `Estimated prevalence (%)` = estimate_percent,
+    `Lower 95% CrI` = l95_percent,
+    `Upper 95% CrI` = u95_percent
+  )
+
+knitr::kable(mono_poly_prevalence, digits = 2)
+```
+
+### Post-hoc pairwise contrasts
+
+Pairwise contrasts among breeding system categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+pairwise_mono_poly_0 <- readRDS("models/pairwise_mono_poly_0.rds")
+
+pairwise_mono_poly_table <- as.data.frame(pairwise_mono_poly_0)
+
+knitr::kable(pairwise_mono_poly_table, digits = 3)
+```
+
+## Parental care
+
+This model tested whether mixed-paternity prevalence differed among parental-care categories.
+
+### Figure
+
+```{r}
+knitr::include_graphics("Figures/Figuresparental_care.png")
+```
+
+Light points show observed study-level prevalence by parental-care category, with point size proportional to the number of sampled broods; dark points and vertical intervals show model-predicted prevalence and 95% credible intervals.
+
+### Model summary
+
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+
+model_parental_care_0 <- readRDS("models/model_parental_care_0.rds")
+summary(model_parental_care_0)
+```
+
+### Prevalence table
+
+Estimated mixed-paternity prevalence for each parental-care category was obtained from the zero-intercept model and back-transformed from the logit scale to percentages.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+parental_care_prevalence <- posterior_summary(model_parental_care_0) %>%
+  as.data.frame() %>%
+  rownames_to_column("parameter") %>%
+  filter(str_detect(parameter, "^b_parental_care")) %>%
+  mutate(
+    parental_care = str_remove(parameter, "b_parental_care"),
+    estimate_percent = plogis(Estimate) * 100,
+    l95_percent = plogis(`Q2.5`) * 100,
+    u95_percent = plogis(`Q97.5`) * 100
+  ) %>%
+  select(
+    `Parental-care category` = parental_care,
+    `Estimated prevalence (%)` = estimate_percent,
+    `Lower 95% CrI` = l95_percent,
+    `Upper 95% CrI` = u95_percent
+  )
+
+knitr::kable(parental_care_prevalence, digits = 2)
+```
+
+### Post-hoc pairwise contrasts
+
+Pairwise contrasts among parental-care categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.
+
+```{r}
+
+#| echo: false
+#| message: false
+#| warning: false
+
+pairwise_parental_care_0 <- readRDS("models/pairwise_parental_care_0.rds")
+
+parental_care_posthoc_table <- as.data.frame(pairwise_parental_care_0)
+
+knitr::kable(parental_care_posthoc_table, digits = 3)
+```
+
+## Cooperative breeding
+
+This model tested whether mixed-paternity prevalence differed between cooperative and non-cooperative breeding species. The intercept represents the reference category - non-cooperative breeders.
+
+### Figure
+
+```{r}
+knitr::include_graphics("Figures/Figurescooperative_breeding.png")
+```
+
+Light points show observed study-level prevalence by cooperative-breeding status, with point size proportional to the number of sampled broods; dark points and vertical intervals show model-predicted prevalence and 95% credible intervals.
+
+### Model-summary
+
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+
+model_cooperative <- readRDS("models/model_cooperative.rds")
+summary(model_cooperative)
+```
+
+###  Model estimates
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+s_cooperative <- summary(model_cooperative)
+
+cooperative_table <- tibble::tibble(
+  Parameter = rownames(s_cooperative$fixed),
+  Estimate = s_cooperative$fixed[, "Estimate"],
+  `Lower 95% CrI` = s_cooperative$fixed[, "l-95% CI"],
+  `Upper 95% CrI` = s_cooperative$fixed[, "u-95% CI"]
+)
+
+knitr::kable(cooperative_table, digits = 3)
+```
+
+## Nest type architecture
+
+This model tested whether mixed-paternity prevalence differed among nest-type categories. Nest type was derived from BIRDBASE and simplified into four broad nest-architecture categories: cavity, ground, open, and other enclosed nests. Cavity nests included tree cavities and crevices; ground nests included burrows, scrapes, mounds, and nests placed directly on or in the ground; open nests included cups, saucers, platforms, and half-cups; and other enclosed nests included domes, pendant and globular nests, as well as nests built in other birdsâ€™ nests.
+
+### Figure
+
+```{r}
+knitr::include_graphics("Figures/Figuresnest_type.png")
+```
+
+Light points show observed study-level prevalence by nest-type category, with point size proportional to the number of sampled broods; dark points and vertical intervals show model-predicted prevalence and 95% credible intervals.
+
+### Model summary
+
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+
+model_nest_type <- readRDS("models/model_nest_type_0.rds")
+summary(model_nest_type)
+```
+
+### Nest type model estimates
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+nest_type_prevalence <- posterior_summary(model_nest_type) %>%
+  as.data.frame() %>%
+  rownames_to_column("parameter") %>%
+  filter(str_detect(parameter, "^b_nest_type_model")) %>%
+  mutate(
+    nest_type = str_remove(parameter, "b_nest_type_model"),
+    estimate_percent = plogis(Estimate) * 100,
+    l95_percent = plogis(`Q2.5`) * 100,
+    u95_percent = plogis(`Q97.5`) * 100
+  ) %>%
+  select(
+    `Nest-type category` = nest_type,
+    `Estimated prevalence (%)` = estimate_percent,
+    `Lower 95% CrI` = l95_percent,
+    `Upper 95% CrI` = u95_percent
+  )
+
+knitr::kable(nest_type_prevalence, digits = 2)
+```
+
+### Post-hoc pairwise contrasts
+
+Pairwise contrasts among nest-type categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+pairwise_nest_type_0 <- readRDS("models/pairwise_nest_type_0.rds")
+
+nest_type_posthoc <- as.data.frame(pairwise_nest_type_0)
+
+knitr::kable(nest_type_posthoc, digits = 3)
+```
+
+## Migration
+
+This model tested whether mixed-paternity prevalence differed between strong and weak migrant categories. Migration status was analysed using two categories following BIRDBASE database: strong migrants and weak migrants. Here, strong migrants represent regular seasonal or long-distance migration, whereas weak migrants correspond to partial migration.
+
+### Figure
+
+```{r}
+knitr::include_graphics("Figures/Figuresmigration.png")
+```
+
+Light points show observed study-level prevalence by migration category, with point size proportional to the number of sampled broods; dark points and vertical intervals show model-predicted prevalence and 95% credible intervals.
+
+### Model summary
+
+```{r}
+#| label: migration-summary
+#| message: false
+#| warning: false
+#| code-fold: true
+
+model_migration <- readRDS("models/model_migration.rds")
+summary(model_migration)
+```
+
+### Model estimates
+
+The intercept represents the reference migration category, while the remaining coefficients describe differences relative to that reference category on the logit scale.
+
+```{r}
+#| label: migration-effect
+#| echo: false
+#| message: false
+#| warning: false
+
+s_migration <- summary(model_migration)
+
+migration_table <- tibble::tibble(
+  Parameter = rownames(s_migration$fixed),
+  Estimate = s_migration$fixed[, "Estimate"],
+  `Lower 95% CrI` = s_migration$fixed[, "l-95% CI"],
+  `Upper 95% CrI` = s_migration$fixed[, "u-95% CI"]
+)
+
+knitr::kable(migration_table, digits = 3)
+```
+
+## Coloniality
+
+This model tested whether mixed-paternity prevalence differed between colonial and non-colonial species following BIRDBASE database.
+
+### Figures
+
+```{r}
+knitr::include_graphics("Figures/Figurescoloniality.png")
+```
+
+Light points show observed study-level prevalence by coloniality status, with point size proportional to the number of sampled broods; dark points and vertical intervals show model-predicted prevalence and 95% credible intervals.
+
+### Model summary
+
+```{r}
+
+#| message: false
+#| warning: false
+#| code-fold: true
+
+model_coloniality <- readRDS("models/model_coloniality.rds")
+summary(model_coloniality)
+
+
+```
+
+### Model estimates
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+s_coloniality <- summary(model_coloniality)
+
+coloniality_table <- tibble::tibble(
+  Parameter = rownames(s_coloniality$fixed),
+  Estimate = s_coloniality$fixed[, "Estimate"],
+  `Lower 95% CrI` = s_coloniality$fixed[, "l-95% CI"],
+  `Upper 95% CrI` = s_coloniality$fixed[, "u-95% CI"]
+)
+
+knitr::kable(coloniality_table, digits = 3)
+```
+
+## Clutch size
+
+This model tested whether mixed-paternity prevalence was associated with maximum clutch size. Clutch size was scaled before model fitting, so the effect represents the change in log-odds of mixed paternity per one standard deviation increase in maximum clutch size.
+
+### Figure
+
+```{r}
+knitr::include_graphics("Figures/Figuresclutch_size.png")
+```
+
+Light points show observed study-level prevalence, with point size proportional to the number of sampled broods; the dark line and shaded ribbon show model-predicted prevalence and the 95% credible interval across maximum clutch size.
+
+### Model summary
+
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+
+model_clutch_size <- readRDS("models/model_clutch_size.rds")
+summary(model_clutch_size)
+```
+
+###  Model estimates
+
+```{r}
+
+#| echo: false
+#| message: false
+#| warning: false
+
+s_clutch_size <- summary(model_clutch_size)
+
+clutch_size_table <- tibble::tibble(
+  Parameter = rownames(s_clutch_size$fixed),
+  Estimate = s_clutch_size$fixed[, "Estimate"],
+  `Lower 95% CrI` = s_clutch_size$fixed[, "l-95% CI"],
+  `Upper 95% CrI` = s_clutch_size$fixed[, "u-95% CI"]
+)
+
+knitr::kable(clutch_size_table, digits = 3)
+```
+
+## Body mass
+
+This model tested whether mixed-paternity prevalence was associated with adult body mass. Body mass was scaled before model fitting, so the effect represents the change in log-odds of mixed paternity per one standard deviation increase in body mass. Body mass was strongly right-skewed across species; therefore, body mass values were log10-transformed and standardised prior to analysis. Model coefficients thus represent the change in log-odds of mixed paternity associated with a one standard deviation increase in log-transformed body mass.
+
+### Figure
+
+```{r}
+knitr::include_graphics("Figures/Figuresbody_mass.png")
+```
+
+Light points show observed study-level prevalence, with point size proportional to the number of sampled broods; the dark line and shaded ribbon show model-predicted prevalence and the 95% credible interval across log-transformed body mass.
+
+### Model summary
+
+```{r}
+#| message: false 
+#| #| warning: false 
+#| #| code-fold: true 
+
+model_body_mass_log <- readRDS("models/model_log_body_mass.rds")
+summary(model_body_mass_log)
+
+
+```
+
+### Model estimates
+
+```{r}
+
+#| echo: false
+#| message: false
+#| warning: false
+
+s_body_mass <- summary(model_body_mass_log)
+
+body_mass_table <- tibble::tibble(
+  Parameter = rownames(s_body_mass$fixed),
+  Estimate = s_body_mass$fixed[, "Estimate"],
+  `Lower 95% CrI` = s_body_mass$fixed[, "l-95% CI"],
+  `Upper 95% CrI` = s_body_mass$fixed[, "u-95% CI"]
+)
+
+knitr::kable(body_mass_table, digits = 3)
+
+```
+
+## Absolute latitude
+
+This model tested whether mixed-paternity prevalence varied with absolute latitude. Absolute latitude was used to examine broad geographic patterns independent of hemisphere, with larger values corresponding to populations located farther from the equator. Absolute latitude was scaled before model fitting, so the effect represents the change in log-odds of mixed paternity per one standard deviation increase in absolute latitude.
+
+### Figure
+
+```{r}
+knitr::include_graphics("Figures/Figuresabs_latitude.png")
+```
+
+Light points show observed study-level prevalence, with point size proportional to the number of sampled broods; the dark line and shaded ribbon show model-predicted prevalence and the 95% credible interval across absolute latitude.
+
+### Model  summary
+
+```{r}
+#| message: false 
+#| #| warning: false 
+#| #| code-fold: true 
+
+model_abs_latitude <- readRDS("models/model_abs_latitude.rds") 
+summary(model_abs_latitude) 
+
+```
+
+### Model estimates
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+s_abs_latitude <- summary(model_abs_latitude)
+
+
+abs_latitude_table <- tibble::tibble(
+  Parameter = rownames(s_abs_latitude$fixed),
+  Estimate = s_abs_latitude$fixed[, "Estimate"],
+  `Lower 95% CrI` = s_abs_latitude$fixed[, "l-95% CI"],
+  `Upper 95% CrI` = s_abs_latitude$fixed[, "u-95% CI"]
+)
+
+knitr::kable(abs_latitude_table, digits = 3)
+```
+## Heterogeneity summary
+
+The table below compares residual heterogeneity across all biological moderator models.
+
+```{r}
+#| label: biological-heterogeneity-table
+#| echo: false
+#| message: false
+#| warning: false
+
+extract_heterogeneity <- function(model, model_name) {
+  vc <- VarCorr(model)
+  s <- summary(model)
+
+  tibble::tibble(
+    Model = model_name,
+    `Study SD` = vc$Study_ID$sd[1, "Estimate"],
+    `Non-phylogenetic species SD` = vc$species_nonphylo$sd[1, "Estimate"],
+    `Phylogenetic species SD` = vc$species_phylo_brms$sd[1, "Estimate"],
+    Phi = s$spec_pars["phi", "Estimate"]
+  )
+}
+
+model_overall_study <- readRDS("models/model_overall_study.rds")
+
+heterogeneity_biological_table <- bind_rows(
+  extract_heterogeneity(model_overall_study, "Overall model"),
+  extract_heterogeneity(model_breeding_system_0, "Breeding system"),
+  extract_heterogeneity(model_mono_poly_0, "Mono-/polygamy"),
+  extract_heterogeneity(model_parental_care_0, "Parental care"),
+  extract_heterogeneity(model_cooperative, "Cooperative breeding"),
+  extract_heterogeneity(model_nest_type, "Nest type"),
+  extract_heterogeneity(model_migration, "Migration"),
+  extract_heterogeneity(model_coloniality, "Coloniality"),
+  extract_heterogeneity(model_clutch_size, "Clutch size"),
+  extract_heterogeneity(model_body_mass_log, "Body mass"),
+  extract_heterogeneity(model_abs_latitude, "Absolute latitude")
+)
+
+knitr::kable(heterogeneity_biological_table, digits = 3)
+```
+
+
+
+
+
+
+
+
+
+
+

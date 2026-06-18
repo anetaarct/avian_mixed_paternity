@@ -1,4 +1,4 @@
----
+﻿---
 format: 
  html:
     toc: true
@@ -101,13 +101,6 @@ model_overall_study <- brm(
 
 ```
 
-### Figure
-
-```{r}
-knitr::include_graphics(
-  "Figures/model_diagnostics/overall_prevalence_plot.png"
-)
-```
 
 ### Model sumamry
 
@@ -204,9 +197,9 @@ draws_phylo_signal <- model_overall_study %>%
 
 phylo_signal_summary <- draws_phylo_signal %>%
   median_hdci(phylo_signal, .width = 0.95) %>%
-  # Zmiana nazw kolumn i ułożenie ich do ładnej tabeli
+  # Zmiana nazw kolumn i uĹ‚oĹĽenie ich do Ĺ‚adnej tabeli
   transmute(
-    Statistic = "Phylogenetic signal (ν)",
+    Statistic = "Phylogenetic signal (Î˝)",
     Estimate = phylo_signal,
     `Lower 95% CrI` = .lower,
     `Upper 95% CrI` = .upper
@@ -251,6 +244,7 @@ knitr::kable(divergence_table)
 #| echo: false
 #| message: false
 #| warning: false
+#| results: hide
 #| fig-width: 10
 #| fig-height: 8
 
@@ -265,7 +259,7 @@ png(
 
 plot(model_overall_study)
 
-dev.off()
+invisible(dev.off())
 ```
 
 ```{r}
@@ -278,3 +272,4 @@ knitr::include_graphics(
   "Figures/model_diagnostics/model_overall_traceplots.png"
 )
 ```
+

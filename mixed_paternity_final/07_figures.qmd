@@ -1,9 +1,33 @@
----
+﻿---
 format:
   html:
     toc: true
     toc-depth: 3
 ---
+```{r}
+#| label: figures-render-options
+#| include: false
+
+knitr::opts_chunk$set(
+  eval = FALSE,
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+```{r}
+#| label: saved-figure-helper
+#| include: false
+#| eval: true
+
+show_saved_figure <- function(path) {
+  if (file.exists(path)) {
+    knitr::include_graphics(path)
+  } else {
+    cat("Saved figure is not available yet: ", path, sep = "")
+  }
+}
+```
 
 ::: section-card
 ## Figures
@@ -137,6 +161,14 @@ p_tree_base <- ggtree(
 
 p_tree_base
 ```
+```{r}
+#| label: fig-phylogeny-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Phylogenetic distribution of mixed-paternity prevalence across species."
+
+show_saved_figure("Figures/Figuresphylogeny.png")
+```
 
 ## Geographic distribution of study populations
 
@@ -164,7 +196,7 @@ p_map <- ggplot() +
   geom_point(
     data = map_data_points,
     aes(x = Long_round, y = Lat_round, size = n_studies),
-    alpha = 0.7,
+    alpha = 0.65,
     colour = "#1f3b73"
   ) +
   coord_quickmap() +
@@ -183,86 +215,19 @@ ggsave(
   width = 9,
   height = 5.5,
   units = "in",
-  device = cairo_pdf
+  device = "pdf"
 )
 p_map
 ```
-
-## Figure preparation
-
-Points represent observed brood-level mixed-paternity prevalence across study populations, scaled by sample size. Dark points and vertical intervals represent posterior predicted prevalence and 95% credible intervals from the fitted beta-binomial phylogenetic model.
-
 ```{r}
+#| label: fig-map-saved
 #| echo: false
-#| message: false
-#| warning: false
-#| fig-width: 10
-#| fig-height: 5
-#| fig-cap: "Observed mixed-paternity prevalence across study populations and the estimated overall prevalence from the intercept-only model."
+#| eval: true
+#| fig-cap: "Geographic distribution of study populations included in the mixed-paternity dataset."
 
-plot_data <- data_overall_study %>%
-  mutate(
-    observed_prev = 100 * n_mixed_broods / n_total_broods,
-    sample_size = n_total_broods
-  )
-
-overall_est <- plogis(
-  fixef(model_overall_study)["Intercept", "Estimate"]
-) * 100
-
-
-p_overall_prevalence <- ggplot(plot_data, aes(x = observed_prev, y = 0)) +
-  geom_jitter(
-    aes(size = sample_size),
-    height = 0.12,
-    alpha = 0.35,
-    color = "#5AA6C8"
-  ) +
-  geom_vline(
-    xintercept = overall_est,
-    linetype = "dashed",
-    linewidth = 0.9,
-    color = "#244b5a"
-  ) +
-  geom_point(
-    aes(x = overall_est, y = 0),
-    size = 6,
-    shape = 21,
-    fill = "#244b5a",
-    color = "white",
-    stroke = 1.5
-  ) +
-  annotate(
-    "text",
-    x = overall_est + 6,
-    y = 0.18,
-    label = paste0("Overall prevalence: ", round(overall_est, 1), "%"),
-    hjust = 0,
-    size = 5
-  ) +
-  scale_x_continuous(
-    limits = c(0, 100),
-    breaks = seq(0, 100, 25),
-    labels = function(x) paste0(x, "%")
-  ) +
-  scale_size_continuous(
-    name = "Sample size",
-    range = c(1.5, 7)
-  ) +
-  labs(
-    x = "Observed mixed-paternity prevalence",
-    y = NULL
-  ) +
-  theme_minimal(base_size = 15) +
-  theme(
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
-    panel.grid.major.y = element_blank(),
-    panel.grid.minor = element_blank(),
-    legend.position = "right")
-  
-p_overall_prevalence
+show_saved_figure("Figures/Figuresmap.png")
 ```
+
 
 ```{r}
 plot_categorical_moderator <- function(data, model, cat_var, x_lab, labels = NULL) {
@@ -413,6 +378,14 @@ p_marker_type <- plot_categorical_moderator(
 
 p_marker_type
 ```
+```{r}
+#| label: fig-marker-type-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence across marker types."
+
+show_saved_figure("Figures/Figuresmarker_type.png")
+```
 
 ```{r}
 #| label: fig-nest-box
@@ -429,6 +402,14 @@ p_nest_box <- plot_categorical_moderator(
 )
 p_nest_box
 ```
+```{r}
+#| label: fig-nest-box-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence in natural nests and nest-box studies."
+
+show_saved_figure("Figures/Figuresnest_box.png")
+```
 
 ```{r}
 #| label: fig-study-duration
@@ -442,6 +423,14 @@ p_study_duration <- plot_continuous_moderator(
 )
 p_study_duration
 ```
+```{r}
+#| label: fig-study-duration-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence across study duration."
+
+show_saved_figure("Figures/Figuresstudy_duration.png")
+```
 
 ## Figures for biological moderator
 
@@ -454,10 +443,18 @@ p_abs_lat <- plot_continuous_moderator(
   model = model_abs_latitude,
   raw_var = "abs_lat",
   sc_var = "abs_lat_sc",
-  x_lab = "Absolute latitude (°)"
+  x_lab = "Absolute latitude (Â°)"
 )
 
 p_abs_lat
+```
+```{r}
+#| label: fig-abs-latitude-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence across absolute latitude."
+
+show_saved_figure("Figures/Figuresabs_latitude.png")
 ```
 
 ```{r}
@@ -474,6 +471,14 @@ p_clutch_size <- plot_continuous_moderator(
 
 p_clutch_size
 ```
+```{r}
+#| label: fig-clutch-size-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence across clutch size."
+
+show_saved_figure("Figures/Figuresclutch_size.png")
+```
 
 ```{r}
 #| label: fig-body-mass
@@ -488,6 +493,14 @@ p_body_mass <- plot_continuous_moderator(
 )
 
 p_body_mass
+```
+```{r}
+#| label: fig-body-mass-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence across body mass."
+
+show_saved_figure("Figures/Figuresbody_mass.png")
 ```
 
 ```{r}
@@ -504,6 +517,14 @@ p_migration <- plot_categorical_moderator(
   )
 )
 p_migration
+```
+```{r}
+#| label: fig-migration-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence across migration categories."
+
+show_saved_figure("Figures/Figuresmigration.png")
 ```
 
 ```{r}
@@ -522,6 +543,14 @@ p_coloniality <- plot_categorical_moderator(
 )
 p_coloniality
 
+```
+```{r}
+#| label: fig-coloniality-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence across coloniality categories."
+
+show_saved_figure("Figures/Figurescoloniality.png")
 ```
 
 ```{r}
@@ -555,6 +584,14 @@ p_nest_type <- plot_categorical_moderator(
   )
 
 p_nest_type
+```
+```{r}
+#| label: fig-nest-type-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence across nest types."
+
+show_saved_figure("Figures/Figuresnest_type.png")
 ```
 
 ## Figures for breeding/parental system modeartaors figures
@@ -648,6 +685,14 @@ p_breeding_system <- plot_social_moderator(
 
 p_breeding_system
 ```
+```{r}
+#| label: fig-breeding-system-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence across breeding-system categories."
+
+show_saved_figure("Figures/Figuresbreeding_system.png")
+```
 
 ```{r}
 #| label: fig-mono-poly
@@ -665,6 +710,14 @@ p_mono_poly <- plot_social_moderator(
   )
 )
 p_mono_poly
+```
+```{r}
+#| label: fig-mono-poly-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence across mono-/polygamy categories."
+
+show_saved_figure("Figures/Figuresmono_poly.png")
 ```
 
 ```{r}
@@ -689,6 +742,14 @@ p_parental_care <- plot_social_moderator(
   )
 p_parental_care 
 ```
+```{r}
+#| label: fig-parental-care-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence across parental-care categories."
+
+show_saved_figure("Figures/Figuresparental_care.png")
+```
 
 ```{r}
 #| label: fig-cooperative-breeding
@@ -707,8 +768,18 @@ p_cooperative <- plot_social_moderator(
 
 p_cooperative
 ```
+```{r}
+#| label: fig-cooperative-breeding-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence across cooperative-breeding categories."
 
-## Forest plot
+show_saved_figure("Figures/Figurescooperative_breeding.png")
+```
+
+## Forest plot for single-moderator models
+
+This forest plot summarises estimates from the single-moderator models.
 
 ```{r}
 #| echo: false
@@ -763,7 +834,166 @@ p_forest_main <- ggplot2::ggplot(forest_dat, ggplot2::aes(x = estimate, y = mode
 
 ```{r}
 #| label: fig-forest-plot
-#| fig-cap: "Summary forest plot of moderator effects on mixed-paternity prevalence."
+#| echo: false
+#| eval: true
+#| fig-cap: "Summary forest plot of moderator effects on mixed-paternity prevalence from the single-moderator models."
 
 knitr::include_graphics("Figures/Forest_plot8.png")
 ```
+## Full-model figures
+
+### Full-model fixed-effect forest plot
+
+```{r}
+#| label: full-model-forest-plot-code
+#| message: false
+#| warning: false
+
+full_model_path <- first_existing(c(
+  "models/model_full_BG.rds",
+  "models/model_full_brouwer_griffith.rds"
+))
+
+model_full_brouwer_griffith <- readRDS(full_model_path)
+
+full_fixef <- as.data.frame(brms::fixef(model_full_brouwer_griffith)) %>%
+  tibble::rownames_to_column("term") %>%
+  dplyr::filter(term != "Intercept")
+
+lower_name <- intersect(c("Q2.5", "l-95% CI"), names(full_fixef))[1]
+upper_name <- intersect(c("Q97.5", "u-95% CI"), names(full_fixef))[1]
+
+full_effect_labels <- c(
+  marker_type_modelmicrosatellite = "Marker: microsatellite",
+  marker_type_modelmixed_other = "Marker: mixed / other",
+  marker_type_modelSNPs = "Marker: SNPs",
+  study_duration_sc = "Study duration",
+  breeding_systemmonogamy = "Breeding: monogamy",
+  breeding_systemno_social_bond = "Breeding: no social bond",
+  breeding_systempolyandry = "Breeding: polyandry",
+  nest_type_modelground = "Nest type: ground",
+  nest_type_modelopen = "Nest type: open",
+  nest_type_modelother_enclosed = "Nest type: other enclosed",
+  migrationWeak = "Migration: partial/resident",
+  coloniality1 = "Coloniality",
+  CS_max_sc = "Maximum clutch size",
+  log_body_mass_sc = "Body mass (log)",
+  abs_lat_sc = "Absolute latitude"
+)
+
+full_effect_groups <- c(
+  marker_type_modelmicrosatellite = "Methodological",
+  marker_type_modelmixed_other = "Methodological",
+  marker_type_modelSNPs = "Methodological",
+  study_duration_sc = "Methodological",
+  breeding_systemmonogamy = "Breeding system",
+  breeding_systemno_social_bond = "Breeding system",
+  breeding_systempolyandry = "Breeding system",
+  nest_type_modelground = "Ecology/life history",
+  nest_type_modelopen = "Ecology/life history",
+  nest_type_modelother_enclosed = "Ecology/life history",
+  migrationWeak = "Ecology/life history",
+  coloniality1 = "Ecology/life history",
+  CS_max_sc = "Ecology/life history",
+  log_body_mass_sc = "Ecology/life history",
+  abs_lat_sc = "Geography"
+)
+
+forest_data <- full_fixef %>%
+  dplyr::transmute(
+    term = term,
+    predictor = dplyr::recode(term, !!!full_effect_labels, .default = term),
+    group = dplyr::recode(term, !!!full_effect_groups, .default = "Other"),
+    estimate = Estimate,
+    lower = .data[[lower_name]],
+    upper = .data[[upper_name]]
+  ) %>%
+  dplyr::mutate(
+    group = factor(
+      group,
+      levels = c("Methodological", "Breeding system", "Ecology/life history", "Geography", "Other")
+    ),
+    predictor = factor(predictor, levels = rev(predictor))
+  )
+
+p_full_model_forest <- ggplot2::ggplot(forest_data, ggplot2::aes(x = estimate, y = predictor, colour = group)) +
+  ggplot2::geom_vline(xintercept = 0, linetype = "dashed", linewidth = 0.5, colour = "grey45") +
+  ggplot2::geom_errorbarh(ggplot2::aes(xmin = lower, xmax = upper), height = 0, linewidth = 1.1) +
+  ggplot2::geom_point(size = 2.8) +
+  ggplot2::scale_colour_manual(
+    values = c(
+      "Methodological" = "#2f6f73",
+      "Breeding system" = "#9D174D",
+      "Ecology/life history" = "#b35c35",
+      "Geography" = "#4b6f9e",
+      "Other" = "grey40"
+    )
+  ) +
+  ggplot2::labs(
+    x = "Posterior effect size (log-odds scale)",
+    y = NULL,
+    colour = NULL
+  ) +
+  ggplot2::theme_minimal(base_size = 12) +
+  ggplot2::theme(
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.grid.major.y = ggplot2::element_line(colour = "grey90"),
+    legend.position = "bottom"
+  )
+
+ggplot2::ggsave(
+  "Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png",
+  p_full_model_forest,
+  width = 9,
+  height = 6.8,
+  dpi = 300
+)
+
+ggplot2::ggsave(
+  "Figures/model_diagnostics/full_model_fixed_effects_forest_plot.pdf",
+  p_full_model_forest,
+  width = 9,
+  height = 6.8,
+  device = "pdf"
+)
+
+p_full_model_forest
+```
+
+```{r}
+#| label: full-model-forest-plot-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Fixed-effect estimates from the full model."
+
+show_saved_figure("Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png")
+```
+
+### Full-model key predicted effects
+
+```{r}
+#| label: full-model-key-effects-code
+#| message: false
+#| warning: false
+
+# This code generates the four-panel figure used to visualise the clearest
+# directional effects from the full model: marker type, migration,
+# maximum clutch size, and absolute latitude.
+
+source("make_full_model_key_effects_plot.R")
+```
+
+```{r}
+#| label: full-model-key-effects-saved
+#| echo: false
+#| eval: true
+#| fig-cap: "Predicted mixed-paternity prevalence for key fixed effects from the full model. Points or lines show posterior central predictions, and intervals or ribbons show 95% credible intervals."
+
+show_saved_figure("Figures/model_diagnostics/full_model_key_effects.png")
+```
+
+
+
+
+
+

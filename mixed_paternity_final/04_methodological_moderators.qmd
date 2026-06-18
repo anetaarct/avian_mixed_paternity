@@ -1,4 +1,4 @@
----
+﻿---
 format:
   html:
     toc: true
@@ -77,7 +77,7 @@ knitr::kable(methodological_dataset_sizes)
 
 ## Model 
 
-This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as `.rds` files.
+This helper function documents the shared model structure used for all single-moderator models.
 
 ```{r}
 
@@ -112,6 +112,8 @@ This model tested whether estimated mixed-paternity prevalence differed among mo
 ```{r}
 knitr::include_graphics("Figures/Figuresmarker_type.png")
 ```
+
+Light points show observed study-level prevalence, with point size proportional to the number of sampled broods; dark points and vertical intervals show model-predicted prevalence and 95% credible intervals for each category.
 
 ### Model summary
 
@@ -178,6 +180,8 @@ Study duration was included as a methodological moderator because longer studies
 knitr::include_graphics("Figures/Figuresstudy_duration.png")
 ```
 
+Light points show observed study-level prevalence, with point size proportional to the number of sampled broods; the dark line and shaded ribbon show model-predicted prevalence and the 95% credible interval across study duration.
+
 ### Model summary
 
 ```{r}
@@ -215,6 +219,8 @@ The intercept represents the reference category - natural nests .
 ```{r}
 knitr::include_graphics("Figures/Figuresnest_box.png")
 ```
+
+Light points show observed study-level prevalence, with point size proportional to the number of sampled broods; dark points and vertical intervals show model-predicted prevalence and 95% credible intervals for natural nests and nest-box populations.
 
 ### Model summary
 
@@ -280,3 +286,7 @@ heterogeneity_table <- dplyr::bind_rows(
 
 knitr::kable(heterogeneity_table, digits = 3)
 ```
+
+
+
+

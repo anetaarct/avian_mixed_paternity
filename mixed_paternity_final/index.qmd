@@ -1,4 +1,4 @@
----
+﻿---
 title: "Overview"
 format:
   html:
@@ -9,13 +9,13 @@ format:
 ::: hero-banner
 A global comparative phylogenetic meta-analysis of mixed-paternity prevalence across avian species.
 
-**375 species · 619 population estimates · 46,249 broods**
+**375 species | 619 population estimates | 46,249 broods**
 :::
 
 ::::: hero-banner
 
 :::: overview-text
-This website presents the complete reproducible workflow for the flobal comparative meta-analysis of mixed-paternity prevalence across birds.
+This website presents the complete reproducible workflow for the global comparative meta-analysis of mixed-paternity prevalence across birds.
 
 ::: {.callout-important title="Core idea"}
 Birds are central model systems for studying sexual selection and reproductive conflict, yet mixed-paternity prevalence is often comparatively low across species. This study aims to understand which ecological, social, and methodological factors explain variation in mixed paternity across birds.
@@ -27,9 +27,9 @@ Birds are central model systems for studying sexual selection and reproductive c
 
 :::::::::: card-grid
 ::: chapter-card
-1\. Analysis metadata
+1\. Analytical variables
 
-Description of analytical variables used in the statistical models.
+Description of the analytical variables used in the statistical models.
 
 [Open chapter](01_analysis_metadata.html)
 :::
@@ -39,7 +39,7 @@ Description of analytical variables used in the statistical models.
 
 Screening workflow, data extraction, and taxonomic harmonisation.
 
-[Open chapter](02_database_preparation.html)
+[Open chapter](02_data_preparation.html)
 :::
 
 ::: chapter-card
@@ -47,7 +47,7 @@ Screening workflow, data extraction, and taxonomic harmonisation.
 
 Intercept-only models estimating overall mixed-paternity prevalence.
 
-[Open chapter](03_overall_modell.html)
+[Open chapter](03_overall_model.html)
 :::
 
 ::: chapter-card
@@ -59,19 +59,19 @@ Single-moderator models for methodological predictors.
 :::
 
 ::: chapter-card
-5\. Breeding-system moderators
+5\. Biological moderators
 
-Single-moderator analyses for breeding-system classifications.
+Single-moderator models for breeding-system, ecological, life-history, and geographic predictors.
 
-[Open chapter](05_breeding_system_moderators.html)
+[Open chapter](05_biological_moderators.html)
 :::
 
 ::: chapter-card
-6\. Biological moderators
+6\. Full model
 
-Single-moderator models for biological predictors.
+Full phylogenetic model using the Brouwer and Griffith breeding-system classification, retaining nest type and excluding overlapping predictors.
 
-[Open chapter](06_biological_moderators.html)
+[Open chapter](06_full_model.html)
 :::
 
 ::: chapter-card
@@ -82,3 +82,18 @@ Reproducible figures used in the manuscript and supplement.
 [Open chapter](07_figures.html)
 :::
 ::::::::::
+## Reproducibility information
+
+<details>
+<summary>Show reproducibility information</summary>
+
+```{r}
+#| echo: false
+#| collapse: true
+
+sessionInfo()
+```
+
+</details>
+
+

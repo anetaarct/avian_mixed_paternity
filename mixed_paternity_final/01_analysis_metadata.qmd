@@ -1,8 +1,9 @@
----
+﻿---
+title: "Analytical variables"
 format: html
 ---
 
-## Analytical variables
+## Variable definitions
 
 The table below summarises the main variables used directly in the statistical analyses. Some categorical variables were collapsed into reduced analytical categories following the criteria described in the manuscript.
 
@@ -19,14 +20,14 @@ metadata_table <- tibble::tribble(
   "n_total_broods", "total number of broods",
 
   "Study_ID", "unique reference-level study identifier",
-  "Clements_name", "species name used for phylogenetic matching following McTavish et al. 2025 ",
+  "Clements_name", "species name used for phylogenetic matching following McTavish et al. 2025",
   "marker_type_model", "molecular marker classification",
   "nest_box_model", "nest-box versus natural nesting classification used in the analyses",
-  "nest_type_model", "reduced BIRDBASE nest-type classification used in the analyses  following Şekercioğlu et al. (2025)",
+  "nest_type_model", "reduced BIRDBASE nest-type classification used in the analyses following Sekercioglu et al. (2025)",
   "breeding_system", "breeding-system classification following Brouwer and Griffith (2019)",
   "mono_poly_model", "BIRDBASE breeding-system classification",
-  "parental_care", "parental-care classification following Cockburn (2006) and Griesser et al (2017) ",
-  "cooperative_breeding", "classification of cooperative breeding status Co‐BreeD dtabase following McTavish et al. 2025",
+  "parental_care", "parental-care classification following Cockburn (2006) and Griesser et al. (2017)",
+  "cooperative_breeding", "classification of cooperative breeding status from the Co-BreeD database following Ben Mocha et al. (2025)",
   "migration", "migratory status classification from BIRDBASE",
   "coloniality", "colonial breeding classification from BIRDBASE",
   "CS_max", "maximum clutch size from BIRDBASE",
@@ -37,19 +38,20 @@ metadata_table <- tibble::tribble(
 )
 
 knitr::kable(metadata_table)
-
 ```
 
 ## References
 
-Ben Mocha, Y., Woith, M., Scemama de Gialluly, S., Bruscagnin, L., Kestel, N., Markman, S., ... & Griesser, M. (2025). An integrative, peer‐reviewed and open‐source cooperative‐breeding database (Co‐BreeD). Journal of Animal Ecology, 94(12), 2597-2614.
+Ben Mocha, Y., Woith, M., Scemama de Gialluly, S., Bruscagnin, L., Kestel, N., Markman, S., ... & Griesser, M. (2025). An integrative, peer-reviewed and open-source cooperative-breeding database (Co-BreeD). Journal of Animal Ecology, 94(12), 2597-2614.
 
-Brouwer, L., & Griffith, S. C. (2019). Extra‐pair paternity in birds. Molecular ecology, 28(22), 4864-4882.
+Brouwer, L., & Griffith, S. C. (2019). Extra-pair paternity in birds. Molecular Ecology, 28(22), 4864-4882.
 
-Cockburn, A. (2006). Prevalence of different modes of parental care in birds. Proceedings of the Royal Society B: Biological Sciences, 273(1592), 1375-1383.
+Cockburn, A. (2006). Prevalence of different modes of parental care in birds. Proceedings of the Royal Society B: Biological Sciences, 273(1592), 1375-1383.
 
-Griesser, M., Drobniak, S. M., Nakagawa, S., & Botero, C. A. (2017). Family living sets the stage for cooperative breeding and ecological resilience in birds. PLoS biology, 15(6), e2000483.
+Griesser, M., Drobniak, S. M., Nakagawa, S., & Botero, C. A. (2017). Family living sets the stage for cooperative breeding and ecological resilience in birds. PLoS Biology, 15(6), e2000483.
 
-McTavish, E. J., Gerbracht, J. A., Holder, M. T., Iliff, M. J., Lepage, D., Rasmussen, P. C., ... & Miller, E. T. (2025). A complete and dynamic tree of birds. *Proceedings of the National Academy of Sciences*, *122*(18), e2409658122.
+McTavish, E. J., Gerbracht, J. A., Holder, M. T., Iliff, M. J., Lepage, D., Rasmussen, P. C., ... & Miller, E. T. (2025). A complete and dynamic tree of birds. *Proceedings of the National Academy of Sciences*, *122*(18), e2409658122.
 
-Şekercioğlu, Ç. H., Kittelberger, K. D., Mota, F. M., Buxton, A. N., Orton, N., DeNiro, A., ... & Neate-Clegg, M. H. (2025). BIRDBASE: A global dataset of avian biogeography, conservation, ecology and life history traits. Scientific Data, 12(1), 1558.
+Sekercioglu, C. H., Kittelberger, K. D., Mota, F. M., Buxton, A. N., Orton, N., DeNiro, A., ... & Neate-Clegg, M. H. (2025). BIRDBASE: A global dataset of avian biogeography, conservation, ecology and life history traits. Scientific Data, 12(1), 1558.
+
+
