@@ -185,7 +185,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06_full_model.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Full model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Multivariable moderator model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -220,7 +220,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#preparation-of-the-database" id="toc-preparation-of-the-database" class="nav-link" data-scroll-target="#preparation-of-the-database"><span class="header-section-number">3.4</span> Preparation of the database</a>
   <ul class="collapse">
   <li><a href="#database-overall-study" id="toc-database-overall-study" class="nav-link" data-scroll-target="#database-overall-study"><span class="header-section-number">3.4.1</span> Database overall study</a></li>
-  <li><a href="#database-single-moderators-and-full-models" id="toc-database-single-moderators-and-full-models" class="nav-link" data-scroll-target="#database-single-moderators-and-full-models"><span class="header-section-number">3.4.2</span> Database single moderators and full models</a></li>
+  <li><a href="#database-single-moderators-and-multivariable-moderator-model" id="toc-database-single-moderators-and-multivariable-moderator-model" class="nav-link" data-scroll-target="#database-single-moderators-and-multivariable-moderator-model"><span class="header-section-number">3.4.2</span> Database single moderators and multivariable moderator model</a></li>
   </ul></li>
   <li><a href="#overlap-between-nest-type-and-nest-box-use" id="toc-overlap-between-nest-type-and-nest-box-use" class="nav-link" data-scroll-target="#overlap-between-nest-type-and-nest-box-use"><span class="header-section-number">3.5</span> Overlap between nest type and nest-box use</a></li>
   <li><a href="#relationship-among-candidate-random-effects-grouping-factors" id="toc-relationship-among-candidate-random-effects-grouping-factors" class="nav-link" data-scroll-target="#relationship-among-candidate-random-effects-grouping-factors"><span class="header-section-number">3.6</span> Relationship among candidate random-effects grouping factors</a></li>
@@ -476,8 +476,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 </section>
-<section id="database-single-moderators-and-full-models" class="level3" data-number="3.4.2">
-<h3 data-number="3.4.2" class="anchored" data-anchor-id="database-single-moderators-and-full-models"><span class="header-section-number">3.4.2</span> Database single moderators and full models</h3>
+<section id="database-single-moderators-and-multivariable-moderator-model" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="database-single-moderators-and-multivariable-moderator-model"><span class="header-section-number">3.4.2</span> Database single moderators and multivariable moderator model</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -598,8 +598,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="overlap-between-nest-type-and-nest-box-use" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="overlap-between-nest-type-and-nest-box-use"><span class="header-section-number">3.5</span> Overlap between nest type and nest-box use</h2>
-<p>Nest-box use and nest type describe related aspects of the nesting environment. We therefore checked their overlap before deciding which nest-related predictor to retain in the full model.</p>
-<p>The overlap shows that nest-box use is concentrated in cavity-nesting records: among records with both variables available, 72.1% of nest-box records are classified as cavity nests, and 67.2% of cavity-nesting records are nest-box records. Because nest-box use and nest type therefore encode partly overlapping biological and sampling information, the full model retains nest type and excludes nest-box use.</p>
+<p>Nest-box use and nest type describe related aspects of the nesting environment. We therefore checked their overlap before deciding which nest-related predictor to retain in the multivariable moderator model.</p>
+<p>The overlap shows that nest-box use is concentrated in cavity-nesting records: among records with both variables available, 72.1% of nest-box records are classified as cavity nests, and 67.2% of cavity-nesting records are nest-box records. Because nest-box use and nest type therefore encode partly overlapping biological and sampling information, the multivariable moderator model retains nest type and excludes nest-box use.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -1502,7 +1502,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-234"><a href="#cb9-234" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb9-235"><a href="#cb9-235" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb9-236"><a href="#cb9-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-237"><a href="#cb9-237" aria-hidden="true" tabindex="-1"></a><span class="fu">### Database single moderators and full models</span></span>
+<span id="cb9-237"><a href="#cb9-237" aria-hidden="true" tabindex="-1"></a><span class="fu">### Database single moderators and multivariable moderator model</span></span>
 <span id="cb9-238"><a href="#cb9-238" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-241"><a href="#cb9-241" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb9-242"><a href="#cb9-242" aria-hidden="true" tabindex="-1"></a>data_nest_box <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
@@ -1620,9 +1620,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-354"><a href="#cb9-354" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-355"><a href="#cb9-355" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overlap between nest type and nest-box use</span></span>
 <span id="cb9-356"><a href="#cb9-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-357"><a href="#cb9-357" aria-hidden="true" tabindex="-1"></a>Nest-box use and nest type describe related aspects of the nesting environment. We therefore checked their overlap before deciding which nest-related predictor to retain in the full model.</span>
+<span id="cb9-357"><a href="#cb9-357" aria-hidden="true" tabindex="-1"></a>Nest-box use and nest type describe related aspects of the nesting environment. We therefore checked their overlap before deciding which nest-related predictor to retain in the multivariable moderator model.</span>
 <span id="cb9-358"><a href="#cb9-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-359"><a href="#cb9-359" aria-hidden="true" tabindex="-1"></a>The overlap shows that nest-box use is concentrated in cavity-nesting records: among records with both variables available, 72.1% of nest-box records are classified as cavity nests, and 67.2% of cavity-nesting records are nest-box records. Because nest-box use and nest type therefore encode partly overlapping biological and sampling information, the full model retains nest type and excludes nest-box use.</span>
+<span id="cb9-359"><a href="#cb9-359" aria-hidden="true" tabindex="-1"></a>The overlap shows that nest-box use is concentrated in cavity-nesting records: among records with both variables available, 72.1% of nest-box records are classified as cavity nests, and 67.2% of cavity-nesting records are nest-box records. Because nest-box use and nest type therefore encode partly overlapping biological and sampling information, the multivariable moderator model retains nest type and excludes nest-box use.</span>
 <span id="cb9-360"><a href="#cb9-360" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-363"><a href="#cb9-363" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb9-364"><a href="#cb9-364" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: nest-type-nest-box-overlap</span></span>

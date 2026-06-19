@@ -1,4 +1,4 @@
-﻿---
+---
 format: 
  html:
     toc: true
@@ -218,7 +218,7 @@ data_overall_study <- mixed_pat %>%
   )
 ```
 
-### Database single moderators and full models
+### Database single moderators and multivariable moderator model
 
 ```{r}
 
@@ -337,9 +337,9 @@ saveRDS(data_full_brouwer_griffith, "data/data_full_brouwer_griffith.rds")
 
 ## Overlap between nest type and nest-box use
 
-Nest-box use and nest type describe related aspects of the nesting environment. We therefore checked their overlap before deciding which nest-related predictor to retain in the full model.
+Nest-box use and nest type describe related aspects of the nesting environment. We therefore checked their overlap before deciding which nest-related predictor to retain in the multivariable moderator model.
 
-The overlap shows that nest-box use is concentrated in cavity-nesting records: among records with both variables available, 72.1% of nest-box records are classified as cavity nests, and 67.2% of cavity-nesting records are nest-box records. Because nest-box use and nest type therefore encode partly overlapping biological and sampling information, the full model retains nest type and excludes nest-box use.
+The overlap shows that nest-box use is concentrated in cavity-nesting records: among records with both variables available, 72.1% of nest-box records are classified as cavity nests, and 67.2% of cavity-nesting records are nest-box records. Because nest-box use and nest type therefore encode partly overlapping biological and sampling information, the multivariable moderator model retains nest type and excludes nest-box use.
 
 ```{r}
 #| label: nest-type-nest-box-overlap

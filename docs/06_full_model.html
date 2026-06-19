@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>7&nbsp; Full model – Explaining variation in mixed paternity across birds: a global comparative meta-analysis</title>
+<title>7&nbsp; Multivariable moderator model – Explaining variation in mixed paternity across birds: a global comparative meta-analysis</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -121,7 +121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06_full_model.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Full model</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06_full_model.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Multivariable moderator model</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -149,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining variation in mixed paternity across birds: a global comparative meta-analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -185,7 +185,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06_full_model.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Full model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Multivariable moderator model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -206,7 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#packages" id="toc-packages" class="nav-link active" data-scroll-target="#packages"><span class="header-section-number">7.1</span> Packages</a></li>
   <li><a href="#load-prepared-objects" id="toc-load-prepared-objects" class="nav-link" data-scroll-target="#load-prepared-objects"><span class="header-section-number">7.2</span> Load prepared objects</a></li>
-  <li><a href="#load-full-model-dataset" id="toc-load-full-model-dataset" class="nav-link" data-scroll-target="#load-full-model-dataset"><span class="header-section-number">7.3</span> Load full-model dataset</a></li>
+  <li><a href="#load-multivariable-moderator-model-dataset" id="toc-load-multivariable-moderator-model-dataset" class="nav-link" data-scroll-target="#load-multivariable-moderator-model-dataset"><span class="header-section-number">7.3</span> Load multivariable moderator model dataset</a></li>
   <li><a href="#dataset-size" id="toc-dataset-size" class="nav-link" data-scroll-target="#dataset-size"><span class="header-section-number">7.4</span> Dataset size</a></li>
   <li><a href="#reference-levels" id="toc-reference-levels" class="nav-link" data-scroll-target="#reference-levels"><span class="header-section-number">7.5</span> Reference levels</a></li>
   <li><a href="#model-specification" id="toc-model-specification" class="nav-link" data-scroll-target="#model-specification"><span class="header-section-number">7.6</span> Model specification</a></li>
@@ -223,7 +223,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Full model</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Multivariable moderator model</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
@@ -241,12 +241,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="section-card">
-<p>This section documents the full phylogenetic beta-binomial model for mixed-paternity prevalence. Alternative classification schemes capture overlapping but not identical aspects of avian reproductive organisation, so they were evaluated as separate representations rather than included simultaneously in the full model. These alternatives included the breeding-system classification of Brouwer and Griffith (2019), a BIRDBASE-derived mono-/polygamy classification, parental-care classifications based on Cockburn (2006) and Griesser et al.&nbsp;(2017), and cooperative-breeding status from the Co-BreeD database.</p>
-<p>The full model uses the Brouwer and Griffith breeding-system classification because it provides the most complete and interpretable representation for the multivariable model. Rare Brouwer and Griffith categories represented by fewer than five observations were excluded during data preparation. Nest type is retained, whereas nest-box use is excluded because it partially overlaps with nest type in biological and sampling information. Cooperative breeding is excluded because it strongly overlaps with the Brouwer and Griffith breeding-system classification.</p>
+<p>This section documents the multivariable moderator phylogenetic beta-binomial model for mixed-paternity prevalence. Alternative classification schemes capture overlapping but not identical aspects of avian reproductive organisation, so they were evaluated as separate representations rather than included simultaneously in the multivariable moderator model. These alternatives included the breeding-system classification of Brouwer and Griffith (2019), a BIRDBASE-derived mono-/polygamy classification, parental-care classifications based on Cockburn (2006) and Griesser et al.&nbsp;(2017), and cooperative-breeding status from the Co-BreeD database.</p>
+<p>The multivariable moderator model uses the Brouwer and Griffith breeding-system classification because it provides the most complete and interpretable representation for the multivariable model. Rare Brouwer and Griffith categories represented by fewer than five observations were excluded during data preparation. Nest type is retained, whereas nest-box use is excluded because it partially overlaps with nest type in biological and sampling information. Cooperative breeding is excluded because it strongly overlaps with the Brouwer and Griffith breeding-system classification.</p>
 </div>
 <section id="packages" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="packages"><span class="header-section-number">7.1</span> Packages</h2>
-<p>The R packages required for preparing the model dataset and fitting the full model.</p>
+<p>The R packages required for preparing the model dataset and fitting the multivariable moderator model.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -278,9 +278,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 </section>
-<section id="load-full-model-dataset" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="load-full-model-dataset"><span class="header-section-number">7.3</span> Load full-model dataset</h2>
-<p>The full-model dataset is prepared in the data-preparation chapter and saved as <code>data/data_full_brouwer_griffith.rds</code>.</p>
+<section id="load-multivariable-moderator-model-dataset" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="load-multivariable-moderator-model-dataset"><span class="header-section-number">7.3</span> Load multivariable moderator model dataset</h2>
+<p>The multivariable moderator model dataset is prepared in the data-preparation chapter and saved as <code>data/data_full_brouwer_griffith.rds</code>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -294,10 +294,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 70%">
-<col style="width: 13%">
-<col style="width: 8%">
-<col style="width: 8%">
+<col style="width: 75%">
+<col style="width: 11%">
+<col style="width: 6%">
+<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -309,7 +309,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Full model with Brouwer and Griffith breeding-system classification</td>
+<td style="text-align: left;">Multivariable moderator model with Brouwer and Griffith breeding-system classification</td>
 <td style="text-align: right;">533</td>
 <td style="text-align: right;">326</td>
 <td style="text-align: right;">481</td>
@@ -321,7 +321,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="reference-levels" class="level2" data-number="7.5">
 <h2 data-number="7.5" class="anchored" data-anchor-id="reference-levels"><span class="header-section-number">7.5</span> Reference levels</h2>
-<p>Categorical coefficients in the full model are interpreted relative to the reference levels shown below. Continuous predictors are interpreted per one standard-deviation increase after scaling.</p>
+<p>Categorical coefficients in the multivariable moderator model are interpreted relative to the reference levels shown below. Continuous predictors are interpreted per one standard-deviation increase after scaling.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -433,9 +433,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">Status =</span> <span class="st">"Full model not fitted yet"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">Status =</span> <span class="st">"Multivariable moderator model not fitted yet"</span>,</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">Expected_file =</span> <span class="st">"models/model_full_BG.rds"</span>,</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">Note =</span> <span class="st">"Run the full-model script to create the saved model object."</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">Note =</span> <span class="st">"Run the multivariable moderator model script to create the saved model object."</span></span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -509,13 +509,12 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </section>
 <section id="fixed-effect-forest-plot" class="level2" data-number="7.9">
 <h2 data-number="7.9" class="anchored" data-anchor-id="fixed-effect-forest-plot"><span class="header-section-number">7.9</span> Fixed-effect forest plot</h2>
-<p>The forest plot summarises the fixed-effect estimates from the full model. Categorical effects are contrasts relative to the reference levels listed above. Points show posterior central estimates and horizontal intervals show 95% credible intervals on the log-odds scale. The vertical line marks zero, so intervals mostly to the right indicate higher mixed-paternity prevalence relative to the reference level or per one standard-deviation increase in a continuous predictor, whereas intervals mostly to the left indicate lower prevalence.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png" class="img-fluid figure-img" width="1350"></p>
-<figcaption>Fixed-effect estimates from the full model.</figcaption>
+<figcaption>Posterior fixed-effect estimates from the multivariable moderator model; horizontal intervals show 95% credible intervals on the log-odds scale. Categorical coefficients are contrasts against the following reference groups: marker type = DNA fingerprinting, breeding system = cooperative breeder, nest type = cavity, migration = strong migrant, and coloniality = non-colonial. Continuous predictors are interpreted per one standard-deviation increase after scaling. Effects to the right of zero indicate higher mixed-paternity prevalence relative to the reference group or scaled mean, whereas effects to the left of zero indicate lower prevalence.</figcaption>
 </figure>
 </div>
 </div>
@@ -528,7 +527,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="Figures/model_diagnostics/full_model_key_effects.png" class="img-fluid figure-img" width="1500"></p>
-<figcaption>Key predicted effects from the full model. Points show posterior predicted prevalence for categorical moderators, lines show posterior predicted prevalence for continuous moderators, and intervals or ribbons show 95% credible intervals.</figcaption>
+<figcaption>Key predicted effects from the multivariable moderator model. Points show posterior predicted prevalence for categorical moderators, lines show posterior predicted prevalence for continuous moderators, and intervals or ribbons show 95% credible intervals.</figcaption>
 </figure>
 </div>
 </div>
@@ -1032,16 +1031,16 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>::: section-card</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Full model</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Multivariable moderator model</span></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>This section documents the full phylogenetic beta-binomial model for mixed-paternity prevalence. Alternative classification schemes capture overlapping but not identical aspects of avian reproductive organisation, so they were evaluated as separate representations rather than included simultaneously in the full model. These alternatives included the breeding-system classification of Brouwer and Griffith (2019), a BIRDBASE-derived mono-/polygamy classification, parental-care classifications based on Cockburn (2006) and Griesser et al. (2017), and cooperative-breeding status from the Co-BreeD database.</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>This section documents the multivariable moderator phylogenetic beta-binomial model for mixed-paternity prevalence. Alternative classification schemes capture overlapping but not identical aspects of avian reproductive organisation, so they were evaluated as separate representations rather than included simultaneously in the multivariable moderator model. These alternatives included the breeding-system classification of Brouwer and Griffith (2019), a BIRDBASE-derived mono-/polygamy classification, parental-care classifications based on Cockburn (2006) and Griesser et al. (2017), and cooperative-breeding status from the Co-BreeD database.</span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>The full model uses the Brouwer and Griffith breeding-system classification because it provides the most complete and interpretable representation for the multivariable model. Rare Brouwer and Griffith categories represented by fewer than five observations were excluded during data preparation. Nest type is retained, whereas nest-box use is excluded because it partially overlaps with nest type in biological and sampling information. Cooperative breeding is excluded because it strongly overlaps with the Brouwer and Griffith breeding-system classification.</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>The multivariable moderator model uses the Brouwer and Griffith breeding-system classification because it provides the most complete and interpretable representation for the multivariable model. Rare Brouwer and Griffith categories represented by fewer than five observations were excluded during data preparation. Nest type is retained, whereas nest-box use is excluded because it partially overlaps with nest type in biological and sampling information. Cooperative breeding is excluded because it strongly overlaps with the Brouwer and Griffith breeding-system classification.</span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Packages</span></span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>The R packages required for preparing the model dataset and fitting the full model.</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>The R packages required for preparing the model dataset and fitting the multivariable moderator model.</span>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
@@ -1077,9 +1076,9 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>phylo_mat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/phylo_mat.rds"</span>)</span>
 <span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load full-model dataset</span></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load multivariable moderator model dataset</span></span>
 <span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>The full-model dataset is prepared in the data-preparation chapter and saved as <span class="in">`data/data_full_brouwer_griffith.rds`</span>.</span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>The multivariable moderator model dataset is prepared in the data-preparation chapter and saved as <span class="in">`data/data_full_brouwer_griffith.rds`</span>.</span>
 <span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load-full-model-dataset</span></span>
@@ -1098,7 +1097,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
 <span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>full_model_dataset_size <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>  <span class="at">Dataset =</span> <span class="st">"Full model with Brouwer and Griffith breeding-system classification"</span>,</span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>  <span class="at">Dataset =</span> <span class="st">"Multivariable moderator model with Brouwer and Griffith breeding-system classification"</span>,</span>
 <span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>  <span class="at">Observations =</span> <span class="fu">nrow</span>(data_full_brouwer_griffith),</span>
 <span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a>  <span class="at">Species =</span> <span class="fu">n_distinct</span>(data_full_brouwer_griffith<span class="sc">$</span>species_nonphylo),</span>
 <span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>  <span class="at">Studies =</span> <span class="fu">n_distinct</span>(data_full_brouwer_griffith<span class="sc">$</span>Study_ID)</span>
@@ -1109,7 +1108,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reference levels</span></span>
 <span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a>Categorical coefficients in the full model are interpreted relative to the reference levels shown below. Continuous predictors are interpreted per one standard-deviation increase after scaling.</span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a>Categorical coefficients in the multivariable moderator model are interpreted relative to the reference levels shown below. Continuous predictors are interpreted per one standard-deviation increase after scaling.</span>
 <span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: full-model-reference-levels</span></span>
@@ -1202,9 +1201,9 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb8-192"><a href="#cb8-192" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
 <span id="cb8-193"><a href="#cb8-193" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
 <span id="cb8-194"><a href="#cb8-194" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb8-195"><a href="#cb8-195" aria-hidden="true" tabindex="-1"></a>      <span class="at">Status =</span> <span class="st">"Full model not fitted yet"</span>,</span>
+<span id="cb8-195"><a href="#cb8-195" aria-hidden="true" tabindex="-1"></a>      <span class="at">Status =</span> <span class="st">"Multivariable moderator model not fitted yet"</span>,</span>
 <span id="cb8-196"><a href="#cb8-196" aria-hidden="true" tabindex="-1"></a>      <span class="at">Expected_file =</span> <span class="st">"models/model_full_BG.rds"</span>,</span>
-<span id="cb8-197"><a href="#cb8-197" aria-hidden="true" tabindex="-1"></a>      <span class="at">Note =</span> <span class="st">"Run the full-model script to create the saved model object."</span></span>
+<span id="cb8-197"><a href="#cb8-197" aria-hidden="true" tabindex="-1"></a>      <span class="at">Note =</span> <span class="st">"Run the multivariable moderator model script to create the saved model object."</span></span>
 <span id="cb8-198"><a href="#cb8-198" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb8-199"><a href="#cb8-199" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb8-200"><a href="#cb8-200" aria-hidden="true" tabindex="-1"></a>}</span>
@@ -1212,103 +1211,102 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb8-202"><a href="#cb8-202" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-203"><a href="#cb8-203" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fixed-effect forest plot</span></span>
 <span id="cb8-204"><a href="#cb8-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-205"><a href="#cb8-205" aria-hidden="true" tabindex="-1"></a>The forest plot summarises the fixed-effect estimates from the full model. Categorical effects are contrasts relative to the reference levels listed above. Points show posterior central estimates and horizontal intervals show 95% credible intervals on the log-odds scale. The vertical line marks zero, so intervals mostly to the right indicate higher mixed-paternity prevalence relative to the reference level or per one standard-deviation increase in a continuous predictor, whereas intervals mostly to the left indicate lower prevalence.</span>
-<span id="cb8-206"><a href="#cb8-206" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-209"><a href="#cb8-209" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb8-210"><a href="#cb8-210" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: full-model-fixed-effects-forest</span></span>
-<span id="cb8-211"><a href="#cb8-211" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb8-212"><a href="#cb8-212" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb8-213"><a href="#cb8-213" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb8-214"><a href="#cb8-214" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
-<span id="cb8-215"><a href="#cb8-215" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6.8</span></span>
-<span id="cb8-216"><a href="#cb8-216" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Fixed-effect estimates from the full model."</span></span>
-<span id="cb8-217"><a href="#cb8-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-218"><a href="#cb8-218" aria-hidden="true" tabindex="-1"></a>forest_plot_file <span class="ot">&lt;-</span> <span class="st">"Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png"</span></span>
-<span id="cb8-219"><a href="#cb8-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-220"><a href="#cb8-220" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(forest_plot_file)) {</span>
-<span id="cb8-221"><a href="#cb8-221" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">include_graphics</span>(forest_plot_file)</span>
-<span id="cb8-222"><a href="#cb8-222" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb8-223"><a href="#cb8-223" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Full-model fixed-effect forest plot is not available yet. Run the full-model figure code to save it first."</span>)</span>
-<span id="cb8-224"><a href="#cb8-224" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-225"><a href="#cb8-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-205"><a href="#cb8-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-208"><a href="#cb8-208" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-209"><a href="#cb8-209" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: full-model-fixed-effects-forest</span></span>
+<span id="cb8-210"><a href="#cb8-210" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb8-211"><a href="#cb8-211" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb8-212"><a href="#cb8-212" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb8-213"><a href="#cb8-213" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
+<span id="cb8-214"><a href="#cb8-214" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6.8</span></span>
+<span id="cb8-215"><a href="#cb8-215" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Posterior fixed-effect estimates from the multivariable moderator model; horizontal intervals show 95% credible intervals on the log-odds scale. Categorical coefficients are contrasts against the following reference groups: marker type = DNA fingerprinting, breeding system = cooperative breeder, nest type = cavity, migration = strong migrant, and coloniality = non-colonial. Continuous predictors are interpreted per one standard-deviation increase after scaling. Effects to the right of zero indicate higher mixed-paternity prevalence relative to the reference group or scaled mean, whereas effects to the left of zero indicate lower prevalence."</span></span>
+<span id="cb8-216"><a href="#cb8-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-217"><a href="#cb8-217" aria-hidden="true" tabindex="-1"></a>forest_plot_file <span class="ot">&lt;-</span> <span class="st">"Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png"</span></span>
+<span id="cb8-218"><a href="#cb8-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-219"><a href="#cb8-219" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(forest_plot_file)) {</span>
+<span id="cb8-220"><a href="#cb8-220" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">include_graphics</span>(forest_plot_file)</span>
+<span id="cb8-221"><a href="#cb8-221" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb8-222"><a href="#cb8-222" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Multivariable moderator model fixed-effect forest plot is not available yet. Run the figure code to save it first."</span>)</span>
+<span id="cb8-223"><a href="#cb8-223" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-224"><a href="#cb8-224" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-225"><a href="#cb8-225" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-226"><a href="#cb8-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-227"><a href="#cb8-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-228"><a href="#cb8-228" aria-hidden="true" tabindex="-1"></a><span class="fu">## Key predicted effects</span></span>
+<span id="cb8-227"><a href="#cb8-227" aria-hidden="true" tabindex="-1"></a><span class="fu">## Key predicted effects</span></span>
+<span id="cb8-228"><a href="#cb8-228" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-229"><a href="#cb8-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-230"><a href="#cb8-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-233"><a href="#cb8-233" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb8-234"><a href="#cb8-234" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: full-model-key-effects</span></span>
-<span id="cb8-235"><a href="#cb8-235" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb8-236"><a href="#cb8-236" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb8-237"><a href="#cb8-237" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb8-238"><a href="#cb8-238" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
-<span id="cb8-239"><a href="#cb8-239" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 7.2</span></span>
-<span id="cb8-240"><a href="#cb8-240" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Key predicted effects from the full model. Points show posterior predicted prevalence for categorical moderators, lines show posterior predicted prevalence for continuous moderators, and intervals or ribbons show 95% credible intervals."</span></span>
-<span id="cb8-241"><a href="#cb8-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-242"><a href="#cb8-242" aria-hidden="true" tabindex="-1"></a>key_effects_file <span class="ot">&lt;-</span> <span class="st">"Figures/model_diagnostics/full_model_key_effects.png"</span></span>
-<span id="cb8-243"><a href="#cb8-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-244"><a href="#cb8-244" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(key_effects_file)) {</span>
-<span id="cb8-245"><a href="#cb8-245" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">include_graphics</span>(key_effects_file)</span>
-<span id="cb8-246"><a href="#cb8-246" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb8-247"><a href="#cb8-247" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Full-model key-effects figure is not available yet. Run the full-model key-effects plotting script to save it first."</span>)</span>
-<span id="cb8-248"><a href="#cb8-248" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-249"><a href="#cb8-249" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-232"><a href="#cb8-232" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-233"><a href="#cb8-233" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: full-model-key-effects</span></span>
+<span id="cb8-234"><a href="#cb8-234" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb8-235"><a href="#cb8-235" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb8-236"><a href="#cb8-236" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb8-237"><a href="#cb8-237" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
+<span id="cb8-238"><a href="#cb8-238" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 7.2</span></span>
+<span id="cb8-239"><a href="#cb8-239" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Key predicted effects from the multivariable moderator model. Points show posterior predicted prevalence for categorical moderators, lines show posterior predicted prevalence for continuous moderators, and intervals or ribbons show 95% credible intervals."</span></span>
+<span id="cb8-240"><a href="#cb8-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-241"><a href="#cb8-241" aria-hidden="true" tabindex="-1"></a>key_effects_file <span class="ot">&lt;-</span> <span class="st">"Figures/model_diagnostics/full_model_key_effects.png"</span></span>
+<span id="cb8-242"><a href="#cb8-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-243"><a href="#cb8-243" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(key_effects_file)) {</span>
+<span id="cb8-244"><a href="#cb8-244" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">include_graphics</span>(key_effects_file)</span>
+<span id="cb8-245"><a href="#cb8-245" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb8-246"><a href="#cb8-246" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Multivariable moderator model key-effects figure is not available yet. Run the key-effects plotting script to save it first."</span>)</span>
+<span id="cb8-247"><a href="#cb8-247" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-248"><a href="#cb8-248" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-249"><a href="#cb8-249" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-250"><a href="#cb8-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-251"><a href="#cb8-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-252"><a href="#cb8-252" aria-hidden="true" tabindex="-1"></a><span class="fu">## Model diagnostics</span></span>
-<span id="cb8-253"><a href="#cb8-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-256"><a href="#cb8-256" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb8-257"><a href="#cb8-257" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: full-model-diagnostics</span></span>
-<span id="cb8-258"><a href="#cb8-258" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb8-259"><a href="#cb8-259" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb8-260"><a href="#cb8-260" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb8-261"><a href="#cb8-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-262"><a href="#cb8-262" aria-hidden="true" tabindex="-1"></a>diagnostics_file <span class="ot">&lt;-</span> <span class="fu">first_existing</span>(<span class="fu">c</span>(</span>
-<span id="cb8-263"><a href="#cb8-263" aria-hidden="true" tabindex="-1"></a>  <span class="st">"models/diagnostics_model_full_BG.csv"</span>,</span>
-<span id="cb8-264"><a href="#cb8-264" aria-hidden="true" tabindex="-1"></a>  <span class="st">"models/diagnostics_model_full_brouwer_griffith.csv"</span></span>
-<span id="cb8-265"><a href="#cb8-265" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb8-266"><a href="#cb8-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-267"><a href="#cb8-267" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(diagnostics_file)) {</span>
-<span id="cb8-268"><a href="#cb8-268" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">read_csv</span>(diagnostics_file, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-269"><a href="#cb8-269" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span> <span class="fu">round</span>(.x, <span class="dv">3</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb8-270"><a href="#cb8-270" aria-hidden="true" tabindex="-1"></a>    knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
-<span id="cb8-271"><a href="#cb8-271" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(full_model_path)) {</span>
-<span id="cb8-272"><a href="#cb8-272" aria-hidden="true" tabindex="-1"></a>  draw_diagnostics <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">summarise_draws</span>(</span>
-<span id="cb8-273"><a href="#cb8-273" aria-hidden="true" tabindex="-1"></a>    posterior<span class="sc">::</span><span class="fu">as_draws_df</span>(model_full_brouwer_griffith),</span>
-<span id="cb8-274"><a href="#cb8-274" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rhat"</span>,</span>
-<span id="cb8-275"><a href="#cb8-275" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ess_bulk"</span>,</span>
-<span id="cb8-276"><a href="#cb8-276" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ess_tail"</span></span>
-<span id="cb8-277"><a href="#cb8-277" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-278"><a href="#cb8-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-279"><a href="#cb8-279" aria-hidden="true" tabindex="-1"></a>  sampler_diagnostics <span class="ot">&lt;-</span> brms<span class="sc">::</span><span class="fu">nuts_params</span>(model_full_brouwer_griffith)</span>
-<span id="cb8-280"><a href="#cb8-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-281"><a href="#cb8-281" aria-hidden="true" tabindex="-1"></a>  diagnostic_table <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb8-282"><a href="#cb8-282" aria-hidden="true" tabindex="-1"></a>    <span class="at">model =</span> <span class="fu">basename</span>(full_model_path),</span>
-<span id="cb8-283"><a href="#cb8-283" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_rhat =</span> <span class="fu">max</span>(draw_diagnostics<span class="sc">$</span>rhat, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-284"><a href="#cb8-284" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_bulk_ess =</span> <span class="fu">min</span>(draw_diagnostics<span class="sc">$</span>ess_bulk, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-285"><a href="#cb8-285" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_tail_ess =</span> <span class="fu">min</span>(draw_diagnostics<span class="sc">$</span>ess_tail, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-286"><a href="#cb8-286" aria-hidden="true" tabindex="-1"></a>    <span class="at">divergent_transitions =</span> sampler_diagnostics <span class="sc">%&gt;%</span></span>
-<span id="cb8-287"><a href="#cb8-287" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Parameter <span class="sc">==</span> <span class="st">"divergent__"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-288"><a href="#cb8-288" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(Value <span class="sc">==</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-289"><a href="#cb8-289" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pull</span>(n),</span>
-<span id="cb8-290"><a href="#cb8-290" aria-hidden="true" tabindex="-1"></a>    <span class="at">treedepth_hits =</span> sampler_diagnostics <span class="sc">%&gt;%</span></span>
-<span id="cb8-291"><a href="#cb8-291" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Parameter <span class="sc">==</span> <span class="st">"treedepth__"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-292"><a href="#cb8-292" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(Value <span class="sc">&gt;=</span> <span class="dv">15</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-293"><a href="#cb8-293" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pull</span>(n)</span>
-<span id="cb8-294"><a href="#cb8-294" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-295"><a href="#cb8-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-296"><a href="#cb8-296" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(diagnostic_table, <span class="at">digits =</span> <span class="dv">3</span>)</span>
-<span id="cb8-297"><a href="#cb8-297" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb8-298"><a href="#cb8-298" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Full-model diagnostics are not available yet."</span>)</span>
-<span id="cb8-299"><a href="#cb8-299" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-300"><a href="#cb8-300" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-251"><a href="#cb8-251" aria-hidden="true" tabindex="-1"></a><span class="fu">## Model diagnostics</span></span>
+<span id="cb8-252"><a href="#cb8-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-255"><a href="#cb8-255" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-256"><a href="#cb8-256" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: full-model-diagnostics</span></span>
+<span id="cb8-257"><a href="#cb8-257" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb8-258"><a href="#cb8-258" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb8-259"><a href="#cb8-259" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb8-260"><a href="#cb8-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-261"><a href="#cb8-261" aria-hidden="true" tabindex="-1"></a>diagnostics_file <span class="ot">&lt;-</span> <span class="fu">first_existing</span>(<span class="fu">c</span>(</span>
+<span id="cb8-262"><a href="#cb8-262" aria-hidden="true" tabindex="-1"></a>  <span class="st">"models/diagnostics_model_full_BG.csv"</span>,</span>
+<span id="cb8-263"><a href="#cb8-263" aria-hidden="true" tabindex="-1"></a>  <span class="st">"models/diagnostics_model_full_brouwer_griffith.csv"</span></span>
+<span id="cb8-264"><a href="#cb8-264" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb8-265"><a href="#cb8-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-266"><a href="#cb8-266" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(diagnostics_file)) {</span>
+<span id="cb8-267"><a href="#cb8-267" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">read_csv</span>(diagnostics_file, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-268"><a href="#cb8-268" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span> <span class="fu">round</span>(.x, <span class="dv">3</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb8-269"><a href="#cb8-269" aria-hidden="true" tabindex="-1"></a>    knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
+<span id="cb8-270"><a href="#cb8-270" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(full_model_path)) {</span>
+<span id="cb8-271"><a href="#cb8-271" aria-hidden="true" tabindex="-1"></a>  draw_diagnostics <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">summarise_draws</span>(</span>
+<span id="cb8-272"><a href="#cb8-272" aria-hidden="true" tabindex="-1"></a>    posterior<span class="sc">::</span><span class="fu">as_draws_df</span>(model_full_brouwer_griffith),</span>
+<span id="cb8-273"><a href="#cb8-273" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rhat"</span>,</span>
+<span id="cb8-274"><a href="#cb8-274" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ess_bulk"</span>,</span>
+<span id="cb8-275"><a href="#cb8-275" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ess_tail"</span></span>
+<span id="cb8-276"><a href="#cb8-276" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-277"><a href="#cb8-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-278"><a href="#cb8-278" aria-hidden="true" tabindex="-1"></a>  sampler_diagnostics <span class="ot">&lt;-</span> brms<span class="sc">::</span><span class="fu">nuts_params</span>(model_full_brouwer_griffith)</span>
+<span id="cb8-279"><a href="#cb8-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-280"><a href="#cb8-280" aria-hidden="true" tabindex="-1"></a>  diagnostic_table <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb8-281"><a href="#cb8-281" aria-hidden="true" tabindex="-1"></a>    <span class="at">model =</span> <span class="fu">basename</span>(full_model_path),</span>
+<span id="cb8-282"><a href="#cb8-282" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_rhat =</span> <span class="fu">max</span>(draw_diagnostics<span class="sc">$</span>rhat, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-283"><a href="#cb8-283" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_bulk_ess =</span> <span class="fu">min</span>(draw_diagnostics<span class="sc">$</span>ess_bulk, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-284"><a href="#cb8-284" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_tail_ess =</span> <span class="fu">min</span>(draw_diagnostics<span class="sc">$</span>ess_tail, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-285"><a href="#cb8-285" aria-hidden="true" tabindex="-1"></a>    <span class="at">divergent_transitions =</span> sampler_diagnostics <span class="sc">%&gt;%</span></span>
+<span id="cb8-286"><a href="#cb8-286" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Parameter <span class="sc">==</span> <span class="st">"divergent__"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-287"><a href="#cb8-287" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(Value <span class="sc">==</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-288"><a href="#cb8-288" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pull</span>(n),</span>
+<span id="cb8-289"><a href="#cb8-289" aria-hidden="true" tabindex="-1"></a>    <span class="at">treedepth_hits =</span> sampler_diagnostics <span class="sc">%&gt;%</span></span>
+<span id="cb8-290"><a href="#cb8-290" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Parameter <span class="sc">==</span> <span class="st">"treedepth__"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-291"><a href="#cb8-291" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(Value <span class="sc">&gt;=</span> <span class="dv">15</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-292"><a href="#cb8-292" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pull</span>(n)</span>
+<span id="cb8-293"><a href="#cb8-293" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-294"><a href="#cb8-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-295"><a href="#cb8-295" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(diagnostic_table, <span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb8-296"><a href="#cb8-296" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb8-297"><a href="#cb8-297" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Multivariable moderator model diagnostics are not available yet."</span>)</span>
+<span id="cb8-298"><a href="#cb8-298" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-299"><a href="#cb8-299" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-300"><a href="#cb8-300" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-301"><a href="#cb8-301" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-302"><a href="#cb8-302" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-303"><a href="#cb8-303" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-304"><a href="#cb8-304" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-305"><a href="#cb8-305" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-306"><a href="#cb8-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-307"><a href="#cb8-307" aria-hidden="true" tabindex="-1"></a></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

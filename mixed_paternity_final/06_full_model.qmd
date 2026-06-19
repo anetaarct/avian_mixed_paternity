@@ -1,4 +1,4 @@
-﻿---
+---
 format:
   html:
     toc: true
@@ -6,16 +6,16 @@ format:
 ---
 
 ::: section-card
-## Full model
+## Multivariable moderator model
 
-This section documents the full phylogenetic beta-binomial model for mixed-paternity prevalence. Alternative classification schemes capture overlapping but not identical aspects of avian reproductive organisation, so they were evaluated as separate representations rather than included simultaneously in the full model. These alternatives included the breeding-system classification of Brouwer and Griffith (2019), a BIRDBASE-derived mono-/polygamy classification, parental-care classifications based on Cockburn (2006) and Griesser et al. (2017), and cooperative-breeding status from the Co-BreeD database.
+This section documents the multivariable moderator phylogenetic beta-binomial model for mixed-paternity prevalence. Alternative classification schemes capture overlapping but not identical aspects of avian reproductive organisation, so they were evaluated as separate representations rather than included simultaneously in the multivariable moderator model. These alternatives included the breeding-system classification of Brouwer and Griffith (2019), a BIRDBASE-derived mono-/polygamy classification, parental-care classifications based on Cockburn (2006) and Griesser et al. (2017), and cooperative-breeding status from the Co-BreeD database.
 
-The full model uses the Brouwer and Griffith breeding-system classification because it provides the most complete and interpretable representation for the multivariable model. Rare Brouwer and Griffith categories represented by fewer than five observations were excluded during data preparation. Nest type is retained, whereas nest-box use is excluded because it partially overlaps with nest type in biological and sampling information. Cooperative breeding is excluded because it strongly overlaps with the Brouwer and Griffith breeding-system classification.
+The multivariable moderator model uses the Brouwer and Griffith breeding-system classification because it provides the most complete and interpretable representation for the multivariable model. Rare Brouwer and Griffith categories represented by fewer than five observations were excluded during data preparation. Nest type is retained, whereas nest-box use is excluded because it partially overlaps with nest type in biological and sampling information. Cooperative breeding is excluded because it strongly overlaps with the Brouwer and Griffith breeding-system classification.
 :::
 
 ## Packages
 
-The R packages required for preparing the model dataset and fitting the full model.
+The R packages required for preparing the model dataset and fitting the multivariable moderator model.
 
 ```{r}
 #| label: setup
@@ -51,9 +51,9 @@ data_overall_study <- readRDS("data/data_overall_study.rds")
 phylo_mat <- readRDS("data/phylo_mat.rds")
 ```
 
-## Load full-model dataset
+## Load multivariable moderator model dataset
 
-The full-model dataset is prepared in the data-preparation chapter and saved as `data/data_full_brouwer_griffith.rds`.
+The multivariable moderator model dataset is prepared in the data-preparation chapter and saved as `data/data_full_brouwer_griffith.rds`.
 
 ```{r}
 #| label: load-full-model-dataset
@@ -72,7 +72,7 @@ data_full_brouwer_griffith <- readRDS("data/data_full_brouwer_griffith.rds")
 #| warning: false
 
 full_model_dataset_size <- tibble::tibble(
-  Dataset = "Full model with Brouwer and Griffith breeding-system classification",
+  Dataset = "Multivariable moderator model with Brouwer and Griffith breeding-system classification",
   Observations = nrow(data_full_brouwer_griffith),
   Species = n_distinct(data_full_brouwer_griffith$species_nonphylo),
   Studies = n_distinct(data_full_brouwer_griffith$Study_ID)
@@ -83,7 +83,7 @@ knitr::kable(full_model_dataset_size)
 
 ## Reference levels
 
-Categorical coefficients in the full model are interpreted relative to the reference levels shown below. Continuous predictors are interpreted per one standard-deviation increase after scaling.
+Categorical coefficients in the multivariable moderator model are interpreted relative to the reference levels shown below. Continuous predictors are interpreted per one standard-deviation increase after scaling.
 
 ```{r}
 #| label: full-model-reference-levels
@@ -176,9 +176,9 @@ if (!is.na(full_model_path)) {
 } else {
   knitr::kable(
     tibble::tibble(
-      Status = "Full model not fitted yet",
+      Status = "Multivariable moderator model not fitted yet",
       Expected_file = "models/model_full_BG.rds",
-      Note = "Run the full-model script to create the saved model object."
+      Note = "Run the multivariable moderator model script to create the saved model object."
     )
   )
 }
@@ -186,7 +186,6 @@ if (!is.na(full_model_path)) {
 
 ## Fixed-effect forest plot
 
-The forest plot summarises the fixed-effect estimates from the full model. Categorical effects are contrasts relative to the reference levels listed above. Points show posterior central estimates and horizontal intervals show 95% credible intervals on the log-odds scale. The vertical line marks zero, so intervals mostly to the right indicate higher mixed-paternity prevalence relative to the reference level or per one standard-deviation increase in a continuous predictor, whereas intervals mostly to the left indicate lower prevalence.
 
 ```{r}
 #| label: full-model-fixed-effects-forest
@@ -195,14 +194,14 @@ The forest plot summarises the fixed-effect estimates from the full model. Categ
 #| warning: false
 #| fig-width: 9
 #| fig-height: 6.8
-#| fig-cap: "Fixed-effect estimates from the full model."
+#| fig-cap: "Posterior fixed-effect estimates from the multivariable moderator model; horizontal intervals show 95% credible intervals on the log-odds scale. Categorical coefficients are contrasts against the following reference groups: marker type = DNA fingerprinting, breeding system = cooperative breeder, nest type = cavity, migration = strong migrant, and coloniality = non-colonial. Continuous predictors are interpreted per one standard-deviation increase after scaling. Effects to the right of zero indicate higher mixed-paternity prevalence relative to the reference group or scaled mean, whereas effects to the left of zero indicate lower prevalence."
 
 forest_plot_file <- "Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png"
 
 if (file.exists(forest_plot_file)) {
   knitr::include_graphics(forest_plot_file)
 } else {
-  cat("Full-model fixed-effect forest plot is not available yet. Run the full-model figure code to save it first.")
+  cat("Multivariable moderator model fixed-effect forest plot is not available yet. Run the figure code to save it first.")
 }
 ```
 
@@ -217,14 +216,14 @@ if (file.exists(forest_plot_file)) {
 #| warning: false
 #| fig-width: 10
 #| fig-height: 7.2
-#| fig-cap: "Key predicted effects from the full model. Points show posterior predicted prevalence for categorical moderators, lines show posterior predicted prevalence for continuous moderators, and intervals or ribbons show 95% credible intervals."
+#| fig-cap: "Key predicted effects from the multivariable moderator model. Points show posterior predicted prevalence for categorical moderators, lines show posterior predicted prevalence for continuous moderators, and intervals or ribbons show 95% credible intervals."
 
 key_effects_file <- "Figures/model_diagnostics/full_model_key_effects.png"
 
 if (file.exists(key_effects_file)) {
   knitr::include_graphics(key_effects_file)
 } else {
-  cat("Full-model key-effects figure is not available yet. Run the full-model key-effects plotting script to save it first.")
+  cat("Multivariable moderator model key-effects figure is not available yet. Run the key-effects plotting script to save it first.")
 }
 ```
 
@@ -273,7 +272,7 @@ if (!is.na(diagnostics_file)) {
 
   knitr::kable(diagnostic_table, digits = 3)
 } else {
-  cat("Full-model diagnostics are not available yet.")
+  cat("Multivariable moderator model diagnostics are not available yet.")
 }
 ```
 

@@ -1,4 +1,4 @@
-﻿---
+---
 format:
   html:
     toc: true
@@ -443,7 +443,7 @@ p_abs_lat <- plot_continuous_moderator(
   model = model_abs_latitude,
   raw_var = "abs_lat",
   sc_var = "abs_lat_sc",
-  x_lab = "Absolute latitude (Â°)"
+  x_lab = "Absolute latitude (°)"
 )
 
 p_abs_lat
@@ -840,9 +840,9 @@ p_forest_main <- ggplot2::ggplot(forest_dat, ggplot2::aes(x = estimate, y = mode
 
 knitr::include_graphics("Figures/Forest_plot8.png")
 ```
-## Full-model figures
+## Multivariable moderator model figures
 
-### Full-model fixed-effect forest plot
+### Multivariable moderator model fixed-effect forest plot
 
 ```{r}
 #| label: full-model-forest-plot-code
@@ -964,12 +964,12 @@ p_full_model_forest
 #| label: full-model-forest-plot-saved
 #| echo: false
 #| eval: true
-#| fig-cap: "Fixed-effect estimates from the full model."
+#| fig-cap: "Fixed-effect estimates from the multivariable moderator model."
 
 show_saved_figure("Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png")
 ```
 
-### Full-model key predicted effects
+### Multivariable moderator model key predicted effects
 
 ```{r}
 #| label: full-model-key-effects-code
@@ -977,7 +977,7 @@ show_saved_figure("Figures/model_diagnostics/full_model_fixed_effects_forest_plo
 #| warning: false
 
 # This code generates the four-panel figure used to visualise the clearest
-# directional effects from the full model: marker type, migration,
+# directional effects from the multivariable moderator model: marker type, migration,
 # maximum clutch size, and absolute latitude.
 
 source("make_full_model_key_effects_plot.R")
@@ -987,7 +987,7 @@ source("make_full_model_key_effects_plot.R")
 #| label: full-model-key-effects-saved
 #| echo: false
 #| eval: true
-#| fig-cap: "Predicted mixed-paternity prevalence for key fixed effects from the full model. Points or lines show posterior central predictions, and intervals or ribbons show 95% credible intervals."
+#| fig-cap: "Predicted mixed-paternity prevalence for key fixed effects from the multivariable moderator model. Points or lines show posterior central predictions, and intervals or ribbons show 95% credible intervals."
 
 show_saved_figure("Figures/model_diagnostics/full_model_key_effects.png")
 ```

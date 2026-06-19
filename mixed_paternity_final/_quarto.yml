@@ -3,7 +3,7 @@ project:
 
 book:
   title: "Explaining variation in mixed paternity across birds: a global comparative meta-analysis"
-  author: "Aneta Arct et al. 2026"
+  author: "Aneta Arct, Santiago Ortega, Szymon M. Drobniak, Agnieszka Gudowska, Karolina Skorb, Monika Gronowska, Magdalena Zagalska-Neubauer, Michael Griesser, Malgorzata Lagisz, Shinichi Nakagawa"
   chapters:
     - index.qmd
     - 01_analysis_metadata.qmd

@@ -1,27 +1,87 @@
-﻿---
-title: "Overview"
+---
+title: "Explaining variation in mixed paternity across birds: a global comparative meta-analysis"
 format:
   html:
     toc: true
     toc-depth: 3
 ---
+```{=html}
+<style>
+#title-block-header.quarto-title-block.default {
+  position: relative;
+  overflow: hidden;
+  padding: 4.5rem 3rem 3.8rem 3rem;
+  border-radius: 24px;
+  margin-bottom: 3rem;
+  background:
+    linear-gradient(135deg, rgba(36, 75, 90, 0.94), rgba(63, 124, 133, 0.88)),
+    url("Figures/site/formline_birds_background.png");
+  background-size: cover, 78%;
+  background-repeat: no-repeat;
+  background-position: center, center bottom;
+  color: white;
+  isolation: isolate;
+}
 
-::: hero-banner
-A global comparative phylogenetic meta-analysis of mixed-paternity prevalence across avian species.
+#title-block-header.quarto-title-block.default::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.08);
+  z-index: -1;
+}
 
-**375 species | 619 population estimates | 46,249 broods**
-:::
+#title-block-header.quarto-title-block.default .title,
+#title-block-header.quarto-title-block.default .subtitle,
+#title-block-header.quarto-title-block.default .quarto-title-meta,
+#title-block-header.quarto-title-block.default .quarto-title-meta-heading,
+#title-block-header.quarto-title-block.default .quarto-title-meta-contents {
+  color: white;
+}
 
-::::: hero-banner
+#title-block-header.quarto-title-block.default .title {
+  max-width: 980px;
+  font-size: clamp(2.25rem, 4vw, 4.2rem);
+  line-height: 1.05;
+  margin-bottom: 1.2rem;
+}
 
-:::: overview-text
-This website presents the complete reproducible workflow for the global comparative meta-analysis of mixed-paternity prevalence across birds.
+#title-block-header.quarto-title-block.default .subtitle {
+  max-width: 840px;
+  font-size: 1.25rem;
+  line-height: 1.55;
+  margin-top: 1.2rem;
+}
 
-::: {.callout-important title="Core idea"}
-Birds are central model systems for studying sexual selection and reproductive conflict, yet mixed-paternity prevalence is often comparatively low across species. This study aims to understand which ecological, social, and methodological factors explain variation in mixed paternity across birds.
-:::
-::::
-:::::
+#title-block-header.quarto-title-block.default .hero-stats {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+  margin-top: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+#title-block-header.quarto-title-block.default .quarto-title-meta-heading {
+  opacity: 0.75;
+}
+
+@media (max-width: 900px) {
+  #title-block-header.quarto-title-block.default {
+    padding: 3rem 1.5rem 3rem 1.5rem;
+    background-size: cover, 120%;
+    background-position: center, center bottom;
+  }
+
+  #title-block-header.quarto-title-block.default .subtitle {
+    font-size: 1.05rem;
+  }
+}
+</style>
+```
 
 **Website structure**
 
@@ -67,9 +127,9 @@ Single-moderator models for breeding-system, ecological, life-history, and geogr
 :::
 
 ::: chapter-card
-6\. Full model
+6\. Multivariable moderator model
 
-Full phylogenetic model using the Brouwer and Griffith breeding-system classification, retaining nest type and excluding overlapping predictors.
+Multivariable moderator model using the Brouwer and Griffith breeding-system classification, retaining nest type and excluding overlapping predictors.
 
 [Open chapter](06_full_model.html)
 :::
