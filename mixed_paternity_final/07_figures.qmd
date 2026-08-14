@@ -566,7 +566,7 @@ p_map
 
 ## Figure preparation
 
-Points represent observed brood-level mixed-paternity prevalence across study populations, scaled by sample size. Dark points and vertical intervals represent posterior predicted prevalence and 95% credible intervals from the fitted beta-binomial phylogenetic model.
+Points represent observed record-level mixed-paternity prevalence and are scaled by the number of genotyped broods. The dashed line and dark point mark the inverse-logit-transformed population-level intercept from the intercept-only model; its credible interval is reported in the model table. This conditional estimate sets study and species random effects to zero.
 
 ```{r}
 #| echo: false
@@ -574,7 +574,7 @@ Points represent observed brood-level mixed-paternity prevalence across study po
 #| warning: false
 #| fig-width: 10
 #| fig-height: 5
-#| fig-cap: "Observed mixed-paternity prevalence across study populations and the estimated overall prevalence from the intercept-only model."
+#| fig-cap: "Observed mixed-paternity prevalence across study populations and the inverse-logit-transformed population-level intercept from the intercept-only model. The 32.5% estimate is conditional on study and species random effects being set to zero and is not a marginal average across observed studies or species."
 
 plot_data <- data_overall_study %>%
   mutate(
@@ -600,8 +600,10 @@ p_overall_prevalence <- ggplot(plot_data, aes(x = observed_prev, y = 0)) +
     linewidth = 0.9,
     color = "#244b5a"
   ) +
-  geom_point(
-    aes(x = overall_est, y = 0),
+  annotate(
+    "point",
+    x = overall_est,
+    y = 0,
     size = 6,
     shape = 21,
     fill = "#244b5a",
@@ -612,15 +614,15 @@ p_overall_prevalence <- ggplot(plot_data, aes(x = observed_prev, y = 0)) +
     "text",
     x = overall_est + 6,
     y = 0.18,
-    label = paste0("Overall prevalence: ", round(overall_est, 1), "%"),
+    label = paste0("Population-level intercept: ", round(overall_est, 1), "%"),
     hjust = 0,
     size = 5
   ) +
   scale_x_continuous(
-    limits = c(0, 100),
     breaks = seq(0, 100, 25),
     labels = function(x) paste0(x, "%")
   ) +
+  coord_cartesian(xlim = c(0, 100)) +
   scale_size_continuous(
     name = "Sample size",
     range = c(1.5, 7)

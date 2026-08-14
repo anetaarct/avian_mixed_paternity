@@ -76,7 +76,7 @@ where $\alpha$ is the intercept, $\mathbf{X}_i \boldsymbol{\beta}$ represents fi
 
 ### Model
 
-The intercept-only model estimated the average mixed-paternity prevalence across studies and species while accounting for study-level, non-phylogenetic species-level, and phylogenetically structured species-level variation.
+The intercept-only model estimated the population-level intercept while quantifying study-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed studies or species.
 
 ```{r}
 #| eval: false
@@ -105,7 +105,7 @@ model_overall_study <- brm(
 
 ```{r}
 knitr::include_graphics(
-  "Figures/model_diagnostics/overall_prevalence_plot.png"
+  "Figures/model_diagnostics/overall_prevalence_intercept_plot.png"
 )
 ```
 
@@ -131,7 +131,7 @@ s <- summary(model_overall_study)
 model_summary_table <- tibble::tibble(
   Parameter = c(
     "Intercept (logit scale)",
-    "Overall prevalence (%)",
+    "Population-level intercept prevalence (%)",
     "Study-level SD",
     "Non-phylogenetic species-level SD",
     "Phylogenetic species-level SD",

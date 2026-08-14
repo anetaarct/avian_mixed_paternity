@@ -882,13 +882,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="figure-preparation" class="level2" data-number="8.5">
 <h2 data-number="8.5" class="anchored" data-anchor-id="figure-preparation"><span class="header-section-number">8.5</span> Figure preparation</h2>
-<p>Points represent observed brood-level mixed-paternity prevalence across study populations, scaled by sample size. Dark points and vertical intervals represent posterior predicted prevalence and 95% credible intervals from the fitted beta-binomial phylogenetic model.</p>
+<p>Points represent observed record-level mixed-paternity prevalence and are scaled by the number of genotyped broods. The dashed line and dark point mark the inverse-logit-transformed population-level intercept from the intercept-only model; its credible interval is reported in the model table. This conditional estimate sets study and species random effects to zero.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07_figures_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="960"></p>
-<figcaption>Observed mixed-paternity prevalence across study populations and the estimated overall prevalence from the intercept-only model.</figcaption>
+<figcaption>Observed mixed-paternity prevalence across study populations and the inverse-logit-transformed population-level intercept from the intercept-only model. The 32.5% estimate is conditional on study and species random effects being set to zero and is not a marginal average across observed studies or species.</figcaption>
 </figure>
 </div>
 </div>
@@ -2767,7 +2767,7 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-580"><a href="#cb31-580" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-581"><a href="#cb31-581" aria-hidden="true" tabindex="-1"></a><span class="fu">## Figure preparation</span></span>
 <span id="cb31-582"><a href="#cb31-582" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-583"><a href="#cb31-583" aria-hidden="true" tabindex="-1"></a>Points represent observed brood-level mixed-paternity prevalence across study populations, scaled by sample size. Dark points and vertical intervals represent posterior predicted prevalence and 95% credible intervals from the fitted beta-binomial phylogenetic model.</span>
+<span id="cb31-583"><a href="#cb31-583" aria-hidden="true" tabindex="-1"></a>Points represent observed record-level mixed-paternity prevalence and are scaled by the number of genotyped broods. The dashed line and dark point mark the inverse-logit-transformed population-level intercept from the intercept-only model; its credible interval is reported in the model table. This conditional estimate sets study and species random effects to zero.</span>
 <span id="cb31-584"><a href="#cb31-584" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-587"><a href="#cb31-587" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb31-588"><a href="#cb31-588" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
@@ -2775,7 +2775,7 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-590"><a href="#cb31-590" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
 <span id="cb31-591"><a href="#cb31-591" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
 <span id="cb31-592"><a href="#cb31-592" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
-<span id="cb31-593"><a href="#cb31-593" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Observed mixed-paternity prevalence across study populations and the estimated overall prevalence from the intercept-only model."</span></span>
+<span id="cb31-593"><a href="#cb31-593" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Observed mixed-paternity prevalence across study populations and the inverse-logit-transformed population-level intercept from the intercept-only model. The 32.5% estimate is conditional on study and species random effects being set to zero and is not a marginal average across observed studies or species."</span></span>
 <span id="cb31-594"><a href="#cb31-594" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-595"><a href="#cb31-595" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
 <span id="cb31-596"><a href="#cb31-596" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
@@ -2813,7 +2813,7 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-628"><a href="#cb31-628" aria-hidden="true" tabindex="-1"></a>    <span class="st">"text"</span>,</span>
 <span id="cb31-629"><a href="#cb31-629" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> overall_est <span class="sc">+</span> <span class="dv">6</span>,</span>
 <span id="cb31-630"><a href="#cb31-630" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fl">0.18</span>,</span>
-<span id="cb31-631"><a href="#cb31-631" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Overall prevalence: "</span>, <span class="fu">round</span>(overall_est, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
+<span id="cb31-631"><a href="#cb31-631" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Population-level intercept: "</span>, <span class="fu">round</span>(overall_est, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
 <span id="cb31-632"><a href="#cb31-632" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="dv">0</span>,</span>
 <span id="cb31-633"><a href="#cb31-633" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">5</span></span>
 <span id="cb31-634"><a href="#cb31-634" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>

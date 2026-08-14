@@ -350,7 +350,7 @@ window.Quarto = {
 <h2 data-number="4.5" class="anchored" data-anchor-id="overall-mixed-paternity-prevalence"><span class="header-section-number">4.5</span> Overall mixed-paternity prevalence</h2>
 <section id="model" class="level3" data-number="4.5.1">
 <h3 data-number="4.5.1" class="anchored" data-anchor-id="model"><span class="header-section-number">4.5.1</span> Model</h3>
-<p>The intercept-only model estimated the average mixed-paternity prevalence across studies and species while accounting for study-level, non-phylogenetic species-level, and phylogenetically structured species-level variation.</p>
+<p>The intercept-only model estimated the population-level intercept while quantifying study-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed studies or species.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -379,13 +379,13 @@ window.Quarto = {
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Figures/model_diagnostics/overall_prevalence_plot.png"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Figures/model_diagnostics/overall_prevalence_intercept_plot.png"</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Figures/model_diagnostics/overall_prevalence_plot.png" class="img-fluid figure-img" width="1500"></p>
+<p><img src="Figures/model_diagnostics/overall_prevalence_intercept_plot.png" class="img-fluid figure-img" width="1500"></p>
 </figure>
 </div>
 </div>
@@ -461,7 +461,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <td style="text-align: right;">1.003</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Overall prevalence (%)</td>
+<td style="text-align: left;">Population-level intercept prevalence (%)</td>
 <td style="text-align: right;">32.472</td>
 <td style="text-align: right;">8.119</td>
 <td style="text-align: right;">73.156</td>
@@ -1166,7 +1166,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a><span class="fu">### Model</span></span>
 <span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>The intercept-only model estimated the average mixed-paternity prevalence across studies and species while accounting for study-level, non-phylogenetic species-level, and phylogenetically structured species-level variation.</span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>The intercept-only model estimated the population-level intercept while quantifying study-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed studies or species.</span>
 <span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
@@ -1195,7 +1195,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(</span>
-<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Figures/model_diagnostics/overall_prevalence_plot.png"</span></span>
+<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Figures/model_diagnostics/overall_prevalence_intercept_plot.png"</span></span>
 <span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a></span>
@@ -1221,7 +1221,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>model_summary_table <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
 <span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a>  <span class="at">Parameter =</span> <span class="fu">c</span>(</span>
 <span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Intercept (logit scale)"</span>,</span>
-<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Overall prevalence (%)"</span>,</span>
+<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Population-level intercept prevalence (%)"</span>,</span>
 <span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Study-level SD"</span>,</span>
 <span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Non-phylogenetic species-level SD"</span>,</span>
 <span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Phylogenetic species-level SD"</span>,</span>
