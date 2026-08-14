@@ -2,7 +2,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Explaining variation in mixed paternity across birds: a global comparative meta-analysis",
+    "title": "Evolutionary history and ecology context shape mixed paternity across birds",
     "section": "",
     "text": "A global comparative phylogenetic meta-analysis of mixed-paternity prevalence across avian species.\n375 species · 619 population estimates · 46,249 broods\n\n\n\nThis website presents the complete reproducible workflow for the flobal comparative meta-analysis of mixed-paternity prevalence across birds.\n\n\n\n\n\n\nCore idea\n\n\n\nBirds are central model systems for studying sexual selection and reproductive conflict, yet mixed-paternity prevalence is often comparatively low across species. This study aims to understand which ecological, social, and methodological factors explain variation in mixed paternity across birds.\n\n\n\n\nWebsite structure\n\n\n1. Analysis metadata\nDescription of analytical variables used in the statistical models.\nOpen chapter\n\n\n2. Database preparation\nScreening workflow, data extraction, and taxonomic harmonisation.\nOpen chapter\n\n\n3. Overall model\nIntercept-only models estimating overall mixed-paternity prevalence.\nOpen chapter\n\n\n4. Methodological moderators\nSingle-moderator models for methodological predictors.\nOpen chapter\n\n\n5. Breeding-system moderators\nSingle-moderator analyses for breeding-system classifications.\nOpen chapter\n\n\n6. Biological moderators\nSingle-moderator models for biological predictors.\nOpen chapter\n\n\n7. Figures\nReproducible figures used in the manuscript and supplement.\nOpen chapter",
     "crumbs": [
