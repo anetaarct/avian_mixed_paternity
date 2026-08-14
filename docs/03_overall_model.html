@@ -509,7 +509,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>Bayesian estimate of the phylogenetic signal with 95% Highest Density Interval (HDI).</caption>
+<caption>Posterior mean estimate of the phylogenetic signal with a 95% equal-tailed credible interval.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Statistic</th>
@@ -521,9 +521,9 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Phylogenetic signal (ν)</td>
-<td style="text-align: right;">0.876</td>
-<td style="text-align: right;">0.76</td>
-<td style="text-align: right;">0.968</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">0.74</td>
+<td style="text-align: right;">0.96</td>
 </tr>
 </tbody>
 </table>
@@ -1293,19 +1293,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-219"><a href="#cb12-219" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-221"><a href="#cb12-221" aria-hidden="true" tabindex="-1"></a>phylo_signal_summary <span class="ot">&lt;-</span> draws_phylo_signal <span class="sc">%&gt;%</span></span>
-<span id="cb12-222"><a href="#cb12-222" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median_hdci</span>(phylo_signal, <span class="at">.width =</span> <span class="fl">0.95</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-223"><a href="#cb12-223" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Zmiana nazw kolumn i ułożenie ich do ładnej tabeli</span></span>
-<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
 <span id="cb12-225"><a href="#cb12-225" aria-hidden="true" tabindex="-1"></a>    <span class="at">Statistic =</span> <span class="st">"Phylogenetic signal (ν)"</span>,</span>
-<span id="cb12-226"><a href="#cb12-226" aria-hidden="true" tabindex="-1"></a>    <span class="at">Estimate =</span> phylo_signal,</span>
-<span id="cb12-227"><a href="#cb12-227" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Lower 95% CrI</span><span class="st">`</span> <span class="ot">=</span> .lower,</span>
-<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Upper 95% CrI</span><span class="st">`</span> <span class="ot">=</span> .upper</span>
+<span id="cb12-226"><a href="#cb12-226" aria-hidden="true" tabindex="-1"></a>    <span class="at">Estimate =</span> <span class="fu">mean</span>(phylo_signal),</span>
+<span id="cb12-227"><a href="#cb12-227" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Lower 95% CrI</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">quantile</span>(phylo_signal, <span class="fl">0.025</span>),</span>
+<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Upper 95% CrI</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">quantile</span>(phylo_signal, <span class="fl">0.975</span>)</span>
 <span id="cb12-229"><a href="#cb12-229" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb12-230"><a href="#cb12-230" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-231"><a href="#cb12-231" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
 <span id="cb12-232"><a href="#cb12-232" aria-hidden="true" tabindex="-1"></a>  phylo_signal_summary, </span>
 <span id="cb12-233"><a href="#cb12-233" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">3</span>, </span>
-<span id="cb12-234"><a href="#cb12-234" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Bayesian estimate of the phylogenetic signal with 95% Highest Density Interval (HDI)."</span></span>
+<span id="cb12-234"><a href="#cb12-234" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Posterior mean estimate of the phylogenetic signal with a 95% equal-tailed credible interval."</span></span>
 <span id="cb12-235"><a href="#cb12-235" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb12-236"><a href="#cb12-236" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb12-237"><a href="#cb12-237" aria-hidden="true" tabindex="-1"></a></span>

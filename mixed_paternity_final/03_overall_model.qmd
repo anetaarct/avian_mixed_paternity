@@ -203,19 +203,17 @@ draws_phylo_signal <- model_overall_study %>%
   )
 
 phylo_signal_summary <- draws_phylo_signal %>%
-  median_hdci(phylo_signal, .width = 0.95) %>%
-  # Zmiana nazw kolumn i ułożenie ich do ładnej tabeli
-  transmute(
+  summarise(
     Statistic = "Phylogenetic signal (ν)",
-    Estimate = phylo_signal,
-    `Lower 95% CrI` = .lower,
-    `Upper 95% CrI` = .upper
+    Estimate = mean(phylo_signal),
+    `Lower 95% CrI` = quantile(phylo_signal, 0.025),
+    `Upper 95% CrI` = quantile(phylo_signal, 0.975)
   )
 
 knitr::kable(
   phylo_signal_summary, 
   digits = 3, 
-  caption = "Bayesian estimate of the phylogenetic signal with 95% Highest Density Interval (HDI)."
+  caption = "Posterior mean estimate of the phylogenetic signal with a 95% equal-tailed credible interval."
 )
 ```
 
