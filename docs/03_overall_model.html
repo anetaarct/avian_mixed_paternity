@@ -232,7 +232,7 @@ window.Quarto = {
   <li><a href="#load-prepared-objects" id="toc-load-prepared-objects" class="nav-link" data-scroll-target="#load-prepared-objects"><span class="header-section-number">4.2</span> Load prepared objects</a></li>
   <li><a href="#overall-dataset" id="toc-overall-dataset" class="nav-link" data-scroll-target="#overall-dataset"><span class="header-section-number">4.3</span> Overall dataset</a></li>
   <li><a href="#modelling-framework" id="toc-modelling-framework" class="nav-link" data-scroll-target="#modelling-framework"><span class="header-section-number">4.4</span> Modelling framework</a></li>
-  <li><a href="#overall-mixed-paternity-prevalence" id="toc-overall-mixed-paternity-prevalence" class="nav-link" data-scroll-target="#overall-mixed-paternity-prevalence"><span class="header-section-number">4.5</span> Overall mixed-paternity prevalence</a>
+<li><a href="#population-level-intercept-prevalence" id="toc-population-level-intercept-prevalence" class="nav-link" data-scroll-target="#population-level-intercept-prevalence"><span class="header-section-number">4.5</span> Population-level intercept prevalence</a>
   <ul class="collapse">
   <li><a href="#model" id="toc-model" class="nav-link" data-scroll-target="#model"><span class="header-section-number">4.5.1</span> Model</a></li>
   <li><a href="#figure" id="toc-figure" class="nav-link" data-scroll-target="#figure"><span class="header-section-number">4.5.2</span> Figure</a></li>
@@ -272,7 +272,7 @@ window.Quarto = {
 
 
 <div class="section-card">
-<p>This section presents the intercept-only beta-binomial phylogenetic model used to estimate overall mixed-paternity prevalence across birds. The model accounts for study identity, non-phylogenetic species-level variation, and phylogenetically structured species-level variation.</p>
+<p>This section presents the intercept-only beta-binomial phylogenetic model used to estimate the population-level intercept and quantify heterogeneity in mixed-paternity prevalence across birds. The model accounts for study identity, non-phylogenetic species-level variation, and phylogenetically structured species-level variation.</p>
 </div>
 <section id="packages" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="packages"><span class="header-section-number">4.1</span> Packages</h2>
@@ -346,8 +346,8 @@ window.Quarto = {
 <p><span class="math display">\[\mathrm{logit}(\mu_i) = \alpha + \mathbf{X}_i \boldsymbol{\beta} + u_{\mathrm{reference}[i]} + u_{\mathrm{species}[i]} + u_{\mathrm{phylo}[i]}\]</span></p>
 <p>where <span class="math inline">\(\alpha\)</span> is the intercept, <span class="math inline">\(\mathbf{X}_i \boldsymbol{\beta}\)</span> represents fixed biological and methodological moderators, and <span class="math inline">\(u_{\mathrm{reference}}\)</span>, <span class="math inline">\(u_{\mathrm{species}}\)</span>, and <span class="math inline">\(u_{\mathrm{phylo}}\)</span> represent reference-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively.</p>
 </section>
-<section id="overall-mixed-paternity-prevalence" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="overall-mixed-paternity-prevalence"><span class="header-section-number">4.5</span> Overall mixed-paternity prevalence</h2>
+<section id="population-level-intercept-prevalence" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="population-level-intercept-prevalence"><span class="header-section-number">4.5</span> Population-level intercept prevalence</h2>
 <section id="model" class="level3" data-number="4.5.1">
 <h3 data-number="4.5.1" class="anchored" data-anchor-id="model"><span class="header-section-number">4.5.1</span> Model</h3>
 <p>The intercept-only model estimated the population-level intercept while quantifying study-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed studies or species.</p>
@@ -1098,7 +1098,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>::: section-card</span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overall model</span></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>This section presents the intercept-only beta-binomial phylogenetic model used to estimate overall mixed-paternity prevalence across birds. The model accounts for study identity, non-phylogenetic species-level variation, and phylogenetically structured species-level variation.</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>This section presents the intercept-only beta-binomial phylogenetic model used to estimate the population-level intercept and quantify heterogeneity in mixed-paternity prevalence across birds. The model accounts for study identity, non-phylogenetic species-level variation, and phylogenetically structured species-level variation.</span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Packages</span></span>
@@ -1162,7 +1162,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>where $\alpha$ is the intercept, $\mathbf{X}_i \boldsymbol{\beta}$ represents fixed biological and methodological moderators, and $u_{\mathrm{reference}}$, $u_{\mathrm{species}}$, and $u_{\mathrm{phylo}}$ represent reference-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively.</span>
 <span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overall mixed-paternity prevalence</span></span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a><span class="fu">## Population-level intercept prevalence</span></span>
 <span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a><span class="fu">### Model</span></span>
 <span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a></span>

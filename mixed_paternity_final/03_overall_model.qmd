@@ -8,7 +8,7 @@ format:
 ::: section-card
 ## Overall model
 
-This section presents the intercept-only beta-binomial phylogenetic model used to estimate overall mixed-paternity prevalence across birds. The model accounts for study identity, non-phylogenetic species-level variation, and phylogenetically structured species-level variation.
+This section presents the intercept-only beta-binomial phylogenetic model used to estimate the population-level intercept and quantify heterogeneity in mixed-paternity prevalence across birds. The model accounts for study identity, non-phylogenetic species-level variation, and phylogenetically structured species-level variation.
 :::
 
 ## Packages
@@ -72,7 +72,7 @@ $$\mathrm{logit}(\mu_i) = \alpha + \mathbf{X}_i \boldsymbol{\beta} + u_{\mathrm{
 
 where $\alpha$ is the intercept, $\mathbf{X}_i \boldsymbol{\beta}$ represents fixed biological and methodological moderators, and $u_{\mathrm{reference}}$, $u_{\mathrm{species}}$, and $u_{\mathrm{phylo}}$ represent reference-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively.
 
-## Overall mixed-paternity prevalence
+## Population-level intercept prevalence
 
 ### Model
 
