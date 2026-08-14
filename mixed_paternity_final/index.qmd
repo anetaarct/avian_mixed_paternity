@@ -7,12 +7,6 @@ format:
     css: index-hero.css
 ---
 
-::: hero-banner
-A global comparative phylogenetic meta-analysis of mixed-paternity prevalence across avian species.
-
-**375 species · 619 population estimates · 46,249 broods**
-:::
-
 ::::: hero-banner
 
 :::: overview-text
