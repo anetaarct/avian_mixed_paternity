@@ -215,7 +215,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#figures-for-methodological-moderators" id="toc-figures-for-methodological-moderators" class="nav-link" data-scroll-target="#figures-for-methodological-moderators"><span class="header-section-number">8.6</span> Figures for methodological moderators</a></li>
   <li><a href="#figures-for-biological-moderator" id="toc-figures-for-biological-moderator" class="nav-link" data-scroll-target="#figures-for-biological-moderator"><span class="header-section-number">8.7</span> Figures for biological moderator</a></li>
   <li><a href="#figures-for-breedingparental-system-modeartaors-figures" id="toc-figures-for-breedingparental-system-modeartaors-figures" class="nav-link" data-scroll-target="#figures-for-breedingparental-system-modeartaors-figures"><span class="header-section-number">8.8</span> Figures for breeding/parental system modeartaors figures</a></li>
-  <li><a href="#forest-plot" id="toc-forest-plot" class="nav-link" data-scroll-target="#forest-plot"><span class="header-section-number">8.9</span> Forest plot</a></li>
+  <li><a href="#forest-plots" id="toc-forest-plots" class="nav-link" data-scroll-target="#forest-plots"><span class="header-section-number">8.9</span> Forest plots</a></li>
   </ul>
 </nav>
     </div>
@@ -1463,32 +1463,32 @@ Figure&nbsp;8.13: Predicted mixed-paternity prevalence across cooperative-breedi
 </div>
 </div>
 </section>
-<section id="forest-plot" class="level2" data-number="8.9">
-<h2 data-number="8.9" class="anchored" data-anchor-id="forest-plot"><span class="header-section-number">8.9</span> Forest plot</h2>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>p_forest_main</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>`height` was translated to `width`.</code></pre>
-</div>
-<div class="cell-output-display">
+<section id="forest-plots" class="level2" data-number="8.9">
+<h2 data-number="8.9" class="anchored" data-anchor-id="forest-plots"><span class="header-section-number">8.9</span> Forest plots</h2>
+<p><strong>Single-moderator models</strong></p>
 <div id="fig-forest-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-forest-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="07_figures_files/figure-html/fig-forest-plot-1.png" class="img-fluid figure-img" width="672">
+<div aria-describedby="fig-forest-plot-caption">
+<img src="Figures/Forest_plot8.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forest-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forest-plot-caption">
 Figure&nbsp;8.14: Posterior mean effects and 95% equal-tailed credible intervals from the single-moderator models. Continuous predictors are expressed per one standard deviation using the common scaling derived from the overall analytical dataset; categorical effects are contrasts relative to their stated reference categories.
 </figcaption>
 </figure>
 </div>
+<p><a href="Figures/Forest_plot8.pdf">Download the single-moderator forest plot as PDF</a></p>
+<p><strong>Full multivariable model</strong></p>
+<div id="fig-full-model-forest-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-full-model-forest-plot-caption">
+<img src="Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-full-model-forest-plot-caption">
+Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible intervals from the full multivariable phylogenetic beta-binomial model. Continuous predictors are expressed per one standard deviation using the common scaling derived from the overall analytical dataset; categorical coefficients are contrasts relative to the model reference levels.
+</figcaption>
+</figure>
 </div>
-
-
-<!-- -->
+<p><a href="Figures/model_diagnostics/full_model_fixed_effects_forest_plot.pdf">Download the full-model forest plot as PDF</a></p>
 
 </section>
 
@@ -3009,10 +3009,13 @@ Figure&nbsp;8.14: Posterior mean effects and 95% equal-tailed credible intervals
 <span id="cb31-1102"><a href="#cb31-1102" aria-hidden="true" tabindex="-1"></a>p_cooperative</span>
 <span id="cb31-1103"><a href="#cb31-1103" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb31-1104"><a href="#cb31-1104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-1105"><a href="#cb31-1105" aria-hidden="true" tabindex="-1"></a><span class="fu">## Forest plot</span></span>
+<span id="cb31-1105"><a href="#cb31-1105" aria-hidden="true" tabindex="-1"></a><span class="fu">## Forest plots</span></span>
 <span id="cb31-1106"><a href="#cb31-1106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-1106a"><a href="#cb31-1106a" aria-hidden="true" tabindex="-1"></a><span class="fu">### Single-moderator models</span></span>
+<span id="cb31-1106b"><a href="#cb31-1106b" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-1109"><a href="#cb31-1109" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb31-1110"><a href="#cb31-1110" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb31-1110a"><a href="#cb31-1110a" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb31-1111"><a href="#cb31-1111" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
 <span id="cb31-1112"><a href="#cb31-1112" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
 <span id="cb31-1113"><a href="#cb31-1113" aria-hidden="true" tabindex="-1"></a></span>
@@ -3104,9 +3107,26 @@ Figure&nbsp;8.14: Posterior mean effects and 95% equal-tailed credible intervals
 <span id="cb31-1201"><a href="#cb31-1201" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb31-1202"><a href="#cb31-1202" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-forest-plot</span></span>
 <span id="cb31-1203"><a href="#cb31-1203" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Posterior mean effects and 95% equal-tailed credible intervals from the single-moderator models. Continuous predictors are expressed per one standard deviation using the common scaling derived from the overall analytical dataset; categorical effects are contrasts relative to their stated reference categories."</span></span>
+<span id="cb31-1203a"><a href="#cb31-1203a" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb31-1203b"><a href="#cb31-1203b" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: "100%"</span></span>
 <span id="cb31-1204"><a href="#cb31-1204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-1205"><a href="#cb31-1205" aria-hidden="true" tabindex="-1"></a>p_forest_main</span>
+<span id="cb31-1205"><a href="#cb31-1205" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/Forest_plot8.png"</span>)</span>
 <span id="cb31-1206"><a href="#cb31-1206" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb31-1207"><a href="#cb31-1207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-1208"><a href="#cb31-1208" aria-hidden="true" tabindex="-1"></a><span class="ot">[Download the single-moderator forest plot as PDF](Figures/Forest_plot8.pdf)</span></span>
+<span id="cb31-1209"><a href="#cb31-1209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-1210"><a href="#cb31-1210" aria-hidden="true" tabindex="-1"></a><span class="fu">### Full multivariable model</span></span>
+<span id="cb31-1211"><a href="#cb31-1211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-1212"><a href="#cb31-1212" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb31-1213"><a href="#cb31-1213" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-full-model-forest-plot</span></span>
+<span id="cb31-1214"><a href="#cb31-1214" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Posterior mean fixed effects and 95% equal-tailed credible intervals from the full multivariable phylogenetic beta-binomial model. Continuous predictors are expressed per one standard deviation using the common scaling derived from the overall analytical dataset; categorical coefficients are contrasts relative to the model reference levels."</span></span>
+<span id="cb31-1215"><a href="#cb31-1215" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb31-1216"><a href="#cb31-1216" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: "100%"</span></span>
+<span id="cb31-1217"><a href="#cb31-1217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-1218"><a href="#cb31-1218" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png"</span>)</span>
+<span id="cb31-1219"><a href="#cb31-1219" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb31-1220"><a href="#cb31-1220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-1221"><a href="#cb31-1221" aria-hidden="true" tabindex="-1"></a><span class="ot">[Download the full-model forest plot as PDF](Figures/model_diagnostics/full_model_fixed_effects_forest_plot.pdf)</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

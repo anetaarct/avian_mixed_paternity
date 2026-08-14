@@ -1054,10 +1054,13 @@ p_cooperative <- plot_social_moderator(
 p_cooperative
 ```
 
-## Forest plot
+## Forest plots
+
+### Single-moderator models
 
 ```{r}
 #| echo: false
+#| eval: false
 #| message: false
 #| warning: false
 
@@ -1149,6 +1152,23 @@ ggplot2::ggsave(
 ```{r}
 #| label: fig-forest-plot
 #| fig-cap: "Posterior mean effects and 95% equal-tailed credible intervals from the single-moderator models. Continuous predictors are expressed per one standard deviation using the common scaling derived from the overall analytical dataset; categorical effects are contrasts relative to their stated reference categories."
+#| echo: false
+#| out-width: "100%"
 
-p_forest_main
+knitr::include_graphics("Figures/Forest_plot8.png")
 ```
+
+[Download the single-moderator forest plot as PDF](Figures/Forest_plot8.pdf)
+
+### Full multivariable model
+
+```{r}
+#| label: fig-full-model-forest-plot
+#| fig-cap: "Posterior mean fixed effects and 95% equal-tailed credible intervals from the full multivariable phylogenetic beta-binomial model. Continuous predictors are expressed per one standard deviation using the common scaling derived from the overall analytical dataset; categorical coefficients are contrasts relative to the model reference levels."
+#| echo: false
+#| out-width: "100%"
+
+knitr::include_graphics("Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png")
+```
+
+[Download the full-model forest plot as PDF](Figures/model_diagnostics/full_model_fixed_effects_forest_plot.pdf)
