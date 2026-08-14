@@ -495,7 +495,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>Bayesian estimate of the phylogenetic signal with 95% Highest Density Interval (HDI).</caption>
+<caption>Posterior mean estimate of the phylogenetic signal with a 95% equal-tailed credible interval.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Statistic</th>
@@ -507,9 +507,9 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Phylogenetic signal (Î˝)</td>
-<td style="text-align: right;">0.876</td>
-<td style="text-align: right;">0.76</td>
-<td style="text-align: right;">0.968</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">0.74</td>
+<td style="text-align: right;">0.96</td>
 </tr>
 </tbody>
 </table>
@@ -1249,7 +1249,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb10-210"><a href="#cb10-210" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb10-211"><a href="#cb10-211" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-212"><a href="#cb10-212" aria-hidden="true" tabindex="-1"></a>phylo_signal_summary <span class="ot">&lt;-</span> draws_phylo_signal <span class="sc">%&gt;%</span></span>
-<span id="cb10-213"><a href="#cb10-213" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median_hdci</span>(phylo_signal, <span class="at">.width =</span> <span class="fl">0.95</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-213"><a href="#cb10-213" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">phylo_signal =</span> <span class="fu">mean</span>(phylo_signal), <span class="at">.lower =</span> <span class="fu">quantile</span>(phylo_signal, <span class="fl">0.025</span>), <span class="at">.upper =</span> <span class="fu">quantile</span>(phylo_signal, <span class="fl">0.975</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb10-214"><a href="#cb10-214" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Zmiana nazw kolumn i uĹ‚oĹĽenie ich do Ĺ‚adnej tabeli</span></span>
 <span id="cb10-215"><a href="#cb10-215" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
 <span id="cb10-216"><a href="#cb10-216" aria-hidden="true" tabindex="-1"></a>    <span class="at">Statistic =</span> <span class="st">"Phylogenetic signal (Î˝)"</span>,</span>
@@ -1261,7 +1261,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb10-222"><a href="#cb10-222" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
 <span id="cb10-223"><a href="#cb10-223" aria-hidden="true" tabindex="-1"></a>  phylo_signal_summary, </span>
 <span id="cb10-224"><a href="#cb10-224" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">3</span>, </span>
-<span id="cb10-225"><a href="#cb10-225" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Bayesian estimate of the phylogenetic signal with 95% Highest Density Interval (HDI)."</span></span>
+<span id="cb10-225"><a href="#cb10-225" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Posterior mean estimate of the phylogenetic signal with a 95% equal-tailed credible interval."</span></span>
 <span id="cb10-226"><a href="#cb10-226" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb10-227"><a href="#cb10-227" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb10-228"><a href="#cb10-228" aria-hidden="true" tabindex="-1"></a></span>
