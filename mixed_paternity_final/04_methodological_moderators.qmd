@@ -1,4 +1,4 @@
-﻿---
+---
 format:
   html:
     toc: true
@@ -77,7 +77,7 @@ knitr::kable(methodological_dataset_sizes)
 
 ## Model 
 
-This helper function documents the shared model structure used for all single-moderator models.
+This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as `.rds` files.
 
 ```{r}
 
@@ -112,8 +112,6 @@ This model tested whether estimated mixed-paternity prevalence differed among mo
 ```{r}
 knitr::include_graphics("Figures/Figuresmarker_type.png")
 ```
-
-Light points show observed study-level prevalence, with point size proportional to the number of sampled broods; dark points and vertical intervals show model-predicted prevalence and 95% credible intervals for each category.
 
 ### Model summary
 
@@ -172,21 +170,26 @@ knitr::kable(pairwise_marker_type_table, digits = 3)
 
 ## Study duration
 
-Study duration was included as a methodological moderator because longer studies may provide more stable estimates of mixed-paternity prevalence and may differ from short-term studies in sampling intensity and temporal coverage.
+Study duration was included as a methodological moderator because longer studies may provide more stable estimates of mixed-paternity prevalence and may differ from short-term studies in sampling intensity and temporal coverage. It was standardised using all 607 non-missing records in the 619-record overall analytical dataset (mean = 3.649 years, SD = 3.452 years).
 
 ### Figure
 
 ```{r}
-knitr::include_graphics("Figures/Figuresstudy_duration.png")
-```
+#| label: fig-study-duration-common-scaling
+#| fig-cap: "Population-level predicted mixed-paternity prevalence across study duration from the refitted single-moderator model. Study duration was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval."
+#| echo: false
 
-Light points show observed study-level prevalence, with point size proportional to the number of sampled broods; the dark line and shaded ribbon show model-predicted prevalence and the 95% credible interval across study duration.
+knitr::include_graphics("Figures/common_scaling/study_duration.png")
+```
 
 ### Model summary
 
 ```{r}
-model_study_duration <- readRDS("models/model_study_duration.rds")
-summary(model_study_duration)
+#| echo: false
+#| code-fold: true
+#| code-summary: "Show fitted-model summary"
+
+cat(readLines("logs/common_scaling/model_study_duration_summary.txt"), sep = "\n")
 ```
 
 ###  Model estimates
@@ -196,17 +199,22 @@ summary(model_study_duration)
 #| message: false
 #| warning: false
 
-s_study_duration <- summary(model_study_duration)
-
-study_duration_table <- tibble::tibble(
-  Parameter = "Study duration",
-  Estimate = s_study_duration$fixed["study_duration_sc", "Estimate"],
-  `Lower 95% CrI` = s_study_duration$fixed["study_duration_sc", "l-95% CI"],
-  `Upper 95% CrI` = s_study_duration$fixed["study_duration_sc", "u-95% CI"]
-)
+study_duration_table <- readr::read_csv(
+  "tables/common_scaling/model_study_duration_fixed_effects.csv",
+  show_col_types = FALSE
+) |>
+  dplyr::filter(term == "study_duration_sc") |>
+  dplyr::transmute(
+    Parameter = "Study duration (per 1 SD = 3.452 years)",
+    Estimate,
+    `Lower 95% CrI` = Q2.5,
+    `Upper 95% CrI` = Q97.5
+  )
 
 knitr::kable(study_duration_table, digits = 3)
 ```
+
+Longer studies were associated with lower mixed-paternity prevalence on the log-odds scale ($\beta$ = -0.088, 95% CrI -0.167 to -0.009).
 
 ## Nest box
 
@@ -219,8 +227,6 @@ The intercept represents the reference category - natural nests .
 ```{r}
 knitr::include_graphics("Figures/Figuresnest_box.png")
 ```
-
-Light points show observed study-level prevalence, with point size proportional to the number of sampled broods; dark points and vertical intervals show model-predicted prevalence and 95% credible intervals for natural nests and nest-box populations.
 
 ### Model summary
 
@@ -281,12 +287,12 @@ heterogeneity_table <- dplyr::bind_rows(
   extract_heterogeneity(model_overall_study, "Overall model"),
   extract_heterogeneity(model_marker_type_0, "Marker type"),
   extract_heterogeneity(model_nest_box, "Nest box"),
-  extract_heterogeneity(model_study_duration, "Study duration")
+  readr::read_csv(
+    "tables/common_scaling/common_scaling_random_effects.csv",
+    show_col_types = FALSE
+  ) |>
+    dplyr::filter(Model == "Study duration")
 )
 
 knitr::kable(heterogeneity_table, digits = 3)
 ```
-
-
-
-
