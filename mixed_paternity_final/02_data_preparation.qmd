@@ -185,12 +185,7 @@ mixed_pat <- mixed_pat %>%
     study_duration = as.numeric(study_duration_num),
 
     Lat_round = round(as.numeric(Lat), 2),
-    abs_lat = abs(Lat_round),
-
-    CS_max_sc = as.numeric(scale(CS_max)),
-    body_mass_sc = as.numeric(scale(body_mass)),
-    study_duration_sc = as.numeric(scale(study_duration)),
-    abs_lat_sc = as.numeric(scale(abs_lat))
+    abs_lat = abs(Lat_round)
   )
 ```
 
@@ -216,6 +211,67 @@ data_overall_study <- mixed_pat %>%
     species_phylo_brms = droplevels(species_phylo_brms),
     population_id = droplevels(population_id)
   )
+```
+
+### Common scaling of continuous moderators
+
+The centring and scaling constants are calculated once from the 619-record overall analytical dataset, before moderator-specific complete-case filtering. The same constants are then reused in every single-moderator and multivariable analysis.
+
+```{r}
+#| label: common-continuous-scaling
+
+data_overall_study <- data_overall_study %>%
+  mutate(
+    log_body_mass = replace(
+      body_mass,
+      !is.na(body_mass) & body_mass <= 0,
+      NA_real_
+    ),
+    log_body_mass = log10(log_body_mass)
+  )
+
+scaling_constants <- data_overall_study %>%
+  summarise(
+    study_duration_mean = mean(study_duration, na.rm = TRUE),
+    study_duration_sd = sd(study_duration, na.rm = TRUE),
+    CS_max_mean = mean(CS_max, na.rm = TRUE),
+    CS_max_sd = sd(CS_max, na.rm = TRUE),
+    log_body_mass_mean = mean(log_body_mass, na.rm = TRUE),
+    log_body_mass_sd = sd(log_body_mass, na.rm = TRUE),
+    abs_lat_mean = mean(abs_lat, na.rm = TRUE),
+    abs_lat_sd = sd(abs_lat, na.rm = TRUE)
+  )
+
+data_overall_study <- data_overall_study %>%
+  mutate(
+    study_duration_sc =
+      (study_duration - scaling_constants$study_duration_mean) /
+      scaling_constants$study_duration_sd,
+    CS_max_sc =
+      (CS_max - scaling_constants$CS_max_mean) /
+      scaling_constants$CS_max_sd,
+    log_body_mass_sc =
+      (log_body_mass - scaling_constants$log_body_mass_mean) /
+      scaling_constants$log_body_mass_sd,
+    abs_lat_sc =
+      (abs_lat - scaling_constants$abs_lat_mean) /
+      scaling_constants$abs_lat_sd
+  )
+
+scaling_table <- tibble::tribble(
+  ~Predictor, ~N, ~Mean, ~SD, ~Unit,
+  "Study duration", sum(!is.na(data_overall_study$study_duration)),
+    scaling_constants$study_duration_mean, scaling_constants$study_duration_sd, "years",
+  "Maximum clutch size", sum(!is.na(data_overall_study$CS_max)),
+    scaling_constants$CS_max_mean, scaling_constants$CS_max_sd, "eggs",
+  "Body mass", sum(!is.na(data_overall_study$log_body_mass)),
+    scaling_constants$log_body_mass_mean, scaling_constants$log_body_mass_sd, "log10(g)",
+  "Absolute latitude", sum(!is.na(data_overall_study$abs_lat)),
+    scaling_constants$abs_lat_mean, scaling_constants$abs_lat_sd, "degrees"
+) %>%
+  mutate(across(c(Mean, SD), ~ round(.x, 3)))
+
+knitr::kable(scaling_table)
 ```
 
 ### Database single moderators
@@ -249,12 +305,6 @@ data_clutch_size <- data_overall_study %>%
   droplevels()
 
 data_body_mass <- data_overall_study %>%
-  filter(!is.na(body_mass), body_mass > 0) %>%
-  mutate(
-    body_mass = as.numeric(body_mass),
-    log_body_mass = log10(body_mass),
-    log_body_mass_sc = as.numeric(scale(log_body_mass))
-  ) %>%
   filter(
     is.finite(log_body_mass),
     is.finite(log_body_mass_sc)
@@ -337,7 +387,20 @@ knitr::kable(random_effect_structure)
 
 ```{r}
 #| echo: false
-#| collapse: true
 
-sessionInfo()
+software_versions <- tibble::tribble(
+  ~Software, ~Version,
+  "R", "4.5.3",
+  "brms", "2.23.0",
+  "rstan", "2.32.7",
+  "StanHeaders", "2.32.10",
+  "loo", "2.9.0",
+  "posterior", "1.7.0",
+  "tidybayes", "3.0.7"
+)
+
+knitr::kable(
+  software_versions,
+  caption = "Software environment recorded for the final common-scaling model fits on Totoro."
+)
 ```
