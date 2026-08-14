@@ -307,7 +307,7 @@ knitr::kable(parental_care_prevalence, digits = 2)
 
 ### Post-hoc pairwise contrasts
 
-Pairwise contrasts among parental-care categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.
+Pairwise contrasts among parental-care categories were calculated from the zero-intercept model. Posterior means and 95% equal-tailed credible intervals are reported on the logit scale.
 
 ```{r}
 
@@ -317,10 +317,19 @@ Pairwise contrasts among parental-care categories were calculated from the zero-
 
 pairwise_parental_care_0 <- readRDS("models/pairwise_parental_care_0.rds")
 
-parental_care_posthoc_table <- as.data.frame(pairwise_parental_care_0)
+parental_care_contrast_draws <- as.matrix(coda::as.mcmc(pairwise_parental_care_0))
+
+parental_care_posthoc_table <- tibble(
+  contrast = str_remove(colnames(parental_care_contrast_draws), "^contrast "),
+  estimate = colMeans(parental_care_contrast_draws),
+  lower.CrI = apply(parental_care_contrast_draws, 2, quantile, 0.025),
+  upper.CrI = apply(parental_care_contrast_draws, 2, quantile, 0.975)
+)
 
 knitr::kable(parental_care_posthoc_table, digits = 3)
 ```
+
+On the odds-ratio scale, cooperative care was associated with lower estimated odds of mixed paternity than uniparental care (OR = 0.32, 95% equal-tailed CrI 0.15–0.66), as was biparental care (OR = 0.41, 95% equal-tailed CrI 0.22–0.75).
 
 ## Cooperative breeding
 

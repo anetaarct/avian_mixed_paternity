@@ -917,7 +917,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </section>
 <section id="post-hoc-pairwise-contrasts-2" class="level3" data-number="6.7.4">
 <h3 data-number="6.7.4" class="anchored" data-anchor-id="post-hoc-pairwise-contrasts-2"><span class="header-section-number">6.7.4</span> Post-hoc pairwise contrasts</h3>
-<p>Pairwise contrasts among parental-care categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.</p>
+<p>Pairwise contrasts among parental-care categories were calculated from the zero-intercept model. Posterior means and 95% equal-tailed credible intervals are reported on the logit scale.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -927,9 +927,16 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>pairwise_parental_care_0 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"models/pairwise_parental_care_0.rds"</span>)</span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>parental_care_posthoc_table <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pairwise_parental_care_0)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>parental_care_contrast_draws <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(coda<span class="sc">::</span><span class="fu">as.mcmc</span>(pairwise_parental_care_0))</span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(parental_care_posthoc_table, <span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>parental_care_posthoc_table <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">contrast =</span> <span class="fu">str_remove</span>(<span class="fu">colnames</span>(parental_care_contrast_draws), <span class="st">"^contrast "</span>),</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimate =</span> <span class="fu">colMeans</span>(parental_care_contrast_draws),</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">lower.CrI =</span> <span class="fu">apply</span>(parental_care_contrast_draws, <span class="dv">2</span>, quantile, <span class="fl">0.025</span>),</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">upper.CrI =</span> <span class="fu">apply</span>(parental_care_contrast_draws, <span class="dv">2</span>, quantile, <span class="fl">0.975</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(parental_care_posthoc_table, <span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -937,105 +944,106 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <tr class="header">
 <th style="text-align: left;">contrast</th>
 <th style="text-align: right;">estimate</th>
-<th style="text-align: right;">lower.HPD</th>
-<th style="text-align: right;">upper.HPD</th>
+<th style="text-align: right;">lower.CrI</th>
+<th style="text-align: right;">upper.CrI</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">biparental - broodparasite</td>
-<td style="text-align: right;">-0.545</td>
-<td style="text-align: right;">-2.172</td>
-<td style="text-align: right;">1.085</td>
+<td style="text-align: right;">-0.534</td>
+<td style="text-align: right;">-2.150</td>
+<td style="text-align: right;">1.111</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">biparental - cooperation</td>
-<td style="text-align: right;">0.244</td>
+<td style="text-align: right;">0.247</td>
 <td style="text-align: right;">-0.191</td>
-<td style="text-align: right;">0.690</td>
+<td style="text-align: right;">0.691</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">biparental - nk_cooperation</td>
-<td style="text-align: right;">-0.359</td>
-<td style="text-align: right;">-0.968</td>
-<td style="text-align: right;">0.284</td>
+<td style="text-align: right;">-0.361</td>
+<td style="text-align: right;">-0.989</td>
+<td style="text-align: right;">0.265</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">biparental - pair</td>
-<td style="text-align: right;">-0.853</td>
-<td style="text-align: right;">-2.547</td>
-<td style="text-align: right;">0.791</td>
+<td style="text-align: right;">-0.852</td>
+<td style="text-align: right;">-2.525</td>
+<td style="text-align: right;">0.822</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">biparental - uniparental</td>
 <td style="text-align: right;">-0.892</td>
-<td style="text-align: right;">-1.494</td>
-<td style="text-align: right;">-0.273</td>
+<td style="text-align: right;">-1.509</td>
+<td style="text-align: right;">-0.286</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">broodparasite - cooperation</td>
-<td style="text-align: right;">0.785</td>
-<td style="text-align: right;">-0.871</td>
-<td style="text-align: right;">2.448</td>
+<td style="text-align: right;">0.781</td>
+<td style="text-align: right;">-0.885</td>
+<td style="text-align: right;">2.436</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">broodparasite - nk_cooperation</td>
-<td style="text-align: right;">0.179</td>
-<td style="text-align: right;">-1.584</td>
-<td style="text-align: right;">1.849</td>
+<td style="text-align: right;">0.173</td>
+<td style="text-align: right;">-1.555</td>
+<td style="text-align: right;">1.884</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">broodparasite - pair</td>
-<td style="text-align: right;">-0.321</td>
-<td style="text-align: right;">-2.647</td>
-<td style="text-align: right;">1.993</td>
+<td style="text-align: right;">-0.318</td>
+<td style="text-align: right;">-2.652</td>
+<td style="text-align: right;">1.990</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">broodparasite - uniparental</td>
-<td style="text-align: right;">-0.354</td>
-<td style="text-align: right;">-2.097</td>
-<td style="text-align: right;">1.352</td>
+<td style="text-align: right;">-0.358</td>
+<td style="text-align: right;">-2.095</td>
+<td style="text-align: right;">1.360</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">cooperation - nk_cooperation</td>
 <td style="text-align: right;">-0.608</td>
-<td style="text-align: right;">-1.355</td>
-<td style="text-align: right;">0.113</td>
+<td style="text-align: right;">-1.347</td>
+<td style="text-align: right;">0.124</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">cooperation - pair</td>
-<td style="text-align: right;">-1.103</td>
-<td style="text-align: right;">-2.829</td>
-<td style="text-align: right;">0.592</td>
+<td style="text-align: right;">-1.098</td>
+<td style="text-align: right;">-2.809</td>
+<td style="text-align: right;">0.614</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">cooperation - uniparental</td>
-<td style="text-align: right;">-1.138</td>
-<td style="text-align: right;">-1.865</td>
-<td style="text-align: right;">-0.398</td>
+<td style="text-align: right;">-1.139</td>
+<td style="text-align: right;">-1.882</td>
+<td style="text-align: right;">-0.410</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">nk_cooperation - pair</td>
-<td style="text-align: right;">-0.487</td>
-<td style="text-align: right;">-2.217</td>
-<td style="text-align: right;">1.301</td>
+<td style="text-align: right;">-0.491</td>
+<td style="text-align: right;">-2.251</td>
+<td style="text-align: right;">1.279</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">nk_cooperation - uniparental</td>
-<td style="text-align: right;">-0.532</td>
-<td style="text-align: right;">-1.381</td>
-<td style="text-align: right;">0.289</td>
+<td style="text-align: right;">-0.531</td>
+<td style="text-align: right;">-1.371</td>
+<td style="text-align: right;">0.301</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">pair - uniparental</td>
 <td style="text-align: right;">-0.040</td>
-<td style="text-align: right;">-1.818</td>
-<td style="text-align: right;">1.721</td>
+<td style="text-align: right;">-1.810</td>
+<td style="text-align: right;">1.732</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+<p>On the odds-ratio scale, cooperative care was associated with lower estimated odds of mixed paternity than uniparental care (OR = 0.32, 95% equal-tailed CrI 0.15–0.66), as was biparental care (OR = 0.41, 95% equal-tailed CrI 0.22–0.75).</p>
 </section>
 </section>
 <section id="cooperative-breeding" class="level2" data-number="6.8">
