@@ -316,7 +316,7 @@ window.Quarto = {
 <thead>
 <tr class="header">
 <th style="text-align: right;">Observations</th>
-<th style="text-align: right;">Studies</th>
+<th style="text-align: right;">Study identities</th>
 <th style="text-align: right;">Species</th>
 <th style="text-align: right;">Total broods</th>
 <th style="text-align: right;">Mixed-paternity broods</th>
@@ -344,13 +344,13 @@ window.Quarto = {
 <p>where <span class="math inline">\(y_i\)</span> is the number of broods with mixed paternity, <span class="math inline">\(n_i\)</span> is the total number of broods genotyped, <span class="math inline">\(\mu_i\)</span> is the expected mixed-paternity prevalence, and the precision parameter <span class="math inline">\(\phi\)</span> describes extra-binomial variation among study units.</p>
 <p>The linear predictor was modelled as:</p>
 <p><span class="math display">\[\mathrm{logit}(\mu_i) = \alpha + \mathbf{X}_i \boldsymbol{\beta} + u_{\mathrm{reference}[i]} + u_{\mathrm{species}[i]} + u_{\mathrm{phylo}[i]}\]</span></p>
-<p>where <span class="math inline">\(\alpha\)</span> is the intercept, <span class="math inline">\(\mathbf{X}_i \boldsymbol{\beta}\)</span> represents fixed biological and methodological moderators, and <span class="math inline">\(u_{\mathrm{reference}}\)</span>, <span class="math inline">\(u_{\mathrm{species}}\)</span>, and <span class="math inline">\(u_{\mathrm{phylo}}\)</span> represent reference-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively.</p>
+<p>where <span class="math inline">\(\alpha\)</span> is the intercept, <span class="math inline">\(\mathbf{X}_i \boldsymbol{\beta}\)</span> represents fixed biological and methodological moderators, and <span class="math inline">\(u_{\mathrm{reference}}\)</span>, <span class="math inline">\(u_{\mathrm{species}}\)</span>, and <span class="math inline">\(u_{\mathrm{phylo}}\)</span> represent study-identity-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively. Study identity (<code>Study_ID</code>) is an analytical grouping variable, not a bibliographic-publication count; one study identity can incorporate evidence reported across more than one source.</p>
 </section>
 <section id="population-level-intercept-prevalence" class="level2" data-number="4.5">
 <h2 data-number="4.5" class="anchored" data-anchor-id="population-level-intercept-prevalence"><span class="header-section-number">4.5</span> Population-level intercept prevalence</h2>
 <section id="model" class="level3" data-number="4.5.1">
 <h3 data-number="4.5.1" class="anchored" data-anchor-id="model"><span class="header-section-number">4.5.1</span> Model</h3>
-<p>The intercept-only model estimated the population-level intercept while quantifying study-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed studies or species.</p>
+<p>The intercept-only model estimated the population-level intercept while quantifying study-identity-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed study identities or species.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -467,7 +467,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <td style="text-align: right;">73.156</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Study-level SD</td>
+<td style="text-align: left;">Study-identity-level SD</td>
 <td style="text-align: right;">0.238</td>
 <td style="text-align: right;">0.013</td>
 <td style="text-align: right;">0.484</td>
@@ -1138,7 +1138,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>overall_data_summary <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
 <span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
 <span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">Observations =</span> <span class="fu">n</span>(),</span>
-<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">Studies =</span> <span class="fu">n_distinct</span>(Study_ID),</span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">`Study identities` =</span> <span class="fu">n_distinct</span>(Study_ID),</span>
 <span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">Species =</span> <span class="fu">n_distinct</span>(species_phylo_brms),</span>
 <span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total broods</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(n_total_broods, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Mixed-paternity broods</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(n_mixed_broods, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
@@ -1160,13 +1160,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>$$\mathrm{logit}(\mu_i) = \alpha + \mathbf{X}_i \boldsymbol{\beta} + u_{\mathrm{reference}[i]} + u_{\mathrm{species}[i]} + u_{\mathrm{phylo}<span class="co">[</span><span class="ot">i</span><span class="co">]</span>}$$</span>
 <span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>where $\alpha$ is the intercept, $\mathbf{X}_i \boldsymbol{\beta}$ represents fixed biological and methodological moderators, and $u_{\mathrm{reference}}$, $u_{\mathrm{species}}$, and $u_{\mathrm{phylo}}$ represent reference-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively.</span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>where $\alpha$ is the intercept, $\mathbf{X}_i \boldsymbol{\beta}$ represents fixed biological and methodological moderators, and $u_{\mathrm{reference}}$, $u_{\mathrm{species}}$, and $u_{\mathrm{phylo}}$ represent study-identity-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively. Study identity (`Study_ID`) is an analytical grouping variable, not a bibliographic-publication count; one study identity can incorporate evidence reported across more than one source.</span>
 <span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a><span class="fu">## Population-level intercept prevalence</span></span>
 <span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a><span class="fu">### Model</span></span>
 <span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>The intercept-only model estimated the population-level intercept while quantifying study-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed studies or species.</span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>The intercept-only model estimated the population-level intercept while quantifying study-identity-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed study identities or species.</span>
 <span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
@@ -1222,7 +1222,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a>  <span class="at">Parameter =</span> <span class="fu">c</span>(</span>
 <span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Intercept (logit scale)"</span>,</span>
 <span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Population-level intercept prevalence (%)"</span>,</span>
-<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Study-level SD"</span>,</span>
+<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Study-identity-level SD"</span>,</span>
 <span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Non-phylogenetic species-level SD"</span>,</span>
 <span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Phylogenetic species-level SD"</span>,</span>
 <span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Beta-binomial precision (phi)"</span></span>

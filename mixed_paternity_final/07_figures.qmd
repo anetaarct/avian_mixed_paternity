@@ -125,7 +125,7 @@ species_annotations <- tibble(species = tree_figure$tip.label) %>%
           all(is.na(n_total_broods)), NA_real_,
           sum(n_total_broods, na.rm = TRUE)
         ),
-        n_studies_species = n_distinct(Study_ID[!is.na(Study_ID)]),
+        n_study_identities_species = n_distinct(Study_ID[!is.na(Study_ID)]),
         migration_model = dplyr::first(
           na.omit(as.character(migration)), default = NA_character_
         ),
@@ -164,14 +164,14 @@ stopifnot(
   ),
   !anyNA(species_annotations$total_broods),
   all(species_annotations$total_broods > 0),
-  all(species_annotations$n_studies_species >= 0)
+  all(species_annotations$n_study_identities_species >= 0)
 )
 
 dir.create("tables", showWarnings = FALSE)
 readr::write_csv(
   species_annotations %>%
     select(
-      species, mixed_broods, total_broods, n_studies_species,
+      species, mixed_broods, total_broods, n_study_identities_species,
       mixed_paternity_prevalence, sampling_support,
       migration, maximum_clutch_size
     ),
@@ -448,7 +448,7 @@ map_data_points <- mixed_pat %>%
   ) %>%
   group_by(Lat_round, Long_round) %>%
   summarise(
-    n_studies = n_distinct(Study_ID),
+    n_study_identities = n_distinct(Study_ID),
     mixed_broods = sum(n_mixed_broods),
     total_broods = sum(n_total_broods),
     mixed_paternity = mixed_broods / total_broods,
@@ -470,8 +470,8 @@ readr::write_csv(
 map_validation <- tibble(
   check = c(
     "Unique plotted coordinates",
-    "Minimum number of studies",
-    "Maximum number of studies",
+    "Minimum number of study identities",
+    "Maximum number of study identities",
     "Minimum pooled prevalence",
     "Maximum pooled prevalence",
     "Geocoded records with missing or invalid brood denominator",
@@ -482,8 +482,8 @@ map_validation <- tibble(
   ),
   value = c(
     nrow(map_data_points),
-    min(map_data_points$n_studies),
-    max(map_data_points$n_studies),
+    min(map_data_points$n_study_identities),
+    max(map_data_points$n_study_identities),
     min(map_data_points$mixed_paternity),
     max(map_data_points$mixed_paternity),
     sum(
@@ -504,7 +504,7 @@ knitr::kable(map_validation, caption = "Validation of geographic map data")
 ```
 
 ```{r}
-#| fig-cap: "Global geographic distribution of studies included in the comparative meta-analysis of avian mixed paternity. Point size indicates the number of distinct studies associated with each rounded geographic coordinate, and point colour indicates pooled observed mixed-paternity prevalence, calculated as the total number of mixed-paternity broods divided by the total number of broods sampled at that location."
+#| fig-cap: "Global geographic distribution of analytical study identities included in the comparative meta-analysis of avian mixed paternity. Point size indicates the number of distinct study identities associated with each rounded geographic coordinate, and point colour indicates pooled observed mixed-paternity prevalence, calculated as the total number of mixed-paternity broods divided by the total number of broods sampled at that location."
 
 p_map <- ggplot() +
   geom_polygon(
@@ -519,14 +519,14 @@ p_map <- ggplot() +
     aes(
       x = Long_round,
       y = Lat_round,
-      size = n_studies,
+      size = n_study_identities,
       colour = mixed_paternity
     ),
     alpha = 0.78
   ) +
   coord_quickmap() +
   scale_size_continuous(
-    name = "Number of studies",
+    name = "Number of study identities",
     range = c(1.7, 8),
     breaks = c(1, 3, 5, 8, 11)
   ) +

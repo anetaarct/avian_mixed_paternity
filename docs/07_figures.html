@@ -366,7 +366,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>          <span class="fu">all</span>(<span class="fu">is.na</span>(n_total_broods)), <span class="cn">NA_real_</span>,</span>
 <span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>          <span class="fu">sum</span>(n_total_broods, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">n_studies_species =</span> <span class="fu">n_distinct</span>(Study_ID[<span class="sc">!</span><span class="fu">is.na</span>(Study_ID)]),</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">n_study_identities_species =</span> <span class="fu">n_distinct</span>(Study_ID[<span class="sc">!</span><span class="fu">is.na</span>(Study_ID)]),</span>
 <span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">migration_model =</span> dplyr<span class="sc">::</span><span class="fu">first</span>(</span>
 <span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>          <span class="fu">na.omit</span>(<span class="fu">as.character</span>(migration)), <span class="at">default =</span> <span class="cn">NA_character_</span></span>
 <span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        ),</span>
@@ -405,14 +405,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>  ),</span>
 <span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!</span><span class="fu">anyNA</span>(species_annotations<span class="sc">$</span>total_broods),</span>
 <span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">all</span>(species_annotations<span class="sc">$</span>total_broods <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">all</span>(species_annotations<span class="sc">$</span>n_studies_species <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">all</span>(species_annotations<span class="sc">$</span>n_study_identities_species <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
 <span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"tables"</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_csv</span>(</span>
 <span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>  species_annotations <span class="sc">%&gt;%</span></span>
 <span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>      species, mixed_broods, total_broods, n_studies_species,</span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>      species, mixed_broods, total_broods, n_study_identities_species,</span>
 <span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>      mixed_paternity_prevalence, sampling_support,</span>
 <span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>      migration, maximum_clutch_size</span>
 <span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>    ),</span>
@@ -702,7 +702,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Lat_round, Long_round) <span class="sc">%&gt;%</span></span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_studies =</span> <span class="fu">n_distinct</span>(Study_ID),</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_study_identities =</span> <span class="fu">n_distinct</span>(Study_ID),</span>
 <span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">mixed_broods =</span> <span class="fu">sum</span>(n_mixed_broods),</span>
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_broods =</span> <span class="fu">sum</span>(n_total_broods),</span>
 <span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">mixed_paternity =</span> mixed_broods <span class="sc">/</span> total_broods,</span>
@@ -724,8 +724,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>map_validation <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
 <span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">check =</span> <span class="fu">c</span>(</span>
 <span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Unique plotted coordinates"</span>,</span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Minimum number of studies"</span>,</span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Maximum number of studies"</span>,</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Minimum number of study identities"</span>,</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Maximum number of study identities"</span>,</span>
 <span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Minimum pooled prevalence"</span>,</span>
 <span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Maximum pooled prevalence"</span>,</span>
 <span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Geocoded records with missing or invalid brood denominator"</span>,</span>
@@ -736,8 +736,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>  ),</span>
 <span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> <span class="fu">c</span>(</span>
 <span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(map_data_points),</span>
-<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(map_data_points<span class="sc">$</span>n_studies),</span>
-<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(map_data_points<span class="sc">$</span>n_studies),</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(map_data_points<span class="sc">$</span>n_study_identities),</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(map_data_points<span class="sc">$</span>n_study_identities),</span>
 <span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(map_data_points<span class="sc">$</span>mixed_paternity),</span>
 <span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(map_data_points<span class="sc">$</span>mixed_paternity),</span>
 <span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(</span>
@@ -771,11 +771,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">498</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Minimum number of studies</td>
+<td style="text-align: left;">Minimum number of study identities</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Maximum number of studies</td>
+<td style="text-align: left;">Maximum number of study identities</td>
 <td style="text-align: right;">11</td>
 </tr>
 <tr class="even">
@@ -826,14 +826,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> Long_round,</span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> Lat_round,</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> n_studies,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> n_study_identities,</span>
 <span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">colour =</span> mixed_paternity</span>
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.78</span></span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_quickmap</span>() <span class="sc">+</span></span>
 <span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Number of studies"</span>,</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Number of study identities"</span>,</span>
 <span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> <span class="fu">c</span>(<span class="fl">1.7</span>, <span class="dv">8</span>),</span>
 <span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">11</span>)</span>
 <span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
@@ -874,7 +874,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="07_figures_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Global geographic distribution of studies included in the comparative meta-analysis of avian mixed paternity. Point size indicates the number of distinct studies associated with each rounded geographic coordinate, and point colour indicates pooled observed mixed-paternity prevalence, calculated as the total number of mixed-paternity broods divided by the total number of broods sampled at that location.</figcaption>
+<figcaption>Global geographic distribution of analytical study identities included in the comparative meta-analysis of avian mixed paternity. Point size indicates the number of distinct study identities associated with each rounded geographic coordinate, and point colour indicates pooled observed mixed-paternity prevalence, calculated as the total number of mixed-paternity broods divided by the total number of broods sampled at that location.</figcaption>
 </figure>
 </div>
 </div>
@@ -2326,7 +2326,7 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-133"><a href="#cb31-133" aria-hidden="true" tabindex="-1"></a>          <span class="fu">all</span>(<span class="fu">is.na</span>(n_total_broods)), <span class="cn">NA_real_</span>,</span>
 <span id="cb31-134"><a href="#cb31-134" aria-hidden="true" tabindex="-1"></a>          <span class="fu">sum</span>(n_total_broods, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb31-135"><a href="#cb31-135" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb31-136"><a href="#cb31-136" aria-hidden="true" tabindex="-1"></a>        <span class="at">n_studies_species =</span> <span class="fu">n_distinct</span>(Study_ID[<span class="sc">!</span><span class="fu">is.na</span>(Study_ID)]),</span>
+<span id="cb31-136"><a href="#cb31-136" aria-hidden="true" tabindex="-1"></a>        <span class="at">n_study_identities_species =</span> <span class="fu">n_distinct</span>(Study_ID[<span class="sc">!</span><span class="fu">is.na</span>(Study_ID)]),</span>
 <span id="cb31-137"><a href="#cb31-137" aria-hidden="true" tabindex="-1"></a>        <span class="at">migration_model =</span> dplyr<span class="sc">::</span><span class="fu">first</span>(</span>
 <span id="cb31-138"><a href="#cb31-138" aria-hidden="true" tabindex="-1"></a>          <span class="fu">na.omit</span>(<span class="fu">as.character</span>(migration)), <span class="at">default =</span> <span class="cn">NA_character_</span></span>
 <span id="cb31-139"><a href="#cb31-139" aria-hidden="true" tabindex="-1"></a>        ),</span>
@@ -2365,14 +2365,14 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-172"><a href="#cb31-172" aria-hidden="true" tabindex="-1"></a>  ),</span>
 <span id="cb31-173"><a href="#cb31-173" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!</span><span class="fu">anyNA</span>(species_annotations<span class="sc">$</span>total_broods),</span>
 <span id="cb31-174"><a href="#cb31-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">all</span>(species_annotations<span class="sc">$</span>total_broods <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
-<span id="cb31-175"><a href="#cb31-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">all</span>(species_annotations<span class="sc">$</span>n_studies_species <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb31-175"><a href="#cb31-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">all</span>(species_annotations<span class="sc">$</span>n_study_identities_species <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
 <span id="cb31-176"><a href="#cb31-176" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb31-177"><a href="#cb31-177" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-178"><a href="#cb31-178" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"tables"</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb31-179"><a href="#cb31-179" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_csv</span>(</span>
 <span id="cb31-180"><a href="#cb31-180" aria-hidden="true" tabindex="-1"></a>  species_annotations <span class="sc">%&gt;%</span></span>
 <span id="cb31-181"><a href="#cb31-181" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
-<span id="cb31-182"><a href="#cb31-182" aria-hidden="true" tabindex="-1"></a>      species, mixed_broods, total_broods, n_studies_species,</span>
+<span id="cb31-182"><a href="#cb31-182" aria-hidden="true" tabindex="-1"></a>      species, mixed_broods, total_broods, n_study_identities_species,</span>
 <span id="cb31-183"><a href="#cb31-183" aria-hidden="true" tabindex="-1"></a>      mixed_paternity_prevalence, sampling_support,</span>
 <span id="cb31-184"><a href="#cb31-184" aria-hidden="true" tabindex="-1"></a>      migration, maximum_clutch_size</span>
 <span id="cb31-185"><a href="#cb31-185" aria-hidden="true" tabindex="-1"></a>    ),</span>
@@ -2649,7 +2649,7 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-460"><a href="#cb31-460" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
 <span id="cb31-461"><a href="#cb31-461" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Lat_round, Long_round) <span class="sc">%&gt;%</span></span>
 <span id="cb31-462"><a href="#cb31-462" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb31-463"><a href="#cb31-463" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_studies =</span> <span class="fu">n_distinct</span>(Study_ID),</span>
+<span id="cb31-463"><a href="#cb31-463" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_study_identities =</span> <span class="fu">n_distinct</span>(Study_ID),</span>
 <span id="cb31-464"><a href="#cb31-464" aria-hidden="true" tabindex="-1"></a>    <span class="at">mixed_broods =</span> <span class="fu">sum</span>(n_mixed_broods),</span>
 <span id="cb31-465"><a href="#cb31-465" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_broods =</span> <span class="fu">sum</span>(n_total_broods),</span>
 <span id="cb31-466"><a href="#cb31-466" aria-hidden="true" tabindex="-1"></a>    <span class="at">mixed_paternity =</span> mixed_broods <span class="sc">/</span> total_broods,</span>
@@ -2671,8 +2671,8 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-482"><a href="#cb31-482" aria-hidden="true" tabindex="-1"></a>map_validation <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
 <span id="cb31-483"><a href="#cb31-483" aria-hidden="true" tabindex="-1"></a>  <span class="at">check =</span> <span class="fu">c</span>(</span>
 <span id="cb31-484"><a href="#cb31-484" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Unique plotted coordinates"</span>,</span>
-<span id="cb31-485"><a href="#cb31-485" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Minimum number of studies"</span>,</span>
-<span id="cb31-486"><a href="#cb31-486" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Maximum number of studies"</span>,</span>
+<span id="cb31-485"><a href="#cb31-485" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Minimum number of study identities"</span>,</span>
+<span id="cb31-486"><a href="#cb31-486" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Maximum number of study identities"</span>,</span>
 <span id="cb31-487"><a href="#cb31-487" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Minimum pooled prevalence"</span>,</span>
 <span id="cb31-488"><a href="#cb31-488" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Maximum pooled prevalence"</span>,</span>
 <span id="cb31-489"><a href="#cb31-489" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Geocoded records with missing or invalid brood denominator"</span>,</span>
@@ -2683,8 +2683,8 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-494"><a href="#cb31-494" aria-hidden="true" tabindex="-1"></a>  ),</span>
 <span id="cb31-495"><a href="#cb31-495" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> <span class="fu">c</span>(</span>
 <span id="cb31-496"><a href="#cb31-496" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(map_data_points),</span>
-<span id="cb31-497"><a href="#cb31-497" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(map_data_points<span class="sc">$</span>n_studies),</span>
-<span id="cb31-498"><a href="#cb31-498" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(map_data_points<span class="sc">$</span>n_studies),</span>
+<span id="cb31-497"><a href="#cb31-497" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(map_data_points<span class="sc">$</span>n_study_identities),</span>
+<span id="cb31-498"><a href="#cb31-498" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(map_data_points<span class="sc">$</span>n_study_identities),</span>
 <span id="cb31-499"><a href="#cb31-499" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(map_data_points<span class="sc">$</span>mixed_paternity),</span>
 <span id="cb31-500"><a href="#cb31-500" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(map_data_points<span class="sc">$</span>mixed_paternity),</span>
 <span id="cb31-501"><a href="#cb31-501" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(</span>
@@ -2705,7 +2705,7 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-516"><a href="#cb31-516" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb31-517"><a href="#cb31-517" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-520"><a href="#cb31-520" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb31-521"><a href="#cb31-521" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Global geographic distribution of studies included in the comparative meta-analysis of avian mixed paternity. Point size indicates the number of distinct studies associated with each rounded geographic coordinate, and point colour indicates pooled observed mixed-paternity prevalence, calculated as the total number of mixed-paternity broods divided by the total number of broods sampled at that location."</span></span>
+<span id="cb31-521"><a href="#cb31-521" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Global geographic distribution of analytical study identities included in the comparative meta-analysis of avian mixed paternity. Point size indicates the number of distinct study identities associated with each rounded geographic coordinate, and point colour indicates pooled observed mixed-paternity prevalence, calculated as the total number of mixed-paternity broods divided by the total number of broods sampled at that location."</span></span>
 <span id="cb31-522"><a href="#cb31-522" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-523"><a href="#cb31-523" aria-hidden="true" tabindex="-1"></a>p_map <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
 <span id="cb31-524"><a href="#cb31-524" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(</span>
@@ -2720,14 +2720,14 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-533"><a href="#cb31-533" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
 <span id="cb31-534"><a href="#cb31-534" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> Long_round,</span>
 <span id="cb31-535"><a href="#cb31-535" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> Lat_round,</span>
-<span id="cb31-536"><a href="#cb31-536" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> n_studies,</span>
+<span id="cb31-536"><a href="#cb31-536" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> n_study_identities,</span>
 <span id="cb31-537"><a href="#cb31-537" aria-hidden="true" tabindex="-1"></a>      <span class="at">colour =</span> mixed_paternity</span>
 <span id="cb31-538"><a href="#cb31-538" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb31-539"><a href="#cb31-539" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.78</span></span>
 <span id="cb31-540"><a href="#cb31-540" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb31-541"><a href="#cb31-541" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_quickmap</span>() <span class="sc">+</span></span>
 <span id="cb31-542"><a href="#cb31-542" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(</span>
-<span id="cb31-543"><a href="#cb31-543" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Number of studies"</span>,</span>
+<span id="cb31-543"><a href="#cb31-543" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Number of study identities"</span>,</span>
 <span id="cb31-544"><a href="#cb31-544" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> <span class="fu">c</span>(<span class="fl">1.7</span>, <span class="dv">8</span>),</span>
 <span id="cb31-545"><a href="#cb31-545" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">11</span>)</span>
 <span id="cb31-546"><a href="#cb31-546" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>

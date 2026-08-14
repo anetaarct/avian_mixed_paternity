@@ -48,7 +48,7 @@ phylo_mat <- readRDS("data/phylo_mat.rds")
 overall_data_summary <- data_overall_study %>%
   summarise(
     Observations = n(),
-    Studies = n_distinct(Study_ID),
+    `Study identities` = n_distinct(Study_ID),
     Species = n_distinct(species_phylo_brms),
     `Total broods` = sum(n_total_broods, na.rm = TRUE),
     `Mixed-paternity broods` = sum(n_mixed_broods, na.rm = TRUE),
@@ -70,13 +70,13 @@ The linear predictor was modelled as:
 
 $$\mathrm{logit}(\mu_i) = \alpha + \mathbf{X}_i \boldsymbol{\beta} + u_{\mathrm{reference}[i]} + u_{\mathrm{species}[i]} + u_{\mathrm{phylo}[i]}$$
 
-where $\alpha$ is the intercept, $\mathbf{X}_i \boldsymbol{\beta}$ represents fixed biological and methodological moderators, and $u_{\mathrm{reference}}$, $u_{\mathrm{species}}$, and $u_{\mathrm{phylo}}$ represent reference-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively.
+where $\alpha$ is the intercept, $\mathbf{X}_i \boldsymbol{\beta}$ represents fixed biological and methodological moderators, and $u_{\mathrm{reference}}$, $u_{\mathrm{species}}$, and $u_{\mathrm{phylo}}$ represent study-identity-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively. Study identity (`Study_ID`) is an analytical grouping variable, not a bibliographic-publication count; one study identity can incorporate evidence reported across more than one source.
 
 ## Population-level intercept prevalence
 
 ### Model
 
-The intercept-only model estimated the population-level intercept while quantifying study-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed studies or species.
+The intercept-only model estimated the population-level intercept while quantifying study-identity-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed study identities or species.
 
 ```{r}
 #| eval: false
@@ -132,7 +132,7 @@ model_summary_table <- tibble::tibble(
   Parameter = c(
     "Intercept (logit scale)",
     "Population-level intercept prevalence (%)",
-    "Study-level SD",
+    "Study-identity-level SD",
     "Non-phylogenetic species-level SD",
     "Phylogenetic species-level SD",
     "Beta-binomial precision (phi)"
