@@ -1466,13 +1466,13 @@ Figure&nbsp;8.13: Predicted mixed-paternity prevalence across cooperative-breedi
 <section id="forest-plots" class="level2" data-number="8.9">
 <h2 data-number="8.9" class="anchored" data-anchor-id="forest-plots"><span class="header-section-number">8.9</span> Forest plots</h2>
 <p><strong>Single-moderator models</strong></p><details class="code-fold forest-code">
-<summary>Show code used to generate the single-moderator forest plot</summary>
+<summary>Code</summary>
 <div class="sourceCode"><pre class="sourceCode r code-with-copy"><code class="sourceCode r">#| echo: true
 #| eval: false
 #| message: false
 #| warning: false
 #| code-fold: true
-#| code-summary: &quot;Show code used to generate the single-moderator forest plot&quot;
+#| code-summary: &quot;Code&quot;
 
 forest_dat_unchanged &lt;- tibble::tribble(
   ~group, ~moderator, ~estimate, ~lower, ~upper,
@@ -1568,15 +1568,14 @@ Figure&nbsp;8.14: Posterior mean effects and 95% equal-tailed credible intervals
 </figcaption>
 </figure>
 </div>
-<p><a href="Figures/Forest_plot8.pdf">Download the single-moderator forest plot as PDF</a></p>
 <p><strong>Full multivariable model</strong></p><details class="code-fold forest-code">
-<summary>Show code used to generate the full-model forest plot</summary>
+<summary>Code</summary>
 <div class="sourceCode"><pre class="sourceCode r code-with-copy"><code class="sourceCode r">#| echo: true
 #| eval: false
 #| message: false
 #| warning: false
 #| code-fold: true
-#| code-summary: &quot;Show code used to generate the full-model forest plot&quot;
+#| code-summary: &quot;Code&quot;
 
 full_model_path &lt;- c(
   &quot;models/model_full_BG.rds&quot;,
@@ -1695,7 +1694,6 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 </figcaption>
 </figure>
 </div>
-<p><a href="Figures/model_diagnostics/full_model_fixed_effects_forest_plot.pdf">Download the full-model forest plot as PDF</a></p>
 
 </section>
 
@@ -3320,7 +3318,6 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-1205"><a href="#cb31-1205" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/Forest_plot8.png"</span>)</span>
 <span id="cb31-1206"><a href="#cb31-1206" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb31-1207"><a href="#cb31-1207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-1208"><a href="#cb31-1208" aria-hidden="true" tabindex="-1"></a><span class="ot">[Download the single-moderator forest plot as PDF](Figures/Forest_plot8.pdf)</span></span>
 <span id="cb31-1209"><a href="#cb31-1209" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-1210"><a href="#cb31-1210" aria-hidden="true" tabindex="-1"></a><span class="fu">### Full multivariable model</span></span>
 <span id="cb31-1211"><a href="#cb31-1211" aria-hidden="true" tabindex="-1"></a></span>
@@ -3333,7 +3330,6 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-1218"><a href="#cb31-1218" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png"</span>)</span>
 <span id="cb31-1219"><a href="#cb31-1219" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb31-1220"><a href="#cb31-1220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-1221"><a href="#cb31-1221" aria-hidden="true" tabindex="-1"></a><span class="ot">[Download the full-model forest plot as PDF](Figures/model_diagnostics/full_model_fixed_effects_forest_plot.pdf)</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

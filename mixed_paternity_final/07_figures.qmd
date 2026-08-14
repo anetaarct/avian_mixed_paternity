@@ -1064,7 +1064,7 @@ p_cooperative
 #| message: false
 #| warning: false
 #| code-fold: true
-#| code-summary: "Show code used to generate the single-moderator forest plot"
+#| code-summary: "Code"
 
 forest_dat_unchanged <- tibble::tribble(
   ~group, ~moderator, ~estimate, ~lower, ~upper,
@@ -1160,8 +1160,6 @@ ggplot2::ggsave(
 knitr::include_graphics("Figures/Forest_plot8.png")
 ```
 
-[Download the single-moderator forest plot as PDF](Figures/Forest_plot8.pdf)
-
 ### Full multivariable model
 
 ```{r}
@@ -1170,7 +1168,7 @@ knitr::include_graphics("Figures/Forest_plot8.png")
 #| message: false
 #| warning: false
 #| code-fold: true
-#| code-summary: "Show code used to generate the full-model forest plot"
+#| code-summary: "Code"
 
 full_model_path <- c(
   "models/model_full_BG.rds",
@@ -1288,5 +1286,3 @@ ggplot2::ggsave(
 
 knitr::include_graphics("Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png")
 ```
-
-[Download the full-model forest plot as PDF](Figures/model_diagnostics/full_model_fixed_effects_forest_plot.pdf)
