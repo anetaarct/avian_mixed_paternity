@@ -1465,7 +1465,99 @@ Figure&nbsp;8.13: Predicted mixed-paternity prevalence across cooperative-breedi
 </section>
 <section id="forest-plots" class="level2" data-number="8.9">
 <h2 data-number="8.9" class="anchored" data-anchor-id="forest-plots"><span class="header-section-number">8.9</span> Forest plots</h2>
-<p><strong>Single-moderator models</strong></p>
+<p><strong>Single-moderator models</strong></p><details class="code-fold forest-code">
+<summary>Show code used to generate the single-moderator forest plot</summary>
+<div class="sourceCode"><pre class="sourceCode r code-with-copy"><code class="sourceCode r">#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+#| code-fold: true
+#| code-summary: &quot;Show code used to generate the single-moderator forest plot&quot;
+
+forest_dat_unchanged &lt;- tibble::tribble(
+  ~group, ~moderator, ~estimate, ~lower, ~upper,
+  &quot;Methodological&quot;, &quot;Nest box vs. natural nests&quot;, 0.29, -0.06, 0.63,
+  &quot;Methodological&quot;, &quot;Marker type: DNA fingerprinting vs. microsatellites&quot;, -0.48, -0.67, -0.30,
+  &quot;Ecological and life-history&quot;, &quot;Migratory strategy: partial/resident vs. regular&quot;, -0.39, -0.70, -0.07,
+  &quot;Ecological and life-history&quot;, &quot;Nest type: ground vs. other enclosed nests&quot;, 0.50, -0.30, 1.07,
+  &quot;Ecological and life-history&quot;, &quot;Coloniality&quot;, -0.14, -0.54, 0.26,
+  &quot;Breeding systems&quot;, &quot;Cooperative breeding&quot;, -0.21, -0.72, 0.30,
+  &quot;Breeding systems&quot;, &quot;Brouwer &amp; Griffith: social monogamy vs. no social bond&quot;, -0.95, -1.79, -0.08
+)
+
+read_common_scaling_effect &lt;- function(path, term, group, moderator) {
+  readr::read_csv(path, show_col_types = FALSE) |&gt;
+    dplyr::filter(.data$term == .env$term) |&gt;
+    dplyr::transmute(
+      group = .env$group,
+      moderator = .env$moderator,
+      estimate = .data$Estimate,
+      lower = .data$Q2.5,
+      upper = .data$Q97.5
+    )
+}
+
+forest_dat_refitted &lt;- dplyr::bind_rows(
+  read_common_scaling_effect(
+    &quot;tables/common_scaling/model_study_duration_fixed_effects.csv&quot;,
+    &quot;study_duration_sc&quot;, &quot;Methodological&quot;, &quot;Study duration&quot;
+  ),
+  read_common_scaling_effect(
+    &quot;tables/common_scaling/model_clutch_size_fixed_effects.csv&quot;,
+    &quot;CS_max_sc&quot;, &quot;Ecological and life-history&quot;, &quot;Clutch size&quot;
+  ),
+  read_common_scaling_effect(
+    &quot;tables/common_scaling/model_log_body_mass_fixed_effects.csv&quot;,
+    &quot;log_body_mass_sc&quot;, &quot;Ecological and life-history&quot;, &quot;Body mass&quot;
+  ),
+  read_common_scaling_effect(
+    &quot;tables/common_scaling/model_abs_latitude_fixed_effects.csv&quot;,
+    &quot;abs_lat_sc&quot;, &quot;Ecological and life-history&quot;, &quot;Absolute latitude&quot;
+  )
+)
+
+forest_dat &lt;- dplyr::bind_rows(forest_dat_unchanged, forest_dat_refitted)
+
+forest_dat &lt;- forest_dat %&gt;%
+  dplyr::mutate(
+    group = factor(group, levels = c(&quot;Methodological&quot;, &quot;Ecological and life-history&quot;, &quot;Breeding systems&quot;)),
+    moderator = factor(moderator, levels = rev(moderator))
+  )
+
+p_forest_main &lt;- ggplot2::ggplot(forest_dat, ggplot2::aes(x = estimate, y = moderator, color = group)) +
+  ggplot2::geom_vline(xintercept = 0, linewidth = 0.5, color = &quot;grey60&quot;) +
+  ggplot2::geom_errorbarh(ggplot2::aes(xmin = lower, xmax = upper), height = 0.15, linewidth = 1.2) +
+  ggplot2::geom_point(size = 4.5) +
+  ggplot2::facet_grid(group ~ ., scales = &quot;free_y&quot;, space = &quot;free_y&quot;) +
+  ggplot2::scale_color_manual(values = c(
+    &quot;Methodological&quot; = &quot;#E69F00&quot;,
+    &quot;Ecological and life-history&quot; = &quot;#0072B2&quot;,
+    &quot;Breeding systems&quot; = &quot;#009E73&quot;
+  )) +
+  ggplot2::labs(x = &quot;Posterior effect size (log-odds scale)&quot;, y = NULL) +
+  ggplot2::theme_classic(base_size = 14) +
+  ggplot2::theme(
+    strip.background = ggplot2::element_blank(),
+    strip.text.y = ggplot2::element_text(face = &quot;bold&quot;, angle = 0, hjust = 0, size = 11),
+    axis.text.y = ggplot2::element_text(size = 11, color = &quot;black&quot;),
+    axis.text.x = ggplot2::element_text(color = &quot;black&quot;),
+    axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 12), face = &quot;bold&quot;),
+    legend.position = &quot;none&quot;,
+    panel.spacing = grid::unit(1.5, &quot;lines&quot;),
+    plot.margin = ggplot2::margin(10, 25, 10, 20)
+  )
+
+dir.create(&quot;Figures/common_scaling&quot;, recursive = TRUE, showWarnings = FALSE)
+ggplot2::ggsave(
+  &quot;Figures/common_scaling/Forest_plot8.pdf&quot;, p_forest_main,
+  width = 14, height = 8.6, units = &quot;in&quot;
+)
+ggplot2::ggsave(
+  &quot;Figures/common_scaling/Forest_plot8.png&quot;, p_forest_main,
+  width = 14, height = 8.6, units = &quot;in&quot;, dpi = 300
+)
+</code></pre></div>
+</details>
 <div id="fig-forest-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-forest-plot-caption">
@@ -1477,7 +1569,122 @@ Figure&nbsp;8.14: Posterior mean effects and 95% equal-tailed credible intervals
 </figure>
 </div>
 <p><a href="Figures/Forest_plot8.pdf">Download the single-moderator forest plot as PDF</a></p>
-<p><strong>Full multivariable model</strong></p>
+<p><strong>Full multivariable model</strong></p><details class="code-fold forest-code">
+<summary>Show code used to generate the full-model forest plot</summary>
+<div class="sourceCode"><pre class="sourceCode r code-with-copy"><code class="sourceCode r">#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+#| code-fold: true
+#| code-summary: &quot;Show code used to generate the full-model forest plot&quot;
+
+full_model_path &lt;- c(
+  &quot;models/model_full_BG.rds&quot;,
+  &quot;models/model_full_brouwer_griffith.rds&quot;
+) |&gt;
+  purrr::keep(file.exists) |&gt;
+  dplyr::first(default = NA_character_)
+
+stopifnot(!is.na(full_model_path))
+model_full_brouwer_griffith &lt;- readRDS(full_model_path)
+
+full_fixef &lt;- as.data.frame(brms::fixef(model_full_brouwer_griffith)) |&gt;
+  tibble::rownames_to_column(&quot;term&quot;) |&gt;
+  dplyr::filter(term != &quot;Intercept&quot;)
+
+lower_name &lt;- intersect(c(&quot;Q2.5&quot;, &quot;l-95% CI&quot;), names(full_fixef))[1]
+upper_name &lt;- intersect(c(&quot;Q97.5&quot;, &quot;u-95% CI&quot;), names(full_fixef))[1]
+
+full_effect_labels &lt;- c(
+  marker_type_modelmicrosatellite = &quot;Marker: microsatellite&quot;,
+  marker_type_modelmixed_other = &quot;Marker: mixed / other&quot;,
+  marker_type_modelSNPs = &quot;Marker: SNPs&quot;,
+  study_duration_sc = &quot;Study duration&quot;,
+  breeding_systemmonogamy = &quot;Breeding: monogamy&quot;,
+  breeding_systemno_social_bond = &quot;Breeding: no social bond&quot;,
+  breeding_systempolyandry = &quot;Breeding: polyandry&quot;,
+  nest_type_modelground = &quot;Nest type: ground&quot;,
+  nest_type_modelopen = &quot;Nest type: open&quot;,
+  nest_type_modelother_enclosed = &quot;Nest type: other enclosed&quot;,
+  migrationWeak = &quot;Migration: partial/resident&quot;,
+  coloniality1 = &quot;Coloniality&quot;,
+  CS_max_sc = &quot;Maximum clutch size&quot;,
+  log_body_mass_sc = &quot;Body mass (log)&quot;,
+  abs_lat_sc = &quot;Absolute latitude&quot;
+)
+
+full_effect_groups &lt;- c(
+  marker_type_modelmicrosatellite = &quot;Methodological&quot;,
+  marker_type_modelmixed_other = &quot;Methodological&quot;,
+  marker_type_modelSNPs = &quot;Methodological&quot;,
+  study_duration_sc = &quot;Methodological&quot;,
+  breeding_systemmonogamy = &quot;Breeding system&quot;,
+  breeding_systemno_social_bond = &quot;Breeding system&quot;,
+  breeding_systempolyandry = &quot;Breeding system&quot;,
+  nest_type_modelground = &quot;Ecology/life history&quot;,
+  nest_type_modelopen = &quot;Ecology/life history&quot;,
+  nest_type_modelother_enclosed = &quot;Ecology/life history&quot;,
+  migrationWeak = &quot;Ecology/life history&quot;,
+  coloniality1 = &quot;Ecology/life history&quot;,
+  CS_max_sc = &quot;Ecology/life history&quot;,
+  log_body_mass_sc = &quot;Ecology/life history&quot;,
+  abs_lat_sc = &quot;Geography&quot;
+)
+
+forest_data_full &lt;- full_fixef |&gt;
+  dplyr::transmute(
+    predictor = dplyr::recode(term, !!!full_effect_labels, .default = term),
+    group = dplyr::recode(term, !!!full_effect_groups, .default = &quot;Other&quot;),
+    estimate = Estimate,
+    lower = .data[[lower_name]],
+    upper = .data[[upper_name]]
+  ) |&gt;
+  dplyr::mutate(
+    group = factor(
+      group,
+      levels = c(&quot;Methodological&quot;, &quot;Breeding system&quot;, &quot;Ecology/life history&quot;, &quot;Geography&quot;, &quot;Other&quot;)
+    ),
+    predictor = factor(predictor, levels = rev(predictor))
+  )
+
+p_full_model_forest &lt;- ggplot2::ggplot(
+  forest_data_full,
+  ggplot2::aes(x = estimate, y = predictor, colour = group)
+) +
+  ggplot2::geom_vline(
+    xintercept = 0, linetype = &quot;dashed&quot;, linewidth = 0.5, colour = &quot;grey45&quot;
+  ) +
+  ggplot2::geom_errorbarh(
+    ggplot2::aes(xmin = lower, xmax = upper), height = 0, linewidth = 1.1
+  ) +
+  ggplot2::geom_point(size = 2.8) +
+  ggplot2::scale_colour_manual(values = c(
+    &quot;Methodological&quot; = &quot;#2f6f73&quot;,
+    &quot;Breeding system&quot; = &quot;#9D174D&quot;,
+    &quot;Ecology/life history&quot; = &quot;#b35c35&quot;,
+    &quot;Geography&quot; = &quot;#4b6f9e&quot;,
+    &quot;Other&quot; = &quot;grey40&quot;
+  )) +
+  ggplot2::labs(
+    x = &quot;Posterior effect size (log-odds scale)&quot;, y = NULL, colour = NULL
+  ) +
+  ggplot2::theme_minimal(base_size = 12) +
+  ggplot2::theme(
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.grid.major.y = ggplot2::element_line(colour = &quot;grey90&quot;),
+    legend.position = &quot;bottom&quot;
+  )
+
+dir.create(&quot;Figures/model_diagnostics&quot;, recursive = TRUE, showWarnings = FALSE)
+ggplot2::ggsave(
+  &quot;Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png&quot;,
+  p_full_model_forest, width = 9, height = 6.8, dpi = 300
+)
+ggplot2::ggsave(
+  &quot;Figures/model_diagnostics/full_model_fixed_effects_forest_plot.pdf&quot;,
+  p_full_model_forest, width = 9, height = 6.8, device = &quot;pdf&quot;
+)</code></pre></div>
+</details>
 <div id="fig-full-model-forest-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-full-model-forest-plot-caption">
