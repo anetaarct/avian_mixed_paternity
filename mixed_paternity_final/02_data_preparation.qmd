@@ -401,8 +401,8 @@ software_versions <- tibble::tribble(
 
 knitr::kable(
   software_versions,
-  caption = "Software environment recorded for the final common-scaling model fits on Totoro."
+  caption = "Software environment recorded for the final common-scaling model fits."
 )
 ```
 
-The versions above describe the analytical environment used on Totoro to fit the final models and produce the reported posterior summaries. Any `sessionInfo()` retained in legacy local Quarto output describes only the website-rendering environment (R 4.5.1; posterior 1.6.1) and was not used to fit or summarise the final models.
+The versions above describe the analytical environment used to fit the final models and produce the reported posterior summaries. Any `sessionInfo()` retained in legacy local Quarto output describes only the website-rendering environment (R 4.5.1; posterior 1.6.1) and was not used to fit or summarise the final models.
