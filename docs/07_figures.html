@@ -1482,38 +1482,19 @@ forest_dat_unchanged &lt;- tibble::tribble(
   &quot;Ecological and life-history&quot;, &quot;Nest type: ground vs. other enclosed nests&quot;, 0.50, -0.30, 1.07,
   &quot;Ecological and life-history&quot;, &quot;Coloniality&quot;, -0.14, -0.54, 0.26,
   &quot;Breeding systems&quot;, &quot;Cooperative breeding&quot;, -0.21, -0.72, 0.30,
-  &quot;Breeding systems&quot;, &quot;Brouwer &amp; Griffith: social monogamy vs. no social bond&quot;, -0.95, -1.79, -0.08
+  &quot;Breeding systems&quot;, &quot;Brouwer &amp; Griffith: social monogamy vs. no social bond&quot;, -0.95, -1.79, -0.08,
+  &quot;Breeding systems&quot;, &quot;BIRDBASE mono-/polygamy: mixed vs. polygamy&quot;, -0.534, -1.049, -0.029,
+  &quot;Breeding systems&quot;, &quot;BIRDBASE mono-/polygamy: monogamy vs. polygamy&quot;, -0.588, -1.093, -0.085,
+  &quot;Breeding systems&quot;, &quot;Parental care: biparental vs. uniparental&quot;, -0.892, -1.494, -0.273,
+  &quot;Breeding systems&quot;, &quot;Parental care: cooperative care vs. uniparental&quot;, -1.138, -1.865, -0.398
 )
 
-read_common_scaling_effect &lt;- function(path, term, group, moderator) {
-  readr::read_csv(path, show_col_types = FALSE) |&gt;
-    dplyr::filter(.data$term == .env$term) |&gt;
-    dplyr::transmute(
-      group = .env$group,
-      moderator = .env$moderator,
-      estimate = .data$Estimate,
-      lower = .data$Q2.5,
-      upper = .data$Q97.5
-    )
-}
-
-forest_dat_refitted &lt;- dplyr::bind_rows(
-  read_common_scaling_effect(
-    &quot;tables/common_scaling/model_study_duration_fixed_effects.csv&quot;,
-    &quot;study_duration_sc&quot;, &quot;Methodological&quot;, &quot;Study duration&quot;
-  ),
-  read_common_scaling_effect(
-    &quot;tables/common_scaling/model_clutch_size_fixed_effects.csv&quot;,
-    &quot;CS_max_sc&quot;, &quot;Ecological and life-history&quot;, &quot;Clutch size&quot;
-  ),
-  read_common_scaling_effect(
-    &quot;tables/common_scaling/model_log_body_mass_fixed_effects.csv&quot;,
-    &quot;log_body_mass_sc&quot;, &quot;Ecological and life-history&quot;, &quot;Body mass&quot;
-  ),
-  read_common_scaling_effect(
-    &quot;tables/common_scaling/model_abs_latitude_fixed_effects.csv&quot;,
-    &quot;abs_lat_sc&quot;, &quot;Ecological and life-history&quot;, &quot;Absolute latitude&quot;
-  )
+forest_dat_refitted &lt;- tibble::tribble(
+  ~group, ~moderator, ~estimate, ~lower, ~upper,
+  &quot;Methodological&quot;, &quot;Study duration&quot;, -0.088, -0.167, -0.009,
+  &quot;Ecological and life-history&quot;, &quot;Clutch size&quot;, 0.330, 0.116, 0.545,
+  &quot;Ecological and life-history&quot;, &quot;Body mass&quot;, -0.008, -0.303, 0.289,
+  &quot;Ecological and life-history&quot;, &quot;Absolute latitude&quot;, -0.129, -0.251, -0.004
 )
 
 forest_dat &lt;- dplyr::bind_rows(forest_dat_unchanged, forest_dat_refitted)
@@ -1547,14 +1528,14 @@ p_forest_main &lt;- ggplot2::ggplot(forest_dat, ggplot2::aes(x = estimate, y = m
     plot.margin = ggplot2::margin(10, 25, 10, 20)
   )
 
-dir.create(&quot;Figures/common_scaling&quot;, recursive = TRUE, showWarnings = FALSE)
+dir.create(&quot;Figures&quot;, recursive = TRUE, showWarnings = FALSE)
 ggplot2::ggsave(
-  &quot;Figures/common_scaling/Forest_plot8.pdf&quot;, p_forest_main,
-  width = 14, height = 8.6, units = &quot;in&quot;
+  &quot;Figures/Forest_plot8.pdf&quot;, p_forest_main,
+  width = 14, height = 10.5, units = &quot;in&quot;
 )
 ggplot2::ggsave(
-  &quot;Figures/common_scaling/Forest_plot8.png&quot;, p_forest_main,
-  width = 14, height = 8.6, units = &quot;in&quot;, dpi = 300
+  &quot;Figures/Forest_plot8.png&quot;, p_forest_main,
+  width = 14, height = 10.5, units = &quot;in&quot;, dpi = 300
 )
 </code></pre></div>
 </details>
@@ -1564,7 +1545,7 @@ ggplot2::ggsave(
 <img src="Figures/Forest_plot8.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forest-plot-caption">
-Figure&nbsp;8.14: Posterior mean effects and 95% equal-tailed credible intervals from the single-moderator models. Continuous predictors are expressed per one standard deviation using the common scaling derived from the overall analytical dataset; categorical effects are contrasts relative to their stated reference categories.
+Figure&nbsp;8.14: Posterior mean effects and 95% credible intervals from the single-moderator models. Continuous predictors are expressed per one standard deviation using the common scaling derived from the overall analytical dataset. For multi-category reproductive classifications, the plot shows the biologically interpretable contrasts reported in the Results; complete pairwise comparisons are provided in the breeding-system chapter.
 </figcaption>
 </figure>
 </div>
@@ -3273,39 +3254,20 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-1119"><a href="#cb31-1119" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ecological and life-history"</span>, <span class="st">"Nest type: ground vs. other enclosed nests"</span>, <span class="fl">0.50</span>, <span class="sc">-</span><span class="fl">0.30</span>, <span class="fl">1.07</span>,</span>
 <span id="cb31-1120"><a href="#cb31-1120" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ecological and life-history"</span>, <span class="st">"Coloniality"</span>, <span class="sc">-</span><span class="fl">0.14</span>, <span class="sc">-</span><span class="fl">0.54</span>, <span class="fl">0.26</span>,</span>
 <span id="cb31-1121"><a href="#cb31-1121" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Breeding systems"</span>, <span class="st">"Cooperative breeding"</span>, <span class="sc">-</span><span class="fl">0.21</span>, <span class="sc">-</span><span class="fl">0.72</span>, <span class="fl">0.30</span>,</span>
-<span id="cb31-1122"><a href="#cb31-1122" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Breeding systems"</span>, <span class="st">"Brouwer &amp; Griffith: social monogamy vs. no social bond"</span>, <span class="sc">-</span><span class="fl">0.95</span>, <span class="sc">-</span><span class="fl">1.79</span>, <span class="sc">-</span><span class="fl">0.08</span></span>
+<span id="cb31-1122"><a href="#cb31-1122" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Breeding systems"</span>, <span class="st">"Brouwer &amp; Griffith: social monogamy vs. no social bond"</span>, <span class="sc">-</span><span class="fl">0.95</span>, <span class="sc">-</span><span class="fl">1.79</span>, <span class="sc">-</span><span class="fl">0.08</span>,</span>
+<span><span class="st">"Breeding systems"</span>, <span class="st">"BIRDBASE mono-/polygamy: mixed vs. polygamy"</span>, <span class="sc">-</span><span class="fl">0.534</span>, <span class="sc">-</span><span class="fl">1.049</span>, <span class="sc">-</span><span class="fl">0.029</span>,</span>
+<span><span class="st">"Breeding systems"</span>, <span class="st">"BIRDBASE mono-/polygamy: monogamy vs. polygamy"</span>, <span class="sc">-</span><span class="fl">0.588</span>, <span class="sc">-</span><span class="fl">1.093</span>, <span class="sc">-</span><span class="fl">0.085</span>,</span>
+<span><span class="st">"Breeding systems"</span>, <span class="st">"Parental care: biparental vs. uniparental"</span>, <span class="sc">-</span><span class="fl">0.892</span>, <span class="sc">-</span><span class="fl">1.494</span>, <span class="sc">-</span><span class="fl">0.273</span>,</span>
+<span><span class="st">"Breeding systems"</span>, <span class="st">"Parental care: cooperative care vs. uniparental"</span>, <span class="sc">-</span><span class="fl">1.138</span>, <span class="sc">-</span><span class="fl">1.865</span>, <span class="sc">-</span><span class="fl">0.398</span></span>
 <span id="cb31-1123"><a href="#cb31-1123" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb31-1124"><a href="#cb31-1124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-1125"><a href="#cb31-1125" aria-hidden="true" tabindex="-1"></a>read_common_scaling_effect <span class="ot">&lt;-</span> <span class="cf">function</span>(path, term, group, moderator) {</span>
-<span id="cb31-1126"><a href="#cb31-1126" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">read_csv</span>(path, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb31-1127"><a href="#cb31-1127" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(.data<span class="sc">$</span>term <span class="sc">==</span> .env<span class="sc">$</span>term) <span class="sc">|&gt;</span></span>
-<span id="cb31-1128"><a href="#cb31-1128" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">transmute</span>(</span>
-<span id="cb31-1129"><a href="#cb31-1129" aria-hidden="true" tabindex="-1"></a>      <span class="at">group =</span> .env<span class="sc">$</span>group,</span>
-<span id="cb31-1130"><a href="#cb31-1130" aria-hidden="true" tabindex="-1"></a>      <span class="at">moderator =</span> .env<span class="sc">$</span>moderator,</span>
-<span id="cb31-1131"><a href="#cb31-1131" aria-hidden="true" tabindex="-1"></a>      <span class="at">estimate =</span> .data<span class="sc">$</span>Estimate,</span>
-<span id="cb31-1132"><a href="#cb31-1132" aria-hidden="true" tabindex="-1"></a>      <span class="at">lower =</span> .data<span class="sc">$</span>Q2<span class="fl">.5</span>,</span>
-<span id="cb31-1133"><a href="#cb31-1133" aria-hidden="true" tabindex="-1"></a>      <span class="at">upper =</span> .data<span class="sc">$</span>Q97<span class="fl">.5</span></span>
-<span id="cb31-1134"><a href="#cb31-1134" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb31-1135"><a href="#cb31-1135" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb31-1136"><a href="#cb31-1136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-1137"><a href="#cb31-1137" aria-hidden="true" tabindex="-1"></a>forest_dat_refitted <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(</span>
-<span id="cb31-1138"><a href="#cb31-1138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_common_scaling_effect</span>(</span>
-<span id="cb31-1139"><a href="#cb31-1139" aria-hidden="true" tabindex="-1"></a>    <span class="st">"tables/common_scaling/model_study_duration_fixed_effects.csv"</span>,</span>
-<span id="cb31-1140"><a href="#cb31-1140" aria-hidden="true" tabindex="-1"></a>    <span class="st">"study_duration_sc"</span>, <span class="st">"Methodological"</span>, <span class="st">"Study duration"</span></span>
-<span id="cb31-1141"><a href="#cb31-1141" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb31-1142"><a href="#cb31-1142" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_common_scaling_effect</span>(</span>
-<span id="cb31-1143"><a href="#cb31-1143" aria-hidden="true" tabindex="-1"></a>    <span class="st">"tables/common_scaling/model_clutch_size_fixed_effects.csv"</span>,</span>
-<span id="cb31-1144"><a href="#cb31-1144" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CS_max_sc"</span>, <span class="st">"Ecological and life-history"</span>, <span class="st">"Clutch size"</span></span>
-<span id="cb31-1145"><a href="#cb31-1145" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb31-1146"><a href="#cb31-1146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_common_scaling_effect</span>(</span>
-<span id="cb31-1147"><a href="#cb31-1147" aria-hidden="true" tabindex="-1"></a>    <span class="st">"tables/common_scaling/model_log_body_mass_fixed_effects.csv"</span>,</span>
-<span id="cb31-1148"><a href="#cb31-1148" aria-hidden="true" tabindex="-1"></a>    <span class="st">"log_body_mass_sc"</span>, <span class="st">"Ecological and life-history"</span>, <span class="st">"Body mass"</span></span>
-<span id="cb31-1149"><a href="#cb31-1149" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb31-1150"><a href="#cb31-1150" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_common_scaling_effect</span>(</span>
-<span id="cb31-1151"><a href="#cb31-1151" aria-hidden="true" tabindex="-1"></a>    <span class="st">"tables/common_scaling/model_abs_latitude_fixed_effects.csv"</span>,</span>
-<span id="cb31-1152"><a href="#cb31-1152" aria-hidden="true" tabindex="-1"></a>    <span class="st">"abs_lat_sc"</span>, <span class="st">"Ecological and life-history"</span>, <span class="st">"Absolute latitude"</span></span>
-<span id="cb31-1153"><a href="#cb31-1153" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb31-1154"><a href="#cb31-1154" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-1125"><a href="#cb31-1125" aria-hidden="true" tabindex="-1"></a>forest_dat_refitted <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb31-1126"><a href="#cb31-1126" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>group, <span class="sc">~</span>moderator, <span class="sc">~</span>estimate, <span class="sc">~</span>lower, <span class="sc">~</span>upper,</span>
+<span id="cb31-1127"><a href="#cb31-1127" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Methodological"</span>, <span class="st">"Study duration"</span>, <span class="sc">-</span><span class="fl">0.088</span>, <span class="sc">-</span><span class="fl">0.167</span>, <span class="sc">-</span><span class="fl">0.009</span>,</span>
+<span id="cb31-1128"><a href="#cb31-1128" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ecological and life-history"</span>, <span class="st">"Clutch size"</span>, <span class="fl">0.330</span>, <span class="fl">0.116</span>, <span class="fl">0.545</span>,</span>
+<span id="cb31-1129"><a href="#cb31-1129" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ecological and life-history"</span>, <span class="st">"Body mass"</span>, <span class="sc">-</span><span class="fl">0.008</span>, <span class="sc">-</span><span class="fl">0.303</span>, <span class="fl">0.289</span>,</span>
+<span id="cb31-1130"><a href="#cb31-1130" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ecological and life-history"</span>, <span class="st">"Absolute latitude"</span>, <span class="sc">-</span><span class="fl">0.129</span>, <span class="sc">-</span><span class="fl">0.251</span>, <span class="sc">-</span><span class="fl">0.004</span></span>
+<span id="cb31-1131"><a href="#cb31-1131" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb31-1155"><a href="#cb31-1155" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-1156"><a href="#cb31-1156" aria-hidden="true" tabindex="-1"></a>forest_dat <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(forest_dat_unchanged, forest_dat_refitted)</span>
 <span id="cb31-1157"><a href="#cb31-1157" aria-hidden="true" tabindex="-1"></a></span>
@@ -3338,21 +3300,21 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 <span id="cb31-1184"><a href="#cb31-1184" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="dv">10</span>, <span class="dv">25</span>, <span class="dv">10</span>, <span class="dv">20</span>)</span>
 <span id="cb31-1185"><a href="#cb31-1185" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb31-1186"><a href="#cb31-1186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-1187"><a href="#cb31-1187" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"Figures/common_scaling"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb31-1187"><a href="#cb31-1187" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"Figures"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb31-1188"><a href="#cb31-1188" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggsave</span>(</span>
-<span id="cb31-1189"><a href="#cb31-1189" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Figures/common_scaling/Forest_plot8.pdf"</span>, p_forest_main,</span>
-<span id="cb31-1190"><a href="#cb31-1190" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="fl">8.6</span>, <span class="at">units =</span> <span class="st">"in"</span></span>
+<span id="cb31-1189"><a href="#cb31-1189" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Figures/Forest_plot8.pdf"</span>, p_forest_main,</span>
+<span id="cb31-1190"><a href="#cb31-1190" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="fl">10.5</span>, <span class="at">units =</span> <span class="st">"in"</span></span>
 <span id="cb31-1191"><a href="#cb31-1191" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb31-1192"><a href="#cb31-1192" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggsave</span>(</span>
-<span id="cb31-1193"><a href="#cb31-1193" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Figures/common_scaling/Forest_plot8.png"</span>, p_forest_main,</span>
-<span id="cb31-1194"><a href="#cb31-1194" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="fl">8.6</span>, <span class="at">units =</span> <span class="st">"in"</span>, <span class="at">dpi =</span> <span class="dv">300</span></span>
+<span id="cb31-1193"><a href="#cb31-1193" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Figures/Forest_plot8.png"</span>, p_forest_main,</span>
+<span id="cb31-1194"><a href="#cb31-1194" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="fl">10.5</span>, <span class="at">units =</span> <span class="st">"in"</span>, <span class="at">dpi =</span> <span class="dv">300</span></span>
 <span id="cb31-1195"><a href="#cb31-1195" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb31-1196"><a href="#cb31-1196" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-1197"><a href="#cb31-1197" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb31-1198"><a href="#cb31-1198" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-1201"><a href="#cb31-1201" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb31-1202"><a href="#cb31-1202" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-forest-plot</span></span>
-<span id="cb31-1203"><a href="#cb31-1203" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Posterior mean effects and 95% equal-tailed credible intervals from the single-moderator models. Continuous predictors are expressed per one standard deviation using the common scaling derived from the overall analytical dataset; categorical effects are contrasts relative to their stated reference categories."</span></span>
+<span id="cb31-1203"><a href="#cb31-1203" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Posterior mean effects and 95% credible intervals from the single-moderator models. Continuous predictors are expressed per one standard deviation using the common scaling derived from the overall analytical dataset. For multi-category reproductive classifications, the plot shows the biologically interpretable contrasts reported in the Results; complete pairwise comparisons are provided in the breeding-system chapter."</span></span>
 <span id="cb31-1203a"><a href="#cb31-1203a" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
 <span id="cb31-1203b"><a href="#cb31-1203b" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: "100%"</span></span>
 <span id="cb31-1204"><a href="#cb31-1204" aria-hidden="true" tabindex="-1"></a></span>

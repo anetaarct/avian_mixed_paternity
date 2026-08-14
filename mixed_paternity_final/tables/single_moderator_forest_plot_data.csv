@@ -1,0 +1,16 @@
+group,moderator,estimate,lower,upper
+Methodological,Nest box vs. natural nests,0.29,-0.06,0.63
+Methodological,Marker type: DNA fingerprinting vs. microsatellites,-0.48,-0.67,-0.3
+Methodological,Study duration,-0.088,-0.167,-0.009
+Ecological and life-history,Migratory strategy: partial/resident vs. regular,-0.39,-0.7,-0.07
+Ecological and life-history,Nest type: ground vs. other enclosed nests,0.5,-0.3,1.07
+Ecological and life-history,Coloniality,-0.14,-0.54,0.26
+Ecological and life-history,Clutch size,0.33,0.116,0.545
+Ecological and life-history,Body mass,-0.008,-0.303,0.289
+Ecological and life-history,Absolute latitude,-0.129,-0.251,-0.004
+Breeding systems,Cooperative breeding,-0.21,-0.72,0.3
+Breeding systems,Brouwer & Griffith: social monogamy vs. no social bond,-0.95,-1.79,-0.08
+Breeding systems,BIRDBASE mono-/polygamy: mixed vs. polygamy,-0.534,-1.049,-0.029
+Breeding systems,BIRDBASE mono-/polygamy: monogamy vs. polygamy,-0.588,-1.093,-0.085
+Breeding systems,Parental care: biparental vs. uniparental,-0.892,-1.494,-0.273
+Breeding systems,Parental care: cooperative care vs. uniparental,-1.138,-1.865,-0.398

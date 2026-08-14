@@ -1076,38 +1076,19 @@ forest_dat_unchanged <- tibble::tribble(
   "Ecological and life-history", "Nest type: ground vs. other enclosed nests", 0.50, -0.30, 1.07,
   "Ecological and life-history", "Coloniality", -0.14, -0.54, 0.26,
   "Breeding systems", "Cooperative breeding", -0.21, -0.72, 0.30,
-  "Breeding systems", "Brouwer & Griffith: social monogamy vs. no social bond", -0.95, -1.79, -0.08
+  "Breeding systems", "Brouwer & Griffith: social monogamy vs. no social bond", -0.95, -1.79, -0.08,
+  "Breeding systems", "BIRDBASE mono-/polygamy: mixed vs. polygamy", -0.534, -1.049, -0.029,
+  "Breeding systems", "BIRDBASE mono-/polygamy: monogamy vs. polygamy", -0.588, -1.093, -0.085,
+  "Breeding systems", "Parental care: biparental vs. uniparental", -0.892, -1.494, -0.273,
+  "Breeding systems", "Parental care: cooperative care vs. uniparental", -1.138, -1.865, -0.398
 )
 
-read_common_scaling_effect <- function(path, term, group, moderator) {
-  readr::read_csv(path, show_col_types = FALSE) |>
-    dplyr::filter(.data$term == .env$term) |>
-    dplyr::transmute(
-      group = .env$group,
-      moderator = .env$moderator,
-      estimate = .data$Estimate,
-      lower = .data$Q2.5,
-      upper = .data$Q97.5
-    )
-}
-
-forest_dat_refitted <- dplyr::bind_rows(
-  read_common_scaling_effect(
-    "tables/common_scaling/model_study_duration_fixed_effects.csv",
-    "study_duration_sc", "Methodological", "Study duration"
-  ),
-  read_common_scaling_effect(
-    "tables/common_scaling/model_clutch_size_fixed_effects.csv",
-    "CS_max_sc", "Ecological and life-history", "Clutch size"
-  ),
-  read_common_scaling_effect(
-    "tables/common_scaling/model_log_body_mass_fixed_effects.csv",
-    "log_body_mass_sc", "Ecological and life-history", "Body mass"
-  ),
-  read_common_scaling_effect(
-    "tables/common_scaling/model_abs_latitude_fixed_effects.csv",
-    "abs_lat_sc", "Ecological and life-history", "Absolute latitude"
-  )
+forest_dat_refitted <- tibble::tribble(
+  ~group, ~moderator, ~estimate, ~lower, ~upper,
+  "Methodological", "Study duration", -0.088, -0.167, -0.009,
+  "Ecological and life-history", "Clutch size", 0.330, 0.116, 0.545,
+  "Ecological and life-history", "Body mass", -0.008, -0.303, 0.289,
+  "Ecological and life-history", "Absolute latitude", -0.129, -0.251, -0.004
 )
 
 forest_dat <- dplyr::bind_rows(forest_dat_unchanged, forest_dat_refitted)
@@ -1141,21 +1122,21 @@ p_forest_main <- ggplot2::ggplot(forest_dat, ggplot2::aes(x = estimate, y = mode
     plot.margin = ggplot2::margin(10, 25, 10, 20)
   )
 
-dir.create("Figures/common_scaling", recursive = TRUE, showWarnings = FALSE)
+dir.create("Figures", recursive = TRUE, showWarnings = FALSE)
 ggplot2::ggsave(
-  "Figures/common_scaling/Forest_plot8.pdf", p_forest_main,
-  width = 14, height = 8.6, units = "in"
+  "Figures/Forest_plot8.pdf", p_forest_main,
+  width = 14, height = 10.5, units = "in"
 )
 ggplot2::ggsave(
-  "Figures/common_scaling/Forest_plot8.png", p_forest_main,
-  width = 14, height = 8.6, units = "in", dpi = 300
+  "Figures/Forest_plot8.png", p_forest_main,
+  width = 14, height = 10.5, units = "in", dpi = 300
 )
 
 ```
 
 ```{r}
 #| label: fig-forest-plot
-#| fig-cap: "Posterior mean effects and 95% equal-tailed credible intervals from the single-moderator models. Continuous predictors are expressed per one standard deviation using the common scaling derived from the overall analytical dataset; categorical effects are contrasts relative to their stated reference categories."
+#| fig-cap: "Posterior mean effects and 95% credible intervals from the single-moderator models. Continuous predictors are expressed per one standard deviation using the common scaling derived from the overall analytical dataset. For multi-category reproductive classifications, the plot shows the biologically interpretable contrasts reported in the Results; complete pairwise comparisons are provided in the breeding-system chapter."
 #| echo: false
 #| out-width: "100%"
 
