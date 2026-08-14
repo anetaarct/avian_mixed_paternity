@@ -1568,7 +1568,48 @@ Figure&nbsp;8.14: Posterior mean effects and 95% equal-tailed credible intervals
 </figcaption>
 </figure>
 </div>
-<p><strong>Full multivariable model</strong></p><details class="code-fold forest-code">
+<h3 class="anchored" id="full-multivariable-model">Full multivariable model</h3>
+<p>The primary multivariable model included 533 records from 481 study identities and 326 species. Continuous predictors are expressed per one standard deviation using the common scaling constants. Categorical coefficients are contrasts relative to DNA fingerprinting, cooperative breeding, cavity nesting, regular migration, and non-coloniality.</p>
+<h4 class="anchored" id="exact-coefficient-table">Exact coefficient table</h4>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode"><pre class="sourceCode r code-with-copy"><code class="sourceCode r">full_model_coefficients &lt;- readr::read_csv(
+  &quot;tables/common_scaling/model_full_brouwer_griffith_fixed_effects.csv&quot;,
+  show_col_types = FALSE
+) |&gt;
+  dplyr::mutate(
+    OR = exp(Estimate),
+    `Lower 95% OR` = exp(Q2.5),
+    `Upper 95% OR` = exp(Q97.5)
+  )
+
+knitr::kable(full_model_coefficients, digits = 3)</code></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Posterior mean fixed effects, posterior standard errors, 95% equal-tailed credible intervals, and odds-ratio transformations from the primary multivariable phylogenetic beta-binomial model.</caption>
+<thead><tr class="header"><th>Predictor</th><th>Estimate</th><th>SE</th><th>Lower 95% CrI</th><th>Upper 95% CrI</th><th>OR</th><th>Lower 95% OR</th><th>Upper 95% OR</th></tr></thead>
+<tbody>
+<tr><td>Intercept</td><td>-1.707</td><td>1.017</td><td>-3.663</td><td>0.347</td><td>0.181</td><td>0.026</td><td>1.415</td></tr>
+<tr><td>Marker: microsatellite</td><td>0.500</td><td>0.102</td><td>0.304</td><td>0.704</td><td>1.649</td><td>1.355</td><td>2.022</td></tr>
+<tr><td>Marker: mixed / other</td><td>0.835</td><td>0.392</td><td>0.069</td><td>1.593</td><td>2.305</td><td>1.071</td><td>4.916</td></tr>
+<tr><td>Marker: SNPs</td><td>0.601</td><td>0.269</td><td>0.086</td><td>1.142</td><td>1.824</td><td>1.089</td><td>3.133</td></tr>
+<tr><td>Study duration (1 SD)</td><td>-0.083</td><td>0.043</td><td>-0.169</td><td>-0.001</td><td>0.920</td><td>0.844</td><td>0.999</td></tr>
+<tr><td>Breeding: monogamy</td><td>0.160</td><td>0.261</td><td>-0.348</td><td>0.677</td><td>1.173</td><td>0.706</td><td>1.969</td></tr>
+<tr><td>Breeding: no social bond</td><td>0.774</td><td>0.525</td><td>-0.264</td><td>1.777</td><td>2.169</td><td>0.768</td><td>5.910</td></tr>
+<tr><td>Breeding: polyandry</td><td>0.764</td><td>0.497</td><td>-0.199</td><td>1.744</td><td>2.147</td><td>0.820</td><td>5.718</td></tr>
+<tr><td>Nest type: ground</td><td>0.415</td><td>0.284</td><td>-0.140</td><td>0.972</td><td>1.515</td><td>0.869</td><td>2.642</td></tr>
+<tr><td>Nest type: open</td><td>0.100</td><td>0.231</td><td>-0.351</td><td>0.549</td><td>1.105</td><td>0.704</td><td>1.731</td></tr>
+<tr><td>Nest type: other enclosed</td><td>-0.157</td><td>0.337</td><td>-0.812</td><td>0.508</td><td>0.855</td><td>0.444</td><td>1.661</td></tr>
+<tr><td>Migration: partial/resident</td><td>-0.492</td><td>0.186</td><td>-0.861</td><td>-0.132</td><td>0.611</td><td>0.423</td><td>0.876</td></tr>
+<tr><td>Coloniality: colonial</td><td>-0.081</td><td>0.218</td><td>-0.506</td><td>0.343</td><td>0.922</td><td>0.603</td><td>1.410</td></tr>
+<tr><td>Maximum clutch size (1 SD)</td><td>0.328</td><td>0.125</td><td>0.086</td><td>0.575</td><td>1.388</td><td>1.090</td><td>1.777</td></tr>
+<tr><td>Body mass, log10 (1 SD)</td><td>0.032</td><td>0.162</td><td>-0.288</td><td>0.346</td><td>1.032</td><td>0.750</td><td>1.413</td></tr>
+<tr><td>Absolute latitude (1 SD)</td><td>-0.229</td><td>0.074</td><td>-0.376</td><td>-0.084</td><td>0.796</td><td>0.687</td><td>0.919</td></tr>
+</tbody>
+</table>
+</div>
+<details class="code-fold forest-code">
 <summary>Code</summary>
 <div class="sourceCode"><pre class="sourceCode r code-with-copy"><code class="sourceCode r">#| echo: true
 #| eval: false

@@ -1162,6 +1162,59 @@ knitr::include_graphics("Figures/Forest_plot8.png")
 
 ### Full multivariable model
 
+The primary multivariable model included 533 records from 481 study identities and 326 species. Continuous predictors are expressed per one standard deviation using the common scaling constants. Categorical coefficients are contrasts relative to DNA fingerprinting, cooperative breeding, cavity nesting, regular migration, and non-coloniality.
+
+#### Exact coefficient table
+
+```{r}
+#| label: tbl-full-model-fixed-effects
+#| echo: true
+#| message: false
+#| warning: false
+#| code-fold: true
+#| code-summary: "Code"
+
+full_model_table_labels <- c(
+  Intercept = "Intercept",
+  marker_type_modelmicrosatellite = "Marker: microsatellite",
+  marker_type_modelmixed_other = "Marker: mixed / other",
+  marker_type_modelSNPs = "Marker: SNPs",
+  study_duration_sc = "Study duration (1 SD)",
+  breeding_systemmonogamy = "Breeding: monogamy",
+  breeding_systemno_social_bond = "Breeding: no social bond",
+  breeding_systempolyandry = "Breeding: polyandry",
+  nest_type_modelground = "Nest type: ground",
+  nest_type_modelopen = "Nest type: open",
+  nest_type_modelother_enclosed = "Nest type: other enclosed",
+  migrationWeak = "Migration: partial/resident",
+  coloniality1 = "Coloniality: colonial",
+  CS_max_sc = "Maximum clutch size (1 SD)",
+  log_body_mass_sc = "Body mass, log10 (1 SD)",
+  abs_lat_sc = "Absolute latitude (1 SD)"
+)
+
+full_model_coefficients <- readr::read_csv(
+  "tables/common_scaling/model_full_brouwer_griffith_fixed_effects.csv",
+  show_col_types = FALSE
+) |>
+  dplyr::transmute(
+    Predictor = dplyr::recode(term, !!!full_model_table_labels, .default = term),
+    Estimate = Estimate,
+    SE = Est.Error,
+    `Lower 95% CrI` = Q2.5,
+    `Upper 95% CrI` = Q97.5,
+    OR = exp(Estimate),
+    `Lower 95% OR` = exp(Q2.5),
+    `Upper 95% OR` = exp(Q97.5)
+  )
+
+knitr::kable(
+  full_model_coefficients,
+  digits = 3,
+  caption = "Posterior mean fixed effects, posterior standard errors, 95% equal-tailed credible intervals, and odds-ratio transformations from the primary multivariable phylogenetic beta-binomial model."
+)
+```
+
 ```{r}
 #| echo: true
 #| eval: false
