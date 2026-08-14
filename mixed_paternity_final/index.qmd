@@ -4,6 +4,7 @@ format:
   html:
     toc: true
     toc-depth: 3
+    css: index-hero.css
 ---
 
 ::: hero-banner
@@ -15,7 +16,7 @@ A global comparative phylogenetic meta-analysis of mixed-paternity prevalence ac
 ::::: hero-banner
 
 :::: overview-text
-This website presents the complete reproducible workflow for the flobal comparative meta-analysis of mixed-paternity prevalence across birds.
+This website presents the complete reproducible workflow for the global comparative meta-analysis of mixed-paternity prevalence across birds.
 
 ::: {.callout-important title="Core idea"}
 Birds are central model systems for studying sexual selection and reproductive conflict, yet mixed-paternity prevalence is often comparatively low across species. This study aims to understand which ecological, social, and methodological factors explain variation in mixed paternity across birds.
