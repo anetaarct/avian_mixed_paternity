@@ -2,7 +2,7 @@ project:
   type: book
 
 book:
-  title: "Genetic paternity across birds is structured by evolutionary history rather than social mating systems"
+  title: "Evolutionary history strongly structures brood-level mixed paternity across birds"
   author: "Aneta Arct<sup>1,2*</sup>, Santiago Ortega<sup>1</sup>, Szymon M. Drobniak<sup>2</sup>, Agnieszka Gudowska<sup>3</sup>, Karolina Skorb<sup>4</sup>, Monika Gronowska<sup>5</sup>, Magdalena Zagalska-Neubauer<sup>5</sup>, Michael Griesser<sup>6</sup>, Malgorzata Lagisz<sup>1,&dagger;</sup>, Shinichi Nakagawa<sup>1,&dagger;</sup>"
   chapters:
     - index.qmd
