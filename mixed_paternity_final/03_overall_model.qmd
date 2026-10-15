@@ -289,16 +289,23 @@ This additional intercept-only model provides a matched-sample reference for the
 
 The response is the number of mixed-paternity broods out of the total number of broods, modelled with a beta-binomial distribution and a logit link. The matched model includes an intercept and random intercepts for study identity, non-phylogenetic species identity, and phylogenetically structured species identity, with no moderators. The data, phylogenetic covariance matrix, grouping structure and corresponding priors are retained from the final multivariable model. Priors are Student-t(3, 0, 2.5) for the intercept and group-level standard deviations (restricted to positive values for standard deviations), and Gamma(0.01, 0.01), in shape-rate notation, for beta-binomial precision.
 
+### Load prepared objects {#matched-load-objects}
+
+```{r}
+#| label: load-matched-objects
+#| message: false
+#| warning: false
+
+data_null_matched <- readRDS("data/data_null_matched_533.rds")
+phylo_mat_matched <- readRDS("data/phylo_mat_matched_533.rds")
+```
+
+### Model {#matched-model}
+
 ```{r}
 #| label: matched-null-model
 #| eval: false
 #| code-fold: true
-
-# Use the same observations and phylogenetic matrix as the final model.
-full_model <- readRDS("models/common_scaling/model_full_brouwer_griffith.rds")
-matched_data <- full_model$data
-phylo_mat <- full_model$data2$phylo_mat
-stopifnot(nrow(matched_data) == 533L)
 
 matched_priors <- c(
   set_prior("student_t(3, 0, 2.5)", class = "Intercept"),
@@ -309,9 +316,9 @@ matched_priors <- c(
 model_null_matched <- brm(
   n_mixed_broods | trials(n_total_broods) ~ 1 +
     (1 | Study_ID) + (1 | species_nonphylo) +
-    (1 | gr(species_phylo_brms, cov = phylo_mat)),
-  data = matched_data,
-  data2 = list(phylo_mat = phylo_mat),
+    (1 | gr(species_phylo_brms, cov = phylo_mat_matched)),
+  data = data_null_matched,
+  data2 = list(phylo_mat_matched = phylo_mat_matched),
   family = beta_binomial(link = "logit"),
   prior = matched_priors,
   chains = 4, cores = 4, iter = 10000, warmup = 5000,
@@ -321,6 +328,8 @@ model_null_matched <- brm(
   file_refit = "on_change"
 )
 ```
+
+### Results {#matched-results}
 
 The null model was fitted on Totoro with four chains, 10,000 iterations per chain including 5,000 warmup iterations (20,000 retained draws), seed 20261015, adapt_delta = 0.99 and max_treedepth = 15. Maximum R-hat was 1.003; minimum bulk and tail effective sample sizes were 844 and 1,738, respectively. There were no divergent transitions or maximum-treedepth hits. The existing final multivariable model was not refitted.
 
