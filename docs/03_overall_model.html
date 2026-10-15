@@ -609,7 +609,32 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </section>
 </section>
 
-<section id="matched-sample-model-without-moderators" class="level2"><h2 class="anchored" data-anchor-id="matched-sample-model-without-moderators">Matched-sample model without moderators</h2><p>This additional intercept-only model provides a matched-sample reference for the final multivariable model (Supplementary Table S12). It uses exactly the same 533 observations from 481 studies and 326 species. It is distinct from the overall model above, which uses the full dataset of 619 observations; it is not a replacement estimate of overall mixed-paternity prevalence.</p><p>The response is the number of mixed-paternity broods out of the total number of broods, modelled with a beta-binomial distribution and a logit link. The matched model includes an intercept and random intercepts for study identity, non-phylogenetic species identity, and phylogenetically structured species identity, with no moderators. The data, phylogenetic covariance matrix, grouping structure and corresponding priors are retained from the final multivariable model. Priors are Student-t(3, 0, 2.5) for the intercept and group-level standard deviations (restricted to positive values for standard deviations), and Gamma(0.01, 0.01), in shape-rate notation, for beta-binomial precision.</p><p>The null model was fitted on Totoro with four chains, 10,000 iterations per chain including 5,000 warmup iterations (20,000 retained draws), seed 20261015, adapt_delta = 0.99 and max_treedepth = 15. Maximum R-hat was 1.003; minimum bulk and tail effective sample sizes were 844 and 1,738, respectively. There were no divergent transitions or maximum-treedepth hits. The existing final multivariable model was not refitted.</p><p>The table reports posterior mean variances and equal-tailed 95% credible intervals on the logit scale. Each posterior standard-deviation draw was squared before summarising; the sum was calculated within each model draw. Descriptive reduction (%) = 100 × (1 − posterior mean variance in the multivariable model / posterior mean variance in the matched intercept-only model). Negative reductions indicate an increase.</p><div class="table-responsive"><table class="table table-striped"><thead><tr><th scope="col">Component</th><th scope="col">Matched intercept-only model</th><th scope="col">Multivariable model</th><th scope="col">Reduction (%)</th></tr></thead><tbody><tr><td>Phylogenetic species</td><td>3.941 [2.206, 6.251]</td><td>3.230 [1.544, 5.530]</td><td>18.0</td></tr><tr><td>Non-phylogenetic species</td><td>0.426 [0.139, 0.770]</td><td>0.461 [0.143, 0.828]</td><td>-8.2</td></tr><tr><td>Study identity</td><td>0.076 [0.00030, 0.220]</td><td>0.102 [0.00141, 0.244]</td><td>-33.9</td></tr><tr><td>Sum of group-level variances</td><td>4.443 [2.838, 6.606]</td><td>3.792 [2.261, 5.901]</td><td>14.6</td></tr></tbody></table></div><p>Posterior mean phylogenetic variance was 18.0% lower in the multivariable model; the sum of the three group-level variances was 14.6% lower. These are descriptive reductions in group-level variance, not proportions of total response variance explained or predictive R-squared. Binomial sampling variation and beta-binomial dispersion remain in the observation model and are not included as additive components in this sum. No uncertainty interval is reported for the between-model reduction.</p><p>Run <code>Rscript scripts/compare_matched_variances.R</code> from <code>mixed_paternity_final</code> with the original final-model RDS at <code>models/common_scaling/model_full_brouwer_griffith.rds</code> and compatible R packages installed. The script verifies the sample and priors, fits or reuses a matching cached null model, and exports posterior summaries and diagnostics. Large model RDS files are not stored in this repository; the archived CSV files contain the results reported here.</p><p><a href="https://github.com/anetaarct/avian_mixed_paternity/blob/main/mixed_paternity_final/scripts/compare_matched_variances.R">Reproducible R script</a> · <a href="tables/variance_audit/variance_summaries.csv">Posterior variance summaries (CSV)</a> · <a href="tables/variance_audit/variance_comparison.csv">Descriptive reductions (CSV)</a> · <a href="tables/variance_audit/null_diagnostics.csv">Null-model diagnostics (CSV)</a></p></section>
+<section class="level2" id="matched-sample-model-without-moderators"><h2 class="anchored" data-anchor-id="matched-sample-model-without-moderators">Matched-sample model without moderators</h2><p>This additional intercept-only model provides a matched-sample reference for the final multivariable model (Supplementary Table S12). It uses exactly the same 533 observations from 481 studies and 326 species. It is distinct from the overall model above, which uses the full dataset of 619 observations; it is not a replacement estimate of overall mixed-paternity prevalence.</p><p>The response is the number of mixed-paternity broods out of the total number of broods, modelled with a beta-binomial distribution and a logit link. The matched model includes an intercept and random intercepts for study identity, non-phylogenetic species identity, and phylogenetically structured species identity, with no moderators. The data, phylogenetic covariance matrix, grouping structure and corresponding priors are retained from the final multivariable model. Priors are Student-t(3, 0, 2.5) for the intercept and group-level standard deviations (restricted to positive values for standard deviations), and Gamma(0.01, 0.01), in shape-rate notation, for beta-binomial precision.</p><div class="cell"><details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"># Use the same observations and phylogenetic matrix as the final model.
+full_model &lt;- readRDS("models/common_scaling/model_full_brouwer_griffith.rds")
+matched_data &lt;- full_model$data
+phylo_mat &lt;- full_model$data2$phylo_mat
+stopifnot(nrow(matched_data) == 533L)
+
+matched_priors &lt;- c(
+  set_prior("student_t(3, 0, 2.5)", class = "Intercept"),
+  set_prior("student_t(3, 0, 2.5)", class = "sd"),
+  set_prior("gamma(0.01, 0.01)", class = "phi")
+)
+
+model_null_matched &lt;- brm(
+  n_mixed_broods | trials(n_total_broods) ~ 1 +
+    (1 | Study_ID) + (1 | species_nonphylo) +
+    (1 | gr(species_phylo_brms, cov = phylo_mat)),
+  data = matched_data,
+  data2 = list(phylo_mat = phylo_mat),
+  family = beta_binomial(link = "logit"),
+  prior = matched_priors,
+  chains = 4, cores = 4, iter = 10000, warmup = 5000,
+  seed = 20261015,
+  control = list(adapt_delta = 0.99, max_treedepth = 15),
+  file = "comment44_variance_20261015/model_null_matched_533",
+  file_refit = "on_change"
+)</code></pre></div></details></div><p>The null model was fitted on Totoro with four chains, 10,000 iterations per chain including 5,000 warmup iterations (20,000 retained draws), seed 20261015, adapt_delta = 0.99 and max_treedepth = 15. Maximum R-hat was 1.003; minimum bulk and tail effective sample sizes were 844 and 1,738, respectively. There were no divergent transitions or maximum-treedepth hits. The existing final multivariable model was not refitted.</p><p>The table reports posterior mean variances and equal-tailed 95% credible intervals on the logit scale. Each posterior standard-deviation draw was squared before summarising; the sum was calculated within each model draw. Descriptive reduction (%) = 100 × (1 − posterior mean variance in the multivariable model / posterior mean variance in the matched intercept-only model). Negative reductions indicate an increase.</p><div class="table-responsive"><table class="table table-striped"><thead><tr><th scope="col">Component</th><th scope="col">Matched intercept-only model</th><th scope="col">Multivariable model</th><th scope="col">Reduction (%)</th></tr></thead><tbody><tr><td>Phylogenetic species</td><td>3.941 [2.206, 6.251]</td><td>3.230 [1.544, 5.530]</td><td>18.0</td></tr><tr><td>Non-phylogenetic species</td><td>0.426 [0.139, 0.770]</td><td>0.461 [0.143, 0.828]</td><td>-8.2</td></tr><tr><td>Study identity</td><td>0.076 [0.00030, 0.220]</td><td>0.102 [0.00141, 0.244]</td><td>-33.9</td></tr><tr><td>Sum of group-level variances</td><td>4.443 [2.838, 6.606]</td><td>3.792 [2.261, 5.901]</td><td>14.6</td></tr></tbody></table></div><p>Posterior mean phylogenetic variance was 18.0% lower in the multivariable model; the sum of the three group-level variances was 14.6% lower. These are descriptive reductions in group-level variance, not proportions of total response variance explained or predictive R-squared. Binomial sampling variation and beta-binomial dispersion remain in the observation model and are not included as additive components in this sum. No uncertainty interval is reported for the between-model reduction.</p></section>
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1382,6 +1407,39 @@ This additional intercept-only model provides a matched-sample reference for the
 
 The response is the number of mixed-paternity broods out of the total number of broods, modelled with a beta-binomial distribution and a logit link. The matched model includes an intercept and random intercepts for study identity, non-phylogenetic species identity, and phylogenetically structured species identity, with no moderators. The data, phylogenetic covariance matrix, grouping structure and corresponding priors are retained from the final multivariable model. Priors are Student-t(3, 0, 2.5) for the intercept and group-level standard deviations (restricted to positive values for standard deviations), and Gamma(0.01, 0.01), in shape-rate notation, for beta-binomial precision.
 
+```{r}
+#| label: matched-null-model
+#| eval: false
+#| code-fold: true
+
+# Use the same observations and phylogenetic matrix as the final model.
+full_model &lt;- readRDS(&quot;models/common_scaling/model_full_brouwer_griffith.rds&quot;)
+matched_data &lt;- full_model$data
+phylo_mat &lt;- full_model$data2$phylo_mat
+stopifnot(nrow(matched_data) == 533L)
+
+matched_priors &lt;- c(
+  set_prior(&quot;student_t(3, 0, 2.5)&quot;, class = &quot;Intercept&quot;),
+  set_prior(&quot;student_t(3, 0, 2.5)&quot;, class = &quot;sd&quot;),
+  set_prior(&quot;gamma(0.01, 0.01)&quot;, class = &quot;phi&quot;)
+)
+
+model_null_matched &lt;- brm(
+  n_mixed_broods | trials(n_total_broods) ~ 1 +
+    (1 | Study_ID) + (1 | species_nonphylo) +
+    (1 | gr(species_phylo_brms, cov = phylo_mat)),
+  data = matched_data,
+  data2 = list(phylo_mat = phylo_mat),
+  family = beta_binomial(link = &quot;logit&quot;),
+  prior = matched_priors,
+  chains = 4, cores = 4, iter = 10000, warmup = 5000,
+  seed = 20261015,
+  control = list(adapt_delta = 0.99, max_treedepth = 15),
+  file = &quot;comment44_variance_20261015/model_null_matched_533&quot;,
+  file_refit = &quot;on_change&quot;
+)
+```
+
 The null model was fitted on Totoro with four chains, 10,000 iterations per chain including 5,000 warmup iterations (20,000 retained draws), seed 20261015, adapt_delta = 0.99 and max_treedepth = 15. Maximum R-hat was 1.003; minimum bulk and tail effective sample sizes were 844 and 1,738, respectively. There were no divergent transitions or maximum-treedepth hits. The existing final multivariable model was not refitted.
 
 The table reports posterior mean variances and equal-tailed 95% credible intervals on the logit scale. Each posterior standard-deviation draw was squared before summarising; the sum was calculated within each model draw. Descriptive reduction (%) = 100 × (1 − posterior mean variance in the multivariable model / posterior mean variance in the matched intercept-only model). Negative reductions indicate an increase.
@@ -1394,10 +1452,6 @@ The table reports posterior mean variances and equal-tailed 95% credible interva
 | Sum of group-level variances | 4.443 [2.838, 6.606] | 3.792 [2.261, 5.901] | 14.6 |
 
 Posterior mean phylogenetic variance was 18.0% lower in the multivariable model; the sum of the three group-level variances was 14.6% lower. These are descriptive reductions in group-level variance, not proportions of total response variance explained or predictive R-squared. Binomial sampling variation and beta-binomial dispersion remain in the observation model and are not included as additive components in this sum. No uncertainty interval is reported for the between-model reduction.
-
-Run `Rscript scripts/compare_matched_variances.R` from `mixed_paternity_final` with the original final-model RDS at `models/common_scaling/model_full_brouwer_griffith.rds` and compatible R packages installed. The script verifies the sample and priors, fits or reuses a matching cached null model, and exports posterior summaries and diagnostics. Large model RDS files are not stored in this repository; the archived CSV files contain the results reported here.
-
-[Reproducible R script](https://github.com/anetaarct/avian_mixed_paternity/blob/main/mixed_paternity_final/scripts/compare_matched_variances.R) · [Posterior variance summaries (CSV)](tables/variance_audit/variance_summaries.csv) · [Descriptive reductions (CSV)](tables/variance_audit/variance_comparison.csv) · [Null-model diagnostics (CSV)](tables/variance_audit/null_diagnostics.csv)
 </code></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

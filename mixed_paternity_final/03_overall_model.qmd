@@ -289,6 +289,39 @@ This additional intercept-only model provides a matched-sample reference for the
 
 The response is the number of mixed-paternity broods out of the total number of broods, modelled with a beta-binomial distribution and a logit link. The matched model includes an intercept and random intercepts for study identity, non-phylogenetic species identity, and phylogenetically structured species identity, with no moderators. The data, phylogenetic covariance matrix, grouping structure and corresponding priors are retained from the final multivariable model. Priors are Student-t(3, 0, 2.5) for the intercept and group-level standard deviations (restricted to positive values for standard deviations), and Gamma(0.01, 0.01), in shape-rate notation, for beta-binomial precision.
 
+```{r}
+#| label: matched-null-model
+#| eval: false
+#| code-fold: true
+
+# Use the same observations and phylogenetic matrix as the final model.
+full_model <- readRDS("models/common_scaling/model_full_brouwer_griffith.rds")
+matched_data <- full_model$data
+phylo_mat <- full_model$data2$phylo_mat
+stopifnot(nrow(matched_data) == 533L)
+
+matched_priors <- c(
+  set_prior("student_t(3, 0, 2.5)", class = "Intercept"),
+  set_prior("student_t(3, 0, 2.5)", class = "sd"),
+  set_prior("gamma(0.01, 0.01)", class = "phi")
+)
+
+model_null_matched <- brm(
+  n_mixed_broods | trials(n_total_broods) ~ 1 +
+    (1 | Study_ID) + (1 | species_nonphylo) +
+    (1 | gr(species_phylo_brms, cov = phylo_mat)),
+  data = matched_data,
+  data2 = list(phylo_mat = phylo_mat),
+  family = beta_binomial(link = "logit"),
+  prior = matched_priors,
+  chains = 4, cores = 4, iter = 10000, warmup = 5000,
+  seed = 20261015,
+  control = list(adapt_delta = 0.99, max_treedepth = 15),
+  file = "comment44_variance_20261015/model_null_matched_533",
+  file_refit = "on_change"
+)
+```
+
 The null model was fitted on Totoro with four chains, 10,000 iterations per chain including 5,000 warmup iterations (20,000 retained draws), seed 20261015, adapt_delta = 0.99 and max_treedepth = 15. Maximum R-hat was 1.003; minimum bulk and tail effective sample sizes were 844 and 1,738, respectively. There were no divergent transitions or maximum-treedepth hits. The existing final multivariable model was not refitted.
 
 The table reports posterior mean variances and equal-tailed 95% credible intervals on the logit scale. Each posterior standard-deviation draw was squared before summarising; the sum was calculated within each model draw. Descriptive reduction (%) = 100 × (1 − posterior mean variance in the multivariable model / posterior mean variance in the matched intercept-only model). Negative reductions indicate an increase.
@@ -301,7 +334,3 @@ The table reports posterior mean variances and equal-tailed 95% credible interva
 | Sum of group-level variances | 4.443 [2.838, 6.606] | 3.792 [2.261, 5.901] | 14.6 |
 
 Posterior mean phylogenetic variance was 18.0% lower in the multivariable model; the sum of the three group-level variances was 14.6% lower. These are descriptive reductions in group-level variance, not proportions of total response variance explained or predictive R-squared. Binomial sampling variation and beta-binomial dispersion remain in the observation model and are not included as additive components in this sum. No uncertainty interval is reported for the between-model reduction.
-
-Run `Rscript scripts/compare_matched_variances.R` from `mixed_paternity_final` with the original final-model RDS at `models/common_scaling/model_full_brouwer_griffith.rds` and compatible R packages installed. The script verifies the sample and priors, fits or reuses a matching cached null model, and exports posterior summaries and diagnostics. Large model RDS files are not stored in this repository; the archived CSV files contain the results reported here.
-
-[Reproducible R script](https://github.com/anetaarct/avian_mixed_paternity/blob/main/mixed_paternity_final/scripts/compare_matched_variances.R) · [Posterior variance summaries (CSV)](tables/variance_audit/variance_summaries.csv) · [Descriptive reductions (CSV)](tables/variance_audit/variance_comparison.csv) · [Null-model diagnostics (CSV)](tables/variance_audit/null_diagnostics.csv)
