@@ -246,7 +246,8 @@ window.Quarto = {
   <li><a href="#divergences" id="toc-divergences" class="nav-link" data-scroll-target="#divergences"><span class="header-section-number">4.6.2</span> Divergences</a></li>
   <li><a href="#traceplots" id="toc-traceplots" class="nav-link" data-scroll-target="#traceplots"><span class="header-section-number">4.6.3</span> Traceplots</a></li>
   </ul></li>
-  </ul>
+  <li><a class="nav-link" href="#matched-sample-model-without-moderators">Matched-sample model without moderators</a></li>
+</ul>
 </nav>
     </div>
 <!-- main -->
@@ -608,6 +609,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </section>
 </section>
 
+<section id="matched-sample-model-without-moderators" class="level2"><h2 class="anchored" data-anchor-id="matched-sample-model-without-moderators">Matched-sample model without moderators</h2><p>This additional intercept-only model provides a matched-sample reference for the final multivariable model (Supplementary Table S12). It uses exactly the same 533 observations from 481 studies and 326 species. It is distinct from the overall model above, which uses the full dataset of 619 observations; it is not a replacement estimate of overall mixed-paternity prevalence.</p><p>The response is the number of mixed-paternity broods out of the total number of broods, modelled with a beta-binomial distribution and a logit link. The matched model includes an intercept and random intercepts for study identity, non-phylogenetic species identity, and phylogenetically structured species identity, with no moderators. The data, phylogenetic covariance matrix, grouping structure and corresponding priors are retained from the final multivariable model. Priors are Student-t(3, 0, 2.5) for the intercept and group-level standard deviations (restricted to positive values for standard deviations), and Gamma(0.01, 0.01), in shape-rate notation, for beta-binomial precision.</p><p>The null model was fitted on Totoro with four chains, 10,000 iterations per chain including 5,000 warmup iterations (20,000 retained draws), seed 20261015, adapt_delta = 0.99 and max_treedepth = 15. Maximum R-hat was 1.003; minimum bulk and tail effective sample sizes were 844 and 1,738, respectively. There were no divergent transitions or maximum-treedepth hits. The existing final multivariable model was not refitted.</p><p>The table reports posterior mean variances and equal-tailed 95% credible intervals on the logit scale. Each posterior standard-deviation draw was squared before summarising; the sum was calculated within each model draw. Descriptive reduction (%) = 100 × (1 − posterior mean variance in the multivariable model / posterior mean variance in the matched intercept-only model). Negative reductions indicate an increase.</p><div class="table-responsive"><table class="table table-striped"><thead><tr><th scope="col">Component</th><th scope="col">Matched intercept-only model</th><th scope="col">Multivariable model</th><th scope="col">Reduction (%)</th></tr></thead><tbody><tr><td>Phylogenetic species</td><td>3.941 [2.206, 6.251]</td><td>3.230 [1.544, 5.530]</td><td>18.0</td></tr><tr><td>Non-phylogenetic species</td><td>0.426 [0.139, 0.770]</td><td>0.461 [0.143, 0.828]</td><td>-8.2</td></tr><tr><td>Study identity</td><td>0.076 [0.00030, 0.220]</td><td>0.102 [0.00141, 0.244]</td><td>-33.9</td></tr><tr><td>Sum of group-level variances</td><td>4.443 [2.838, 6.606]</td><td>3.792 [2.261, 5.901]</td><td>14.6</td></tr></tbody></table></div><p>Posterior mean phylogenetic variance was 18.0% lower in the multivariable model; the sum of the three group-level variances was 14.6% lower. These are descriptive reductions in group-level variance, not proportions of total response variance explained or predictive R-squared. Binomial sampling variation and beta-binomial dispersion remain in the observation model and are not included as additive components in this sum. No uncertainty interval is reported for the between-model reduction.</p><p>Run <code>Rscript scripts/compare_matched_variances.R</code> from <code>mixed_paternity_final</code> with the original final-model RDS at <code>models/common_scaling/model_full_brouwer_griffith.rds</code> and compatible R packages installed. The script verifies the sample and priors, fits or reuses a matching cached null model, and exports posterior summaries and diagnostics. Large model RDS files are not stored in this repository; the archived CSV files contain the results reported here.</p><p><a href="https://github.com/anetaarct/avian_mixed_paternity/blob/main/mixed_paternity_final/scripts/compare_matched_variances.R">Reproducible R script</a> · <a href="tables/variance_audit/variance_summaries.csv">Posterior variance summaries (CSV)</a> · <a href="tables/variance_audit/variance_comparison.csv">Descriptive reductions (CSV)</a> · <a href="tables/variance_audit/null_diagnostics.csv">Null-model diagnostics (CSV)</a></p></section>
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1089,7 +1091,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown">---
+<div class="sourceCode" id="cb12" data-shortcodes="false"><pre><code>---
 format:
  html:
     toc: true
@@ -1125,8 +1127,8 @@ options(mc.cores = parallel::detectCores())
 #| message: false
 #| warning: false
 
-data_overall_study &lt;- readRDS("data/data_overall_study.rds")
-phylo_mat &lt;- readRDS("data/phylo_mat.rds")
+data_overall_study &lt;- readRDS(&quot;data/data_overall_study.rds&quot;)
+phylo_mat &lt;- readRDS(&quot;data/phylo_mat.rds&quot;)
 ```
 
 ## Overall dataset
@@ -1179,7 +1181,7 @@ model_overall_study &lt;- brm(
     (1 | Study_ID) +
     (1 | species_nonphylo) +
     (1 | gr(species_phylo_brms, cov = phylo_mat)),
-  family = beta_binomial(link = "logit"),
+  family = beta_binomial(link = &quot;logit&quot;),
   data = data_overall_study,
   data2 = list(phylo_mat = phylo_mat),
   chains = 4,
@@ -1196,7 +1198,7 @@ model_overall_study &lt;- brm(
 
 ```{r}
 knitr::include_graphics(
-  "Figures/model_diagnostics/overall_prevalence_intercept_plot.png"
+  &quot;Figures/model_diagnostics/overall_prevalence_intercept_plot.png&quot;
 )
 ```
 
@@ -1206,7 +1208,7 @@ knitr::include_graphics(
 #| message: false
 #| warning: false
 
-model_overall_study &lt;- readRDS("models/model_overall_study.rds")
+model_overall_study &lt;- readRDS(&quot;models/model_overall_study.rds&quot;)
 summary(model_overall_study)
 ```
 
@@ -1220,42 +1222,42 @@ Group-level estimates are posterior mean variances on the logit scale, with equa
 #| warning: false
 
 s &lt;- summary(model_overall_study)
-v &lt;- readr::read_csv("tables/variance_audit/posterior_variance_summaries.csv", show_col_types = FALSE) |&gt;
-  dplyr::filter(model == "model_overall_study")
+v &lt;- readr::read_csv(&quot;tables/variance_audit/posterior_variance_summaries.csv&quot;, show_col_types = FALSE) |&gt;
+  dplyr::filter(model == &quot;model_overall_study&quot;)
 get_variance &lt;- function(parameter_name, statistic) v[[statistic]][match(parameter_name, v$parameter)]
 
 model_summary_table &lt;- tibble::tibble(
   Parameter = c(
-    "Intercept (logit scale)",
-    "Population-level intercept prevalence (%)",
-    "Study-level variance",
-    "Non-phylogenetic species-level variance",
-    "Phylogenetic species-level variance",
-    "Beta-binomial precision (phi)"
+    &quot;Intercept (logit scale)&quot;,
+    &quot;Population-level intercept prevalence (%)&quot;,
+    &quot;Study-level variance&quot;,
+    &quot;Non-phylogenetic species-level variance&quot;,
+    &quot;Phylogenetic species-level variance&quot;,
+    &quot;Beta-binomial precision (phi)&quot;
   ),
   Estimate = c(
-    s$fixed["Intercept", "Estimate"],
-    plogis(s$fixed["Intercept", "Estimate"]) * 100,
-    get_variance("sd_Study_ID__Intercept", "mean"),
-    get_variance("sd_species_nonphylo__Intercept", "mean"),
-    get_variance("sd_species_phylo_brms__Intercept", "mean"),
-    s$spec_pars["phi", "Estimate"]
+    s$fixed[&quot;Intercept&quot;, &quot;Estimate&quot;],
+    plogis(s$fixed[&quot;Intercept&quot;, &quot;Estimate&quot;]) * 100,
+    get_variance(&quot;sd_Study_ID__Intercept&quot;, &quot;mean&quot;),
+    get_variance(&quot;sd_species_nonphylo__Intercept&quot;, &quot;mean&quot;),
+    get_variance(&quot;sd_species_phylo_brms__Intercept&quot;, &quot;mean&quot;),
+    s$spec_pars[&quot;phi&quot;, &quot;Estimate&quot;]
   ),
   `Lower 95% CrI` = c(
-    s$fixed["Intercept", "l-95% CI"],
-    plogis(s$fixed["Intercept", "l-95% CI"]) * 100,
-    get_variance("sd_Study_ID__Intercept", "q025"),
-    get_variance("sd_species_nonphylo__Intercept", "q025"),
-    get_variance("sd_species_phylo_brms__Intercept", "q025"),
-    s$spec_pars["phi", "l-95% CI"]
+    s$fixed[&quot;Intercept&quot;, &quot;l-95% CI&quot;],
+    plogis(s$fixed[&quot;Intercept&quot;, &quot;l-95% CI&quot;]) * 100,
+    get_variance(&quot;sd_Study_ID__Intercept&quot;, &quot;q025&quot;),
+    get_variance(&quot;sd_species_nonphylo__Intercept&quot;, &quot;q025&quot;),
+    get_variance(&quot;sd_species_phylo_brms__Intercept&quot;, &quot;q025&quot;),
+    s$spec_pars[&quot;phi&quot;, &quot;l-95% CI&quot;]
   ),
   `Upper 95% CrI` = c(
-    s$fixed["Intercept", "u-95% CI"],
-    plogis(s$fixed["Intercept", "u-95% CI"]) * 100,
-    get_variance("sd_Study_ID__Intercept", "q975"),
-    get_variance("sd_species_nonphylo__Intercept", "q975"),
-    get_variance("sd_species_phylo_brms__Intercept", "q975"),
-    s$spec_pars["phi", "u-95% CI"]
+    s$fixed[&quot;Intercept&quot;, &quot;u-95% CI&quot;],
+    plogis(s$fixed[&quot;Intercept&quot;, &quot;u-95% CI&quot;]) * 100,
+    get_variance(&quot;sd_Study_ID__Intercept&quot;, &quot;q975&quot;),
+    get_variance(&quot;sd_species_nonphylo__Intercept&quot;, &quot;q975&quot;),
+    get_variance(&quot;sd_species_phylo_brms__Intercept&quot;, &quot;q975&quot;),
+    s$spec_pars[&quot;phi&quot;, &quot;u-95% CI&quot;]
   )
 )
 
@@ -1300,7 +1302,7 @@ draws_phylo_signal &lt;- model_overall_study %&gt;%
 
 phylo_signal_summary &lt;- draws_phylo_signal %&gt;%
   summarise(
-    Statistic = "Phylogenetic signal (ν)",
+    Statistic = &quot;Phylogenetic signal (ν)&quot;,
     Estimate = mean(phylo_signal),
     `Lower 95% CrI` = quantile(phylo_signal, 0.025),
     `Upper 95% CrI` = quantile(phylo_signal, 0.975)
@@ -1309,7 +1311,7 @@ phylo_signal_summary &lt;- draws_phylo_signal %&gt;%
 knitr::kable(
   phylo_signal_summary,
   digits = 3,
-  caption = "Posterior mean estimate of the phylogenetic signal with a 95% equal-tailed credible interval."
+  caption = &quot;Posterior mean estimate of the phylogenetic signal with a 95% equal-tailed credible interval.&quot;
 )
 ```
 
@@ -1329,10 +1331,10 @@ pp_check(model_overall_study)
 #| warning: false
 
 divergence_table &lt;- nuts_params(model_overall_study) |&gt;
-  filter(Parameter == "divergent__") |&gt;
+  filter(Parameter == &quot;divergent__&quot;) |&gt;
   count(Value) |&gt;
   mutate(
-    Value = ifelse(Value == 0, "Non-divergent", "Divergent")
+    Value = ifelse(Value == 0, &quot;Non-divergent&quot;, &quot;Divergent&quot;)
   )
 
 knitr::kable(divergence_table)
@@ -1348,10 +1350,10 @@ knitr::kable(divergence_table)
 #| fig-width: 10
 #| fig-height: 8
 
-dir.create("Figures/model_diagnostics", recursive = TRUE, showWarnings = FALSE)
+dir.create(&quot;Figures/model_diagnostics&quot;, recursive = TRUE, showWarnings = FALSE)
 
 png(
-  filename = "Figures/model_diagnostics/model_overall_traceplots.png",
+  filename = &quot;Figures/model_diagnostics/model_overall_traceplots.png&quot;,
   width = 3000,
   height = 2400,
   res = 300
@@ -1366,13 +1368,37 @@ dev.off()
 
 #| label: show-overall-traceplot
 #| echo: false
-#| out-width: "100%"
+#| out-width: &quot;100%&quot;
 
 knitr::include_graphics(
-  "Figures/model_diagnostics/model_overall_traceplots.png"
+  &quot;Figures/model_diagnostics/model_overall_traceplots.png&quot;
 )
 ```
-</code><button class="code-copy-button" data-in-quarto-modal="" title="Copy to Clipboard"><i class="bi"></i></button></pre></div>
+
+
+## Matched-sample model without moderators {#matched-sample-model-without-moderators}
+
+This additional intercept-only model provides a matched-sample reference for the final multivariable model (Supplementary Table S12). It uses exactly the same 533 observations from 481 studies and 326 species. It is distinct from the overall model above, which uses the full dataset of 619 observations; it is not a replacement estimate of overall mixed-paternity prevalence.
+
+The response is the number of mixed-paternity broods out of the total number of broods, modelled with a beta-binomial distribution and a logit link. The matched model includes an intercept and random intercepts for study identity, non-phylogenetic species identity, and phylogenetically structured species identity, with no moderators. The data, phylogenetic covariance matrix, grouping structure and corresponding priors are retained from the final multivariable model. Priors are Student-t(3, 0, 2.5) for the intercept and group-level standard deviations (restricted to positive values for standard deviations), and Gamma(0.01, 0.01), in shape-rate notation, for beta-binomial precision.
+
+The null model was fitted on Totoro with four chains, 10,000 iterations per chain including 5,000 warmup iterations (20,000 retained draws), seed 20261015, adapt_delta = 0.99 and max_treedepth = 15. Maximum R-hat was 1.003; minimum bulk and tail effective sample sizes were 844 and 1,738, respectively. There were no divergent transitions or maximum-treedepth hits. The existing final multivariable model was not refitted.
+
+The table reports posterior mean variances and equal-tailed 95% credible intervals on the logit scale. Each posterior standard-deviation draw was squared before summarising; the sum was calculated within each model draw. Descriptive reduction (%) = 100 × (1 − posterior mean variance in the multivariable model / posterior mean variance in the matched intercept-only model). Negative reductions indicate an increase.
+
+| Component | Matched intercept-only model | Multivariable model | Reduction (%) |
+| --- | --- | --- | --- |
+| Phylogenetic species | 3.941 [2.206, 6.251] | 3.230 [1.544, 5.530] | 18.0 |
+| Non-phylogenetic species | 0.426 [0.139, 0.770] | 0.461 [0.143, 0.828] | -8.2 |
+| Study identity | 0.076 [0.00030, 0.220] | 0.102 [0.00141, 0.244] | -33.9 |
+| Sum of group-level variances | 4.443 [2.838, 6.606] | 3.792 [2.261, 5.901] | 14.6 |
+
+Posterior mean phylogenetic variance was 18.0% lower in the multivariable model; the sum of the three group-level variances was 14.6% lower. These are descriptive reductions in group-level variance, not proportions of total response variance explained or predictive R-squared. Binomial sampling variation and beta-binomial dispersion remain in the observation model and are not included as additive components in this sum. No uncertainty interval is reported for the between-model reduction.
+
+Run `Rscript scripts/compare_matched_variances.R` from `mixed_paternity_final` with the original final-model RDS at `models/common_scaling/model_full_brouwer_griffith.rds` and compatible R packages installed. The script verifies the sample and priors, fits or reuses a matching cached null model, and exports posterior summaries and diagnostics. Large model RDS files are not stored in this repository; the archived CSV files contain the results reported here.
+
+[Reproducible R script](https://github.com/anetaarct/avian_mixed_paternity/blob/main/mixed_paternity_final/scripts/compare_matched_variances.R) · [Posterior variance summaries (CSV)](tables/variance_audit/variance_summaries.csv) · [Descriptive reductions (CSV)](tables/variance_audit/variance_comparison.csv) · [Null-model diagnostics (CSV)](tables/variance_audit/null_diagnostics.csv)
+</code></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
