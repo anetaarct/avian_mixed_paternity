@@ -267,32 +267,9 @@ The nest-box model estimated a positive but uncertain association between nest-b
 #| echo: false
 #| message: false
 #| warning: false
-
-model_overall_study <- readRDS("models/model_overall_study.rds")
-
-extract_heterogeneity <- function(model, model_name) {
-  vc <- VarCorr(model)
-  s <- summary(model)
-
-  tibble::tibble(
-    Model = model_name,
-    `Study SD` = vc$Study_ID$sd[1, "Estimate"],
-    `Non-phylogenetic species SD` = vc$species_nonphylo$sd[1, "Estimate"],
-    `Phylogenetic species SD` = vc$species_phylo_brms$sd[1, "Estimate"],
-    Phi = s$spec_pars["phi", "Estimate"]
-  )
-}
-
-heterogeneity_table <- dplyr::bind_rows(
-  extract_heterogeneity(model_overall_study, "Overall model"),
-  extract_heterogeneity(model_marker_type_0, "Marker type"),
-  extract_heterogeneity(model_nest_box, "Nest box"),
-  readr::read_csv(
-    "tables/common_scaling/common_scaling_random_effects.csv",
-    show_col_types = FALSE
-  ) |>
-    dplyr::filter(Model == "Study duration")
-)
-
-knitr::kable(heterogeneity_table, digits = 3)
+variance_table <- readr::read_csv("tables/variance_audit/group_level_variances.csv", show_col_types = FALSE) |>
+  dplyr::filter(Model %in% c("Overall model", "Marker type", "Nest box", "Study duration"))
+knitr::kable(variance_table, digits = 3)
 ```
+
+Group-level entries are posterior mean variances on the logit scale, calculated by squaring each posterior SD draw before averaging. Phi is the beta-binomial precision parameter. Models use different complete-case samples; these tables do not measure heterogeneity explained by individual moderators.

@@ -109,7 +109,7 @@ knitr::include_graphics(
 )
 ```
 
-### Model sumamry
+### Model summary
 
 ```{r}
 #| message: false 
@@ -121,44 +121,49 @@ summary(model_overall_study)
 
 ### Model estimates
 
+Group-level estimates are posterior mean variances on the logit scale, with equal-tailed 95% credible intervals calculated from squared posterior SD draws. Raw brms diagnostic summaries retain their native SD parameterisation.
+
 ```{r}
 #| echo: false
 #| message: false
 #| warning: false
 
 s <- summary(model_overall_study)
+v <- readr::read_csv("tables/variance_audit/posterior_variance_summaries.csv", show_col_types = FALSE) |>
+  dplyr::filter(model == "model_overall_study")
+get_variance <- function(parameter_name, statistic) v[[statistic]][match(parameter_name, v$parameter)]
 
 model_summary_table <- tibble::tibble(
   Parameter = c(
     "Intercept (logit scale)",
     "Population-level intercept prevalence (%)",
-    "Study-identity-level SD",
-    "Non-phylogenetic species-level SD",
-    "Phylogenetic species-level SD",
+    "Study-level variance",
+    "Non-phylogenetic species-level variance",
+    "Phylogenetic species-level variance",
     "Beta-binomial precision (phi)"
   ),
   Estimate = c(
     s$fixed["Intercept", "Estimate"],
     plogis(s$fixed["Intercept", "Estimate"]) * 100,
-    s$random$Study_ID[1, "Estimate"],
-    s$random$species_nonphylo[1, "Estimate"],
-    s$random$species_phylo_brms[1, "Estimate"],
+    get_variance("sd_Study_ID__Intercept", "mean"),
+    get_variance("sd_species_nonphylo__Intercept", "mean"),
+    get_variance("sd_species_phylo_brms__Intercept", "mean"),
     s$spec_pars["phi", "Estimate"]
   ),
   `Lower 95% CrI` = c(
     s$fixed["Intercept", "l-95% CI"],
     plogis(s$fixed["Intercept", "l-95% CI"]) * 100,
-    s$random$Study_ID[1, "l-95% CI"],
-    s$random$species_nonphylo[1, "l-95% CI"],
-    s$random$species_phylo_brms[1, "l-95% CI"],
+    get_variance("sd_Study_ID__Intercept", "q025"),
+    get_variance("sd_species_nonphylo__Intercept", "q025"),
+    get_variance("sd_species_phylo_brms__Intercept", "q025"),
     s$spec_pars["phi", "l-95% CI"]
   ),
   `Upper 95% CrI` = c(
     s$fixed["Intercept", "u-95% CI"],
     plogis(s$fixed["Intercept", "u-95% CI"]) * 100,
-    s$random$Study_ID[1, "u-95% CI"],
-    s$random$species_nonphylo[1, "u-95% CI"],
-    s$random$species_phylo_brms[1, "u-95% CI"],
+    get_variance("sd_Study_ID__Intercept", "q975"),
+    get_variance("sd_species_nonphylo__Intercept", "q975"),
+    get_variance("sd_species_phylo_brms__Intercept", "q975"),
     s$spec_pars["phi", "u-95% CI"]
   )
 )

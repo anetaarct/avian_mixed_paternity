@@ -17,7 +17,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
@@ -146,7 +146,7 @@ window.Quarto = {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03_overall_model.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Overall model</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -168,52 +168,52 @@ window.Quarto = {
         <div id="quarto-search" class="" title="Search"></div>
         </div>
         </div>
-    <div class="sidebar-menu-container"> 
+    <div class="sidebar-menu-container">
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
+  <div class="sidebar-item-container">
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
+  <div class="sidebar-item-container">
   <a href="./01_analysis_metadata.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Analytical variables</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
+  <div class="sidebar-item-container">
   <a href="./02_data_preparation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data preparation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
+  <div class="sidebar-item-container">
   <a href="./03_overall_model.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Overall model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
+  <div class="sidebar-item-container">
   <a href="./04_methodological_moderators.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title"><strong>Methodological moderators</strong></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
+  <div class="sidebar-item-container">
   <a href="./05_breeding_system_moderators.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Breeding system moderators</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
+  <div class="sidebar-item-container">
   <a href="./06_biological_moderators.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Biological moderators</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
+  <div class="sidebar-item-container">
   <a href="./07_figures.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Figures</span></span></a>
   </div>
@@ -226,7 +226,7 @@ window.Quarto = {
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
-   
+
   <ul>
   <li><a href="#packages" id="toc-packages" class="nav-link active" data-scroll-target="#packages"><span class="header-section-number">4.1</span> Packages</a></li>
   <li><a href="#load-prepared-objects" id="toc-load-prepared-objects" class="nav-link" data-scroll-target="#load-prepared-objects"><span class="header-section-number">4.2</span> Load prepared objects</a></li>
@@ -261,11 +261,11 @@ window.Quarto = {
 
 <div class="quarto-title-meta">
 
-    
-  
-    
+
+
+
   </div>
-  
+
 
 
 </header>
@@ -400,23 +400,23 @@ window.Quarto = {
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_overall_study)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code> Family: beta_binomial 
-  Links: mu = logit 
-Formula: n_mixed_broods | trials(n_total_broods) ~ 1 + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat)) 
-   Data: data_overall_study (Number of observations: 619) 
+<pre><code> Family: beta_binomial
+  Links: mu = logit
+Formula: n_mixed_broods | trials(n_total_broods) ~ 1 + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat))
+   Data: data_overall_study (Number of observations: 619)
   Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
          total post-warmup draws = 20000
 
 Multilevel Hyperparameters:
-~species_nonphylo (Number of levels: 375) 
+~species_nonphylo (Number of levels: 375)
               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
 sd(Intercept)     0.68      0.11     0.45     0.88 1.00     2213     3428
 
-~species_phylo_brms (Number of levels: 375) 
+~species_phylo_brms (Number of levels: 375)
               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
 sd(Intercept)     1.82      0.23     1.40     2.30 1.00     2604     3966
 
-~Study_ID (Number of levels: 554) 
+~Study_ID (Number of levels: 554)
               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
 sd(Intercept)     0.24      0.13     0.01     0.48 1.00      785     1498
 
@@ -440,10 +440,10 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 47%">
-<col style="width: 12%">
-<col style="width: 19%">
-<col style="width: 19%">
+<col style="width: 47%"/>
+<col style="width: 12%"/>
+<col style="width: 19%"/>
+<col style="width: 19%"/>
 </colgroup>
 <thead>
 <tr class="header">
@@ -467,22 +467,22 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <td style="text-align: right;">73.156</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Study-identity-level SD</td>
-<td style="text-align: right;">0.238</td>
-<td style="text-align: right;">0.013</td>
-<td style="text-align: right;">0.484</td>
+<td style="text-align: left;">Study-level variance</td>
+<td style="text-align: right;">0.074</td>
+<td style="text-align: right;">0.00018</td>
+<td style="text-align: right;">0.234</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Non-phylogenetic species-level SD</td>
-<td style="text-align: right;">0.678</td>
-<td style="text-align: right;">0.451</td>
-<td style="text-align: right;">0.885</td>
+<td style="text-align: left;">Non-phylogenetic species-level variance</td>
+<td style="text-align: right;">0.472</td>
+<td style="text-align: right;">0.203</td>
+<td style="text-align: right;">0.783</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Phylogenetic species-level SD</td>
-<td style="text-align: right;">1.820</td>
-<td style="text-align: right;">1.395</td>
-<td style="text-align: right;">2.305</td>
+<td style="text-align: left;">Phylogenetic species-level variance</td>
+<td style="text-align: right;">3.365</td>
+<td style="text-align: right;">1.947</td>
+<td style="text-align: right;">5.312</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Beta-binomial precision (phi)</td>
@@ -492,6 +492,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </tr>
 </tbody>
 </table>
+<p>Group-level estimates are posterior mean logit-scale variances with equal-tailed 95% credible intervals. Raw brms diagnostic summaries retain their native SD parameterisation.</p>
 </div>
 </div>
 <pre><code></code></pre>
@@ -577,7 +578,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <h3 data-number="4.6.3" class="anchored" data-anchor-id="traceplots"><span class="header-section-number">4.6.3</span> Traceplots</h3>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>png 
+<pre><code>png
   2 </code></pre>
 </div>
 </div>
@@ -627,7 +628,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       toggleBodyColorMode(bsSheetEl);
     }
   }
-  toggleBodyColorPrimary();  
+  toggleBodyColorPrimary();
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -637,7 +638,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
+      if (clz.startsWith('code-annotation-')) {
         return true;
       }
     }
@@ -657,11 +658,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
       button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
+      tooltip = new bootstrap.Tooltip(button,
+        { trigger: "manual",
           customClass: "code-copy-button-tooltip",
           offset: [0, -8]});
-      tooltip.show();    
+      tooltip.show();
     }
     setTimeout(function() {
       if (tooltip) {
@@ -734,7 +735,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         if (codeDiv.classList.contains(fromCls)) {
           codeDiv.classList.remove(fromCls);
           codeDiv.classList.add(toCls);
-        } 
+        }
       }
       return false;
     }
@@ -788,7 +789,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     if (onUntriggerFn) {
       config.onUntrigger = onUntriggerFn;
     }
-    window.tippy(el, config); 
+    window.tippy(el, config);
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
   for (var i=0; i<noterefs.length; i++) {
@@ -863,7 +864,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     tippyHover(xref, undefined, function(instance) {
       instance.disable();
       let url = xref.getAttribute('href');
-      let hash = undefined; 
+      let hash = undefined;
       if (url.startsWith('#')) {
         hash = url;
       } else {
@@ -891,7 +892,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             if (note !== null) {
               const html = processXRef(id, note);
               instance.setContent(html);
-            } 
+            }
           }).finally(() => {
             instance.enable();
             instance.show();
@@ -915,7 +916,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             const html = processXRef(null, note);
             instance.setContent(html);
-          } 
+          }
         }).finally(() => {
           instance.enable();
           instance.show();
@@ -955,7 +956,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             height = bottom - top;
           }
           if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
+            // cook up a div (if necessary) and position it
             let div = window.document.getElementById("code-annotation-line-highlight");
             if (div === null) {
               div = window.document.createElement("div");
@@ -1080,7 +1081,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   <div class="nav-page nav-page-previous">
       <a href="./02_data_preparation.html" class="pagination-link" aria-label="Data preparation">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data preparation</span></span>
-      </a>          
+      </a>
   </div>
   <div class="nav-page nav-page-next">
       <a href="./04_methodological_moderators.html" class="pagination-link" aria-label="**Methodological moderators**">
@@ -1088,284 +1089,290 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"> html:</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 3</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>::: section-card</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overall model</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>This section presents the intercept-only beta-binomial phylogenetic model used to estimate the population-level intercept and quantify heterogeneity in mixed-paternity prevalence across birds. The model accounts for study identity, non-phylogenetic species-level variation, and phylogenetically structured species-level variation.</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Packages</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>The R packages required for model fitting and diagnostics.</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(posterior)</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(loo)</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>())</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load prepared objects</span></span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>data_overall_study <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/data_overall_study.rds"</span>)</span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>phylo_mat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/phylo_mat.rds"</span>)</span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overall dataset</span></span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>overall_data_summary <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">Observations =</span> <span class="fu">n</span>(),</span>
-<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">`Study identities` =</span> <span class="fu">n_distinct</span>(Study_ID),</span>
-<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">Species =</span> <span class="fu">n_distinct</span>(species_phylo_brms),</span>
-<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total broods</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(n_total_broods, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Mixed-paternity broods</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(n_mixed_broods, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Raw prevalence (%)</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">100</span> <span class="sc">*</span> <span class="st">`</span><span class="at">Mixed-paternity broods</span><span class="st">`</span> <span class="sc">/</span> <span class="st">`</span><span class="at">Total broods</span><span class="st">`</span></span>
-<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(overall_data_summary, <span class="at">digits =</span> <span class="dv">2</span>)</span>
-<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a><span class="fu">## Modelling framework</span></span>
-<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a>Because brood-level paternity data are expected to exhibit substantial extra-binomial heterogeneity across references, populations, and species, we modelled mixed-paternity prevalence using beta-binomial generalised linear mixed-effects models with a logit link:</span>
-<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>$$y_i \sim \mathrm{BetaBinomial}(n_i, \mu_i, \phi)$$</span>
-<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>where $y_i$ is the number of broods with mixed paternity, $n_i$ is the total number of broods genotyped, $\mu_i$ is the expected mixed-paternity prevalence, and the precision parameter $\phi$ describes extra-binomial variation among study units.</span>
-<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>The linear predictor was modelled as:</span>
-<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>$$\mathrm{logit}(\mu_i) = \alpha + \mathbf{X}_i \boldsymbol{\beta} + u_{\mathrm{reference}[i]} + u_{\mathrm{species}[i]} + u_{\mathrm{phylo}<span class="co">[</span><span class="ot">i</span><span class="co">]</span>}$$</span>
-<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>where $\alpha$ is the intercept, $\mathbf{X}_i \boldsymbol{\beta}$ represents fixed biological and methodological moderators, and $u_{\mathrm{reference}}$, $u_{\mathrm{species}}$, and $u_{\mathrm{phylo}}$ represent study-identity-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively. Study identity (`Study_ID`) is an analytical grouping variable, not a bibliographic-publication count; one study identity can incorporate evidence reported across more than one source.</span>
-<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a><span class="fu">## Population-level intercept prevalence</span></span>
-<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a><span class="fu">### Model</span></span>
-<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>The intercept-only model estimated the population-level intercept while quantifying study-identity-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed study identities or species.</span>
-<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a>model_overall_study <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a>  n_mixed_broods <span class="sc">|</span> <span class="fu">trials</span>(n_total_broods) <span class="sc">~</span></span>
-<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">|</span> Study_ID) <span class="sc">+</span></span>
-<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">|</span> species_nonphylo) <span class="sc">+</span></span>
-<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">|</span> <span class="fu">gr</span>(species_phylo_brms, <span class="at">cov =</span> phylo_mat)),</span>
-<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">beta_binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
-<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_overall_study,</span>
-<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a>  <span class="at">data2 =</span> <span class="fu">list</span>(<span class="at">phylo_mat =</span> phylo_mat),</span>
-<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a>  <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">10000</span>,</span>
-<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a>  <span class="at">warmup =</span> <span class="dv">5000</span>,</span>
-<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.99</span>, <span class="at">max_treedepth =</span> <span class="dv">15</span>),</span>
-<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123</span></span>
-<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a><span class="fu">### Figure</span></span>
-<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(</span>
-<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Figures/model_diagnostics/overall_prevalence_intercept_plot.png"</span></span>
-<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a><span class="fu">### Model sumamry</span></span>
-<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false </span></span>
-<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false </span></span>
-<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a>model_overall_study <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"models/model_overall_study.rds"</span>)</span>
-<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_overall_study)</span>
-<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a><span class="fu">### Model estimates</span></span>
-<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">summary</span>(model_overall_study)</span>
-<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>model_summary_table <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a>  <span class="at">Parameter =</span> <span class="fu">c</span>(</span>
-<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Intercept (logit scale)"</span>,</span>
-<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Population-level intercept prevalence (%)"</span>,</span>
-<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Study-identity-level SD"</span>,</span>
-<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Non-phylogenetic species-level SD"</span>,</span>
-<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Phylogenetic species-level SD"</span>,</span>
-<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Beta-binomial precision (phi)"</span></span>
-<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a>  <span class="at">Estimate =</span> <span class="fu">c</span>(</span>
-<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>fixed[<span class="st">"Intercept"</span>, <span class="st">"Estimate"</span>],</span>
-<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plogis</span>(s<span class="sc">$</span>fixed[<span class="st">"Intercept"</span>, <span class="st">"Estimate"</span>]) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>random<span class="sc">$</span>Study_ID[<span class="dv">1</span>, <span class="st">"Estimate"</span>],</span>
-<span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>random<span class="sc">$</span>species_nonphylo[<span class="dv">1</span>, <span class="st">"Estimate"</span>],</span>
-<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>random<span class="sc">$</span>species_phylo_brms[<span class="dv">1</span>, <span class="st">"Estimate"</span>],</span>
-<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>spec_pars[<span class="st">"phi"</span>, <span class="st">"Estimate"</span>]</span>
-<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Lower 95% CrI</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(</span>
-<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>fixed[<span class="st">"Intercept"</span>, <span class="st">"l-95% CI"</span>],</span>
-<span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plogis</span>(s<span class="sc">$</span>fixed[<span class="st">"Intercept"</span>, <span class="st">"l-95% CI"</span>]) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>random<span class="sc">$</span>Study_ID[<span class="dv">1</span>, <span class="st">"l-95% CI"</span>],</span>
-<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>random<span class="sc">$</span>species_nonphylo[<span class="dv">1</span>, <span class="st">"l-95% CI"</span>],</span>
-<span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>random<span class="sc">$</span>species_phylo_brms[<span class="dv">1</span>, <span class="st">"l-95% CI"</span>],</span>
-<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>spec_pars[<span class="st">"phi"</span>, <span class="st">"l-95% CI"</span>]</span>
-<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Upper 95% CrI</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(</span>
-<span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>fixed[<span class="st">"Intercept"</span>, <span class="st">"u-95% CI"</span>],</span>
-<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plogis</span>(s<span class="sc">$</span>fixed[<span class="st">"Intercept"</span>, <span class="st">"u-95% CI"</span>]) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>random<span class="sc">$</span>Study_ID[<span class="dv">1</span>, <span class="st">"u-95% CI"</span>],</span>
-<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>random<span class="sc">$</span>species_nonphylo[<span class="dv">1</span>, <span class="st">"u-95% CI"</span>],</span>
-<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>random<span class="sc">$</span>species_phylo_brms[<span class="dv">1</span>, <span class="st">"u-95% CI"</span>],</span>
-<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a>    s<span class="sc">$</span>spec_pars[<span class="st">"phi"</span>, <span class="st">"u-95% CI"</span>]</span>
-<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(model_summary_table, <span class="at">digits =</span> <span class="dv">3</span>)</span>
-<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a><span class="in">```{}</span></span>
-<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a><span class="fu">### Phylogenetic signal</span></span>
-<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a>We quantified the phylogenetic signal in between-species variation as the proportion of species-level variance attributable to the phylogenetically structured random effect:</span>
-<span id="cb12-189"><a href="#cb12-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a>\nu =</span>
-<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a>\frac{\sigma^2_{\mathrm{phylo}}}</span>
-<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a>{\sigma^2_{\mathrm{phylo}} + \sigma^2_{\mathrm{nonphylo}}}</span>
-<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a>where $\sigma^2_{\mathrm{phylo}}$ is the variance of the phylogenetically structured species-level random effect and $\sigma^2_{\mathrm{nonphylo}}$ is the variance of the non-phylogenetic species-level random effect.</span>
-<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a>The table below summarises the relative contribution of the phylogenetic and non-phylogenetic species-level variance components in the overall model.</span>
-<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: phylogenetic-signal-table</span></span>
-<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb12-207"><a href="#cb12-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
-<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a>draws_phylo_signal <span class="ot">&lt;-</span> model_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(</span>
-<span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a>    sd_species_phylo_brms__Intercept,</span>
-<span id="cb12-214"><a href="#cb12-214" aria-hidden="true" tabindex="-1"></a>    sd_species_nonphylo__Intercept</span>
-<span id="cb12-215"><a href="#cb12-215" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb12-216"><a href="#cb12-216" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a>    <span class="at">phylo_signal =</span> sd_species_phylo_brms__Intercept<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span></span>
-<span id="cb12-218"><a href="#cb12-218" aria-hidden="true" tabindex="-1"></a>      (sd_species_phylo_brms__Intercept<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> sd_species_nonphylo__Intercept<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb12-219"><a href="#cb12-219" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-221"><a href="#cb12-221" aria-hidden="true" tabindex="-1"></a>phylo_signal_summary <span class="ot">&lt;-</span> draws_phylo_signal <span class="sc">%&gt;%</span></span>
-<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb12-225"><a href="#cb12-225" aria-hidden="true" tabindex="-1"></a>    <span class="at">Statistic =</span> <span class="st">"Phylogenetic signal (ν)"</span>,</span>
-<span id="cb12-226"><a href="#cb12-226" aria-hidden="true" tabindex="-1"></a>    <span class="at">Estimate =</span> <span class="fu">mean</span>(phylo_signal),</span>
-<span id="cb12-227"><a href="#cb12-227" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Lower 95% CrI</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">quantile</span>(phylo_signal, <span class="fl">0.025</span>),</span>
-<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Upper 95% CrI</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">quantile</span>(phylo_signal, <span class="fl">0.975</span>)</span>
-<span id="cb12-229"><a href="#cb12-229" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-230"><a href="#cb12-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-231"><a href="#cb12-231" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
-<span id="cb12-232"><a href="#cb12-232" aria-hidden="true" tabindex="-1"></a>  phylo_signal_summary, </span>
-<span id="cb12-233"><a href="#cb12-233" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">3</span>, </span>
-<span id="cb12-234"><a href="#cb12-234" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Posterior mean estimate of the phylogenetic signal with a 95% equal-tailed credible interval."</span></span>
-<span id="cb12-235"><a href="#cb12-235" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-236"><a href="#cb12-236" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-237"><a href="#cb12-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-238"><a href="#cb12-238" aria-hidden="true" tabindex="-1"></a><span class="fu">## Diagnostics</span></span>
-<span id="cb12-239"><a href="#cb12-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-240"><a href="#cb12-240" aria-hidden="true" tabindex="-1"></a><span class="fu">### Posterior predictive checks</span></span>
-<span id="cb12-241"><a href="#cb12-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-244"><a href="#cb12-244" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-245"><a href="#cb12-245" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(model_overall_study)</span>
-<span id="cb12-246"><a href="#cb12-246" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-247"><a href="#cb12-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-248"><a href="#cb12-248" aria-hidden="true" tabindex="-1"></a><span class="fu">### Divergences</span></span>
-<span id="cb12-249"><a href="#cb12-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-252"><a href="#cb12-252" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-253"><a href="#cb12-253" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb12-254"><a href="#cb12-254" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb12-255"><a href="#cb12-255" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb12-256"><a href="#cb12-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-257"><a href="#cb12-257" aria-hidden="true" tabindex="-1"></a>divergence_table <span class="ot">&lt;-</span> <span class="fu">nuts_params</span>(model_overall_study) <span class="sc">|&gt;</span></span>
-<span id="cb12-258"><a href="#cb12-258" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Parameter <span class="sc">==</span> <span class="st">"divergent__"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-259"><a href="#cb12-259" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Value) <span class="sc">|&gt;</span></span>
-<span id="cb12-260"><a href="#cb12-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb12-261"><a href="#cb12-261" aria-hidden="true" tabindex="-1"></a>    <span class="at">Value =</span> <span class="fu">ifelse</span>(Value <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"Non-divergent"</span>, <span class="st">"Divergent"</span>)</span>
-<span id="cb12-262"><a href="#cb12-262" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-263"><a href="#cb12-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-264"><a href="#cb12-264" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(divergence_table)</span>
-<span id="cb12-265"><a href="#cb12-265" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-266"><a href="#cb12-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-267"><a href="#cb12-267" aria-hidden="true" tabindex="-1"></a><span class="fu">### Traceplots</span></span>
-<span id="cb12-268"><a href="#cb12-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-271"><a href="#cb12-271" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-272"><a href="#cb12-272" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-overall-traceplot</span></span>
-<span id="cb12-273"><a href="#cb12-273" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb12-274"><a href="#cb12-274" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb12-275"><a href="#cb12-275" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb12-276"><a href="#cb12-276" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
-<span id="cb12-277"><a href="#cb12-277" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 8</span></span>
-<span id="cb12-278"><a href="#cb12-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-279"><a href="#cb12-279" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"Figures/model_diagnostics"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb12-280"><a href="#cb12-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-281"><a href="#cb12-281" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(</span>
-<span id="cb12-282"><a href="#cb12-282" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">"Figures/model_diagnostics/model_overall_traceplots.png"</span>,</span>
-<span id="cb12-283"><a href="#cb12-283" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">3000</span>,</span>
-<span id="cb12-284"><a href="#cb12-284" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">2400</span>,</span>
-<span id="cb12-285"><a href="#cb12-285" aria-hidden="true" tabindex="-1"></a>  <span class="at">res =</span> <span class="dv">300</span></span>
-<span id="cb12-286"><a href="#cb12-286" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-287"><a href="#cb12-287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-288"><a href="#cb12-288" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model_overall_study)</span>
-<span id="cb12-289"><a href="#cb12-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-290"><a href="#cb12-290" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
-<span id="cb12-291"><a href="#cb12-291" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-292"><a href="#cb12-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-295"><a href="#cb12-295" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-296"><a href="#cb12-296" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: show-overall-traceplot</span></span>
-<span id="cb12-297"><a href="#cb12-297" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb12-298"><a href="#cb12-298" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-width: "100%"</span></span>
-<span id="cb12-299"><a href="#cb12-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-300"><a href="#cb12-300" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(</span>
-<span id="cb12-301"><a href="#cb12-301" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Figures/model_diagnostics/model_overall_traceplots.png"</span></span>
-<span id="cb12-302"><a href="#cb12-302" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-303"><a href="#cb12-303" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown">---
+format:
+ html:
+    toc: true
+    toc-depth: 3
+---
+
+::: section-card
+## Overall model
+
+This section presents the intercept-only beta-binomial phylogenetic model used to estimate the population-level intercept and quantify heterogeneity in mixed-paternity prevalence across birds. The model accounts for study identity, non-phylogenetic species-level variation, and phylogenetically structured species-level variation.
+:::
+
+## Packages
+
+The R packages required for model fitting and diagnostics.
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(brms)
+library(posterior)
+library(bayesplot)
+library(loo)
+
+options(mc.cores = parallel::detectCores())
+```
+
+## Load prepared objects
+
+```{r}
+#| message: false
+#| warning: false
+
+data_overall_study &lt;- readRDS("data/data_overall_study.rds")
+phylo_mat &lt;- readRDS("data/phylo_mat.rds")
+```
+
+## Overall dataset
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+overall_data_summary &lt;- data_overall_study %&gt;%
+  summarise(
+    Observations = n(),
+    `Study identities` = n_distinct(Study_ID),
+    Species = n_distinct(species_phylo_brms),
+    `Total broods` = sum(n_total_broods, na.rm = TRUE),
+    `Mixed-paternity broods` = sum(n_mixed_broods, na.rm = TRUE),
+    `Raw prevalence (%)` = 100 * `Mixed-paternity broods` / `Total broods`
+  )
+
+knitr::kable(overall_data_summary, digits = 2)
+```
+
+## Modelling framework
+
+Because brood-level paternity data are expected to exhibit substantial extra-binomial heterogeneity across references, populations, and species, we modelled mixed-paternity prevalence using beta-binomial generalised linear mixed-effects models with a logit link:
+
+$$y_i \sim \mathrm{BetaBinomial}(n_i, \mu_i, \phi)$$
+
+where $y_i$ is the number of broods with mixed paternity, $n_i$ is the total number of broods genotyped, $\mu_i$ is the expected mixed-paternity prevalence, and the precision parameter $\phi$ describes extra-binomial variation among study units.
+
+The linear predictor was modelled as:
+
+$$\mathrm{logit}(\mu_i) = \alpha + \mathbf{X}_i \boldsymbol{\beta} + u_{\mathrm{reference}[i]} + u_{\mathrm{species}[i]} + u_{\mathrm{phylo}[i]}$$
+
+where $\alpha$ is the intercept, $\mathbf{X}_i \boldsymbol{\beta}$ represents fixed biological and methodological moderators, and $u_{\mathrm{reference}}$, $u_{\mathrm{species}}$, and $u_{\mathrm{phylo}}$ represent study-identity-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively. Study identity (`Study_ID`) is an analytical grouping variable, not a bibliographic-publication count; one study identity can incorporate evidence reported across more than one source.
+
+## Population-level intercept prevalence
+
+### Model
+
+The intercept-only model estimated the population-level intercept while quantifying study-identity-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed study identities or species.
+
+```{r}
+#| eval: false
+#| echo: true
+
+model_overall_study &lt;- brm(
+  n_mixed_broods | trials(n_total_broods) ~
+    1 +
+    (1 | Study_ID) +
+    (1 | species_nonphylo) +
+    (1 | gr(species_phylo_brms, cov = phylo_mat)),
+  family = beta_binomial(link = "logit"),
+  data = data_overall_study,
+  data2 = list(phylo_mat = phylo_mat),
+  chains = 4,
+  cores = 4,
+  iter = 10000,
+  warmup = 5000,
+  control = list(adapt_delta = 0.99, max_treedepth = 15),
+  seed = 123
+)
+
+```
+
+### Figure
+
+```{r}
+knitr::include_graphics(
+  "Figures/model_diagnostics/overall_prevalence_intercept_plot.png"
+)
+```
+
+### Model summary
+
+```{r}
+#| message: false
+#| warning: false
+
+model_overall_study &lt;- readRDS("models/model_overall_study.rds")
+summary(model_overall_study)
+```
+
+### Model estimates
+
+Group-level estimates are posterior mean variances on the logit scale, with equal-tailed 95% credible intervals calculated from squared posterior SD draws. Raw brms diagnostic summaries retain their native SD parameterisation.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+s &lt;- summary(model_overall_study)
+v &lt;- readr::read_csv("tables/variance_audit/posterior_variance_summaries.csv", show_col_types = FALSE) |&gt;
+  dplyr::filter(model == "model_overall_study")
+get_variance &lt;- function(parameter_name, statistic) v[[statistic]][match(parameter_name, v$parameter)]
+
+model_summary_table &lt;- tibble::tibble(
+  Parameter = c(
+    "Intercept (logit scale)",
+    "Population-level intercept prevalence (%)",
+    "Study-level variance",
+    "Non-phylogenetic species-level variance",
+    "Phylogenetic species-level variance",
+    "Beta-binomial precision (phi)"
+  ),
+  Estimate = c(
+    s$fixed["Intercept", "Estimate"],
+    plogis(s$fixed["Intercept", "Estimate"]) * 100,
+    get_variance("sd_Study_ID__Intercept", "mean"),
+    get_variance("sd_species_nonphylo__Intercept", "mean"),
+    get_variance("sd_species_phylo_brms__Intercept", "mean"),
+    s$spec_pars["phi", "Estimate"]
+  ),
+  `Lower 95% CrI` = c(
+    s$fixed["Intercept", "l-95% CI"],
+    plogis(s$fixed["Intercept", "l-95% CI"]) * 100,
+    get_variance("sd_Study_ID__Intercept", "q025"),
+    get_variance("sd_species_nonphylo__Intercept", "q025"),
+    get_variance("sd_species_phylo_brms__Intercept", "q025"),
+    s$spec_pars["phi", "l-95% CI"]
+  ),
+  `Upper 95% CrI` = c(
+    s$fixed["Intercept", "u-95% CI"],
+    plogis(s$fixed["Intercept", "u-95% CI"]) * 100,
+    get_variance("sd_Study_ID__Intercept", "q975"),
+    get_variance("sd_species_nonphylo__Intercept", "q975"),
+    get_variance("sd_species_phylo_brms__Intercept", "q975"),
+    s$spec_pars["phi", "u-95% CI"]
+  )
+)
+
+knitr::kable(model_summary_table, digits = 3)
+```
+
+```{}
+```
+
+### Phylogenetic signal
+
+We quantified the phylogenetic signal in between-species variation as the proportion of species-level variance attributable to the phylogenetically structured random effect:
+
+$$
+\nu =
+\frac{\sigma^2_{\mathrm{phylo}}}
+{\sigma^2_{\mathrm{phylo}} + \sigma^2_{\mathrm{nonphylo}}}
+$$
+
+where $\sigma^2_{\mathrm{phylo}}$ is the variance of the phylogenetically structured species-level random effect and $\sigma^2_{\mathrm{nonphylo}}$ is the variance of the non-phylogenetic species-level random effect.
+
+The table below summarises the relative contribution of the phylogenetic and non-phylogenetic species-level variance components in the overall model.
+
+```{r}
+#| label: phylogenetic-signal-table
+#| echo: false
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(tidybayes)
+
+draws_phylo_signal &lt;- model_overall_study %&gt;%
+  spread_draws(
+    sd_species_phylo_brms__Intercept,
+    sd_species_nonphylo__Intercept
+  ) %&gt;%
+  mutate(
+    phylo_signal = sd_species_phylo_brms__Intercept^2 /
+      (sd_species_phylo_brms__Intercept^2 + sd_species_nonphylo__Intercept^2)
+  )
+
+phylo_signal_summary &lt;- draws_phylo_signal %&gt;%
+  summarise(
+    Statistic = "Phylogenetic signal (ν)",
+    Estimate = mean(phylo_signal),
+    `Lower 95% CrI` = quantile(phylo_signal, 0.025),
+    `Upper 95% CrI` = quantile(phylo_signal, 0.975)
+  )
+
+knitr::kable(
+  phylo_signal_summary,
+  digits = 3,
+  caption = "Posterior mean estimate of the phylogenetic signal with a 95% equal-tailed credible interval."
+)
+```
+
+## Diagnostics
+
+### Posterior predictive checks
+
+```{r}
+pp_check(model_overall_study)
+```
+
+### Divergences
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+divergence_table &lt;- nuts_params(model_overall_study) |&gt;
+  filter(Parameter == "divergent__") |&gt;
+  count(Value) |&gt;
+  mutate(
+    Value = ifelse(Value == 0, "Non-divergent", "Divergent")
+  )
+
+knitr::kable(divergence_table)
+```
+
+### Traceplots
+
+```{r}
+#| label: save-overall-traceplot
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 8
+
+dir.create("Figures/model_diagnostics", recursive = TRUE, showWarnings = FALSE)
+
+png(
+  filename = "Figures/model_diagnostics/model_overall_traceplots.png",
+  width = 3000,
+  height = 2400,
+  res = 300
+)
+
+plot(model_overall_study)
+
+dev.off()
+```
+
+```{r}
+
+#| label: show-overall-traceplot
+#| echo: false
+#| out-width: "100%"
+
+knitr::include_graphics(
+  "Figures/model_diagnostics/model_overall_traceplots.png"
+)
+```
+</code><button class="code-copy-button" data-in-quarto-modal="" title="Copy to Clipboard"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

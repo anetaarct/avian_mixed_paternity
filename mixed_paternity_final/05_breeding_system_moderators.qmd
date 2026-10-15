@@ -376,33 +376,12 @@ knitr::kable(cooperative_table, digits = 3)
 The table below compares residual heterogeneity across breeding-system, parental-care, and cooperative-breeding moderator models.
 
 ```{r}
-#| label: breeding-system-heterogeneity-table
 #| echo: false
 #| message: false
 #| warning: false
-
-extract_heterogeneity <- function(model, model_name) {
-  vc <- VarCorr(model)
-  s <- summary(model)
-
-  tibble::tibble(
-    Model = model_name,
-    `Study SD` = vc$Study_ID$sd[1, "Estimate"],
-    `Non-phylogenetic species SD` = vc$species_nonphylo$sd[1, "Estimate"],
-    `Phylogenetic species SD` = vc$species_phylo_brms$sd[1, "Estimate"],
-    Phi = s$spec_pars["phi", "Estimate"]
-  )
-}
-
-model_overall_study <- readRDS("models/model_overall_study.rds")
-
-heterogeneity_breeding_table <- bind_rows(
-  extract_heterogeneity(model_overall_study, "Overall model"),
-  extract_heterogeneity(model_breeding_system_0, "Breeding system"),
-  extract_heterogeneity(model_mono_poly_0, "Mono-/polygamy"),
-  extract_heterogeneity(model_parental_care_0, "Parental care"),
-  extract_heterogeneity(model_cooperative, "Cooperative breeding")
-)
-
-knitr::kable(heterogeneity_breeding_table, digits = 3)
+variance_table <- readr::read_csv("tables/variance_audit/group_level_variances.csv", show_col_types = FALSE) |>
+  dplyr::filter(Model %in% c("Overall model", "Breeding system", "Mono-/polygamy", "Parental care", "Cooperative breeding"))
+knitr::kable(variance_table, digits = 3)
 ```
+
+Group-level entries are posterior mean variances on the logit scale, calculated by squaring each posterior SD draw before averaging. Phi is the beta-binomial precision parameter. Models use different complete-case samples; these tables do not measure heterogeneity explained by individual moderators.
