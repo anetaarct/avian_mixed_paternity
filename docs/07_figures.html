@@ -216,6 +216,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#figures-for-biological-moderator" id="toc-figures-for-biological-moderator" class="nav-link" data-scroll-target="#figures-for-biological-moderator"><span class="header-section-number">8.7</span> Figures for biological moderator</a></li>
   <li><a href="#figures-for-breedingparental-system-modeartaors-figures" id="toc-figures-for-breedingparental-system-modeartaors-figures" class="nav-link" data-scroll-target="#figures-for-breedingparental-system-modeartaors-figures"><span class="header-section-number">8.8</span> Figures for breeding/parental system modeartaors figures</a></li>
   <li><a href="#forest-plots" id="toc-forest-plots" class="nav-link" data-scroll-target="#forest-plots"><span class="header-section-number">8.9</span> Forest plots</a></li>
+<li><a href="#full-model-design-diagnostics" id="toc-full-model-design-diagnostics" class="nav-link" data-scroll-target="#full-model-design-diagnostics"><span class="header-section-number">8.10</span> Fixed-effect design diagnostics (Tables S5 and S8)</a></li>
   </ul>
 </nav>
     </div>
@@ -2394,6 +2395,69 @@ Figure&nbsp;8.15: Posterior mean fixed effects and 95% equal-tailed credible int
 
 </section>
 
+<section id="full-model-design-diagnostics" class="level2"><h2 class="anchored" data-anchor-id="full-model-design-diagnostics"><span class="header-section-number">8.10</span> Fixed-effect design diagnostics (Tables S5 and S8)</h2>
+<p>These diagnostics use the same 533 complete observations as the accepted primary multivariable model. The published data file is also used for the matched-sample intercept-only model; it retains all predictors needed here. No models are fitted or updated by the code below.</p><p>Table S5 reports Pearson correlations for the four continuous predictors in that model. Body mass was log10-transformed before standardisation. All correlations use the same 533 records, with no pairwise deletion. Centring and division by a positive standard deviation do not change these correlations. Table S8 describes the unweighted fixed-effect design, including the intercept, treatment-coded categories and continuous predictors with their existing common scaling. No additional rescaling is applied. The exact 2-norm condition number is the ratio of the largest to the smallest singular value. The matrix has 533 rows, 16 columns and rank 16, with a condition number of 15.70; there is no exact linear dependence among its columns.</p>
+<details class="code-fold design-diagnostics-code"><summary>Code: reproduce Tables S5 and S8</summary><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"># Reproduce Supplementary Tables S5 and S8 without fitting a model.
+# Run from mixed_paternity_final with base R.
+# This published dataset is the retained data of the accepted full model;
+# it is also used for the matched-sample intercept-only comparison.
+dat &lt;- readRDS(&quot;data/data_null_matched_533.rds&quot;)
+
+fixed_formula &lt;- ~ marker_type_model + study_duration_sc + breeding_system +
+  nest_type_model + migration + coloniality + CS_max_sc +
+  log_body_mass_sc + abs_lat_sc
+predictors &lt;- all.vars(fixed_formula)
+stopifnot(nrow(dat) == 533L, all(complete.cases(dat[predictors])))
+
+# Preserve the fitted category order and reference levels explicitly.
+expected_levels &lt;- list(
+  marker_type_model = c(&quot;DNA_fingerprinting&quot;, &quot;microsatellite&quot;, &quot;mixed_other&quot;, &quot;SNPs&quot;),
+  breeding_system = c(&quot;cooperative_breeder&quot;, &quot;monogamy&quot;, &quot;no_social_bond&quot;, &quot;polyandry&quot;),
+  nest_type_model = c(&quot;cavity&quot;, &quot;ground&quot;, &quot;open&quot;, &quot;other_enclosed&quot;),
+  migration = c(&quot;Strong&quot;, &quot;Weak&quot;),
+  coloniality = c(&quot;0&quot;, &quot;1&quot;)
+)
+for (variable in names(expected_levels)) {
+  stopifnot(identical(levels(dat[[variable]]), expected_levels[[variable]]))
+}
+treatment_contrasts &lt;- lapply(expected_levels, contr.treatment, base = 1L)
+X &lt;- model.matrix(fixed_formula, data = dat, contrasts.arg = treatment_contrasts)
+stopifnot(nrow(X) == 533L, ncol(X) == 16L, qr(X)$rank == 16L)
+
+# S5: the four continuous predictors actually used in the final model.
+# Body mass was log10-transformed before standardisation. Positive linear
+# standardisation does not change Pearson correlations. No pairwise deletion
+# is needed: all four variables are complete in the same 533 records.
+continuous &lt;- c(&quot;CS_max_sc&quot;, &quot;log_body_mass_sc&quot;, &quot;study_duration_sc&quot;, &quot;abs_lat_sc&quot;)
+labels &lt;- c(&quot;Maximum clutch size&quot;, &quot;Log10 body mass&quot;, &quot;Study duration&quot;, &quot;Absolute latitude&quot;)
+correlation_matrix &lt;- cor(dat[continuous], method = &quot;pearson&quot;, use = &quot;everything&quot;)
+dimnames(correlation_matrix) &lt;- list(labels, labels)
+correlation_table &lt;- data.frame(
+  Predictor = labels, correlation_matrix, row.names = NULL, check.names = FALSE
+)
+
+# S8: unweighted fixed-effect design, including the intercept, treatment-coded
+# categories and the existing common-scaled continuous predictors. No further
+# rescaling is applied. The exact 2-norm condition number is sigma_max/sigma_min.
+singular_values &lt;- svd(X, nu = 0L, nv = 0L)$d
+condition_number &lt;- max(singular_values) / min(singular_values)
+stopifnot(isTRUE(all.equal(condition_number, kappa(X, exact = TRUE))))
+design_table &lt;- data.frame(
+  Model = &quot;Primary BG full model&quot;, Records = nrow(X),
+  Rank = qr(X)$rank, Columns = ncol(X),
+  Full_rank = qr(X)$rank == ncol(X),
+  Condition_number_2norm = condition_number
+)
+
+dir.create(&quot;tables/common_scaling&quot;, recursive = TRUE, showWarnings = FALSE)
+write.csv(correlation_table, &quot;tables/common_scaling/full_model_correlations.csv&quot;, row.names = FALSE)
+write.csv(design_table, &quot;tables/common_scaling/full_model_design_diagnostics.csv&quot;, row.names = FALSE)
+write.csv(data.frame(Column = colnames(X)),
+          &quot;tables/common_scaling/full_model_design_columns.csv&quot;, row.names = FALSE)
+print(correlation_table, digits = 6, row.names = FALSE)
+print(design_table, digits = 8, row.names = FALSE)</code></pre></div></details>
+<div class="cell-output-display"><table class="table table-sm table-striped small"><caption>Table S5. Pearson correlations among the continuous predictors of the final 533-record multivariable model.</caption><thead><tr><th>Predictor</th><th>Maximum clutch size</th><th>Log10 body mass</th><th>Study duration</th><th>Absolute latitude</th></tr></thead><tbody><tr><td>Maximum clutch size</td><td>1.000</td><td>-0.211</td><td>-0.050</td><td>0.263</td></tr><tr><td>Log10 body mass</td><td>-0.211</td><td>1.000</td><td>-0.051</td><td>-0.014</td></tr><tr><td>Study duration</td><td>-0.050</td><td>-0.051</td><td>1.000</td><td>-0.004</td></tr><tr><td>Absolute latitude</td><td>0.263</td><td>-0.014</td><td>-0.004</td><td>1.000</td></tr></tbody></table></div>
+<div class="cell-output-display"><table class="table table-sm table-striped small"><caption>Table S8. Fixed-effect design diagnostics for the final 533-record multivariable model; exact 2-norm condition number.</caption><thead><tr><th>Model</th><th>Records</th><th>Rank</th><th>Columns</th><th>Full rank</th><th>Condition number (2-norm)</th></tr></thead><tbody><tr><td>Primary BG full model</td><td>533</td><td>16</td><td>16</td><td>TRUE</td><td>15.70</td></tr></tbody></table></div><p><a href="tables/common_scaling/full_model_correlations.csv">Download the S5 correlation table</a> · <a href="tables/common_scaling/full_model_design_diagnostics.csv">Download the S8 diagnostics</a> · <a href="tables/common_scaling/full_model_design_columns.csv">Inspect the 16 design columns</a>.</p></section>
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -4901,6 +4965,92 @@ ggplot2::ggsave(
 
 knitr::include_graphics(&quot;Figures/model_diagnostics/full_model_fixed_effects_forest_plot.png&quot;)
 ```
+
+
+## Fixed-effect design diagnostics (Tables S5 and S8) {#full-model-design-diagnostics}
+
+These diagnostics use the same 533 complete observations as the accepted primary multivariable model. The published data file is also used for the matched-sample intercept-only model; it retains all predictors needed here. No models are fitted or updated by the code below.
+
+Table S5 reports Pearson correlations for the four continuous predictors in that model. Body mass was log10-transformed before standardisation. All correlations use the same 533 records, with no pairwise deletion. Centring and division by a positive standard deviation do not change these correlations. Table S8 describes the unweighted fixed-effect design, including the intercept, treatment-coded categories and continuous predictors with their existing common scaling. No additional rescaling is applied. The exact 2-norm condition number is the ratio of the largest to the smallest singular value. The matrix has 533 rows, 16 columns and rank 16, with a condition number of 15.70; there is no exact linear dependence among its columns.
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-fold: true
+#| code-summary: &quot;Code: reproduce Tables S5 and S8&quot;
+
+# Reproduce Supplementary Tables S5 and S8 without fitting a model.
+# Run from mixed_paternity_final with base R.
+# This published dataset is the retained data of the accepted full model;
+# it is also used for the matched-sample intercept-only comparison.
+dat &lt;- readRDS(&quot;data/data_null_matched_533.rds&quot;)
+
+fixed_formula &lt;- ~ marker_type_model + study_duration_sc + breeding_system +
+  nest_type_model + migration + coloniality + CS_max_sc +
+  log_body_mass_sc + abs_lat_sc
+predictors &lt;- all.vars(fixed_formula)
+stopifnot(nrow(dat) == 533L, all(complete.cases(dat[predictors])))
+
+# Preserve the fitted category order and reference levels explicitly.
+expected_levels &lt;- list(
+  marker_type_model = c(&quot;DNA_fingerprinting&quot;, &quot;microsatellite&quot;, &quot;mixed_other&quot;, &quot;SNPs&quot;),
+  breeding_system = c(&quot;cooperative_breeder&quot;, &quot;monogamy&quot;, &quot;no_social_bond&quot;, &quot;polyandry&quot;),
+  nest_type_model = c(&quot;cavity&quot;, &quot;ground&quot;, &quot;open&quot;, &quot;other_enclosed&quot;),
+  migration = c(&quot;Strong&quot;, &quot;Weak&quot;),
+  coloniality = c(&quot;0&quot;, &quot;1&quot;)
+)
+for (variable in names(expected_levels)) {
+  stopifnot(identical(levels(dat[[variable]]), expected_levels[[variable]]))
+}
+treatment_contrasts &lt;- lapply(expected_levels, contr.treatment, base = 1L)
+X &lt;- model.matrix(fixed_formula, data = dat, contrasts.arg = treatment_contrasts)
+stopifnot(nrow(X) == 533L, ncol(X) == 16L, qr(X)$rank == 16L)
+
+# S5: the four continuous predictors actually used in the final model.
+# Body mass was log10-transformed before standardisation. Positive linear
+# standardisation does not change Pearson correlations. No pairwise deletion
+# is needed: all four variables are complete in the same 533 records.
+continuous &lt;- c(&quot;CS_max_sc&quot;, &quot;log_body_mass_sc&quot;, &quot;study_duration_sc&quot;, &quot;abs_lat_sc&quot;)
+labels &lt;- c(&quot;Maximum clutch size&quot;, &quot;Log10 body mass&quot;, &quot;Study duration&quot;, &quot;Absolute latitude&quot;)
+correlation_matrix &lt;- cor(dat[continuous], method = &quot;pearson&quot;, use = &quot;everything&quot;)
+dimnames(correlation_matrix) &lt;- list(labels, labels)
+correlation_table &lt;- data.frame(
+  Predictor = labels, correlation_matrix, row.names = NULL, check.names = FALSE
+)
+
+# S8: unweighted fixed-effect design, including the intercept, treatment-coded
+# categories and the existing common-scaled continuous predictors. No further
+# rescaling is applied. The exact 2-norm condition number is sigma_max/sigma_min.
+singular_values &lt;- svd(X, nu = 0L, nv = 0L)$d
+condition_number &lt;- max(singular_values) / min(singular_values)
+stopifnot(isTRUE(all.equal(condition_number, kappa(X, exact = TRUE))))
+design_table &lt;- data.frame(
+  Model = &quot;Primary BG full model&quot;, Records = nrow(X),
+  Rank = qr(X)$rank, Columns = ncol(X),
+  Full_rank = qr(X)$rank == ncol(X),
+  Condition_number_2norm = condition_number
+)
+
+dir.create(&quot;tables/common_scaling&quot;, recursive = TRUE, showWarnings = FALSE)
+write.csv(correlation_table, &quot;tables/common_scaling/full_model_correlations.csv&quot;, row.names = FALSE)
+write.csv(design_table, &quot;tables/common_scaling/full_model_design_diagnostics.csv&quot;, row.names = FALSE)
+write.csv(data.frame(Column = colnames(X)),
+          &quot;tables/common_scaling/full_model_design_columns.csv&quot;, row.names = FALSE)
+print(correlation_table, digits = 6, row.names = FALSE)
+print(design_table, digits = 8, row.names = FALSE)
+```
+
+```{r}
+#| echo: false
+
+correlation_table &lt;- read.csv(&quot;tables/common_scaling/full_model_correlations.csv&quot;, check.names = FALSE)
+design_table &lt;- read.csv(&quot;tables/common_scaling/full_model_design_diagnostics.csv&quot;, check.names = FALSE)
+knitr::kable(correlation_table, digits = 3, caption = &quot;Table S5. Pearson correlations among the continuous predictors of the final 533-record multivariable model.&quot;)
+names(design_table) &lt;- c(&quot;Model&quot;, &quot;Records&quot;, &quot;Rank&quot;, &quot;Columns&quot;, &quot;Full rank&quot;, &quot;Condition number (2-norm)&quot;)
+knitr::kable(design_table, digits = 2, caption = &quot;Table S8. Fixed-effect design diagnostics for the final 533-record multivariable model; exact 2-norm condition number.&quot;)
+```
+
+[Download the S5 correlation table](tables/common_scaling/full_model_correlations.csv) · [Download the S8 diagnostics](tables/common_scaling/full_model_design_diagnostics.csv) · [Inspect the 16 design columns](tables/common_scaling/full_model_design_columns.csv).
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
