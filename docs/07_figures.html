@@ -2147,15 +2147,6 @@ fixed_effect_draws &lt;- function(fit) {
   draws
 }
 
-hpd_interval &lt;- function(x, probability = 0.95) {
-  # Shortest contiguous empirical interval, as in coda::HPDinterval.
-  x &lt;- sort(x)
-  gap &lt;- round(probability * length(x))
-  starts &lt;- seq_len(length(x) - gap)
-  i &lt;- which.min(x[starts + gap] - x[starts])
-  c(x[i], x[i + gap])
-}
-
 forest_specification &lt;- function() {
   row &lt;- function(group, label, model, coefficient, subtract = &quot;&quot;,
                   summary = &quot;Mean + equal-tailed&quot;, common = FALSE) {
@@ -2163,18 +2154,18 @@ forest_specification &lt;- function() {
   }
   do.call(rbind, list(
     row(&quot;Methodological&quot;, &quot;Nest box vs natural nests&quot;, &quot;model_nest_box&quot;, &quot;b_nest_box_modelyes&quot;),
-    row(&quot;Methodological&quot;, &quot;Markers: DNA fingerprinting\nvs microsatellites&quot;, &quot;model_marker_type_0&quot;, &quot;b_marker_type_modelDNA_fingerprinting&quot;, &quot;b_marker_type_modelmicrosatellite&quot;, &quot;Median + HPD&quot;),
+    row(&quot;Methodological&quot;, &quot;Markers: DNA fingerprinting\nvs microsatellites&quot;, &quot;model_marker_type_0&quot;, &quot;b_marker_type_modelDNA_fingerprinting&quot;, &quot;b_marker_type_modelmicrosatellite&quot;),
     row(&quot;Methodological&quot;, &quot;Study duration (+1 SD)&quot;, &quot;model_study_duration&quot;, &quot;b_study_duration_sc&quot;, common = TRUE),
     row(&quot;Ecological and life-history&quot;, &quot;Migration: weak/resident\nvs regular&quot;, &quot;model_migration&quot;, &quot;b_migrationWeak&quot;),
-    row(&quot;Ecological and life-history&quot;, &quot;Nests: ground vs other enclosed&quot;, &quot;model_nest_type_0&quot;, &quot;b_nest_type_modelground&quot;, &quot;b_nest_type_modelother_enclosed&quot;, &quot;Median + HPD&quot;),
+    row(&quot;Ecological and life-history&quot;, &quot;Nests: ground vs other enclosed&quot;, &quot;model_nest_type_0&quot;, &quot;b_nest_type_modelground&quot;, &quot;b_nest_type_modelother_enclosed&quot;),
     row(&quot;Ecological and life-history&quot;, &quot;Colonial vs non-colonial&quot;, &quot;model_coloniality&quot;, &quot;b_coloniality1&quot;),
     row(&quot;Ecological and life-history&quot;, &quot;Maximum clutch size (+1 SD)&quot;, &quot;model_clutch_size&quot;, &quot;b_CS_max_sc&quot;, common = TRUE),
     row(&quot;Ecological and life-history&quot;, &quot;Log10 body mass (+1 SD)&quot;, &quot;model_log_body_mass&quot;, &quot;b_log_body_mass_sc&quot;, common = TRUE),
     row(&quot;Ecological and life-history&quot;, &quot;Absolute latitude (+1 SD)&quot;, &quot;model_abs_latitude&quot;, &quot;b_abs_lat_sc&quot;, common = TRUE),
     row(&quot;Breeding systems&quot;, &quot;Cooperative vs non-cooperative&quot;, &quot;model_cooperative&quot;, &quot;b_cooperative_breedingyes&quot;),
-    row(&quot;Breeding systems&quot;, &quot;BG: monogamy vs no social bond&quot;, &quot;model_breeding_system_0&quot;, &quot;b_breeding_systemmonogamy&quot;, &quot;b_breeding_systemno_social_bond&quot;, &quot;Median + HPD&quot;),
-    row(&quot;Breeding systems&quot;, &quot;BIRDBASE: mixed vs polygamy&quot;, &quot;model_mono_poly_0&quot;, &quot;b_mono_poly_modelmixed&quot;, &quot;b_mono_poly_modelpolygamy&quot;, &quot;Median + HPD&quot;),
-    row(&quot;Breeding systems&quot;, &quot;BIRDBASE: monogamy vs polygamy&quot;, &quot;model_mono_poly_0&quot;, &quot;b_mono_poly_modelmonogamy&quot;, &quot;b_mono_poly_modelpolygamy&quot;, &quot;Median + HPD&quot;),
+    row(&quot;Breeding systems&quot;, &quot;BG: monogamy vs no social bond&quot;, &quot;model_breeding_system_0&quot;, &quot;b_breeding_systemmonogamy&quot;, &quot;b_breeding_systemno_social_bond&quot;),
+    row(&quot;Breeding systems&quot;, &quot;BIRDBASE: mixed vs polygamy&quot;, &quot;model_mono_poly_0&quot;, &quot;b_mono_poly_modelmixed&quot;, &quot;b_mono_poly_modelpolygamy&quot;),
+    row(&quot;Breeding systems&quot;, &quot;BIRDBASE: monogamy vs polygamy&quot;, &quot;model_mono_poly_0&quot;, &quot;b_mono_poly_modelmonogamy&quot;, &quot;b_mono_poly_modelpolygamy&quot;),
     row(&quot;Breeding systems&quot;, &quot;Care: biparental vs uniparental&quot;, &quot;model_parental_care_0&quot;, &quot;b_parental_carebiparental&quot;, &quot;b_parental_careuniparental&quot;),
     row(&quot;Breeding systems&quot;, &quot;Care: cooperative vs uniparental&quot;, &quot;model_parental_care_0&quot;, &quot;b_parental_carecooperation&quot;, &quot;b_parental_careuniparental&quot;)
   ))
@@ -2196,14 +2187,12 @@ summarise_forest &lt;- function(model_dir = &quot;models&quot;, common_dir = fil
       z &lt;- b[, spec$coefficient[i]]
       if (nzchar(spec$subtract[i])) z &lt;- z - b[, spec$subtract[i]]
       eti &lt;- unname(quantile(z, c(0.025, 0.975)))
-      hpd &lt;- hpd_interval(z)
-      median_hpd &lt;- spec$summary[i] == &quot;Median + HPD&quot;
       output[[i]] &lt;- cbind(spec[i, ], data.frame(
-        estimate = if (median_hpd) median(z) else mean(z),
-        lower = if (median_hpd) hpd[1L] else eti[1L],
-        upper = if (median_hpd) hpd[2L] else eti[2L],
-        posterior_mean = mean(z), posterior_median = median(z),
-        eti_lower = eti[1L], eti_upper = eti[2L], hpd_lower = hpd[1L], hpd_upper = hpd[2L],
+        estimate = mean(z),
+        lower = eti[1L],
+        upper = eti[2L],
+        posterior_mean = mean(z),
+        eti_lower = eti[1L], eti_upper = eti[2L],
         records = nrow(fit$data), draws = length(z),
         model_formula = paste(deparse(fit$formula$formula), collapse = &quot; &quot;)
       ))
@@ -2221,24 +2210,24 @@ plot_forest &lt;- function(forest_dat) {
   forest_dat$group &lt;- factor(forest_dat$group,
     levels = c(&quot;Methodological&quot;, &quot;Ecological and life-history&quot;, &quot;Breeding systems&quot;))
   forest_dat$moderator &lt;- factor(forest_dat$moderator, levels = rev(forest_dat$moderator))
-  forest_dat$summary &lt;- factor(forest_dat$summary, levels = c(&quot;Mean + equal-tailed&quot;, &quot;Median + HPD&quot;))
   ggplot(forest_dat, aes(x = estimate, y = moderator, colour = group)) +
     geom_vline(xintercept = 0, linewidth = 0.4, colour = &quot;grey65&quot;) +
     geom_errorbar(aes(xmin = lower, xmax = upper), orientation = &quot;y&quot;, width = 0.12, linewidth = 0.85) +
-    geom_point(aes(shape = summary), size = 3.1) +
+    geom_point(size = 3.1) +
     facet_grid(group ~ ., scales = &quot;free_y&quot;, space = &quot;free_y&quot;, labeller = labeller(group = c(
       Methodological = &quot;Methodological&quot;, &quot;Ecological and life-history&quot; = &quot;Ecological and\nlife-history&quot;,
       &quot;Breeding systems&quot; = &quot;Breeding\nsystems&quot;))) +
     scale_colour_manual(values = c(&quot;Methodological&quot; = &quot;#D89000&quot;, &quot;Ecological and life-history&quot; = &quot;#0072B2&quot;,
       &quot;Breeding systems&quot; = &quot;#009E73&quot;), guide = &quot;none&quot;) +
-    scale_shape_manual(values = c(&quot;Mean + equal-tailed&quot; = 16, &quot;Median + HPD&quot; = 17), name = NULL) +
     scale_x_continuous(breaks = seq(-2, 1, 0.5)) +
-    labs(x = &quot;Effect or contrast (log-odds scale)&quot;, y = NULL) +
+    labs(x = &quot;Posterior mean effect or contrast (log-odds scale)&quot;, y = NULL,
+      caption = &quot;Points: posterior means. Intervals: 95% equal-tailed credible intervals.&quot;) +
     theme_classic(base_size = 13) +
     theme(strip.background = element_blank(),
       strip.text.y = element_text(face = &quot;bold&quot;, angle = 0, hjust = 0, size = 11),
       axis.text.y = element_text(size = 11.5, colour = &quot;black&quot;), axis.text.x = element_text(colour = &quot;black&quot;),
-      axis.title.x = element_text(margin = margin(t = 10)), legend.position = &quot;bottom&quot;,
+      axis.title.x = element_text(margin = margin(t = 10)), legend.position = &quot;none&quot;,
+      plot.caption = element_text(size = 11, hjust = 0, margin = margin(t = 12)),
       legend.text = element_text(size = 11.5), panel.spacing = grid::unit(0.8, &quot;lines&quot;),
       plot.margin = margin(8, 10, 8, 8))
 }
@@ -2248,17 +2237,16 @@ p_forest_main &lt;- plot_forest(forest_dat)
 dir.create(&quot;tables&quot;, recursive = TRUE, showWarnings = FALSE)
 dir.create(&quot;Figures&quot;, recursive = TRUE, showWarnings = FALSE)
 write.csv(forest_dat, &quot;tables/single_moderator_forest_plot_data.csv&quot;, row.names = FALSE)
-ggplot2::ggsave(&quot;Figures/single_moderator_forest_plot.pdf&quot;, p_forest_main, width = 10, height = 8.6)
-ggplot2::ggsave(&quot;Figures/single_moderator_forest_plot.png&quot;, p_forest_main, width = 10, height = 8.6, dpi = 300)
-</code></pre></div>
+ggplot2::ggsave(&quot;Figures/single_moderator_forest_plot_mean_eti.pdf&quot;, p_forest_main, width = 10, height = 8.6)
+ggplot2::ggsave(&quot;Figures/single_moderator_forest_plot_mean_eti.png&quot;, p_forest_main, width = 10, height = 8.6, dpi = 300)</code></pre></div>
 </details>
 <div id="fig-forest-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-forest-plot-caption">
-<img src="Figures/single_moderator_forest_plot.png" class="img-fluid figure-img" style="width:100.0%">
+<img src="Figures/single_moderator_forest_plot_mean_eti.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forest-plot-caption">
-Figure&nbsp;8.14: Selected fixed effects and contrasts from single-moderator beta-binomial models, on the log-odds scale. Circles show posterior means and 95% equal-tailed credible intervals. Triangles show posterior medians and 95% highest-posterior-density (HPD) intervals for marker-type, nest-type, BG and BIRDBASE contrasts. Categorical contrasts compare the first category with the second; positive values indicate higher odds in the first category. Continuous effects are per one standard deviation, using common scaling from the 619-record overall dataset; body mass was log10-transformed before standardisation. All plotted summaries were calculated directly from retained posterior draws.
+Figure&nbsp;8.14: Selected fixed effects and contrasts from single-moderator beta-binomial models, on the log-odds scale. All points show posterior means, and horizontal intervals show 95% equal-tailed credible intervals. Categorical contrasts compare the first category with the second; positive values indicate higher odds in the first category. Continuous effects are per one standard deviation, using common scaling from the 619-record overall dataset; body mass was log10-transformed before standardisation. All plotted summaries were calculated directly from retained posterior draws.
 </figcaption>
 </figure>
 </div>
@@ -2281,28 +2269,7 @@ Figure&nbsp;8.14: Selected fixed effects and contrasts from single-moderator bet
 knitr::kable(full_model_coefficients, digits = 3)</code></pre></div>
 </details>
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Posterior mean fixed effects, posterior standard errors, 95% equal-tailed credible intervals, and odds-ratio transformations from the primary multivariable phylogenetic beta-binomial model.</caption>
-<thead><tr class="header"><th>Predictor</th><th>Estimate</th><th>SE</th><th>Lower 95% CrI</th><th>Upper 95% CrI</th><th>OR</th><th>Lower 95% OR</th><th>Upper 95% OR</th></tr></thead>
-<tbody>
-<tr><td>Intercept</td><td>-1.707</td><td>1.017</td><td>-3.663</td><td>0.347</td><td>0.181</td><td>0.026</td><td>1.415</td></tr>
-<tr><td>Marker: microsatellite</td><td>0.500</td><td>0.102</td><td>0.304</td><td>0.704</td><td>1.649</td><td>1.355</td><td>2.022</td></tr>
-<tr><td>Marker: mixed / other</td><td>0.835</td><td>0.392</td><td>0.069</td><td>1.593</td><td>2.305</td><td>1.071</td><td>4.916</td></tr>
-<tr><td>Marker: SNPs</td><td>0.601</td><td>0.269</td><td>0.086</td><td>1.142</td><td>1.824</td><td>1.089</td><td>3.133</td></tr>
-<tr><td>Study duration (1 SD)</td><td>-0.083</td><td>0.043</td><td>-0.169</td><td>-0.001</td><td>0.920</td><td>0.844</td><td>0.999</td></tr>
-<tr><td>Breeding: monogamy</td><td>0.160</td><td>0.261</td><td>-0.348</td><td>0.677</td><td>1.173</td><td>0.706</td><td>1.969</td></tr>
-<tr><td>Breeding: no social bond</td><td>0.774</td><td>0.525</td><td>-0.264</td><td>1.777</td><td>2.169</td><td>0.768</td><td>5.910</td></tr>
-<tr><td>Breeding: polyandry</td><td>0.764</td><td>0.497</td><td>-0.199</td><td>1.744</td><td>2.147</td><td>0.820</td><td>5.718</td></tr>
-<tr><td>Nest type: ground</td><td>0.415</td><td>0.284</td><td>-0.140</td><td>0.972</td><td>1.515</td><td>0.869</td><td>2.642</td></tr>
-<tr><td>Nest type: open</td><td>0.100</td><td>0.231</td><td>-0.351</td><td>0.549</td><td>1.105</td><td>0.704</td><td>1.731</td></tr>
-<tr><td>Nest type: other enclosed</td><td>-0.157</td><td>0.337</td><td>-0.812</td><td>0.508</td><td>0.855</td><td>0.444</td><td>1.661</td></tr>
-<tr><td>Migration: partial/resident</td><td>-0.492</td><td>0.186</td><td>-0.861</td><td>-0.132</td><td>0.611</td><td>0.423</td><td>0.876</td></tr>
-<tr><td>Coloniality: colonial</td><td>-0.081</td><td>0.218</td><td>-0.506</td><td>0.343</td><td>0.922</td><td>0.603</td><td>1.410</td></tr>
-<tr><td>Maximum clutch size (1 SD)</td><td>0.328</td><td>0.125</td><td>0.086</td><td>0.575</td><td>1.388</td><td>1.090</td><td>1.777</td></tr>
-<tr><td>Body mass, log10 (1 SD)</td><td>0.032</td><td>0.162</td><td>-0.288</td><td>0.346</td><td>1.032</td><td>0.750</td><td>1.413</td></tr>
-<tr><td>Absolute latitude (1 SD)</td><td>-0.229</td><td>0.074</td><td>-0.376</td><td>-0.084</td><td>0.796</td><td>0.687</td><td>0.919</td></tr>
-</tbody>
-</table>
+<table class="table table-sm table-striped small"><caption>Posterior means, posterior standard errors and 95% equal-tailed credible intervals from the primary multivariable model. OR summaries are calculated after exponentiating each posterior draw; the exponentiated intercept represents baseline odds.</caption><thead><tr><th>Predictor</th><th>Estimate</th><th>SE</th><th>Lower 95% CrI</th><th>Upper 95% CrI</th><th>Mean OR</th><th>Lower 95% OR</th><th>Upper 95% OR</th></tr></thead><tbody><tr><td>Intercept</td><td>-1.707</td><td>1.017</td><td>-3.663</td><td>0.347</td><td>0.310</td><td>0.026</td><td>1.415</td></tr><tr><td>Methodological</td><td>0.500</td><td>0.102</td><td>0.304</td><td>0.704</td><td>1.658</td><td>1.355</td><td>2.022</td></tr><tr><td>Methodological</td><td>0.835</td><td>0.392</td><td>0.069</td><td>1.593</td><td>2.489</td><td>1.071</td><td>4.916</td></tr><tr><td>Methodological</td><td>0.601</td><td>0.269</td><td>0.086</td><td>1.142</td><td>1.892</td><td>1.089</td><td>3.133</td></tr><tr><td>Methodological</td><td>-0.083</td><td>0.043</td><td>-0.169</td><td>-0.001</td><td>0.921</td><td>0.844</td><td>0.999</td></tr><tr><td>Breeding system</td><td>0.160</td><td>0.261</td><td>-0.348</td><td>0.677</td><td>1.214</td><td>0.706</td><td>1.969</td></tr><tr><td>Breeding system</td><td>0.774</td><td>0.525</td><td>-0.264</td><td>1.777</td><td>2.486</td><td>0.768</td><td>5.910</td></tr><tr><td>Breeding system</td><td>0.764</td><td>0.497</td><td>-0.199</td><td>1.744</td><td>2.430</td><td>0.820</td><td>5.718</td></tr><tr><td>Ecology/life history</td><td>0.415</td><td>0.284</td><td>-0.140</td><td>0.972</td><td>1.577</td><td>0.869</td><td>2.642</td></tr><tr><td>Ecology/life history</td><td>0.100</td><td>0.231</td><td>-0.351</td><td>0.549</td><td>1.135</td><td>0.704</td><td>1.731</td></tr><tr><td>Ecology/life history</td><td>-0.157</td><td>0.337</td><td>-0.812</td><td>0.508</td><td>0.905</td><td>0.444</td><td>1.661</td></tr><tr><td>Ecology/life history</td><td>-0.492</td><td>0.186</td><td>-0.861</td><td>-0.132</td><td>0.622</td><td>0.423</td><td>0.876</td></tr><tr><td>Ecology/life history</td><td>-0.081</td><td>0.218</td><td>-0.506</td><td>0.343</td><td>0.945</td><td>0.603</td><td>1.410</td></tr><tr><td>Ecology/life history</td><td>0.328</td><td>0.125</td><td>0.086</td><td>0.575</td><td>1.398</td><td>1.090</td><td>1.777</td></tr><tr><td>Ecology/life history</td><td>0.032</td><td>0.162</td><td>-0.288</td><td>0.346</td><td>1.046</td><td>0.750</td><td>1.413</td></tr><tr><td>Geography</td><td>-0.229</td><td>0.074</td><td>-0.376</td><td>-0.084</td><td>0.798</td><td>0.687</td><td>0.919</td></tr></tbody></table>
 </div>
 <details class="code-fold forest-code">
 <summary>Code</summary>
@@ -4664,15 +4631,6 @@ fixed_effect_draws &lt;- function(fit) {
   draws
 }
 
-hpd_interval &lt;- function(x, probability = 0.95) {
-  # Shortest contiguous empirical interval, as in coda::HPDinterval.
-  x &lt;- sort(x)
-  gap &lt;- round(probability * length(x))
-  starts &lt;- seq_len(length(x) - gap)
-  i &lt;- which.min(x[starts + gap] - x[starts])
-  c(x[i], x[i + gap])
-}
-
 forest_specification &lt;- function() {
   row &lt;- function(group, label, model, coefficient, subtract = &quot;&quot;,
                   summary = &quot;Mean + equal-tailed&quot;, common = FALSE) {
@@ -4680,18 +4638,18 @@ forest_specification &lt;- function() {
   }
   do.call(rbind, list(
     row(&quot;Methodological&quot;, &quot;Nest box vs natural nests&quot;, &quot;model_nest_box&quot;, &quot;b_nest_box_modelyes&quot;),
-    row(&quot;Methodological&quot;, &quot;Markers: DNA fingerprinting\nvs microsatellites&quot;, &quot;model_marker_type_0&quot;, &quot;b_marker_type_modelDNA_fingerprinting&quot;, &quot;b_marker_type_modelmicrosatellite&quot;, &quot;Median + HPD&quot;),
+    row(&quot;Methodological&quot;, &quot;Markers: DNA fingerprinting\nvs microsatellites&quot;, &quot;model_marker_type_0&quot;, &quot;b_marker_type_modelDNA_fingerprinting&quot;, &quot;b_marker_type_modelmicrosatellite&quot;),
     row(&quot;Methodological&quot;, &quot;Study duration (+1 SD)&quot;, &quot;model_study_duration&quot;, &quot;b_study_duration_sc&quot;, common = TRUE),
     row(&quot;Ecological and life-history&quot;, &quot;Migration: weak/resident\nvs regular&quot;, &quot;model_migration&quot;, &quot;b_migrationWeak&quot;),
-    row(&quot;Ecological and life-history&quot;, &quot;Nests: ground vs other enclosed&quot;, &quot;model_nest_type_0&quot;, &quot;b_nest_type_modelground&quot;, &quot;b_nest_type_modelother_enclosed&quot;, &quot;Median + HPD&quot;),
+    row(&quot;Ecological and life-history&quot;, &quot;Nests: ground vs other enclosed&quot;, &quot;model_nest_type_0&quot;, &quot;b_nest_type_modelground&quot;, &quot;b_nest_type_modelother_enclosed&quot;),
     row(&quot;Ecological and life-history&quot;, &quot;Colonial vs non-colonial&quot;, &quot;model_coloniality&quot;, &quot;b_coloniality1&quot;),
     row(&quot;Ecological and life-history&quot;, &quot;Maximum clutch size (+1 SD)&quot;, &quot;model_clutch_size&quot;, &quot;b_CS_max_sc&quot;, common = TRUE),
     row(&quot;Ecological and life-history&quot;, &quot;Log10 body mass (+1 SD)&quot;, &quot;model_log_body_mass&quot;, &quot;b_log_body_mass_sc&quot;, common = TRUE),
     row(&quot;Ecological and life-history&quot;, &quot;Absolute latitude (+1 SD)&quot;, &quot;model_abs_latitude&quot;, &quot;b_abs_lat_sc&quot;, common = TRUE),
     row(&quot;Breeding systems&quot;, &quot;Cooperative vs non-cooperative&quot;, &quot;model_cooperative&quot;, &quot;b_cooperative_breedingyes&quot;),
-    row(&quot;Breeding systems&quot;, &quot;BG: monogamy vs no social bond&quot;, &quot;model_breeding_system_0&quot;, &quot;b_breeding_systemmonogamy&quot;, &quot;b_breeding_systemno_social_bond&quot;, &quot;Median + HPD&quot;),
-    row(&quot;Breeding systems&quot;, &quot;BIRDBASE: mixed vs polygamy&quot;, &quot;model_mono_poly_0&quot;, &quot;b_mono_poly_modelmixed&quot;, &quot;b_mono_poly_modelpolygamy&quot;, &quot;Median + HPD&quot;),
-    row(&quot;Breeding systems&quot;, &quot;BIRDBASE: monogamy vs polygamy&quot;, &quot;model_mono_poly_0&quot;, &quot;b_mono_poly_modelmonogamy&quot;, &quot;b_mono_poly_modelpolygamy&quot;, &quot;Median + HPD&quot;),
+    row(&quot;Breeding systems&quot;, &quot;BG: monogamy vs no social bond&quot;, &quot;model_breeding_system_0&quot;, &quot;b_breeding_systemmonogamy&quot;, &quot;b_breeding_systemno_social_bond&quot;),
+    row(&quot;Breeding systems&quot;, &quot;BIRDBASE: mixed vs polygamy&quot;, &quot;model_mono_poly_0&quot;, &quot;b_mono_poly_modelmixed&quot;, &quot;b_mono_poly_modelpolygamy&quot;),
+    row(&quot;Breeding systems&quot;, &quot;BIRDBASE: monogamy vs polygamy&quot;, &quot;model_mono_poly_0&quot;, &quot;b_mono_poly_modelmonogamy&quot;, &quot;b_mono_poly_modelpolygamy&quot;),
     row(&quot;Breeding systems&quot;, &quot;Care: biparental vs uniparental&quot;, &quot;model_parental_care_0&quot;, &quot;b_parental_carebiparental&quot;, &quot;b_parental_careuniparental&quot;),
     row(&quot;Breeding systems&quot;, &quot;Care: cooperative vs uniparental&quot;, &quot;model_parental_care_0&quot;, &quot;b_parental_carecooperation&quot;, &quot;b_parental_careuniparental&quot;)
   ))
@@ -4713,14 +4671,12 @@ summarise_forest &lt;- function(model_dir = &quot;models&quot;, common_dir = fil
       z &lt;- b[, spec$coefficient[i]]
       if (nzchar(spec$subtract[i])) z &lt;- z - b[, spec$subtract[i]]
       eti &lt;- unname(quantile(z, c(0.025, 0.975)))
-      hpd &lt;- hpd_interval(z)
-      median_hpd &lt;- spec$summary[i] == &quot;Median + HPD&quot;
       output[[i]] &lt;- cbind(spec[i, ], data.frame(
-        estimate = if (median_hpd) median(z) else mean(z),
-        lower = if (median_hpd) hpd[1L] else eti[1L],
-        upper = if (median_hpd) hpd[2L] else eti[2L],
-        posterior_mean = mean(z), posterior_median = median(z),
-        eti_lower = eti[1L], eti_upper = eti[2L], hpd_lower = hpd[1L], hpd_upper = hpd[2L],
+        estimate = mean(z),
+        lower = eti[1L],
+        upper = eti[2L],
+        posterior_mean = mean(z),
+        eti_lower = eti[1L], eti_upper = eti[2L],
         records = nrow(fit$data), draws = length(z),
         model_formula = paste(deparse(fit$formula$formula), collapse = &quot; &quot;)
       ))
@@ -4738,24 +4694,24 @@ plot_forest &lt;- function(forest_dat) {
   forest_dat$group &lt;- factor(forest_dat$group,
     levels = c(&quot;Methodological&quot;, &quot;Ecological and life-history&quot;, &quot;Breeding systems&quot;))
   forest_dat$moderator &lt;- factor(forest_dat$moderator, levels = rev(forest_dat$moderator))
-  forest_dat$summary &lt;- factor(forest_dat$summary, levels = c(&quot;Mean + equal-tailed&quot;, &quot;Median + HPD&quot;))
   ggplot(forest_dat, aes(x = estimate, y = moderator, colour = group)) +
     geom_vline(xintercept = 0, linewidth = 0.4, colour = &quot;grey65&quot;) +
     geom_errorbar(aes(xmin = lower, xmax = upper), orientation = &quot;y&quot;, width = 0.12, linewidth = 0.85) +
-    geom_point(aes(shape = summary), size = 3.1) +
+    geom_point(size = 3.1) +
     facet_grid(group ~ ., scales = &quot;free_y&quot;, space = &quot;free_y&quot;, labeller = labeller(group = c(
       Methodological = &quot;Methodological&quot;, &quot;Ecological and life-history&quot; = &quot;Ecological and\nlife-history&quot;,
       &quot;Breeding systems&quot; = &quot;Breeding\nsystems&quot;))) +
     scale_colour_manual(values = c(&quot;Methodological&quot; = &quot;#D89000&quot;, &quot;Ecological and life-history&quot; = &quot;#0072B2&quot;,
       &quot;Breeding systems&quot; = &quot;#009E73&quot;), guide = &quot;none&quot;) +
-    scale_shape_manual(values = c(&quot;Mean + equal-tailed&quot; = 16, &quot;Median + HPD&quot; = 17), name = NULL) +
     scale_x_continuous(breaks = seq(-2, 1, 0.5)) +
-    labs(x = &quot;Effect or contrast (log-odds scale)&quot;, y = NULL) +
+    labs(x = &quot;Posterior mean effect or contrast (log-odds scale)&quot;, y = NULL,
+      caption = &quot;Points: posterior means. Intervals: 95% equal-tailed credible intervals.&quot;) +
     theme_classic(base_size = 13) +
     theme(strip.background = element_blank(),
       strip.text.y = element_text(face = &quot;bold&quot;, angle = 0, hjust = 0, size = 11),
       axis.text.y = element_text(size = 11.5, colour = &quot;black&quot;), axis.text.x = element_text(colour = &quot;black&quot;),
-      axis.title.x = element_text(margin = margin(t = 10)), legend.position = &quot;bottom&quot;,
+      axis.title.x = element_text(margin = margin(t = 10)), legend.position = &quot;none&quot;,
+      plot.caption = element_text(size = 11, hjust = 0, margin = margin(t = 12)),
       legend.text = element_text(size = 11.5), panel.spacing = grid::unit(0.8, &quot;lines&quot;),
       plot.margin = margin(8, 10, 8, 8))
 }
@@ -4765,17 +4721,17 @@ p_forest_main &lt;- plot_forest(forest_dat)
 dir.create(&quot;tables&quot;, recursive = TRUE, showWarnings = FALSE)
 dir.create(&quot;Figures&quot;, recursive = TRUE, showWarnings = FALSE)
 write.csv(forest_dat, &quot;tables/single_moderator_forest_plot_data.csv&quot;, row.names = FALSE)
-ggplot2::ggsave(&quot;Figures/single_moderator_forest_plot.pdf&quot;, p_forest_main, width = 10, height = 8.6)
-ggplot2::ggsave(&quot;Figures/single_moderator_forest_plot.png&quot;, p_forest_main, width = 10, height = 8.6, dpi = 300)
+ggplot2::ggsave(&quot;Figures/single_moderator_forest_plot_mean_eti.pdf&quot;, p_forest_main, width = 10, height = 8.6)
+ggplot2::ggsave(&quot;Figures/single_moderator_forest_plot_mean_eti.png&quot;, p_forest_main, width = 10, height = 8.6, dpi = 300)
 ```
 
 ```{r}
 #| label: fig-forest-plot
-#| fig-cap: &quot;Selected fixed effects and contrasts from single-moderator beta-binomial models, on the log-odds scale. Circles show posterior means and 95% equal-tailed credible intervals. Triangles show posterior medians and 95% highest-posterior-density (HPD) intervals for marker-type, nest-type, BG and BIRDBASE contrasts. Categorical contrasts compare the first category with the second; positive values indicate higher odds in the first category. Continuous effects are per one standard deviation, using common scaling from the 619-record overall dataset; body mass was log10-transformed before standardisation. All plotted summaries were calculated directly from retained posterior draws.&quot;
+#| fig-cap: &quot;Selected fixed effects and contrasts from single-moderator beta-binomial models, on the log-odds scale. All points show posterior means, and horizontal intervals show 95% equal-tailed credible intervals. Categorical contrasts compare the first category with the second; positive values indicate higher odds in the first category. Continuous effects are per one standard deviation, using common scaling from the 619-record overall dataset; body mass was log10-transformed before standardisation. All plotted summaries were calculated directly from retained posterior draws.&quot;
 #| echo: false
 #| out-width: &quot;100%&quot;
 
-knitr::include_graphics(&quot;Figures/single_moderator_forest_plot.png&quot;)
+knitr::include_graphics(&quot;Figures/single_moderator_forest_plot_mean_eti.png&quot;)
 ```
 
 Exact plotted estimates, interval types, model identifiers and sample sizes are available in the [posterior summary table](tables/single_moderator_forest_plot_data.csv).
@@ -4814,25 +4770,17 @@ full_model_table_labels &lt;- c(
 )
 
 full_model_coefficients &lt;- readr::read_csv(
-  &quot;tables/common_scaling/model_full_brouwer_griffith_fixed_effects.csv&quot;,
-  show_col_types = FALSE
+  &quot;tables/contrasts_equal_tailed.csv&quot;, show_col_types = FALSE
 ) |&gt;
+  dplyr::filter(model == &quot;model_full_brouwer_griffith&quot;, kind == &quot;coefficient&quot;) |&gt;
   dplyr::transmute(
-    Predictor = dplyr::recode(term, !!!full_model_table_labels, .default = term),
-    Estimate = Estimate,
-    SE = Est.Error,
-    `Lower 95% CrI` = Q2.5,
-    `Upper 95% CrI` = Q97.5,
-    OR = exp(Estimate),
-    `Lower 95% OR` = exp(Q2.5),
-    `Upper 95% OR` = exp(Q97.5)
+    Predictor = dplyr::recode(contrast, !!!full_model_table_labels, .default = contrast),
+    Estimate = estimate, SE = SE,
+    `Lower 95% CrI` = lower.CrI, `Upper 95% CrI` = upper.CrI,
+    `Mean OR` = OR, `Lower 95% OR` = lower.OR, `Upper 95% OR` = upper.OR
   )
-
-knitr::kable(
-  full_model_coefficients,
-  digits = 3,
-  caption = &quot;Posterior mean fixed effects, posterior standard errors, 95% equal-tailed credible intervals, and odds-ratio transformations from the primary multivariable phylogenetic beta-binomial model.&quot;
-)
+knitr::kable(full_model_coefficients, digits = 3,
+  caption = &quot;Posterior means, posterior standard errors and 95% equal-tailed credible intervals from the primary multivariable model. OR summaries are calculated after exponentiating each posterior draw; the exponentiated intercept represents baseline odds.&quot;)
 ```
 
 ```{r}

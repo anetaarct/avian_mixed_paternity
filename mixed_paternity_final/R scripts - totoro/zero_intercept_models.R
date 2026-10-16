@@ -1,6 +1,27 @@
 library(tidyverse)
 library(brms)
-library(emmeans)
+
+
+# Summarise contrasts directly from posterior draws on each reported scale.
+pairwise_mean_eti <- function(fit, prefix) {
+  b <- brms::fixef(fit, summary = FALSE)
+  stopifnot(all(startsWith(colnames(b), prefix)))
+  pairs <- combn(colnames(b), 2L, simplify = FALSE)
+  do.call(rbind, lapply(pairs, function(pair) {
+    difference <- b[, pair[1L]] - b[, pair[2L]]
+    odds_ratio <- exp(difference)
+    data.frame(
+      contrast = paste(sub(prefix, "", pair, fixed = TRUE), collapse = " - "),
+      estimate = mean(difference),
+      lower.CrI = unname(quantile(difference, 0.025)),
+      upper.CrI = unname(quantile(difference, 0.975)),
+      OR = mean(odds_ratio),
+      lower.OR = unname(quantile(odds_ratio, 0.025)),
+      upper.OR = unname(quantile(odds_ratio, 0.975))
+    )
+  }))
+}
+dir.create("tables", showWarnings = FALSE)
 
 options(mc.cores = parallel::detectCores())
 
@@ -78,11 +99,8 @@ saveRDS(model_marker_type_0, "models/model_marker_type_0.rds")
 writeLines(capture.output(summary(model_marker_type_0)),
            "models/model_marker_type_0_summary.txt")
 
-pairwise_marker_type_0 <- pairs(
-  emmeans(model_marker_type_0, ~ marker_type_model)
-)
-
-saveRDS(pairwise_marker_type_0, "models/pairwise_marker_type_0.rds")
+pairwise_marker_type_0 <- pairwise_mean_eti(model_marker_type_0, "marker_type_model")
+write.csv(pairwise_marker_type_0, "tables/pairwise_marker_type_mean_eti.csv", row.names = FALSE)
 
 
 # -------------------------
@@ -110,11 +128,8 @@ saveRDS(model_nest_type_0, "models/model_nest_type_0.rds")
 writeLines(capture.output(summary(model_nest_type_0)),
            "models/model_nest_type_0_summary.txt")
 
-pairwise_nest_type_0 <- pairs(
-  emmeans(model_nest_type_0, ~ nest_type_model)
-)
-
-saveRDS(pairwise_nest_type_0, "models/pairwise_nest_type_0.rds")
+pairwise_nest_type_0 <- pairwise_mean_eti(model_nest_type_0, "nest_type_model")
+write.csv(pairwise_nest_type_0, "tables/pairwise_nest_type_mean_eti.csv", row.names = FALSE)
 
 # -------------------------
 # Breeding system: zero-intercept + pairwise
@@ -141,11 +156,8 @@ saveRDS(model_breeding_system_0, "models/model_breeding_system_0.rds")
 writeLines(capture.output(summary(model_breeding_system_0)),
            "models/model_breeding_system_0_summary.txt")
 
-pairwise_breeding_system_0 <- pairs(
-  emmeans(model_breeding_system_0, ~ breeding_system)
-)
-
-saveRDS(pairwise_breeding_system_0, "models/pairwise_breeding_system_0.rds")
+pairwise_breeding_system_0 <- pairwise_mean_eti(model_breeding_system_0, "breeding_system")
+write.csv(pairwise_breeding_system_0, "tables/pairwise_breeding_system_mean_eti.csv", row.names = FALSE)
 
 
 # -------------------------
@@ -173,11 +185,8 @@ saveRDS(model_mono_poly_0, "models/model_mono_poly_0.rds")
 writeLines(capture.output(summary(model_mono_poly_0)),
            "models/model_mono_poly_0_summary.txt")
 
-pairwise_mono_poly_0 <- pairs(
-  emmeans(model_mono_poly_0, ~ mono_poly_model)
-)
-
-saveRDS(pairwise_mono_poly_0, "models/pairwise_mono_poly_0.rds")
+pairwise_mono_poly_0 <- pairwise_mean_eti(model_mono_poly_0, "mono_poly_model")
+write.csv(pairwise_mono_poly_0, "tables/pairwise_mono_poly_mean_eti.csv", row.names = FALSE)
 
 
 # -------------------------
@@ -205,10 +214,7 @@ saveRDS(model_parental_care_0, "models/model_parental_care_0.rds")
 writeLines(capture.output(summary(model_parental_care_0)),
            "models/model_parental_care_0_summary.txt")
 
-pairwise_parental_care_0 <- pairs(
-  emmeans(model_parental_care_0, ~ parental_care)
-)
-
-saveRDS(pairwise_parental_care_0, "models/pairwise_parental_care_0.rds")
+pairwise_parental_care_0 <- pairwise_mean_eti(model_parental_care_0, "parental_care")
+write.csv(pairwise_parental_care_0, "tables/pairwise_parental_care_mean_eti.csv", row.names = FALSE)
 
 message("Zero-intercept moderator models finished.")

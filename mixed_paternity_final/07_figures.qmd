@@ -1774,15 +1774,6 @@ fixed_effect_draws <- function(fit) {
   draws
 }
 
-hpd_interval <- function(x, probability = 0.95) {
-  # Shortest contiguous empirical interval, as in coda::HPDinterval.
-  x <- sort(x)
-  gap <- round(probability * length(x))
-  starts <- seq_len(length(x) - gap)
-  i <- which.min(x[starts + gap] - x[starts])
-  c(x[i], x[i + gap])
-}
-
 forest_specification <- function() {
   row <- function(group, label, model, coefficient, subtract = "",
                   summary = "Mean + equal-tailed", common = FALSE) {
@@ -1790,18 +1781,18 @@ forest_specification <- function() {
   }
   do.call(rbind, list(
     row("Methodological", "Nest box vs natural nests", "model_nest_box", "b_nest_box_modelyes"),
-    row("Methodological", "Markers: DNA fingerprinting\nvs microsatellites", "model_marker_type_0", "b_marker_type_modelDNA_fingerprinting", "b_marker_type_modelmicrosatellite", "Median + HPD"),
+    row("Methodological", "Markers: DNA fingerprinting\nvs microsatellites", "model_marker_type_0", "b_marker_type_modelDNA_fingerprinting", "b_marker_type_modelmicrosatellite"),
     row("Methodological", "Study duration (+1 SD)", "model_study_duration", "b_study_duration_sc", common = TRUE),
     row("Ecological and life-history", "Migration: weak/resident\nvs regular", "model_migration", "b_migrationWeak"),
-    row("Ecological and life-history", "Nests: ground vs other enclosed", "model_nest_type_0", "b_nest_type_modelground", "b_nest_type_modelother_enclosed", "Median + HPD"),
+    row("Ecological and life-history", "Nests: ground vs other enclosed", "model_nest_type_0", "b_nest_type_modelground", "b_nest_type_modelother_enclosed"),
     row("Ecological and life-history", "Colonial vs non-colonial", "model_coloniality", "b_coloniality1"),
     row("Ecological and life-history", "Maximum clutch size (+1 SD)", "model_clutch_size", "b_CS_max_sc", common = TRUE),
     row("Ecological and life-history", "Log10 body mass (+1 SD)", "model_log_body_mass", "b_log_body_mass_sc", common = TRUE),
     row("Ecological and life-history", "Absolute latitude (+1 SD)", "model_abs_latitude", "b_abs_lat_sc", common = TRUE),
     row("Breeding systems", "Cooperative vs non-cooperative", "model_cooperative", "b_cooperative_breedingyes"),
-    row("Breeding systems", "BG: monogamy vs no social bond", "model_breeding_system_0", "b_breeding_systemmonogamy", "b_breeding_systemno_social_bond", "Median + HPD"),
-    row("Breeding systems", "BIRDBASE: mixed vs polygamy", "model_mono_poly_0", "b_mono_poly_modelmixed", "b_mono_poly_modelpolygamy", "Median + HPD"),
-    row("Breeding systems", "BIRDBASE: monogamy vs polygamy", "model_mono_poly_0", "b_mono_poly_modelmonogamy", "b_mono_poly_modelpolygamy", "Median + HPD"),
+    row("Breeding systems", "BG: monogamy vs no social bond", "model_breeding_system_0", "b_breeding_systemmonogamy", "b_breeding_systemno_social_bond"),
+    row("Breeding systems", "BIRDBASE: mixed vs polygamy", "model_mono_poly_0", "b_mono_poly_modelmixed", "b_mono_poly_modelpolygamy"),
+    row("Breeding systems", "BIRDBASE: monogamy vs polygamy", "model_mono_poly_0", "b_mono_poly_modelmonogamy", "b_mono_poly_modelpolygamy"),
     row("Breeding systems", "Care: biparental vs uniparental", "model_parental_care_0", "b_parental_carebiparental", "b_parental_careuniparental"),
     row("Breeding systems", "Care: cooperative vs uniparental", "model_parental_care_0", "b_parental_carecooperation", "b_parental_careuniparental")
   ))
@@ -1823,14 +1814,12 @@ summarise_forest <- function(model_dir = "models", common_dir = file.path(model_
       z <- b[, spec$coefficient[i]]
       if (nzchar(spec$subtract[i])) z <- z - b[, spec$subtract[i]]
       eti <- unname(quantile(z, c(0.025, 0.975)))
-      hpd <- hpd_interval(z)
-      median_hpd <- spec$summary[i] == "Median + HPD"
       output[[i]] <- cbind(spec[i, ], data.frame(
-        estimate = if (median_hpd) median(z) else mean(z),
-        lower = if (median_hpd) hpd[1L] else eti[1L],
-        upper = if (median_hpd) hpd[2L] else eti[2L],
-        posterior_mean = mean(z), posterior_median = median(z),
-        eti_lower = eti[1L], eti_upper = eti[2L], hpd_lower = hpd[1L], hpd_upper = hpd[2L],
+        estimate = mean(z),
+        lower = eti[1L],
+        upper = eti[2L],
+        posterior_mean = mean(z),
+        eti_lower = eti[1L], eti_upper = eti[2L],
         records = nrow(fit$data), draws = length(z),
         model_formula = paste(deparse(fit$formula$formula), collapse = " ")
       ))
@@ -1848,24 +1837,24 @@ plot_forest <- function(forest_dat) {
   forest_dat$group <- factor(forest_dat$group,
     levels = c("Methodological", "Ecological and life-history", "Breeding systems"))
   forest_dat$moderator <- factor(forest_dat$moderator, levels = rev(forest_dat$moderator))
-  forest_dat$summary <- factor(forest_dat$summary, levels = c("Mean + equal-tailed", "Median + HPD"))
   ggplot(forest_dat, aes(x = estimate, y = moderator, colour = group)) +
     geom_vline(xintercept = 0, linewidth = 0.4, colour = "grey65") +
     geom_errorbar(aes(xmin = lower, xmax = upper), orientation = "y", width = 0.12, linewidth = 0.85) +
-    geom_point(aes(shape = summary), size = 3.1) +
+    geom_point(size = 3.1) +
     facet_grid(group ~ ., scales = "free_y", space = "free_y", labeller = labeller(group = c(
       Methodological = "Methodological", "Ecological and life-history" = "Ecological and\nlife-history",
       "Breeding systems" = "Breeding\nsystems"))) +
     scale_colour_manual(values = c("Methodological" = "#D89000", "Ecological and life-history" = "#0072B2",
       "Breeding systems" = "#009E73"), guide = "none") +
-    scale_shape_manual(values = c("Mean + equal-tailed" = 16, "Median + HPD" = 17), name = NULL) +
     scale_x_continuous(breaks = seq(-2, 1, 0.5)) +
-    labs(x = "Effect or contrast (log-odds scale)", y = NULL) +
+    labs(x = "Posterior mean effect or contrast (log-odds scale)", y = NULL,
+      caption = "Points: posterior means. Intervals: 95% equal-tailed credible intervals.") +
     theme_classic(base_size = 13) +
     theme(strip.background = element_blank(),
       strip.text.y = element_text(face = "bold", angle = 0, hjust = 0, size = 11),
       axis.text.y = element_text(size = 11.5, colour = "black"), axis.text.x = element_text(colour = "black"),
-      axis.title.x = element_text(margin = margin(t = 10)), legend.position = "bottom",
+      axis.title.x = element_text(margin = margin(t = 10)), legend.position = "none",
+      plot.caption = element_text(size = 11, hjust = 0, margin = margin(t = 12)),
       legend.text = element_text(size = 11.5), panel.spacing = grid::unit(0.8, "lines"),
       plot.margin = margin(8, 10, 8, 8))
 }
@@ -1875,17 +1864,17 @@ p_forest_main <- plot_forest(forest_dat)
 dir.create("tables", recursive = TRUE, showWarnings = FALSE)
 dir.create("Figures", recursive = TRUE, showWarnings = FALSE)
 write.csv(forest_dat, "tables/single_moderator_forest_plot_data.csv", row.names = FALSE)
-ggplot2::ggsave("Figures/single_moderator_forest_plot.pdf", p_forest_main, width = 10, height = 8.6)
-ggplot2::ggsave("Figures/single_moderator_forest_plot.png", p_forest_main, width = 10, height = 8.6, dpi = 300)
+ggplot2::ggsave("Figures/single_moderator_forest_plot_mean_eti.pdf", p_forest_main, width = 10, height = 8.6)
+ggplot2::ggsave("Figures/single_moderator_forest_plot_mean_eti.png", p_forest_main, width = 10, height = 8.6, dpi = 300)
 ```
 
 ```{r}
 #| label: fig-forest-plot
-#| fig-cap: "Selected fixed effects and contrasts from single-moderator beta-binomial models, on the log-odds scale. Circles show posterior means and 95% equal-tailed credible intervals. Triangles show posterior medians and 95% highest-posterior-density (HPD) intervals for marker-type, nest-type, BG and BIRDBASE contrasts. Categorical contrasts compare the first category with the second; positive values indicate higher odds in the first category. Continuous effects are per one standard deviation, using common scaling from the 619-record overall dataset; body mass was log10-transformed before standardisation. All plotted summaries were calculated directly from retained posterior draws."
+#| fig-cap: "Selected fixed effects and contrasts from single-moderator beta-binomial models, on the log-odds scale. All points show posterior means, and horizontal intervals show 95% equal-tailed credible intervals. Categorical contrasts compare the first category with the second; positive values indicate higher odds in the first category. Continuous effects are per one standard deviation, using common scaling from the 619-record overall dataset; body mass was log10-transformed before standardisation. All plotted summaries were calculated directly from retained posterior draws."
 #| echo: false
 #| out-width: "100%"
 
-knitr::include_graphics("Figures/single_moderator_forest_plot.png")
+knitr::include_graphics("Figures/single_moderator_forest_plot_mean_eti.png")
 ```
 
 Exact plotted estimates, interval types, model identifiers and sample sizes are available in the [posterior summary table](tables/single_moderator_forest_plot_data.csv).
@@ -1924,25 +1913,17 @@ full_model_table_labels <- c(
 )
 
 full_model_coefficients <- readr::read_csv(
-  "tables/common_scaling/model_full_brouwer_griffith_fixed_effects.csv",
-  show_col_types = FALSE
+  "tables/contrasts_equal_tailed.csv", show_col_types = FALSE
 ) |>
+  dplyr::filter(model == "model_full_brouwer_griffith", kind == "coefficient") |>
   dplyr::transmute(
-    Predictor = dplyr::recode(term, !!!full_model_table_labels, .default = term),
-    Estimate = Estimate,
-    SE = Est.Error,
-    `Lower 95% CrI` = Q2.5,
-    `Upper 95% CrI` = Q97.5,
-    OR = exp(Estimate),
-    `Lower 95% OR` = exp(Q2.5),
-    `Upper 95% OR` = exp(Q97.5)
+    Predictor = dplyr::recode(contrast, !!!full_model_table_labels, .default = contrast),
+    Estimate = estimate, SE = SE,
+    `Lower 95% CrI` = lower.CrI, `Upper 95% CrI` = upper.CrI,
+    `Mean OR` = OR, `Lower 95% OR` = lower.OR, `Upper 95% OR` = upper.OR
   )
-
-knitr::kable(
-  full_model_coefficients,
-  digits = 3,
-  caption = "Posterior mean fixed effects, posterior standard errors, 95% equal-tailed credible intervals, and odds-ratio transformations from the primary multivariable phylogenetic beta-binomial model."
-)
+knitr::kable(full_model_coefficients, digits = 3,
+  caption = "Posterior means, posterior standard errors and 95% equal-tailed credible intervals from the primary multivariable model. OR summaries are calculated after exponentiating each posterior draw; the exponentiated intercept represents baseline odds.")
 ```
 
 ```{r}

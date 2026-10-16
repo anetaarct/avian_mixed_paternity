@@ -528,71 +528,24 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </section>
 <section id="post-hoc-comparisons" class="level3" data-number="5.5.4">
 <h3 data-number="5.5.4" class="anchored" data-anchor-id="post-hoc-comparisons"><span class="header-section-number">5.5.4</span> Post-hoc comparisons</h3>
-<p>Pairwise contrasts among marker-type categories were calculated from the zero-intercept marker-type model. Estimates are shown on the logit scale.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>pairwise_marker_type_0 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"models/pairwise_marker_type_0.rds"</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>pairwise_marker_type_table <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pairwise_marker_type_0)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(pairwise_marker_type_table, <span class="at">digits =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">contrast</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">lower.HPD</th>
-<th style="text-align: right;">upper.HPD</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">DNA_fingerprinting - microsatellite</td>
-<td style="text-align: right;">-0.479</td>
-<td style="text-align: right;">-0.669</td>
-<td style="text-align: right;">-0.295</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DNA_fingerprinting - mixed_other</td>
-<td style="text-align: right;">-0.605</td>
-<td style="text-align: right;">-1.207</td>
-<td style="text-align: right;">-0.009</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DNA_fingerprinting - SNPs</td>
-<td style="text-align: right;">-0.505</td>
-<td style="text-align: right;">-1.027</td>
-<td style="text-align: right;">-0.032</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">microsatellite - mixed_other</td>
-<td style="text-align: right;">-0.127</td>
-<td style="text-align: right;">-0.710</td>
-<td style="text-align: right;">0.461</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">microsatellite - SNPs</td>
-<td style="text-align: right;">-0.027</td>
-<td style="text-align: right;">-0.498</td>
-<td style="text-align: right;">0.443</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">mixed_other - SNPs</td>
-<td style="text-align: right;">0.105</td>
-<td style="text-align: right;">-0.631</td>
-<td style="text-align: right;">0.865</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p>Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.</p>
+<details class="code-fold eti-contrast-code"><summary>Code</summary><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">b &lt;- brms::fixef(model_marker_type_0, summary = FALSE)
+pairs &lt;- combn(colnames(b), 2L, simplify = FALSE)
+marker_type_contrasts &lt;- do.call(rbind, lapply(pairs, function(pair) {
+  difference &lt;- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio &lt;- exp(difference)
+  data.frame(
+    contrast = paste(sub(&quot;marker_type_model&quot;, &quot;&quot;, pair, fixed = TRUE), collapse = &quot; - &quot;),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(marker_type_contrasts, digits = 3,
+  caption = &quot;Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.&quot;)</code></pre></div></details><table class="table table-sm table-striped small"><caption>Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.</caption><thead><tr><th>contrast</th><th>estimate</th><th>lower.CrI</th><th>upper.CrI</th><th>OR</th><th>lower.OR</th><th>upper.OR</th></tr></thead><tbody><tr><td>DNA_fingerprinting - microsatellite</td><td>-0.480</td><td>-0.667</td><td>-0.293</td><td>0.622</td><td>0.513</td><td>0.746</td></tr><tr><td>DNA_fingerprinting - mixed_other</td><td>-0.607</td><td>-1.203</td><td>-0.004</td><td>0.572</td><td>0.300</td><td>0.996</td></tr><tr><td>DNA_fingerprinting - SNPs</td><td>-0.504</td><td>-1.002</td><td>-0.006</td><td>0.624</td><td>0.367</td><td>0.994</td></tr><tr><td>microsatellite - mixed_other</td><td>-0.127</td><td>-0.708</td><td>0.465</td><td>0.922</td><td>0.493</td><td>1.592</td></tr><tr><td>microsatellite - SNPs</td><td>-0.024</td><td>-0.496</td><td>0.446</td><td>1.005</td><td>0.609</td><td>1.562</td></tr><tr><td>mixed_other - SNPs</td><td>0.103</td><td>-0.644</td><td>0.852</td><td>1.191</td><td>0.525</td><td>2.345</td></tr></tbody></table>
 </section>
 </section>
 <section id="study-duration" class="level2" data-number="5.6">
@@ -1457,19 +1410,31 @@ knitr::kable(marker_type_prevalence, digits = 2)
 
 ### Post-hoc comparisons
 
-Pairwise contrasts among marker-type categories were calculated from the zero-intercept marker-type model. Estimates are shown on the logit scale.
+Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.
 
 ```{r}
-
-#| echo: false
+#| echo: true
+#| code-fold: true
 #| message: false
 #| warning: false
 
-pairwise_marker_type_0 &lt;- readRDS(&quot;models/pairwise_marker_type_0.rds&quot;)
-
-pairwise_marker_type_table &lt;- as.data.frame(pairwise_marker_type_0)
-
-knitr::kable(pairwise_marker_type_table, digits = 3)
+b &lt;- brms::fixef(model_marker_type_0, summary = FALSE)
+pairs &lt;- combn(colnames(b), 2L, simplify = FALSE)
+marker_type_contrasts &lt;- do.call(rbind, lapply(pairs, function(pair) {
+  difference &lt;- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio &lt;- exp(difference)
+  data.frame(
+    contrast = paste(sub(&quot;marker_type_model&quot;, &quot;&quot;, pair, fixed = TRUE), collapse = &quot; - &quot;),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(marker_type_contrasts, digits = 3,
+  caption = &quot;Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.&quot;)
 ```
 
 ## Study duration

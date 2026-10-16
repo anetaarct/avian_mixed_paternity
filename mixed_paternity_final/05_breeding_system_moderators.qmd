@@ -171,18 +171,31 @@ knitr::kable(breeding_system_prevalence, digits = 2)
 
 ### Post-hoc pairwise contrasts
 
-Pairwise contrasts among breeding-system categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.
+Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.
 
 ```{r}
-#| echo: false
+#| echo: true
+#| code-fold: true
 #| message: false
 #| warning: false
 
-pairwise_breeding_system_0 <- readRDS("models/pairwise_breeding_system_0.rds")
-
-breeding_posthoc <- as.data.frame(pairwise_breeding_system_0)
-
-knitr::kable(breeding_posthoc, digits = 3)
+b <- brms::fixef(model_breeding_system_0, summary = FALSE)
+pairs <- combn(colnames(b), 2L, simplify = FALSE)
+breeding_system_contrasts <- do.call(rbind, lapply(pairs, function(pair) {
+  difference <- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio <- exp(difference)
+  data.frame(
+    contrast = paste(sub("breeding_system", "", pair, fixed = TRUE), collapse = " - "),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(breeding_system_contrasts, digits = 3,
+  caption = "Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.")
 ```
 
 ## BIRDBASE breeding-system classification
@@ -225,18 +238,31 @@ knitr::kable(mono_poly_prevalence, digits = 2)
 
 ### Post-hoc pairwise contrasts
 
-Pairwise contrasts among breeding system categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.
+Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.
 
 ```{r}
-#| echo: false
+#| echo: true
+#| code-fold: true
 #| message: false
 #| warning: false
 
-pairwise_mono_poly_0 <- readRDS("models/pairwise_mono_poly_0.rds")
-
-pairwise_mono_poly_table <- as.data.frame(pairwise_mono_poly_0)
-
-knitr::kable(pairwise_mono_poly_table, digits = 3)
+b <- brms::fixef(model_mono_poly_0, summary = FALSE)
+pairs <- combn(colnames(b), 2L, simplify = FALSE)
+mono_poly_contrasts <- do.call(rbind, lapply(pairs, function(pair) {
+  difference <- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio <- exp(difference)
+  data.frame(
+    contrast = paste(sub("mono_poly_model", "", pair, fixed = TRUE), collapse = " - "),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(mono_poly_contrasts, digits = 3,
+  caption = "Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.")
 ```
 
 ## Parental care
@@ -282,29 +308,34 @@ knitr::kable(parental_care_prevalence, digits = 2)
 
 ### Post-hoc pairwise contrasts
 
-Pairwise contrasts among parental-care categories were calculated from the zero-intercept model. Posterior means and 95% equal-tailed credible intervals are reported on the logit scale.
+Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.
 
 ```{r}
-
-#| echo: false
+#| echo: true
+#| code-fold: true
 #| message: false
 #| warning: false
 
-pairwise_parental_care_0 <- readRDS("models/pairwise_parental_care_0.rds")
-
-parental_care_contrast_draws <- as.matrix(coda::as.mcmc(pairwise_parental_care_0))
-
-parental_care_posthoc_table <- tibble(
-  contrast = str_remove(colnames(parental_care_contrast_draws), "^contrast "),
-  estimate = colMeans(parental_care_contrast_draws),
-  lower.CrI = apply(parental_care_contrast_draws, 2, quantile, 0.025),
-  upper.CrI = apply(parental_care_contrast_draws, 2, quantile, 0.975)
-)
-
-knitr::kable(parental_care_posthoc_table, digits = 3)
+b <- brms::fixef(model_parental_care_0, summary = FALSE)
+pairs <- combn(colnames(b), 2L, simplify = FALSE)
+parental_care_contrasts <- do.call(rbind, lapply(pairs, function(pair) {
+  difference <- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio <- exp(difference)
+  data.frame(
+    contrast = paste(sub("parental_care", "", pair, fixed = TRUE), collapse = " - "),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(parental_care_contrasts, digits = 3,
+  caption = "Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.")
 ```
 
-On the odds-ratio scale, cooperative care was associated with lower estimated odds of mixed paternity than uniparental care (OR = 0.32, 95% equal-tailed CrI 0.15–0.66), as was biparental care (OR = 0.41, 95% equal-tailed CrI 0.22–0.75).
+Posterior mean odds ratios indicated lower estimated odds of mixed paternity under cooperative care than uniparental care (OR = 0.343, 95% equal-tailed CrI 0.152–0.664), as well as under biparental care (OR = 0.430, 95% equal-tailed CrI 0.221–0.751).
 
 ## Cooperative breeding
 

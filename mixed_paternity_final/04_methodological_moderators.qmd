@@ -146,19 +146,31 @@ knitr::kable(marker_type_prevalence, digits = 2)
 
 ### Post-hoc comparisons
 
-Pairwise contrasts among marker-type categories were calculated from the zero-intercept marker-type model. Estimates are shown on the logit scale.
+Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.
 
 ```{r}
-
-#| echo: false
+#| echo: true
+#| code-fold: true
 #| message: false
 #| warning: false
 
-pairwise_marker_type_0 <- readRDS("models/pairwise_marker_type_0.rds")
-
-pairwise_marker_type_table <- as.data.frame(pairwise_marker_type_0)
-
-knitr::kable(pairwise_marker_type_table, digits = 3)
+b <- brms::fixef(model_marker_type_0, summary = FALSE)
+pairs <- combn(colnames(b), 2L, simplify = FALSE)
+marker_type_contrasts <- do.call(rbind, lapply(pairs, function(pair) {
+  difference <- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio <- exp(difference)
+  data.frame(
+    contrast = paste(sub("marker_type_model", "", pair, fixed = TRUE), collapse = " - "),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(marker_type_contrasts, digits = 3,
+  caption = "Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.")
 ```
 
 ## Study duration

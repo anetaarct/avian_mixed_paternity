@@ -551,83 +551,24 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </section>
 <section id="post-hoc-pairwise-contrasts" class="level3" data-number="6.5.4">
 <h3 data-number="6.5.4" class="anchored" data-anchor-id="post-hoc-pairwise-contrasts"><span class="header-section-number">6.5.4</span> Post-hoc pairwise contrasts</h3>
-<p>Pairwise contrasts among breeding-system categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.</p>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">contrast</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">lower.HPD</th>
-<th style="text-align: right;">upper.HPD</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">cooperative_breeder - lekking</td>
-<td style="text-align: right;">-1.416</td>
-<td style="text-align: right;">-2.818</td>
-<td style="text-align: right;">0.041</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">cooperative_breeder - monogamy</td>
-<td style="text-align: right;">-0.217</td>
-<td style="text-align: right;">-0.681</td>
-<td style="text-align: right;">0.222</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">cooperative_breeder - no_social_bond</td>
-<td style="text-align: right;">-1.160</td>
-<td style="text-align: right;">-2.133</td>
-<td style="text-align: right;">-0.241</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">cooperative_breeder - polyandry</td>
-<td style="text-align: right;">-0.895</td>
-<td style="text-align: right;">-1.760</td>
-<td style="text-align: right;">0.006</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">lekking - monogamy</td>
-<td style="text-align: right;">1.200</td>
-<td style="text-align: right;">-0.159</td>
-<td style="text-align: right;">2.588</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">lekking - no_social_bond</td>
-<td style="text-align: right;">0.252</td>
-<td style="text-align: right;">-1.243</td>
-<td style="text-align: right;">1.744</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">lekking - polyandry</td>
-<td style="text-align: right;">0.526</td>
-<td style="text-align: right;">-1.023</td>
-<td style="text-align: right;">2.032</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">monogamy - no_social_bond</td>
-<td style="text-align: right;">-0.946</td>
-<td style="text-align: right;">-1.788</td>
-<td style="text-align: right;">-0.078</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">monogamy - polyandry</td>
-<td style="text-align: right;">-0.678</td>
-<td style="text-align: right;">-1.498</td>
-<td style="text-align: right;">0.107</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">no_social_bond - polyandry</td>
-<td style="text-align: right;">0.266</td>
-<td style="text-align: right;">-0.833</td>
-<td style="text-align: right;">1.359</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p>Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.</p>
+<details class="code-fold eti-contrast-code"><summary>Code</summary><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">b &lt;- brms::fixef(model_breeding_system_0, summary = FALSE)
+pairs &lt;- combn(colnames(b), 2L, simplify = FALSE)
+breeding_system_contrasts &lt;- do.call(rbind, lapply(pairs, function(pair) {
+  difference &lt;- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio &lt;- exp(difference)
+  data.frame(
+    contrast = paste(sub(&quot;breeding_system&quot;, &quot;&quot;, pair, fixed = TRUE), collapse = &quot; - &quot;),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(breeding_system_contrasts, digits = 3,
+  caption = &quot;Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.&quot;)</code></pre></div></details><table class="table table-sm table-striped small"><caption>Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.</caption><thead><tr><th>contrast</th><th>estimate</th><th>lower.CrI</th><th>upper.CrI</th><th>OR</th><th>lower.OR</th><th>upper.OR</th></tr></thead><tbody><tr><td>cooperative_breeder - lekking</td><td>-1.426</td><td>-2.866</td><td>-0.002</td><td>0.313</td><td>0.057</td><td>0.998</td></tr><tr><td>cooperative_breeder - monogamy</td><td>-0.220</td><td>-0.677</td><td>0.227</td><td>0.824</td><td>0.508</td><td>1.255</td></tr><tr><td>cooperative_breeder - no_social_bond</td><td>-1.168</td><td>-2.120</td><td>-0.220</td><td>0.350</td><td>0.120</td><td>0.803</td></tr><tr><td>cooperative_breeder - polyandry</td><td>-0.898</td><td>-1.784</td><td>-0.015</td><td>0.451</td><td>0.168</td><td>0.985</td></tr><tr><td>lekking - monogamy</td><td>1.205</td><td>-0.153</td><td>2.597</td><td>4.251</td><td>0.858</td><td>13.417</td></tr><tr><td>lekking - no_social_bond</td><td>0.257</td><td>-1.239</td><td>1.749</td><td>1.722</td><td>0.290</td><td>5.747</td></tr><tr><td>lekking - polyandry</td><td>0.528</td><td>-1.006</td><td>2.056</td><td>2.290</td><td>0.366</td><td>7.811</td></tr><tr><td>monogamy - no_social_bond</td><td>-0.948</td><td>-1.806</td><td>-0.094</td><td>0.426</td><td>0.164</td><td>0.910</td></tr><tr><td>monogamy - polyandry</td><td>-0.678</td><td>-1.486</td><td>0.119</td><td>0.552</td><td>0.226</td><td>1.126</td></tr><tr><td>no_social_bond - polyandry</td><td>0.270</td><td>-0.833</td><td>1.359</td><td>1.532</td><td>0.435</td><td>3.890</td></tr></tbody></table>
 </section>
 </section>
 <section id="birdbase-breeding-system-classification" class="level2" data-number="6.6">
@@ -743,41 +684,24 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </section>
 <section id="post-hoc-pairwise-contrasts-1" class="level3" data-number="6.6.4">
 <h3 data-number="6.6.4" class="anchored" data-anchor-id="post-hoc-pairwise-contrasts-1"><span class="header-section-number">6.6.4</span> Post-hoc pairwise contrasts</h3>
-<p>Pairwise contrasts among breeding system categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.</p>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">contrast</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">lower.HPD</th>
-<th style="text-align: right;">upper.HPD</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">mixed - monogamy</td>
-<td style="text-align: right;">0.056</td>
-<td style="text-align: right;">-0.247</td>
-<td style="text-align: right;">0.374</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">mixed - polygamy</td>
-<td style="text-align: right;">-0.534</td>
-<td style="text-align: right;">-1.049</td>
-<td style="text-align: right;">-0.029</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">monogamy - polygamy</td>
-<td style="text-align: right;">-0.588</td>
-<td style="text-align: right;">-1.093</td>
-<td style="text-align: right;">-0.085</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p>Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.</p>
+<details class="code-fold eti-contrast-code"><summary>Code</summary><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">b &lt;- brms::fixef(model_mono_poly_0, summary = FALSE)
+pairs &lt;- combn(colnames(b), 2L, simplify = FALSE)
+mono_poly_contrasts &lt;- do.call(rbind, lapply(pairs, function(pair) {
+  difference &lt;- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio &lt;- exp(difference)
+  data.frame(
+    contrast = paste(sub(&quot;mono_poly_model&quot;, &quot;&quot;, pair, fixed = TRUE), collapse = &quot; - &quot;),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(mono_poly_contrasts, digits = 3,
+  caption = &quot;Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.&quot;)</code></pre></div></details><table class="table table-sm table-striped small"><caption>Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.</caption><thead><tr><th>contrast</th><th>estimate</th><th>lower.CrI</th><th>upper.CrI</th><th>OR</th><th>lower.OR</th><th>upper.OR</th></tr></thead><tbody><tr><td>mixed - monogamy</td><td>0.056</td><td>-0.259</td><td>0.365</td><td>1.071</td><td>0.772</td><td>1.440</td></tr><tr><td>mixed - polygamy</td><td>-0.536</td><td>-1.056</td><td>-0.034</td><td>0.605</td><td>0.348</td><td>0.966</td></tr><tr><td>monogamy - polygamy</td><td>-0.592</td><td>-1.107</td><td>-0.096</td><td>0.572</td><td>0.331</td><td>0.909</td></tr></tbody></table>
 </section>
 </section>
 <section id="parental-care" class="level2" data-number="6.7">
@@ -918,133 +842,25 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </section>
 <section id="post-hoc-pairwise-contrasts-2" class="level3" data-number="6.7.4">
 <h3 data-number="6.7.4" class="anchored" data-anchor-id="post-hoc-pairwise-contrasts-2"><span class="header-section-number">6.7.4</span> Post-hoc pairwise contrasts</h3>
-<p>Pairwise contrasts among parental-care categories were calculated from the zero-intercept model. Posterior means and 95% equal-tailed credible intervals are reported on the logit scale.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>pairwise_parental_care_0 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"models/pairwise_parental_care_0.rds"</span>)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>parental_care_contrast_draws <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(coda<span class="sc">::</span><span class="fu">as.mcmc</span>(pairwise_parental_care_0))</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>parental_care_posthoc_table <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">contrast =</span> <span class="fu">str_remove</span>(<span class="fu">colnames</span>(parental_care_contrast_draws), <span class="st">"^contrast "</span>),</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimate =</span> <span class="fu">colMeans</span>(parental_care_contrast_draws),</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">lower.CrI =</span> <span class="fu">apply</span>(parental_care_contrast_draws, <span class="dv">2</span>, quantile, <span class="fl">0.025</span>),</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">upper.CrI =</span> <span class="fu">apply</span>(parental_care_contrast_draws, <span class="dv">2</span>, quantile, <span class="fl">0.975</span>)</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(parental_care_posthoc_table, <span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">contrast</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">lower.CrI</th>
-<th style="text-align: right;">upper.CrI</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">biparental - broodparasite</td>
-<td style="text-align: right;">-0.534</td>
-<td style="text-align: right;">-2.150</td>
-<td style="text-align: right;">1.111</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">biparental - cooperation</td>
-<td style="text-align: right;">0.247</td>
-<td style="text-align: right;">-0.191</td>
-<td style="text-align: right;">0.691</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">biparental - nk_cooperation</td>
-<td style="text-align: right;">-0.361</td>
-<td style="text-align: right;">-0.989</td>
-<td style="text-align: right;">0.265</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">biparental - pair</td>
-<td style="text-align: right;">-0.852</td>
-<td style="text-align: right;">-2.525</td>
-<td style="text-align: right;">0.822</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">biparental - uniparental</td>
-<td style="text-align: right;">-0.892</td>
-<td style="text-align: right;">-1.509</td>
-<td style="text-align: right;">-0.286</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">broodparasite - cooperation</td>
-<td style="text-align: right;">0.781</td>
-<td style="text-align: right;">-0.885</td>
-<td style="text-align: right;">2.436</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">broodparasite - nk_cooperation</td>
-<td style="text-align: right;">0.173</td>
-<td style="text-align: right;">-1.555</td>
-<td style="text-align: right;">1.884</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">broodparasite - pair</td>
-<td style="text-align: right;">-0.318</td>
-<td style="text-align: right;">-2.652</td>
-<td style="text-align: right;">1.990</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">broodparasite - uniparental</td>
-<td style="text-align: right;">-0.358</td>
-<td style="text-align: right;">-2.095</td>
-<td style="text-align: right;">1.360</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">cooperation - nk_cooperation</td>
-<td style="text-align: right;">-0.608</td>
-<td style="text-align: right;">-1.347</td>
-<td style="text-align: right;">0.124</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">cooperation - pair</td>
-<td style="text-align: right;">-1.098</td>
-<td style="text-align: right;">-2.809</td>
-<td style="text-align: right;">0.614</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">cooperation - uniparental</td>
-<td style="text-align: right;">-1.139</td>
-<td style="text-align: right;">-1.882</td>
-<td style="text-align: right;">-0.410</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">nk_cooperation - pair</td>
-<td style="text-align: right;">-0.491</td>
-<td style="text-align: right;">-2.251</td>
-<td style="text-align: right;">1.279</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">nk_cooperation - uniparental</td>
-<td style="text-align: right;">-0.531</td>
-<td style="text-align: right;">-1.371</td>
-<td style="text-align: right;">0.301</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">pair - uniparental</td>
-<td style="text-align: right;">-0.040</td>
-<td style="text-align: right;">-1.810</td>
-<td style="text-align: right;">1.732</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>On the odds-ratio scale, cooperative care was associated with lower estimated odds of mixed paternity than uniparental care (OR = 0.32, 95% equal-tailed CrI 0.15–0.66), as was biparental care (OR = 0.41, 95% equal-tailed CrI 0.22–0.75).</p>
+<p>Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.</p>
+<details class="code-fold eti-contrast-code"><summary>Code</summary><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">b &lt;- brms::fixef(model_parental_care_0, summary = FALSE)
+pairs &lt;- combn(colnames(b), 2L, simplify = FALSE)
+parental_care_contrasts &lt;- do.call(rbind, lapply(pairs, function(pair) {
+  difference &lt;- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio &lt;- exp(difference)
+  data.frame(
+    contrast = paste(sub(&quot;parental_care&quot;, &quot;&quot;, pair, fixed = TRUE), collapse = &quot; - &quot;),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(parental_care_contrasts, digits = 3,
+  caption = &quot;Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.&quot;)</code></pre></div></details><table class="table table-sm table-striped small"><caption>Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.</caption><thead><tr><th>contrast</th><th>estimate</th><th>lower.CrI</th><th>upper.CrI</th><th>OR</th><th>lower.OR</th><th>upper.OR</th></tr></thead><tbody><tr><td>biparental - broodparasite</td><td>-0.534</td><td>-2.150</td><td>1.111</td><td>0.832</td><td>0.116</td><td>3.036</td></tr><tr><td>biparental - cooperation</td><td>0.247</td><td>-0.191</td><td>0.691</td><td>1.312</td><td>0.826</td><td>1.996</td></tr><tr><td>biparental - nk_cooperation</td><td>-0.361</td><td>-0.989</td><td>0.265</td><td>0.733</td><td>0.372</td><td>1.304</td></tr><tr><td>biparental - pair</td><td>-0.852</td><td>-2.525</td><td>0.822</td><td>0.617</td><td>0.080</td><td>2.275</td></tr><tr><td>biparental - uniparental</td><td>-0.892</td><td>-1.509</td><td>-0.286</td><td>0.430</td><td>0.221</td><td>0.751</td></tr><tr><td>broodparasite - cooperation</td><td>0.781</td><td>-0.885</td><td>2.436</td><td>3.138</td><td>0.413</td><td>11.425</td></tr><tr><td>broodparasite - nk_cooperation</td><td>0.173</td><td>-1.555</td><td>1.884</td><td>1.748</td><td>0.211</td><td>6.577</td></tr><tr><td>broodparasite - pair</td><td>-0.318</td><td>-2.652</td><td>1.990</td><td>1.466</td><td>0.071</td><td>7.313</td></tr><tr><td>broodparasite - uniparental</td><td>-0.358</td><td>-2.095</td><td>1.360</td><td>1.030</td><td>0.123</td><td>3.895</td></tr><tr><td>cooperation - nk_cooperation</td><td>-0.608</td><td>-1.347</td><td>0.124</td><td>0.584</td><td>0.260</td><td>1.132</td></tr><tr><td>cooperation - pair</td><td>-1.098</td><td>-2.809</td><td>0.614</td><td>0.491</td><td>0.060</td><td>1.848</td></tr><tr><td>cooperation - uniparental</td><td>-1.139</td><td>-1.882</td><td>-0.410</td><td>0.343</td><td>0.152</td><td>0.664</td></tr><tr><td>nk_cooperation - pair</td><td>-0.491</td><td>-2.251</td><td>1.279</td><td>0.917</td><td>0.105</td><td>3.593</td></tr><tr><td>nk_cooperation - uniparental</td><td>-0.531</td><td>-1.371</td><td>0.301</td><td>0.644</td><td>0.254</td><td>1.352</td></tr><tr><td>pair - uniparental</td><td>-0.040</td><td>-1.810</td><td>1.732</td><td>1.450</td><td>0.164</td><td>5.651</td></tr></tbody></table>
+<p>Posterior mean odds ratios indicated lower estimated odds of mixed paternity under cooperative care than uniparental care (OR = 0.343, 95% equal-tailed CrI 0.152–0.664), as well as under biparental care (OR = 0.430, 95% equal-tailed CrI 0.221–0.751).</p>
 </section>
 </section>
 <section id="cooperative-breeding" class="level2" data-number="6.8">
@@ -1869,18 +1685,31 @@ knitr::kable(breeding_system_prevalence, digits = 2)
 
 ### Post-hoc pairwise contrasts
 
-Pairwise contrasts among breeding-system categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.
+Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.
 
 ```{r}
-#| echo: false
+#| echo: true
+#| code-fold: true
 #| message: false
 #| warning: false
 
-pairwise_breeding_system_0 &lt;- readRDS(&quot;models/pairwise_breeding_system_0.rds&quot;)
-
-breeding_posthoc &lt;- as.data.frame(pairwise_breeding_system_0)
-
-knitr::kable(breeding_posthoc, digits = 3)
+b &lt;- brms::fixef(model_breeding_system_0, summary = FALSE)
+pairs &lt;- combn(colnames(b), 2L, simplify = FALSE)
+breeding_system_contrasts &lt;- do.call(rbind, lapply(pairs, function(pair) {
+  difference &lt;- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio &lt;- exp(difference)
+  data.frame(
+    contrast = paste(sub(&quot;breeding_system&quot;, &quot;&quot;, pair, fixed = TRUE), collapse = &quot; - &quot;),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(breeding_system_contrasts, digits = 3,
+  caption = &quot;Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.&quot;)
 ```
 
 ## BIRDBASE breeding-system classification
@@ -1923,18 +1752,31 @@ knitr::kable(mono_poly_prevalence, digits = 2)
 
 ### Post-hoc pairwise contrasts
 
-Pairwise contrasts among breeding system categories were calculated from the zero-intercept model. Estimates are reported on the logit scale.
+Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.
 
 ```{r}
-#| echo: false
+#| echo: true
+#| code-fold: true
 #| message: false
 #| warning: false
 
-pairwise_mono_poly_0 &lt;- readRDS(&quot;models/pairwise_mono_poly_0.rds&quot;)
-
-pairwise_mono_poly_table &lt;- as.data.frame(pairwise_mono_poly_0)
-
-knitr::kable(pairwise_mono_poly_table, digits = 3)
+b &lt;- brms::fixef(model_mono_poly_0, summary = FALSE)
+pairs &lt;- combn(colnames(b), 2L, simplify = FALSE)
+mono_poly_contrasts &lt;- do.call(rbind, lapply(pairs, function(pair) {
+  difference &lt;- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio &lt;- exp(difference)
+  data.frame(
+    contrast = paste(sub(&quot;mono_poly_model&quot;, &quot;&quot;, pair, fixed = TRUE), collapse = &quot; - &quot;),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(mono_poly_contrasts, digits = 3,
+  caption = &quot;Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.&quot;)
 ```
 
 ## Parental care
@@ -1980,29 +1822,34 @@ knitr::kable(parental_care_prevalence, digits = 2)
 
 ### Post-hoc pairwise contrasts
 
-Pairwise contrasts among parental-care categories were calculated from the zero-intercept model. Posterior means and 95% equal-tailed credible intervals are reported on the logit scale.
+Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.
 
 ```{r}
-
-#| echo: false
+#| echo: true
+#| code-fold: true
 #| message: false
 #| warning: false
 
-pairwise_parental_care_0 &lt;- readRDS(&quot;models/pairwise_parental_care_0.rds&quot;)
-
-parental_care_contrast_draws &lt;- as.matrix(coda::as.mcmc(pairwise_parental_care_0))
-
-parental_care_posthoc_table &lt;- tibble(
-  contrast = str_remove(colnames(parental_care_contrast_draws), &quot;^contrast &quot;),
-  estimate = colMeans(parental_care_contrast_draws),
-  lower.CrI = apply(parental_care_contrast_draws, 2, quantile, 0.025),
-  upper.CrI = apply(parental_care_contrast_draws, 2, quantile, 0.975)
-)
-
-knitr::kable(parental_care_posthoc_table, digits = 3)
+b &lt;- brms::fixef(model_parental_care_0, summary = FALSE)
+pairs &lt;- combn(colnames(b), 2L, simplify = FALSE)
+parental_care_contrasts &lt;- do.call(rbind, lapply(pairs, function(pair) {
+  difference &lt;- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio &lt;- exp(difference)
+  data.frame(
+    contrast = paste(sub(&quot;parental_care&quot;, &quot;&quot;, pair, fixed = TRUE), collapse = &quot; - &quot;),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(parental_care_contrasts, digits = 3,
+  caption = &quot;Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.&quot;)
 ```
 
-On the odds-ratio scale, cooperative care was associated with lower estimated odds of mixed paternity than uniparental care (OR = 0.32, 95% equal-tailed CrI 0.15–0.66), as was biparental care (OR = 0.41, 95% equal-tailed CrI 0.22–0.75).
+Posterior mean odds ratios indicated lower estimated odds of mixed paternity under cooperative care than uniparental care (OR = 0.343, 95% equal-tailed CrI 0.152–0.664), as well as under biparental care (OR = 0.430, 95% equal-tailed CrI 0.221–0.751).
 
 ## Cooperative breeding
 

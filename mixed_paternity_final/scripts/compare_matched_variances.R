@@ -56,7 +56,7 @@ null_v <- as.matrix(extract_sd(null))^2
 full_v <- cbind(full_v,total_group_variance=rowSums(full_v))
 null_v <- cbind(null_v,total_group_variance=rowSums(null_v))
 saveRDS(list(full=full_v,null=null_v),file.path(out,'variance_draws.rds'))
-summ <- function(x) c(mean=mean(x),median=median(x),q025=unname(quantile(x,.025)),q975=unname(quantile(x,.975)))
+summ <- function(x) c(mean=mean(x),q025=unname(quantile(x,.025)),q975=unname(quantile(x,.975)))
 vsummary <- do.call(rbind,lapply(colnames(full_v),function(p) {
   rbind(data.frame(model='full',component=p,t(summ(full_v[,p]))),
         data.frame(model='null',component=p,t(summ(null_v[,p]))))
