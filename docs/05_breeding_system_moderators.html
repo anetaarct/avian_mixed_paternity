@@ -317,6 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
+<p>Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.</p>
 <section id="packages" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="packages"><span class="header-section-number">6.1</span> Packages</h2>
 <p>The R packages required for model fitting.</p>
@@ -499,15 +500,15 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 32%">
-<col style="width: 32%">
-<col style="width: 17%">
-<col style="width: 17%">
+<col style="width: 32%"/>
+<col style="width: 32%"/>
+<col style="width: 17%"/>
+<col style="width: 17%"/>
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Breeding-system category</th>
-<th style="text-align: right;">Estimated prevalence (%)</th>
+<th style="text-align: right;">Posterior mean prevalence (%)</th>
 <th style="text-align: right;">Lower 95% CrI</th>
 <th style="text-align: right;">Upper 95% CrI</th>
 </tr>
@@ -515,31 +516,31 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">cooperative_breeder</td>
-<td style="text-align: right;">18.88</td>
+<td style="text-align: right;">22.58</td>
 <td style="text-align: right;">3.42</td>
 <td style="text-align: right;">61.33</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">lekking</td>
-<td style="text-align: right;">49.20</td>
+<td style="text-align: right;">49.34</td>
 <td style="text-align: right;">8.92</td>
 <td style="text-align: right;">90.86</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">monogamy</td>
-<td style="text-align: right;">22.49</td>
+<td style="text-align: right;">25.91</td>
 <td style="text-align: right;">4.34</td>
 <td style="text-align: right;">65.24</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">no_social_bond</td>
-<td style="text-align: right;">42.82</td>
+<td style="text-align: right;">44.07</td>
 <td style="text-align: right;">9.25</td>
 <td style="text-align: right;">84.91</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">polyandry</td>
-<td style="text-align: right;">36.37</td>
+<td style="text-align: right;">38.49</td>
 <td style="text-align: right;">7.91</td>
 <td style="text-align: right;">79.36</td>
 </tr>
@@ -703,15 +704,15 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 31%">
-<col style="width: 32%">
-<col style="width: 18%">
-<col style="width: 18%">
+<col style="width: 31%"/>
+<col style="width: 32%"/>
+<col style="width: 18%"/>
+<col style="width: 18%"/>
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Mono-/polygamy category</th>
-<th style="text-align: right;">Estimated prevalence (%)</th>
+<th style="text-align: right;">Posterior mean prevalence (%)</th>
 <th style="text-align: right;">Lower 95% CrI</th>
 <th style="text-align: right;">Upper 95% CrI</th>
 </tr>
@@ -719,19 +720,19 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">mixed</td>
-<td style="text-align: right;">28.63</td>
+<td style="text-align: right;">31.73</td>
 <td style="text-align: right;">5.73</td>
 <td style="text-align: right;">74.42</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">monogamy</td>
-<td style="text-align: right;">27.50</td>
+<td style="text-align: right;">30.68</td>
 <td style="text-align: right;">5.40</td>
 <td style="text-align: right;">73.18</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">polygamy</td>
-<td style="text-align: right;">40.68</td>
+<td style="text-align: right;">42.15</td>
 <td style="text-align: right;">9.43</td>
 <td style="text-align: right;">83.13</td>
 </tr>
@@ -855,20 +856,20 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </section>
 <section id="prevalence-table-2" class="level3" data-number="6.7.3">
 <h3 data-number="6.7.3" class="anchored" data-anchor-id="prevalence-table-2"><span class="header-section-number">6.7.3</span> Prevalence table</h3>
-<p>Estimated mixed-paternity prevalence for each parental-care category was obtained from the zero-intercept model and back-transformed from the logit scale to percentages.</p>
+<p>Estimated mixed-paternity prevalence for each parental-care category was obtained by transforming every posterior draw from the zero-intercept model to a probability and then taking its mean and equal-tailed interval.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 30%">
-<col style="width: 32%">
-<col style="width: 18%">
-<col style="width: 18%">
+<col style="width: 30%"/>
+<col style="width: 32%"/>
+<col style="width: 18%"/>
+<col style="width: 18%"/>
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Parental-care category</th>
-<th style="text-align: right;">Estimated prevalence (%)</th>
+<th style="text-align: right;">Posterior mean prevalence (%)</th>
 <th style="text-align: right;">Lower 95% CrI</th>
 <th style="text-align: right;">Upper 95% CrI</th>
 </tr>
@@ -876,37 +877,37 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">biparental</td>
-<td style="text-align: right;">23.25</td>
+<td style="text-align: right;">26.45</td>
 <td style="text-align: right;">4.75</td>
 <td style="text-align: right;">65.56</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">broodparasite</td>
-<td style="text-align: right;">34.08</td>
+<td style="text-align: right;">37.46</td>
 <td style="text-align: right;">4.48</td>
 <td style="text-align: right;">85.05</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">cooperation</td>
-<td style="text-align: right;">19.14</td>
+<td style="text-align: right;">22.63</td>
 <td style="text-align: right;">3.61</td>
 <td style="text-align: right;">60.93</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">nk_cooperation</td>
-<td style="text-align: right;">30.30</td>
+<td style="text-align: right;">33.16</td>
 <td style="text-align: right;">6.12</td>
 <td style="text-align: right;">74.93</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">pair</td>
-<td style="text-align: right;">41.52</td>
+<td style="text-align: right;">43.47</td>
 <td style="text-align: right;">5.67</td>
 <td style="text-align: right;">89.43</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">uniparental</td>
-<td style="text-align: right;">42.51</td>
+<td style="text-align: right;">43.62</td>
 <td style="text-align: right;">10.63</td>
 <td style="text-align: right;">82.55</td>
 </tr>
@@ -1143,6 +1144,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </div>
 </div>
 </section>
+<p><strong>Prevalence on the probability scale</strong></p><div class="cell"><div class="cell-output-display"><table class="table table-sm table-striped small"><thead><tr><th>Cooperative breeding</th><th>Posterior mean prevalence (%)</th><th>Lower 95% CrI</th><th>Upper 95% CrI</th></tr></thead><tbody><tr><td>Non-cooperative</td><td style="text-align: right;">15.96</td><td style="text-align: right;">1.03</td><td style="text-align: right;">57.04</td></tr><tr><td>Cooperative</td><td style="text-align: right;">13.80</td><td style="text-align: right;">0.83</td><td style="text-align: right;">52.02</td></tr></tbody></table></div></div><p>Posterior mean prevalence was 16.0% (95% equal-tailed CrI 1.0–57.0%) in non-cooperative species and 13.8% (0.8–52.0%) in cooperatively breeding species. Both estimates were highly uncertain.</p>
 </section>
 <section id="heterogeneity-summary" class="level2" data-number="6.9">
 <h2 data-number="6.9" class="anchored" data-anchor-id="heterogeneity-summary"><span class="header-section-number">6.9</span> Heterogeneity summary</h2>
@@ -1694,7 +1696,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb19" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown">---
+<div class="sourceCode" id="cb19" data-shortcodes="false"><pre><code>---
 format:
   html:
     toc: true
@@ -1717,14 +1719,16 @@ This section presents single-moderator models for variables describing avian bre
 
 classification_sources &lt;- tibble::tribble(
   ~Moderator, ~Classification_source, ~Notes,
-  "Breeding system", "Brouwer and Griffith (2019)", "Rare categories with fewer than five observations were excluded.",
-  "Mono-/polygamy", "BIRDBASE Şekercioğlu et al .2025", "A mixed category was created for records coded as both monogamous and polygamous.",
-  "Parental care", "Cockburn (2006); Griesser et al. (2017)", "Used to represent variation in parental-care organisation.",
-  "Cooperative breeding", "Co-BreeD Mocha et al. 2025", "Used to classify cooperative-breeding status."
+  &quot;Breeding system&quot;, &quot;Brouwer and Griffith (2019)&quot;, &quot;Rare categories with fewer than five observations were excluded.&quot;,
+  &quot;Mono-/polygamy&quot;, &quot;BIRDBASE Şekercioğlu et al .2025&quot;, &quot;A mixed category was created for records coded as both monogamous and polygamous.&quot;,
+  &quot;Parental care&quot;, &quot;Cockburn (2006); Griesser et al. (2017)&quot;, &quot;Used to represent variation in parental-care organisation.&quot;,
+  &quot;Cooperative breeding&quot;, &quot;Co-BreeD Mocha et al. 2025&quot;, &quot;Used to classify cooperative-breeding status.&quot;
 )
 
 knitr::kable(classification_sources)
 ```
+
+Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.
 
 ## Packages
 
@@ -1752,21 +1756,21 @@ options(mc.cores = parallel::detectCores())
 #| message: false
 #| warning: false
 
-data_overall_study &lt;- readRDS("data/data_overall_study.rds")
-phylo_mat &lt;- readRDS("data/phylo_mat.rds")
+data_overall_study &lt;- readRDS(&quot;data/data_overall_study.rds&quot;)
+phylo_mat &lt;- readRDS(&quot;data/phylo_mat.rds&quot;)
 ```
 
 ```{r}
-mixed_pat &lt;- readRDS("data/mixed_pat_prepared.rds")
-data_overall_study &lt;- readRDS("data/data_overall_study.rds")
+mixed_pat &lt;- readRDS(&quot;data/mixed_pat_prepared.rds&quot;)
+data_overall_study &lt;- readRDS(&quot;data/data_overall_study.rds&quot;)
 
-data_cooperative &lt;- readRDS("data/data_cooperative.rds")
-data_mono_poly &lt;- readRDS("data/data_mono_poly.rds")
-data_parental_care &lt;- readRDS("data/data_parental_care.rds")
-data_breeding_system &lt;- readRDS("data/data_breeding_system.rds")
+data_cooperative &lt;- readRDS(&quot;data/data_cooperative.rds&quot;)
+data_mono_poly &lt;- readRDS(&quot;data/data_mono_poly.rds&quot;)
+data_parental_care &lt;- readRDS(&quot;data/data_parental_care.rds&quot;)
+data_breeding_system &lt;- readRDS(&quot;data/data_breeding_system.rds&quot;)
 
-phylo_mat &lt;- readRDS("data/phylo_mat.rds")
-tree_analysis &lt;- readRDS("data/tree_analysis.rds")
+phylo_mat &lt;- readRDS(&quot;data/phylo_mat.rds&quot;)
+tree_analysis &lt;- readRDS(&quot;data/tree_analysis.rds&quot;)
 ```
 
 ## Dataset sizes
@@ -1779,10 +1783,10 @@ tree_analysis &lt;- readRDS("data/tree_analysis.rds")
 
 breeding_dataset_sizes &lt;- tibble(
   Moderator = c(
-    "Breeding system: Brouwer and Griffith",
-    "Breeding system: BIRDBASE",
-    "Parental care",
-    "Cooperative breeding"
+    &quot;Breeding system: Brouwer and Griffith&quot;,
+    &quot;Breeding system: BIRDBASE&quot;,
+    &quot;Parental care&quot;,
+    &quot;Cooperative breeding&quot;
   ),
   Observations = c(
     nrow(data_breeding_system),
@@ -1808,7 +1812,7 @@ fit_single_moderator &lt;- function(formula, data) {
   brm(
     formula = formula,
     data = data,
-    family = beta_binomial(link = "logit"),
+    family = beta_binomial(link = &quot;logit&quot;),
     data2 = list(phylo_mat = phylo_mat),
     chains = 4,
     cores = 4,
@@ -1830,7 +1834,7 @@ This model tested whether mixed-paternity prevalence differed among breeding-sys
 ### Figure
 
 ```{r}
-knitr::include_graphics("Figures/Figuresbreeding_system.png")
+knitr::include_graphics(&quot;Figures/Figuresbreeding_system.png&quot;)
 ```
 
 ### Model summary
@@ -1841,7 +1845,7 @@ knitr::include_graphics("Figures/Figuresbreeding_system.png")
 #| warning: false
 #| code-fold: true
 
-model_breeding_system_0 &lt;- readRDS("models/model_breeding_system_0.rds")
+model_breeding_system_0 &lt;- readRDS(&quot;models/model_breeding_system_0.rds&quot;)
 summary(model_breeding_system_0)
 ```
 
@@ -1852,23 +1856,14 @@ summary(model_breeding_system_0)
 #| message: false
 #| warning: false
 
-breeding_system_prevalence &lt;- posterior_summary(model_breeding_system_0) %&gt;%
-  as.data.frame() %&gt;%
-  rownames_to_column("parameter") %&gt;%
-  filter(str_detect(parameter, "^b_breeding_system")) %&gt;%
-  mutate(
-    breeding_system = str_remove(parameter, "b_breeding_system"),
-    estimate_percent = plogis(Estimate) * 100,
-    l95_percent = plogis(`Q2.5`) * 100,
-    u95_percent = plogis(`Q97.5`) * 100
-  ) %&gt;%
-  select(
-    `Breeding-system category` = breeding_system,
-    `Estimated prevalence (%)` = estimate_percent,
-    `Lower 95% CrI` = l95_percent,
-    `Upper 95% CrI` = u95_percent
-  )
-
+breeding_system_probability_draws &lt;- 100 * plogis(brms::fixef(model_breeding_system_0, summary = FALSE))
+breeding_system_prevalence &lt;- data.frame(
+  `Breeding-system category` = sub(&quot;^breeding_system&quot;, &quot;&quot;, colnames(breeding_system_probability_draws)),
+  `Posterior mean prevalence (%)` = colMeans(breeding_system_probability_draws),
+  `Lower 95% CrI` = apply(breeding_system_probability_draws, 2, quantile, 0.025),
+  `Upper 95% CrI` = apply(breeding_system_probability_draws, 2, quantile, 0.975),
+  row.names = NULL, check.names = FALSE
+)
 knitr::kable(breeding_system_prevalence, digits = 2)
 ```
 
@@ -1881,7 +1876,7 @@ Pairwise contrasts among breeding-system categories were calculated from the zer
 #| message: false
 #| warning: false
 
-pairwise_breeding_system_0 &lt;- readRDS("models/pairwise_breeding_system_0.rds")
+pairwise_breeding_system_0 &lt;- readRDS(&quot;models/pairwise_breeding_system_0.rds&quot;)
 
 breeding_posthoc &lt;- as.data.frame(pairwise_breeding_system_0)
 
@@ -1895,7 +1890,7 @@ This model tested whether mixed-paternity prevalence differed among monogamous, 
 ### Figure
 
 ```{r}
-knitr::include_graphics("Figures/Figuresmono_poly.png")
+knitr::include_graphics(&quot;Figures/Figuresmono_poly.png&quot;)
 ```
 
 ### Model summary
@@ -1904,7 +1899,7 @@ knitr::include_graphics("Figures/Figuresmono_poly.png")
 #| message: false
 #| warning: false
 
-model_mono_poly_0 &lt;- readRDS("models/model_mono_poly_0.rds")
+model_mono_poly_0 &lt;- readRDS(&quot;models/model_mono_poly_0.rds&quot;)
 summary(model_mono_poly_0)
 ```
 
@@ -1915,23 +1910,14 @@ summary(model_mono_poly_0)
 #| message: false
 #| warning: false
 
-mono_poly_prevalence &lt;- posterior_summary(model_mono_poly_0) %&gt;%
-  as.data.frame() %&gt;%
-  rownames_to_column("parameter") %&gt;%
-  filter(str_detect(parameter, "^b_mono_poly_model")) %&gt;%
-  mutate(
-    mono_poly_category = str_remove(parameter, "b_mono_poly_model"),
-    estimate_percent = plogis(Estimate) * 100,
-    l95_percent = plogis(`Q2.5`) * 100,
-    u95_percent = plogis(`Q97.5`) * 100
-  ) %&gt;%
-  select(
-    `Mono-/polygamy category` = mono_poly_category,
-    `Estimated prevalence (%)` = estimate_percent,
-    `Lower 95% CrI` = l95_percent,
-    `Upper 95% CrI` = u95_percent
-  )
-
+mono_poly_probability_draws &lt;- 100 * plogis(brms::fixef(model_mono_poly_0, summary = FALSE))
+mono_poly_prevalence &lt;- data.frame(
+  `Mono-/polygamy category` = sub(&quot;^mono_poly_model&quot;, &quot;&quot;, colnames(mono_poly_probability_draws)),
+  `Posterior mean prevalence (%)` = colMeans(mono_poly_probability_draws),
+  `Lower 95% CrI` = apply(mono_poly_probability_draws, 2, quantile, 0.025),
+  `Upper 95% CrI` = apply(mono_poly_probability_draws, 2, quantile, 0.975),
+  row.names = NULL, check.names = FALSE
+)
 knitr::kable(mono_poly_prevalence, digits = 2)
 ```
 
@@ -1944,7 +1930,7 @@ Pairwise contrasts among breeding system categories were calculated from the zer
 #| message: false
 #| warning: false
 
-pairwise_mono_poly_0 &lt;- readRDS("models/pairwise_mono_poly_0.rds")
+pairwise_mono_poly_0 &lt;- readRDS(&quot;models/pairwise_mono_poly_0.rds&quot;)
 
 pairwise_mono_poly_table &lt;- as.data.frame(pairwise_mono_poly_0)
 
@@ -1958,7 +1944,7 @@ This model tested whether mixed-paternity prevalence differed among parental-car
 ### Figure
 
 ```{r}
-knitr::include_graphics("Figures/Figuresparental_care.png")
+knitr::include_graphics(&quot;Figures/Figuresparental_care.png&quot;)
 ```
 
 ### Model summary
@@ -1968,36 +1954,27 @@ knitr::include_graphics("Figures/Figuresparental_care.png")
 #| warning: false
 #| code-fold: true
 
-model_parental_care_0 &lt;- readRDS("models/model_parental_care_0.rds")
+model_parental_care_0 &lt;- readRDS(&quot;models/model_parental_care_0.rds&quot;)
 summary(model_parental_care_0)
 ```
 
 ### Prevalence table
 
-Estimated mixed-paternity prevalence for each parental-care category was obtained from the zero-intercept model and back-transformed from the logit scale to percentages.
+Estimated mixed-paternity prevalence for each parental-care category was obtained by transforming every posterior draw from the zero-intercept model to a probability and then taking its mean and equal-tailed interval.
 
 ```{r}
 #| echo: false
 #| message: false
 #| warning: false
 
-parental_care_prevalence &lt;- posterior_summary(model_parental_care_0) %&gt;%
-  as.data.frame() %&gt;%
-  rownames_to_column("parameter") %&gt;%
-  filter(str_detect(parameter, "^b_parental_care")) %&gt;%
-  mutate(
-    parental_care = str_remove(parameter, "b_parental_care"),
-    estimate_percent = plogis(Estimate) * 100,
-    l95_percent = plogis(`Q2.5`) * 100,
-    u95_percent = plogis(`Q97.5`) * 100
-  ) %&gt;%
-  select(
-    `Parental-care category` = parental_care,
-    `Estimated prevalence (%)` = estimate_percent,
-    `Lower 95% CrI` = l95_percent,
-    `Upper 95% CrI` = u95_percent
-  )
-
+parental_care_probability_draws &lt;- 100 * plogis(brms::fixef(model_parental_care_0, summary = FALSE))
+parental_care_prevalence &lt;- data.frame(
+  `Parental-care category` = sub(&quot;^parental_care&quot;, &quot;&quot;, colnames(parental_care_probability_draws)),
+  `Posterior mean prevalence (%)` = colMeans(parental_care_probability_draws),
+  `Lower 95% CrI` = apply(parental_care_probability_draws, 2, quantile, 0.025),
+  `Upper 95% CrI` = apply(parental_care_probability_draws, 2, quantile, 0.975),
+  row.names = NULL, check.names = FALSE
+)
 knitr::kable(parental_care_prevalence, digits = 2)
 ```
 
@@ -2011,12 +1988,12 @@ Pairwise contrasts among parental-care categories were calculated from the zero-
 #| message: false
 #| warning: false
 
-pairwise_parental_care_0 &lt;- readRDS("models/pairwise_parental_care_0.rds")
+pairwise_parental_care_0 &lt;- readRDS(&quot;models/pairwise_parental_care_0.rds&quot;)
 
 parental_care_contrast_draws &lt;- as.matrix(coda::as.mcmc(pairwise_parental_care_0))
 
 parental_care_posthoc_table &lt;- tibble(
-  contrast = str_remove(colnames(parental_care_contrast_draws), "^contrast "),
+  contrast = str_remove(colnames(parental_care_contrast_draws), &quot;^contrast &quot;),
   estimate = colMeans(parental_care_contrast_draws),
   lower.CrI = apply(parental_care_contrast_draws, 2, quantile, 0.025),
   upper.CrI = apply(parental_care_contrast_draws, 2, quantile, 0.975)
@@ -2034,7 +2011,7 @@ This model tested whether mixed-paternity prevalence differed between cooperativ
 ### Figure
 
 ```{r}
-knitr::include_graphics("Figures/Figurescooperative_breeding.png")
+knitr::include_graphics(&quot;Figures/Figurescooperative_breeding.png&quot;)
 ```
 
 ### Model-summary
@@ -2044,7 +2021,7 @@ knitr::include_graphics("Figures/Figurescooperative_breeding.png")
 #| warning: false
 #| code-fold: true
 
-model_cooperative &lt;- readRDS("models/model_cooperative.rds")
+model_cooperative &lt;- readRDS(&quot;models/model_cooperative.rds&quot;)
 summary(model_cooperative)
 ```
 
@@ -2059,13 +2036,36 @@ s_cooperative &lt;- summary(model_cooperative)
 
 cooperative_table &lt;- tibble::tibble(
   Parameter = rownames(s_cooperative$fixed),
-  Estimate = s_cooperative$fixed[, "Estimate"],
-  `Lower 95% CrI` = s_cooperative$fixed[, "l-95% CI"],
-  `Upper 95% CrI` = s_cooperative$fixed[, "u-95% CI"]
+  Estimate = s_cooperative$fixed[, &quot;Estimate&quot;],
+  `Lower 95% CrI` = s_cooperative$fixed[, &quot;l-95% CI&quot;],
+  `Upper 95% CrI` = s_cooperative$fixed[, &quot;u-95% CI&quot;]
 )
 
 knitr::kable(cooperative_table, digits = 3)
 ```
+
+**Prevalence on the probability scale**
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+b_cooperative &lt;- brms::fixef(model_cooperative, summary = FALSE)
+cooperative_probability_draws &lt;- 100 * plogis(cbind(
+  `Non-cooperative` = b_cooperative[, &quot;Intercept&quot;],
+  Cooperative = b_cooperative[, &quot;Intercept&quot;] + b_cooperative[, &quot;cooperative_breedingyes&quot;]
+))
+cooperative_prevalence &lt;- data.frame(
+  `Cooperative breeding` = colnames(cooperative_probability_draws),
+  `Posterior mean prevalence (%)` = colMeans(cooperative_probability_draws),
+  `Lower 95% CrI` = apply(cooperative_probability_draws, 2, quantile, 0.025),
+  `Upper 95% CrI` = apply(cooperative_probability_draws, 2, quantile, 0.975),
+  row.names = NULL, check.names = FALSE
+)
+knitr::kable(cooperative_prevalence, digits = 2)
+```
+
+Posterior mean prevalence was 16.0% (95% equal-tailed CrI 1.0–57.0%) in non-cooperative species and 13.8% (0.8–52.0%) in cooperatively breeding species. Both estimates were highly uncertain.
 
 ## Heterogeneity summary
 
@@ -2075,13 +2075,13 @@ The table below compares residual heterogeneity across breeding-system, parental
 #| echo: false
 #| message: false
 #| warning: false
-variance_table &lt;- readr::read_csv("tables/variance_audit/group_level_variances.csv", show_col_types = FALSE) |&gt;
-  dplyr::filter(Model %in% c("Overall model", "Breeding system", "Mono-/polygamy", "Parental care", "Cooperative breeding"))
+variance_table &lt;- readr::read_csv(&quot;tables/variance_audit/group_level_variances.csv&quot;, show_col_types = FALSE) |&gt;
+  dplyr::filter(Model %in% c(&quot;Overall model&quot;, &quot;Breeding system&quot;, &quot;Mono-/polygamy&quot;, &quot;Parental care&quot;, &quot;Cooperative breeding&quot;))
 knitr::kable(variance_table, digits = 3)
 ```
 
 Group-level entries are posterior mean variances on the logit scale, calculated by squaring each posterior SD draw before averaging. Phi is the beta-binomial precision parameter. Models use different complete-case samples; these tables do not measure heterogeneity explained by individual moderators.
-</code><button class="code-copy-button" data-in-quarto-modal="" title="Copy to Clipboard"><i class="bi"></i></button></pre></div>
+</code></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

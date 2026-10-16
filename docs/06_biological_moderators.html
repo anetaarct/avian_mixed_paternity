@@ -305,6 +305,7 @@ window.Quarto = {
 <div class="section-card">
 <p>This section presents single-moderator models for ecological, life-history, and geographic predictors of brood-level mixed paternity. These models evaluate whether mixed-paternity prevalence varies with nest type, migration status, coloniality, clutch size, body mass, and absolute latitude, while retaining the same multilevel phylogenetic beta-binomial structure used in the overall model.</p>
 </div>
+<p>Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.</p>
 <section id="packages" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="packages"><span class="header-section-number">7.1</span> Packages</h2>
 <p>The R packages required for model fitting.</p>
@@ -505,15 +506,15 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 26%">
-<col style="width: 34%">
-<col style="width: 19%">
-<col style="width: 19%">
+<col style="width: 26%"/>
+<col style="width: 34%"/>
+<col style="width: 19%"/>
+<col style="width: 19%"/>
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Nest-type category</th>
-<th style="text-align: right;">Estimated prevalence (%)</th>
+<th style="text-align: right;">Posterior mean prevalence (%)</th>
 <th style="text-align: right;">Lower 95% CrI</th>
 <th style="text-align: right;">Upper 95% CrI</th>
 </tr>
@@ -521,25 +522,25 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">cavity</td>
-<td style="text-align: right;">28.00</td>
+<td style="text-align: right;">31.43</td>
 <td style="text-align: right;">4.87</td>
 <td style="text-align: right;">75.28</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ground</td>
-<td style="text-align: right;">33.97</td>
+<td style="text-align: right;">36.56</td>
 <td style="text-align: right;">6.59</td>
 <td style="text-align: right;">79.60</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">open</td>
-<td style="text-align: right;">27.62</td>
+<td style="text-align: right;">31.08</td>
 <td style="text-align: right;">4.91</td>
 <td style="text-align: right;">74.76</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">other_enclosed</td>
-<td style="text-align: right;">23.90</td>
+<td style="text-align: right;">27.85</td>
 <td style="text-align: right;">3.84</td>
 <td style="text-align: right;">71.42</td>
 </tr>
@@ -1698,7 +1699,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown">---
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" data-shortcodes="false"><pre><code>---
 format:
   html:
     toc: true
@@ -1710,6 +1711,8 @@ format:
 
 This section presents single-moderator models for ecological, life-history, and geographic predictors of brood-level mixed paternity. These models evaluate whether mixed-paternity prevalence varies with nest type, migration status, coloniality, clutch size, body mass, and absolute latitude, while retaining the same multilevel phylogenetic beta-binomial structure used in the overall model.
 :::
+
+Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.
 
 ## Packages
 
@@ -1734,25 +1737,25 @@ options(mc.cores = parallel::detectCores())
 ```{r}
 #| include: false
 
-data_overall_study &lt;- readRDS("data/data_overall_study.rds")
-phylo_mat &lt;- readRDS("data/phylo_mat.rds")
+data_overall_study &lt;- readRDS(&quot;data/data_overall_study.rds&quot;)
+phylo_mat &lt;- readRDS(&quot;data/phylo_mat.rds&quot;)
 ```
 
 ```{r}
 
-mixed_pat &lt;- readRDS("data/mixed_pat_prepared.rds")
-data_overall_study &lt;- readRDS("data/data_overall_study.rds")
+mixed_pat &lt;- readRDS(&quot;data/mixed_pat_prepared.rds&quot;)
+data_overall_study &lt;- readRDS(&quot;data/data_overall_study.rds&quot;)
 
-data_abs_latitude &lt;- readRDS("data/data_abs_latitude.rds")
-data_body_mass &lt;- readRDS("data/data_body_mass_log.rds")
-data_clutch_size &lt;- readRDS("data/data_clutch_size.rds")
-data_coloniality &lt;- readRDS("data/data_coloniality.rds")
-data_migration &lt;- readRDS("data/data_migration.rds")
-data_nest_type &lt;- readRDS("data/data_nest_type.rds")
+data_abs_latitude &lt;- readRDS(&quot;data/data_abs_latitude.rds&quot;)
+data_body_mass &lt;- readRDS(&quot;data/data_body_mass_log.rds&quot;)
+data_clutch_size &lt;- readRDS(&quot;data/data_clutch_size.rds&quot;)
+data_coloniality &lt;- readRDS(&quot;data/data_coloniality.rds&quot;)
+data_migration &lt;- readRDS(&quot;data/data_migration.rds&quot;)
+data_nest_type &lt;- readRDS(&quot;data/data_nest_type.rds&quot;)
 
 
-phylo_mat &lt;- readRDS("data/phylo_mat.rds")
-tree_analysis &lt;- readRDS("data/tree_analysis.rds")
+phylo_mat &lt;- readRDS(&quot;data/phylo_mat.rds&quot;)
+tree_analysis &lt;- readRDS(&quot;data/tree_analysis.rds&quot;)
 ```
 
 ### Dataset sizes
@@ -1768,12 +1771,12 @@ The table below shows the number of observations available for each biological m
 
 bio_dataset_sizes &lt;- tibble::tibble(
   Moderator = c(
-    "Nest type",
-    "Migration",
-    "Coloniality",
-    "Maximum clutch size",
-    "Body mass",
-    "Absolute latitude"
+    &quot;Nest type&quot;,
+    &quot;Migration&quot;,
+    &quot;Coloniality&quot;,
+    &quot;Maximum clutch size&quot;,
+    &quot;Body mass&quot;,
+    &quot;Absolute latitude&quot;
   ),
   Observations = c(
     nrow(data_nest_type),
@@ -1801,7 +1804,7 @@ fit_single_moderator &lt;- function(formula, data) {
   brm(
     formula = formula,
     data = data,
-    family = beta_binomial(link = "logit"),
+    family = beta_binomial(link = &quot;logit&quot;),
     data2 = list(phylo_mat = phylo_mat),
     chains = 4,
     cores = 4,
@@ -1823,7 +1826,7 @@ This model tested whether mixed-paternity prevalence differed among nest-type ca
 ### Figure
 
 ```{r}
-knitr::include_graphics("Figures/Figuresnest_type.png")
+knitr::include_graphics(&quot;Figures/Figuresnest_type.png&quot;)
 ```
 
 ### Model summary
@@ -1833,7 +1836,7 @@ knitr::include_graphics("Figures/Figuresnest_type.png")
 #| warning: false
 #| code-fold: true
 
-model_nest_type &lt;- readRDS("models/model_nest_type_0.rds")
+model_nest_type &lt;- readRDS(&quot;models/model_nest_type_0.rds&quot;)
 summary(model_nest_type)
 ```
 
@@ -1844,23 +1847,14 @@ summary(model_nest_type)
 #| message: false
 #| warning: false
 
-nest_type_prevalence &lt;- posterior_summary(model_nest_type) %&gt;%
-  as.data.frame() %&gt;%
-  rownames_to_column("parameter") %&gt;%
-  filter(str_detect(parameter, "^b_nest_type_model")) %&gt;%
-  mutate(
-    nest_type = str_remove(parameter, "b_nest_type_model"),
-    estimate_percent = plogis(Estimate) * 100,
-    l95_percent = plogis(`Q2.5`) * 100,
-    u95_percent = plogis(`Q97.5`) * 100
-  ) %&gt;%
-  select(
-    `Nest-type category` = nest_type,
-    `Estimated prevalence (%)` = estimate_percent,
-    `Lower 95% CrI` = l95_percent,
-    `Upper 95% CrI` = u95_percent
-  )
-
+nest_type_probability_draws &lt;- 100 * plogis(brms::fixef(model_nest_type, summary = FALSE))
+nest_type_prevalence &lt;- data.frame(
+  `Nest type` = sub(&quot;^nest_type_model&quot;, &quot;&quot;, colnames(nest_type_probability_draws)),
+  `Posterior mean prevalence (%)` = colMeans(nest_type_probability_draws),
+  `Lower 95% CrI` = apply(nest_type_probability_draws, 2, quantile, 0.025),
+  `Upper 95% CrI` = apply(nest_type_probability_draws, 2, quantile, 0.975),
+  row.names = NULL, check.names = FALSE
+)
 knitr::kable(nest_type_prevalence, digits = 2)
 ```
 
@@ -1873,7 +1867,7 @@ Pairwise contrasts among nest-type categories were calculated from the zero-inte
 #| message: false
 #| warning: false
 
-pairwise_nest_type_0 &lt;- readRDS("models/pairwise_nest_type_0.rds")
+pairwise_nest_type_0 &lt;- readRDS(&quot;models/pairwise_nest_type_0.rds&quot;)
 
 nest_type_posthoc &lt;- as.data.frame(pairwise_nest_type_0)
 
@@ -1887,7 +1881,7 @@ This model tested whether mixed-paternity prevalence differed between strong and
 ### Figure
 
 ```{r}
-knitr::include_graphics("Figures/Figuresmigration.png")
+knitr::include_graphics(&quot;Figures/Figuresmigration.png&quot;)
 ```
 
 ### Model summary
@@ -1898,7 +1892,7 @@ knitr::include_graphics("Figures/Figuresmigration.png")
 #| warning: false
 #| code-fold: true
 
-model_migration &lt;- readRDS("models/model_migration.rds")
+model_migration &lt;- readRDS(&quot;models/model_migration.rds&quot;)
 summary(model_migration)
 ```
 
@@ -1916,9 +1910,9 @@ s_migration &lt;- summary(model_migration)
 
 migration_table &lt;- tibble::tibble(
   Parameter = rownames(s_migration$fixed),
-  Estimate = s_migration$fixed[, "Estimate"],
-  `Lower 95% CrI` = s_migration$fixed[, "l-95% CI"],
-  `Upper 95% CrI` = s_migration$fixed[, "u-95% CI"]
+  Estimate = s_migration$fixed[, &quot;Estimate&quot;],
+  `Lower 95% CrI` = s_migration$fixed[, &quot;l-95% CI&quot;],
+  `Upper 95% CrI` = s_migration$fixed[, &quot;u-95% CI&quot;]
 )
 
 knitr::kable(migration_table, digits = 3)
@@ -1931,7 +1925,7 @@ This model tested whether mixed-paternity prevalence differed between colonial a
 ### Figures
 
 ```{r}
-knitr::include_graphics("Figures/Figurescoloniality.png")
+knitr::include_graphics(&quot;Figures/Figurescoloniality.png&quot;)
 ```
 
 ### Model summary
@@ -1942,7 +1936,7 @@ knitr::include_graphics("Figures/Figurescoloniality.png")
 #| warning: false
 #| code-fold: true
 
-model_coloniality &lt;- readRDS("models/model_coloniality.rds")
+model_coloniality &lt;- readRDS(&quot;models/model_coloniality.rds&quot;)
 summary(model_coloniality)
 
 
@@ -1959,9 +1953,9 @@ s_coloniality &lt;- summary(model_coloniality)
 
 coloniality_table &lt;- tibble::tibble(
   Parameter = rownames(s_coloniality$fixed),
-  Estimate = s_coloniality$fixed[, "Estimate"],
-  `Lower 95% CrI` = s_coloniality$fixed[, "l-95% CI"],
-  `Upper 95% CrI` = s_coloniality$fixed[, "u-95% CI"]
+  Estimate = s_coloniality$fixed[, &quot;Estimate&quot;],
+  `Lower 95% CrI` = s_coloniality$fixed[, &quot;l-95% CI&quot;],
+  `Upper 95% CrI` = s_coloniality$fixed[, &quot;u-95% CI&quot;]
 )
 
 knitr::kable(coloniality_table, digits = 3)
@@ -1975,10 +1969,10 @@ This model tested whether mixed-paternity prevalence was associated with maximum
 
 ```{r}
 #| label: fig-clutch-size-common-scaling
-#| fig-cap: "Population-level predicted mixed-paternity prevalence across maximum clutch size from the refitted single-moderator model. Maximum clutch size was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval."
+#| fig-cap: &quot;Population-level predicted mixed-paternity prevalence across maximum clutch size from the refitted single-moderator model. Maximum clutch size was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval.&quot;
 #| echo: false
 
-knitr::include_graphics("Figures/common_scaling/clutch_size.png")
+knitr::include_graphics(&quot;Figures/common_scaling/clutch_size.png&quot;)
 ```
 
 ### Model summary
@@ -1988,7 +1982,7 @@ knitr::include_graphics("Figures/common_scaling/clutch_size.png")
 #| warning: false
 #| code-fold: true
 
-cat(readLines("logs/common_scaling/model_clutch_size_summary.txt"), sep = "\n")
+cat(readLines(&quot;logs/common_scaling/model_clutch_size_summary.txt&quot;), sep = &quot;\n&quot;)
 ```
 
 ###  Model estimates
@@ -2000,14 +1994,14 @@ cat(readLines("logs/common_scaling/model_clutch_size_summary.txt"), sep = "\n")
 #| warning: false
 
 clutch_size_table &lt;- readr::read_csv(
-  "tables/common_scaling/model_clutch_size_fixed_effects.csv",
+  &quot;tables/common_scaling/model_clutch_size_fixed_effects.csv&quot;,
   show_col_types = FALSE
 ) |&gt;
   dplyr::transmute(
     Parameter = dplyr::recode(
       term,
-      Intercept = "Intercept",
-      CS_max_sc = "Maximum clutch size (per 1 SD = 4.034 eggs)"
+      Intercept = &quot;Intercept&quot;,
+      CS_max_sc = &quot;Maximum clutch size (per 1 SD = 4.034 eggs)&quot;
     ),
     Estimate,
     `Lower 95% CrI` = Q2.5,
@@ -2027,10 +2021,10 @@ This model tested whether mixed-paternity prevalence was associated with adult b
 
 ```{r}
 #| label: fig-body-mass-common-scaling
-#| fig-cap: "Population-level predicted mixed-paternity prevalence across log10 adult body mass from the refitted single-moderator model. Log10 body mass was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval."
+#| fig-cap: &quot;Population-level predicted mixed-paternity prevalence across log10 adult body mass from the refitted single-moderator model. Log10 body mass was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval.&quot;
 #| echo: false
 
-knitr::include_graphics("Figures/common_scaling/body_mass.png")
+knitr::include_graphics(&quot;Figures/common_scaling/body_mass.png&quot;)
 ```
 
 ### Model summary
@@ -2040,7 +2034,7 @@ knitr::include_graphics("Figures/common_scaling/body_mass.png")
 #| #| warning: false
 #| #| code-fold: true
 
-cat(readLines("logs/common_scaling/model_log_body_mass_summary.txt"), sep = "\n")
+cat(readLines(&quot;logs/common_scaling/model_log_body_mass_summary.txt&quot;), sep = &quot;\n&quot;)
 
 
 ```
@@ -2054,14 +2048,14 @@ cat(readLines("logs/common_scaling/model_log_body_mass_summary.txt"), sep = "\n"
 #| warning: false
 
 body_mass_table &lt;- readr::read_csv(
-  "tables/common_scaling/model_log_body_mass_fixed_effects.csv",
+  &quot;tables/common_scaling/model_log_body_mass_fixed_effects.csv&quot;,
   show_col_types = FALSE
 ) |&gt;
   dplyr::transmute(
     Parameter = dplyr::recode(
       term,
-      Intercept = "Intercept",
-      log_body_mass_sc = "Log10 body mass (per 1 SD = 0.750 log10[g])"
+      Intercept = &quot;Intercept&quot;,
+      log_body_mass_sc = &quot;Log10 body mass (per 1 SD = 0.750 log10[g])&quot;
     ),
     Estimate,
     `Lower 95% CrI` = Q2.5,
@@ -2082,10 +2076,10 @@ This model tested whether mixed-paternity prevalence varied with absolute latitu
 
 ```{r}
 #| label: fig-absolute-latitude-common-scaling
-#| fig-cap: "Population-level predicted mixed-paternity prevalence across absolute latitude from the refitted single-moderator model. Absolute latitude was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval."
+#| fig-cap: &quot;Population-level predicted mixed-paternity prevalence across absolute latitude from the refitted single-moderator model. Absolute latitude was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval.&quot;
 #| echo: false
 
-knitr::include_graphics("Figures/common_scaling/abs_latitude.png")
+knitr::include_graphics(&quot;Figures/common_scaling/abs_latitude.png&quot;)
 ```
 
 ### Model  summary
@@ -2095,7 +2089,7 @@ knitr::include_graphics("Figures/common_scaling/abs_latitude.png")
 #| #| warning: false
 #| #| code-fold: true
 
-cat(readLines("logs/common_scaling/model_abs_latitude_summary.txt"), sep = "\n")
+cat(readLines(&quot;logs/common_scaling/model_abs_latitude_summary.txt&quot;), sep = &quot;\n&quot;)
 
 ```
 
@@ -2107,14 +2101,14 @@ cat(readLines("logs/common_scaling/model_abs_latitude_summary.txt"), sep = "\n")
 #| warning: false
 
 abs_latitude_table &lt;- readr::read_csv(
-  "tables/common_scaling/model_abs_latitude_fixed_effects.csv",
+  &quot;tables/common_scaling/model_abs_latitude_fixed_effects.csv&quot;,
   show_col_types = FALSE
 ) |&gt;
   dplyr::transmute(
     Parameter = dplyr::recode(
       term,
-      Intercept = "Intercept",
-      abs_lat_sc = "Absolute latitude (per 1 SD = 14.960 degrees)"
+      Intercept = &quot;Intercept&quot;,
+      abs_lat_sc = &quot;Absolute latitude (per 1 SD = 14.960 degrees)&quot;
     ),
     Estimate,
     `Lower 95% CrI` = Q2.5,
@@ -2132,8 +2126,8 @@ Mixed-paternity prevalence decreased with absolute latitude ($\beta$ = -0.129, 9
 #| echo: false
 #| message: false
 #| warning: false
-variance_table &lt;- readr::read_csv("tables/variance_audit/group_level_variances.csv", show_col_types = FALSE) |&gt;
-  dplyr::filter(Model %in% c("Overall model", "Nest type", "Migration", "Coloniality", "Clutch size", "Body mass", "Absolute latitude"))
+variance_table &lt;- readr::read_csv(&quot;tables/variance_audit/group_level_variances.csv&quot;, show_col_types = FALSE) |&gt;
+  dplyr::filter(Model %in% c(&quot;Overall model&quot;, &quot;Nest type&quot;, &quot;Migration&quot;, &quot;Coloniality&quot;, &quot;Clutch size&quot;, &quot;Body mass&quot;, &quot;Absolute latitude&quot;))
 knitr::kable(variance_table, digits = 3)
 ```
 

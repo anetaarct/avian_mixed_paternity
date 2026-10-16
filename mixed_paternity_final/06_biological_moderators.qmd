@@ -6,10 +6,12 @@ format:
 ---
 
 ::: section-card
-## Biological moderators 
+## Biological moderators
 
 This section presents single-moderator models for ecological, life-history, and geographic predictors of brood-level mixed paternity. These models evaluate whether mixed-paternity prevalence varies with nest type, migration status, coloniality, clutch size, body mass, and absolute latitude, while retaining the same multilevel phylogenetic beta-binomial structure used in the overall model.
 :::
+
+Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.
 
 ## Packages
 
@@ -88,7 +90,7 @@ bio_dataset_sizes <- tibble::tibble(
 knitr::kable(bio_dataset_sizes)
 ```
 
-## Model 
+## Model
 
 This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as `.rds` files.
 
@@ -144,23 +146,14 @@ summary(model_nest_type)
 #| message: false
 #| warning: false
 
-nest_type_prevalence <- posterior_summary(model_nest_type) %>%
-  as.data.frame() %>%
-  rownames_to_column("parameter") %>%
-  filter(str_detect(parameter, "^b_nest_type_model")) %>%
-  mutate(
-    nest_type = str_remove(parameter, "b_nest_type_model"),
-    estimate_percent = plogis(Estimate) * 100,
-    l95_percent = plogis(`Q2.5`) * 100,
-    u95_percent = plogis(`Q97.5`) * 100
-  ) %>%
-  select(
-    `Nest-type category` = nest_type,
-    `Estimated prevalence (%)` = estimate_percent,
-    `Lower 95% CrI` = l95_percent,
-    `Upper 95% CrI` = u95_percent
-  )
-
+nest_type_probability_draws <- 100 * plogis(brms::fixef(model_nest_type, summary = FALSE))
+nest_type_prevalence <- data.frame(
+  `Nest type` = sub("^nest_type_model", "", colnames(nest_type_probability_draws)),
+  `Posterior mean prevalence (%)` = colMeans(nest_type_probability_draws),
+  `Lower 95% CrI` = apply(nest_type_probability_draws, 2, quantile, 0.025),
+  `Upper 95% CrI` = apply(nest_type_probability_draws, 2, quantile, 0.975),
+  row.names = NULL, check.names = FALSE
+)
 knitr::kable(nest_type_prevalence, digits = 2)
 ```
 
@@ -336,9 +329,9 @@ knitr::include_graphics("Figures/common_scaling/body_mass.png")
 ### Model summary
 
 ```{r}
-#| message: false 
-#| #| warning: false 
-#| #| code-fold: true 
+#| message: false
+#| #| warning: false
+#| #| code-fold: true
 
 cat(readLines("logs/common_scaling/model_log_body_mass_summary.txt"), sep = "\n")
 
@@ -391,9 +384,9 @@ knitr::include_graphics("Figures/common_scaling/abs_latitude.png")
 ### Model  summary
 
 ```{r}
-#| message: false 
-#| #| warning: false 
-#| #| code-fold: true 
+#| message: false
+#| #| warning: false
+#| #| code-fold: true
 
 cat(readLines("logs/common_scaling/model_abs_latitude_summary.txt"), sep = "\n")
 

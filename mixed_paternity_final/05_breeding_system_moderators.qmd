@@ -30,6 +30,8 @@ classification_sources <- tibble::tribble(
 knitr::kable(classification_sources)
 ```
 
+Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.
+
 ## Packages
 
 The R packages required for model fitting.
@@ -99,7 +101,7 @@ breeding_dataset_sizes <- tibble(
 knitr::kable(breeding_dataset_sizes)
 ```
 
-## Model 
+## Model
 
 This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as `.rds` files.
 
@@ -156,23 +158,14 @@ summary(model_breeding_system_0)
 #| message: false
 #| warning: false
 
-breeding_system_prevalence <- posterior_summary(model_breeding_system_0) %>%
-  as.data.frame() %>%
-  rownames_to_column("parameter") %>%
-  filter(str_detect(parameter, "^b_breeding_system")) %>%
-  mutate(
-    breeding_system = str_remove(parameter, "b_breeding_system"),
-    estimate_percent = plogis(Estimate) * 100,
-    l95_percent = plogis(`Q2.5`) * 100,
-    u95_percent = plogis(`Q97.5`) * 100
-  ) %>%
-  select(
-    `Breeding-system category` = breeding_system,
-    `Estimated prevalence (%)` = estimate_percent,
-    `Lower 95% CrI` = l95_percent,
-    `Upper 95% CrI` = u95_percent
-  )
-
+breeding_system_probability_draws <- 100 * plogis(brms::fixef(model_breeding_system_0, summary = FALSE))
+breeding_system_prevalence <- data.frame(
+  `Breeding-system category` = sub("^breeding_system", "", colnames(breeding_system_probability_draws)),
+  `Posterior mean prevalence (%)` = colMeans(breeding_system_probability_draws),
+  `Lower 95% CrI` = apply(breeding_system_probability_draws, 2, quantile, 0.025),
+  `Upper 95% CrI` = apply(breeding_system_probability_draws, 2, quantile, 0.975),
+  row.names = NULL, check.names = FALSE
+)
 knitr::kable(breeding_system_prevalence, digits = 2)
 ```
 
@@ -219,23 +212,14 @@ summary(model_mono_poly_0)
 #| message: false
 #| warning: false
 
-mono_poly_prevalence <- posterior_summary(model_mono_poly_0) %>%
-  as.data.frame() %>%
-  rownames_to_column("parameter") %>%
-  filter(str_detect(parameter, "^b_mono_poly_model")) %>%
-  mutate(
-    mono_poly_category = str_remove(parameter, "b_mono_poly_model"),
-    estimate_percent = plogis(Estimate) * 100,
-    l95_percent = plogis(`Q2.5`) * 100,
-    u95_percent = plogis(`Q97.5`) * 100
-  ) %>%
-  select(
-    `Mono-/polygamy category` = mono_poly_category,
-    `Estimated prevalence (%)` = estimate_percent,
-    `Lower 95% CrI` = l95_percent,
-    `Upper 95% CrI` = u95_percent
-  )
-
+mono_poly_probability_draws <- 100 * plogis(brms::fixef(model_mono_poly_0, summary = FALSE))
+mono_poly_prevalence <- data.frame(
+  `Mono-/polygamy category` = sub("^mono_poly_model", "", colnames(mono_poly_probability_draws)),
+  `Posterior mean prevalence (%)` = colMeans(mono_poly_probability_draws),
+  `Lower 95% CrI` = apply(mono_poly_probability_draws, 2, quantile, 0.025),
+  `Upper 95% CrI` = apply(mono_poly_probability_draws, 2, quantile, 0.975),
+  row.names = NULL, check.names = FALSE
+)
 knitr::kable(mono_poly_prevalence, digits = 2)
 ```
 
@@ -278,30 +262,21 @@ summary(model_parental_care_0)
 
 ### Prevalence table
 
-Estimated mixed-paternity prevalence for each parental-care category was obtained from the zero-intercept model and back-transformed from the logit scale to percentages.
+Estimated mixed-paternity prevalence for each parental-care category was obtained by transforming every posterior draw from the zero-intercept model to a probability and then taking its mean and equal-tailed interval.
 
 ```{r}
 #| echo: false
 #| message: false
 #| warning: false
 
-parental_care_prevalence <- posterior_summary(model_parental_care_0) %>%
-  as.data.frame() %>%
-  rownames_to_column("parameter") %>%
-  filter(str_detect(parameter, "^b_parental_care")) %>%
-  mutate(
-    parental_care = str_remove(parameter, "b_parental_care"),
-    estimate_percent = plogis(Estimate) * 100,
-    l95_percent = plogis(`Q2.5`) * 100,
-    u95_percent = plogis(`Q97.5`) * 100
-  ) %>%
-  select(
-    `Parental-care category` = parental_care,
-    `Estimated prevalence (%)` = estimate_percent,
-    `Lower 95% CrI` = l95_percent,
-    `Upper 95% CrI` = u95_percent
-  )
-
+parental_care_probability_draws <- 100 * plogis(brms::fixef(model_parental_care_0, summary = FALSE))
+parental_care_prevalence <- data.frame(
+  `Parental-care category` = sub("^parental_care", "", colnames(parental_care_probability_draws)),
+  `Posterior mean prevalence (%)` = colMeans(parental_care_probability_draws),
+  `Lower 95% CrI` = apply(parental_care_probability_draws, 2, quantile, 0.025),
+  `Upper 95% CrI` = apply(parental_care_probability_draws, 2, quantile, 0.975),
+  row.names = NULL, check.names = FALSE
+)
 knitr::kable(parental_care_prevalence, digits = 2)
 ```
 
@@ -370,6 +345,29 @@ cooperative_table <- tibble::tibble(
 
 knitr::kable(cooperative_table, digits = 3)
 ```
+
+**Prevalence on the probability scale**
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+b_cooperative <- brms::fixef(model_cooperative, summary = FALSE)
+cooperative_probability_draws <- 100 * plogis(cbind(
+  `Non-cooperative` = b_cooperative[, "Intercept"],
+  Cooperative = b_cooperative[, "Intercept"] + b_cooperative[, "cooperative_breedingyes"]
+))
+cooperative_prevalence <- data.frame(
+  `Cooperative breeding` = colnames(cooperative_probability_draws),
+  `Posterior mean prevalence (%)` = colMeans(cooperative_probability_draws),
+  `Lower 95% CrI` = apply(cooperative_probability_draws, 2, quantile, 0.025),
+  `Upper 95% CrI` = apply(cooperative_probability_draws, 2, quantile, 0.975),
+  row.names = NULL, check.names = FALSE
+)
+knitr::kable(cooperative_prevalence, digits = 2)
+```
+
+Posterior mean prevalence was 16.0% (95% equal-tailed CrI 1.0–57.0%) in non-cooperative species and 13.8% (0.8–52.0%) in cooperatively breeding species. Both estimates were highly uncertain.
 
 ## Heterogeneity summary
 

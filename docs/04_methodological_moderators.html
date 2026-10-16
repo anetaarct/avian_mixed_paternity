@@ -285,6 +285,7 @@ window.Quarto = {
 <div class="section-card">
 <p>This section presents methodological moderators that may influence estimates of mixed-paternity prevalence across studies. We focus on marker type, nest-box use, nest type, and study duration, because these variables can affect both the detection and reporting of mixed paternity. All models use the same multilevel phylogenetic beta-binomial structure as the overall model.</p>
 </div>
+<p>Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.</p>
 <section id="packages" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="packages"><span class="header-section-number">5.1</span> Packages</h2>
 <p>The R packages required for model fitting.</p>
@@ -482,15 +483,15 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 26%">
-<col style="width: 34%">
-<col style="width: 19%">
-<col style="width: 19%">
+<col style="width: 26%"/>
+<col style="width: 34%"/>
+<col style="width: 19%"/>
+<col style="width: 19%"/>
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Marker type</th>
-<th style="text-align: right;">Estimated prevalence (%)</th>
+<th style="text-align: right;">Posterior mean prevalence (%)</th>
 <th style="text-align: right;">Lower 95% CrI</th>
 <th style="text-align: right;">Upper 95% CrI</th>
 </tr>
@@ -498,25 +499,25 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">DNA_fingerprinting</td>
-<td style="text-align: right;">21.89</td>
+<td style="text-align: right;">25.19</td>
 <td style="text-align: right;">4.57</td>
 <td style="text-align: right;">63.36</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">microsatellite</td>
-<td style="text-align: right;">31.17</td>
+<td style="text-align: right;">33.74</td>
 <td style="text-align: right;">7.15</td>
 <td style="text-align: right;">73.39</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">mixed_other</td>
-<td style="text-align: right;">33.96</td>
+<td style="text-align: right;">36.38</td>
 <td style="text-align: right;">7.34</td>
 <td style="text-align: right;">77.16</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">SNPs</td>
-<td style="text-align: right;">31.69</td>
+<td style="text-align: right;">34.33</td>
 <td style="text-align: right;">6.94</td>
 <td style="text-align: right;">75.15</td>
 </tr>
@@ -1308,7 +1309,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown">---
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-shortcodes="false"><pre><code>---
 format:
   html:
     toc: true
@@ -1320,6 +1321,8 @@ format:
 
 This section presents methodological moderators that may influence estimates of mixed-paternity prevalence across studies. We focus on marker type, nest-box use, nest type, and study duration, because these variables can affect both the detection and reporting of mixed paternity. All models use the same multilevel phylogenetic beta-binomial structure as the overall model.
 :::
+
+Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.
 
 ## Packages
 
@@ -1348,14 +1351,14 @@ options(mc.cores = parallel::detectCores())
 #| message: false
 #| warning: false
 
-data_overall_study &lt;- readRDS("data/data_overall_study.rds")
-phylo_mat &lt;- readRDS("data/phylo_mat.rds")
+data_overall_study &lt;- readRDS(&quot;data/data_overall_study.rds&quot;)
+phylo_mat &lt;- readRDS(&quot;data/phylo_mat.rds&quot;)
 ```
 
 ```{r}
-data_marker_type &lt;- readRDS("data/data_marker_type.rds")
-data_study_duration &lt;- readRDS("data/data_study_duration.rds")
-data_nest_box &lt;- readRDS("data/data_nest_box.rds")
+data_marker_type &lt;- readRDS(&quot;data/data_marker_type.rds&quot;)
+data_study_duration &lt;- readRDS(&quot;data/data_study_duration.rds&quot;)
+data_nest_box &lt;- readRDS(&quot;data/data_nest_box.rds&quot;)
 
 ```
 
@@ -1371,9 +1374,9 @@ The table below shows the number of observations available for each methodologic
 
 methodological_dataset_sizes &lt;- tibble(
   Moderator = c(
-    "Marker type",
-    "Nest box",
-    "Study duration"
+    &quot;Marker type&quot;,
+    &quot;Nest box&quot;,
+    &quot;Study duration&quot;
   ),
   Observations = c(
     nrow(data_marker_type),
@@ -1398,7 +1401,7 @@ fit_single_moderator &lt;- function(formula, data) {
   brm(
     formula = formula,
     data = data,
-    family = beta_binomial(link = "logit"),
+    family = beta_binomial(link = &quot;logit&quot;),
     data2 = list(phylo_mat = phylo_mat),
     chains = 4,
     cores = 4,
@@ -1420,7 +1423,7 @@ This model tested whether estimated mixed-paternity prevalence differed among mo
 ### Figure
 
 ```{r}
-knitr::include_graphics("Figures/Figuresmarker_type.png")
+knitr::include_graphics(&quot;Figures/Figuresmarker_type.png&quot;)
 ```
 
 ### Model summary
@@ -1430,7 +1433,7 @@ knitr::include_graphics("Figures/Figuresmarker_type.png")
 #| #| message: false
 #| #| warning: false
 #| #| code-fold: true
-model_marker_type_0 &lt;- readRDS("models/model_marker_type_0.rds")
+model_marker_type_0 &lt;- readRDS(&quot;models/model_marker_type_0.rds&quot;)
 summary(model_marker_type_0)
 ```
 
@@ -1441,23 +1444,14 @@ summary(model_marker_type_0)
 #| message: false
 #| warning: false
 
-marker_type_prevalence &lt;- posterior_summary(model_marker_type_0) %&gt;%
-  as.data.frame() %&gt;%
-  rownames_to_column("parameter") %&gt;%
-  filter(str_detect(parameter, "^b_marker_type_model")) %&gt;%
-  mutate(
-    marker_type = str_remove(parameter, "b_marker_type_model"),
-    estimate_percent = plogis(Estimate) * 100,
-    l95_percent = plogis(`Q2.5`) * 100,
-    u95_percent = plogis(`Q97.5`) * 100
-  ) %&gt;%
-  select(
-    `Marker type` = marker_type,
-    `Estimated prevalence (%)` = estimate_percent,
-    `Lower 95% CrI` = l95_percent,
-    `Upper 95% CrI` = u95_percent
-  )
-
+marker_type_probability_draws &lt;- 100 * plogis(brms::fixef(model_marker_type_0, summary = FALSE))
+marker_type_prevalence &lt;- data.frame(
+  `Marker type` = sub(&quot;^marker_type_model&quot;, &quot;&quot;, colnames(marker_type_probability_draws)),
+  `Posterior mean prevalence (%)` = colMeans(marker_type_probability_draws),
+  `Lower 95% CrI` = apply(marker_type_probability_draws, 2, quantile, 0.025),
+  `Upper 95% CrI` = apply(marker_type_probability_draws, 2, quantile, 0.975),
+  row.names = NULL, check.names = FALSE
+)
 knitr::kable(marker_type_prevalence, digits = 2)
 ```
 
@@ -1471,7 +1465,7 @@ Pairwise contrasts among marker-type categories were calculated from the zero-in
 #| message: false
 #| warning: false
 
-pairwise_marker_type_0 &lt;- readRDS("models/pairwise_marker_type_0.rds")
+pairwise_marker_type_0 &lt;- readRDS(&quot;models/pairwise_marker_type_0.rds&quot;)
 
 pairwise_marker_type_table &lt;- as.data.frame(pairwise_marker_type_0)
 
@@ -1486,10 +1480,10 @@ Study duration was included as a methodological moderator because longer studies
 
 ```{r}
 #| label: fig-study-duration-common-scaling
-#| fig-cap: "Population-level predicted mixed-paternity prevalence across study duration from the refitted single-moderator model. Study duration was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval."
+#| fig-cap: &quot;Population-level predicted mixed-paternity prevalence across study duration from the refitted single-moderator model. Study duration was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval.&quot;
 #| echo: false
 
-knitr::include_graphics("Figures/common_scaling/study_duration.png")
+knitr::include_graphics(&quot;Figures/common_scaling/study_duration.png&quot;)
 ```
 
 ### Model summary
@@ -1497,9 +1491,9 @@ knitr::include_graphics("Figures/common_scaling/study_duration.png")
 ```{r}
 #| echo: false
 #| code-fold: true
-#| code-summary: "Show fitted-model summary"
+#| code-summary: &quot;Show fitted-model summary&quot;
 
-cat(readLines("logs/common_scaling/model_study_duration_summary.txt"), sep = "\n")
+cat(readLines(&quot;logs/common_scaling/model_study_duration_summary.txt&quot;), sep = &quot;\n&quot;)
 ```
 
 ###  Model estimates
@@ -1510,12 +1504,12 @@ cat(readLines("logs/common_scaling/model_study_duration_summary.txt"), sep = "\n
 #| warning: false
 
 study_duration_table &lt;- readr::read_csv(
-  "tables/common_scaling/model_study_duration_fixed_effects.csv",
+  &quot;tables/common_scaling/model_study_duration_fixed_effects.csv&quot;,
   show_col_types = FALSE
 ) |&gt;
-  dplyr::filter(term == "study_duration_sc") |&gt;
+  dplyr::filter(term == &quot;study_duration_sc&quot;) |&gt;
   dplyr::transmute(
-    Parameter = "Study duration (per 1 SD = 3.452 years)",
+    Parameter = &quot;Study duration (per 1 SD = 3.452 years)&quot;,
     Estimate,
     `Lower 95% CrI` = Q2.5,
     `Upper 95% CrI` = Q97.5
@@ -1535,7 +1529,7 @@ The intercept represents the reference category - natural nests .
 ### Figure
 
 ```{r}
-knitr::include_graphics("Figures/Figuresnest_box.png")
+knitr::include_graphics(&quot;Figures/Figuresnest_box.png&quot;)
 ```
 
 ### Model summary
@@ -1545,7 +1539,7 @@ knitr::include_graphics("Figures/Figuresnest_box.png")
 #| warning: false
 #| code-fold: true
 
-model_nest_box &lt;- readRDS("models/model_nest_box.rds")
+model_nest_box &lt;- readRDS(&quot;models/model_nest_box.rds&quot;)
 summary(model_nest_box)
 ```
 
@@ -1561,9 +1555,9 @@ s_nest_box &lt;- summary(model_nest_box)
 
 nest_box_table &lt;- tibble::tibble(
   Parameter = rownames(s_nest_box$fixed),
-  Estimate = s_nest_box$fixed[, "Estimate"],
-  `Lower 95% CrI` = s_nest_box$fixed[, "l-95% CI"],
-  `Upper 95% CrI` = s_nest_box$fixed[, "u-95% CI"]
+  Estimate = s_nest_box$fixed[, &quot;Estimate&quot;],
+  `Lower 95% CrI` = s_nest_box$fixed[, &quot;l-95% CI&quot;],
+  `Upper 95% CrI` = s_nest_box$fixed[, &quot;u-95% CI&quot;]
 )
 
 knitr::kable(nest_box_table, digits = 3)
@@ -1577,8 +1571,8 @@ The nest-box model estimated a positive but uncertain association between nest-b
 #| echo: false
 #| message: false
 #| warning: false
-variance_table &lt;- readr::read_csv("tables/variance_audit/group_level_variances.csv", show_col_types = FALSE) |&gt;
-  dplyr::filter(Model %in% c("Overall model", "Marker type", "Nest box", "Study duration"))
+variance_table &lt;- readr::read_csv(&quot;tables/variance_audit/group_level_variances.csv&quot;, show_col_types = FALSE) |&gt;
+  dplyr::filter(Model %in% c(&quot;Overall model&quot;, &quot;Marker type&quot;, &quot;Nest box&quot;, &quot;Study duration&quot;))
 knitr::kable(variance_table, digits = 3)
 ```
 

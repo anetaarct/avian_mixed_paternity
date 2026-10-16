@@ -1,38 +1,29 @@
 suppressPackageStartupMessages({
-  library(ape)
   library(ggplot2)
 })
 
-dat <- read.csv("mixed_pat_final.csv", check.names = FALSE)
-tree <- ape::read.nexus("summary_dated_clements.nex")
-
-dat$n_mixed_broods <- as.numeric(dat$n_mixed_broods)
-dat$n_non_mixed_broods <- as.numeric(dat$n_non_mixed_broods)
-dat$n_total_broods <- dat$n_mixed_broods + dat$n_non_mixed_broods
-
-keep <-
-  dat$Clements_name %in% tree$tip.label &
-  !is.na(dat$n_mixed_broods) &
-  !is.na(dat$n_non_mixed_broods) &
-  !is.na(dat$n_total_broods) &
-  dat$n_total_broods > 0 &
-  !is.na(dat$Study_ID) &
-  !is.na(dat$Clements_name)
-
-plot_data <- dat[keep, , drop = FALSE]
+# Optional argument: path to the saved overall fit. No fitting is performed.
+args <- commandArgs(trailingOnly = TRUE)
+model_path <- if (length(args)) args[1L] else "models/model_overall_study.rds"
+fit <- readRDS(model_path)
+plot_data <- fit$data
 stopifnot(
   nrow(plot_data) == 619L,
   length(unique(plot_data$Study_ID)) == 554L,
-  length(unique(plot_data$Clements_name)) == 375L
+  length(unique(plot_data$species_nonphylo)) == 375L
 )
 
 plot_data$observed_prev <-
   100 * plot_data$n_mixed_broods / plot_data$n_total_broods
 plot_data$sample_size <- plot_data$n_total_broods
 
-# Inverse-logit of the saved intercept-only model's population-level intercept.
-intercept_estimate <- -0.732
-intercept_prevalence <- plogis(intercept_estimate) * 100
+# Transform each retained posterior draw before averaging.
+sim <- attr(fit$fit, "sim")
+intercept_draws <- unlist(lapply(seq_len(sim$chains), function(ch) {
+  keep <- seq.int(sim$warmup2[ch] + 1L, sim$n_save[ch])
+  sim$samples[[ch]]$b_Intercept[keep]
+}), use.names = FALSE)
+intercept_prevalence <- mean(100 * plogis(intercept_draws))
 
 set.seed(123)
 p <- ggplot(plot_data, aes(x = observed_prev, y = 0)) +
@@ -51,7 +42,7 @@ p <- ggplot(plot_data, aes(x = observed_prev, y = 0)) +
   annotate(
     "text", x = intercept_prevalence + 6, y = 0.18,
     label = paste0(
-      "Population-level intercept: ", round(intercept_prevalence, 1), "%"
+      "Posterior mean prevalence: ", round(intercept_prevalence, 1), "%"
     ),
     hjust = 0, size = 5
   ) +
@@ -80,7 +71,11 @@ ggsave(
   "Figures/model_diagnostics/overall_prevalence_intercept_plot.png",
   p, width = 10, height = 5, units = "in", dpi = 192
 )
-ggsave(
+dir.create("../docs/Figures/model_diagnostics", recursive = TRUE, showWarnings = FALSE)
+for (destination in c(
   "../docs/07_figures_files/figure-html/unnamed-chunk-8-1.png",
-  p, width = 10, height = 5, units = "in", dpi = 192
-)
+  "../docs/Figures/model_diagnostics/overall_prevalence_intercept_plot.png"
+)) {
+  file.copy("Figures/model_diagnostics/overall_prevalence_intercept_plot.png",
+            destination, overwrite = TRUE)
+}

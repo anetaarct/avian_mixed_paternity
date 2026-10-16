@@ -1,5 +1,5 @@
 ---
-format: 
+format:
  html:
     toc: true
     toc-depth: 3
@@ -112,14 +112,18 @@ knitr::include_graphics(
 ### Model summary
 
 ```{r}
-#| message: false 
-#| warning: false 
+#| message: false
+#| warning: false
 
 model_overall_study <- readRDS("models/model_overall_study.rds")
 summary(model_overall_study)
 ```
 
 ### Model estimates
+
+Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.
+
+The posterior mean overall prevalence is 34.71% (95% equal-tailed CrI 8.12–73.16%).
 
 Group-level estimates are posterior mean variances on the logit scale, with equal-tailed 95% credible intervals calculated from squared posterior SD draws. Raw brms diagnostic summaries retain their native SD parameterisation.
 
@@ -129,6 +133,7 @@ Group-level estimates are posterior mean variances on the logit scale, with equa
 #| warning: false
 
 s <- summary(model_overall_study)
+overall_probability <- 100 * plogis(brms::fixef(model_overall_study, summary = FALSE)[, "Intercept"])
 v <- readr::read_csv("tables/variance_audit/posterior_variance_summaries.csv", show_col_types = FALSE) |>
   dplyr::filter(model == "model_overall_study")
 get_variance <- function(parameter_name, statistic) v[[statistic]][match(parameter_name, v$parameter)]
@@ -136,7 +141,7 @@ get_variance <- function(parameter_name, statistic) v[[statistic]][match(paramet
 model_summary_table <- tibble::tibble(
   Parameter = c(
     "Intercept (logit scale)",
-    "Population-level intercept prevalence (%)",
+    "Posterior mean prevalence at zero random effects (%)",
     "Study-level variance",
     "Non-phylogenetic species-level variance",
     "Phylogenetic species-level variance",
@@ -144,7 +149,7 @@ model_summary_table <- tibble::tibble(
   ),
   Estimate = c(
     s$fixed["Intercept", "Estimate"],
-    plogis(s$fixed["Intercept", "Estimate"]) * 100,
+    mean(overall_probability),
     get_variance("sd_Study_ID__Intercept", "mean"),
     get_variance("sd_species_nonphylo__Intercept", "mean"),
     get_variance("sd_species_phylo_brms__Intercept", "mean"),
@@ -152,7 +157,7 @@ model_summary_table <- tibble::tibble(
   ),
   `Lower 95% CrI` = c(
     s$fixed["Intercept", "l-95% CI"],
-    plogis(s$fixed["Intercept", "l-95% CI"]) * 100,
+    unname(quantile(overall_probability, 0.025)),
     get_variance("sd_Study_ID__Intercept", "q025"),
     get_variance("sd_species_nonphylo__Intercept", "q025"),
     get_variance("sd_species_phylo_brms__Intercept", "q025"),
@@ -160,7 +165,7 @@ model_summary_table <- tibble::tibble(
   ),
   `Upper 95% CrI` = c(
     s$fixed["Intercept", "u-95% CI"],
-    plogis(s$fixed["Intercept", "u-95% CI"]) * 100,
+    unname(quantile(overall_probability, 0.975)),
     get_variance("sd_Study_ID__Intercept", "q975"),
     get_variance("sd_species_nonphylo__Intercept", "q975"),
     get_variance("sd_species_phylo_brms__Intercept", "q975"),
@@ -216,8 +221,8 @@ phylo_signal_summary <- draws_phylo_signal %>%
   )
 
 knitr::kable(
-  phylo_signal_summary, 
-  digits = 3, 
+  phylo_signal_summary,
+  digits = 3,
   caption = "Posterior mean estimate of the phylogenetic signal with a 95% equal-tailed credible interval."
 )
 ```

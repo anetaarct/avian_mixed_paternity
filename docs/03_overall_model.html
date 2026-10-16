@@ -437,6 +437,8 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </section>
 <section id="model-estimates" class="level3" data-number="4.5.4">
 <h3 data-number="4.5.4" class="anchored" data-anchor-id="model-estimates"><span class="header-section-number">4.5.4</span> Model estimates</h3>
+<p>Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.</p>
+<p>The posterior mean overall prevalence is 34.71% (95% equal-tailed CrI 8.12–73.16%).</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -462,8 +464,8 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <td style="text-align: right;">1.003</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Population-level intercept prevalence (%)</td>
-<td style="text-align: right;">32.472</td>
+<td style="text-align: left;">Posterior mean prevalence at zero random effects (%)</td>
+<td style="text-align: right;">34.706</td>
 <td style="text-align: right;">8.119</td>
 <td style="text-align: right;">73.156</td>
 </tr>
@@ -1234,6 +1236,10 @@ summary(model_overall_study)
 
 ### Model estimates
 
+Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.
+
+The posterior mean overall prevalence is 34.71% (95% equal-tailed CrI 8.12–73.16%).
+
 Group-level estimates are posterior mean variances on the logit scale, with equal-tailed 95% credible intervals calculated from squared posterior SD draws. Raw brms diagnostic summaries retain their native SD parameterisation.
 
 ```{r}
@@ -1242,6 +1248,7 @@ Group-level estimates are posterior mean variances on the logit scale, with equa
 #| warning: false
 
 s &lt;- summary(model_overall_study)
+overall_probability &lt;- 100 * plogis(brms::fixef(model_overall_study, summary = FALSE)[, &quot;Intercept&quot;])
 v &lt;- readr::read_csv(&quot;tables/variance_audit/posterior_variance_summaries.csv&quot;, show_col_types = FALSE) |&gt;
   dplyr::filter(model == &quot;model_overall_study&quot;)
 get_variance &lt;- function(parameter_name, statistic) v[[statistic]][match(parameter_name, v$parameter)]
@@ -1249,7 +1256,7 @@ get_variance &lt;- function(parameter_name, statistic) v[[statistic]][match(para
 model_summary_table &lt;- tibble::tibble(
   Parameter = c(
     &quot;Intercept (logit scale)&quot;,
-    &quot;Population-level intercept prevalence (%)&quot;,
+    &quot;Posterior mean prevalence at zero random effects (%)&quot;,
     &quot;Study-level variance&quot;,
     &quot;Non-phylogenetic species-level variance&quot;,
     &quot;Phylogenetic species-level variance&quot;,
@@ -1257,7 +1264,7 @@ model_summary_table &lt;- tibble::tibble(
   ),
   Estimate = c(
     s$fixed[&quot;Intercept&quot;, &quot;Estimate&quot;],
-    plogis(s$fixed[&quot;Intercept&quot;, &quot;Estimate&quot;]) * 100,
+    mean(overall_probability),
     get_variance(&quot;sd_Study_ID__Intercept&quot;, &quot;mean&quot;),
     get_variance(&quot;sd_species_nonphylo__Intercept&quot;, &quot;mean&quot;),
     get_variance(&quot;sd_species_phylo_brms__Intercept&quot;, &quot;mean&quot;),
@@ -1265,7 +1272,7 @@ model_summary_table &lt;- tibble::tibble(
   ),
   `Lower 95% CrI` = c(
     s$fixed[&quot;Intercept&quot;, &quot;l-95% CI&quot;],
-    plogis(s$fixed[&quot;Intercept&quot;, &quot;l-95% CI&quot;]) * 100,
+    unname(quantile(overall_probability, 0.025)),
     get_variance(&quot;sd_Study_ID__Intercept&quot;, &quot;q025&quot;),
     get_variance(&quot;sd_species_nonphylo__Intercept&quot;, &quot;q025&quot;),
     get_variance(&quot;sd_species_phylo_brms__Intercept&quot;, &quot;q025&quot;),
@@ -1273,7 +1280,7 @@ model_summary_table &lt;- tibble::tibble(
   ),
   `Upper 95% CrI` = c(
     s$fixed[&quot;Intercept&quot;, &quot;u-95% CI&quot;],
-    plogis(s$fixed[&quot;Intercept&quot;, &quot;u-95% CI&quot;]) * 100,
+    unname(quantile(overall_probability, 0.975)),
     get_variance(&quot;sd_Study_ID__Intercept&quot;, &quot;q975&quot;),
     get_variance(&quot;sd_species_nonphylo__Intercept&quot;, &quot;q975&quot;),
     get_variance(&quot;sd_species_phylo_brms__Intercept&quot;, &quot;q975&quot;),

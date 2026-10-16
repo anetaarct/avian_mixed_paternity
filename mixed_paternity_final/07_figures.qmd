@@ -566,7 +566,7 @@ p_map
 
 ## Figure preparation
 
-Points represent observed record-level mixed-paternity prevalence and are scaled by the number of genotyped broods. The dashed line and dark point mark the inverse-logit-transformed population-level intercept from the intercept-only model; its credible interval is reported in the model table. This conditional estimate sets study and species random effects to zero.
+Points represent observed record-level mixed-paternity prevalence and are scaled by the number of genotyped broods. The dashed line and dark point mark the posterior mean prevalence on the probability scale from the intercept-only model; its 95% equal-tailed credible interval is reported in the model table. All random effects are set to zero.
 
 ```{r}
 #| echo: false
@@ -574,7 +574,7 @@ Points represent observed record-level mixed-paternity prevalence and are scaled
 #| warning: false
 #| fig-width: 10
 #| fig-height: 5
-#| fig-cap: "Observed mixed-paternity prevalence across study populations and the inverse-logit-transformed population-level intercept from the intercept-only model. The 32.5% estimate is conditional on study and species random effects being set to zero and is not a marginal average across observed studies or species."
+#| fig-cap: "Observed mixed-paternity prevalence across study populations and the posterior mean prevalence on the probability scale from the intercept-only model (34.7%; 95% equal-tailed CrI 8.1–73.2%). The model estimate is conditional on zero study and species random effects."
 
 plot_data <- data_overall_study %>%
   mutate(
@@ -582,9 +582,9 @@ plot_data <- data_overall_study %>%
     sample_size = n_total_broods
   )
 
-overall_est <- plogis(
-  fixef(model_overall_study)["Intercept", "Estimate"]
-) * 100
+overall_est <- mean(100 * plogis(
+  brms::fixef(model_overall_study, summary = FALSE)[, "Intercept"]
+))
 
 
 p_overall_prevalence <- ggplot(plot_data, aes(x = observed_prev, y = 0)) +
@@ -614,7 +614,7 @@ p_overall_prevalence <- ggplot(plot_data, aes(x = observed_prev, y = 0)) +
     "text",
     x = overall_est + 6,
     y = 0.18,
-    label = paste0("Population-level intercept: ", round(overall_est, 1), "%"),
+    label = paste0("Posterior mean prevalence: ", round(overall_est, 1), "%"),
     hjust = 0,
     size = 5
   ) +
@@ -638,34 +638,34 @@ p_overall_prevalence <- ggplot(plot_data, aes(x = observed_prev, y = 0)) +
     panel.grid.major.y = element_blank(),
     panel.grid.minor = element_blank(),
     legend.position = "right")
-  
+
 p_overall_prevalence
 ```
 
 ```{r}
 plot_categorical_moderator <- function(data, model, cat_var, x_lab, labels = NULL) {
-  
+
   pred_data <- data %>%
     distinct(.data[[cat_var]]) %>%
     rename(category = .data[[cat_var]]) %>%
     mutate(n_total_broods = 1)
-  
+
   names(pred_data)[names(pred_data) == "category"] <- cat_var
-  
+
   pred <- pred_data %>%
     tidybayes::add_epred_draws(model, re_formula = NA) %>%
     tidybayes::mean_qi(.epred)
-  
+
   plot_data <- data %>%
     mutate(
       observed_prev = n_mixed_broods / n_total_broods
     )
-  
+
   if (!is.null(labels)) {
     pred[[cat_var]] <- factor(pred[[cat_var]], levels = names(labels), labels = labels)
     plot_data[[cat_var]] <- factor(plot_data[[cat_var]], levels = names(labels), labels = labels)
   }
-  
+
   ggplot() +
     geom_jitter(
       data = plot_data,
@@ -712,10 +712,10 @@ coord_cartesian(ylim = c(0, 1)) +
 #| warning: false
 
 plot_continuous_moderator <- function(data, model, raw_var, sc_var, x_lab) {
-  
+
   mean_x <- mean(data[[raw_var]], na.rm = TRUE)
   sd_x <- sd(data[[raw_var]], na.rm = TRUE)
-  
+
   pred_data <- tibble(
     x_raw = seq(
       min(data[[raw_var]], na.rm = TRUE),
@@ -727,11 +727,11 @@ plot_continuous_moderator <- function(data, model, raw_var, sc_var, x_lab) {
       !!sc_var := (x_raw - mean_x) / sd_x,
       n_total_broods = 1
     )
-  
+
   pred <- pred_data %>%
     tidybayes::add_epred_draws(model, re_formula = NA) %>%
     tidybayes::mean_qi(.epred)
-  
+
   ggplot() +
     geom_ribbon(
       data = pred,
@@ -909,26 +909,26 @@ p_nest_type
 
 ```{r}
 plot_social_moderator <- function(data, model, cat_var, x_lab, labels = NULL) {
-  
+
   pred_data <- data %>%
     distinct(.data[[cat_var]]) %>%
     rename(category = .data[[cat_var]]) %>%
     mutate(n_total_broods = 1)
-  
+
   names(pred_data)[names(pred_data) == "category"] <- cat_var
-  
+
   pred <- pred_data %>%
     tidybayes::add_epred_draws(model, re_formula = NA) %>%
     tidybayes::mean_qi(.epred)
-  
+
   plot_data <- data %>%
     mutate(observed_prev = n_mixed_broods / n_total_broods)
-  
+
   if (!is.null(labels)) {
     pred[[cat_var]] <- factor(pred[[cat_var]], levels = names(labels), labels = labels)
     plot_data[[cat_var]] <- factor(plot_data[[cat_var]], levels = names(labels), labels = labels)
   }
-  
+
   ggplot() +
     geom_jitter(
       data = plot_data,
@@ -1035,7 +1035,7 @@ p_parental_care <- plot_social_moderator(
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)
   )
-p_parental_care 
+p_parental_care
 ```
 
 ```{r}
