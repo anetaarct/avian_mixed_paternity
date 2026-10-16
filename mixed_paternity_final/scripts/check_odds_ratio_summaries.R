@@ -2,10 +2,10 @@
 # Run from mixed_paternity_final: Rscript scripts/check_odds_ratio_summaries.R
 # Output is CSV on stdout; redirect it to tables/odds_ratio_scale_checks.csv.
 spec <- data.frame(
-  model = c("model_nest_box", "model_log_body_mass"),
+  model = c("model_nest_box", "model_log_body_mass", "model_cooperative"),
   file = c("models/model_nest_box.rds",
-           "models/common_scaling/model_log_body_mass.rds"),
-  parameter = c("b_nest_box_modelyes", "b_log_body_mass_sc")
+           "models/common_scaling/model_log_body_mass.rds", "models/model_cooperative.rds"),
+  parameter = c("b_nest_box_modelyes", "b_log_body_mass_sc", "b_cooperative_breedingyes")
 )
 results <- lapply(seq_len(nrow(spec)), function(i) {
   fit <- readRDS(spec$file[i])

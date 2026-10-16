@@ -48,6 +48,8 @@ This table summarises the curated input dataset and the phylogenetic tree.
 
 The input CSV is the curated database: 676 records grouped under 607 distinct study identifiers (Study_ID), covering 393 species. The manuscript documents its derivation from 702 assembled records after removal of 26 overlapping records. Excluding 57 records without the brood-level outcome or denominator leaves 619 analytical records, 554 study identifiers and 375 species. Thus, 607 and 554 refer to different dataset stages. The supplement lists 608 distinct source-publication entries for the broader curated database; bibliographic entries and analytical study identifiers are different counting units.
 
+The updated literature search has a separate counting sequence: 2,288 identified bibliographic records minus 623 duplicates gives 1,665 screened records; excluding 1,476 at title/abstract screening leaves 189 reports for full-text assessment. Of these, 46 were excluded and 143 reports were included. Reports are source documents, not unique analytical study identifiers or database rows. See the [updated search flow diagram](Figures/prisma_reporting.pdf).
+
 ```{r}
 #| label: data-summary-table
 #| echo: false

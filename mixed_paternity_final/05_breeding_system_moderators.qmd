@@ -400,7 +400,18 @@ cooperative_prevalence <- data.frame(
 knitr::kable(cooperative_prevalence, digits = 2)
 ```
 
-Posterior mean prevalence was 16.0% (95% equal-tailed CrI 1.0–57.0%) in non-cooperative species and 13.8% (0.8–52.0%) in cooperatively breeding species. Both estimates were highly uncertain.
+Posterior mean prevalence was 16.0% (95% equal-tailed CrI 1.0–57.0%) in non-cooperative species and 13.8% (0.8–52.0%) in cooperatively breeding species. Both estimates were highly uncertain. The posterior mean coefficient was −0.209 (95% equal-tailed CrI −0.716 to 0.304), and the posterior mean OR was 0.839 (0.489 to 1.355). OR is summarised as mean(exp(beta_draws)), whereas exp(mean(beta_draws)) = 0.812; the difference follows from nonlinear averaging.
+
+```{r}
+#| label: cooperative-or-scale-check
+#| code-fold: true
+beta_draws <- brms::fixef(model_cooperative, summary = FALSE)[, "cooperative_breedingyes"]
+knitr::kable(data.frame(
+  beta_mean = mean(beta_draws),
+  exp_beta_mean = exp(mean(beta_draws)),
+  OR_mean = mean(exp(beta_draws))
+), digits = 6)
+```
 
 ## Heterogeneity summary
 

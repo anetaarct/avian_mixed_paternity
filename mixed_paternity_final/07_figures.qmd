@@ -995,7 +995,7 @@ p_prevalence_key <- ggplot(
   )
 
 migration_key_data <- tibble(
-  label = c("regular migrant", "Partial/resident"),
+  label = c("Regular migrant", "Partial/resident"),
   colour = c("#0072B2", "#E69F00"),
   y = c(0.70, 0.30)
 )

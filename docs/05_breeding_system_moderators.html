@@ -960,7 +960,12 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </div>
 </div>
 </section>
-<p><strong>Prevalence on the probability scale</strong></p><div class="cell"><div class="cell-output-display"><table class="table table-sm table-striped small"><thead><tr><th>Cooperative breeding</th><th>Posterior mean prevalence (%)</th><th>Lower 95% CrI</th><th>Upper 95% CrI</th></tr></thead><tbody><tr><td>Non-cooperative</td><td style="text-align: right;">15.96</td><td style="text-align: right;">1.03</td><td style="text-align: right;">57.04</td></tr><tr><td>Cooperative</td><td style="text-align: right;">13.80</td><td style="text-align: right;">0.83</td><td style="text-align: right;">52.02</td></tr></tbody></table></div></div><p>Posterior mean prevalence was 16.0% (95% equal-tailed CrI 1.0–57.0%) in non-cooperative species and 13.8% (0.8–52.0%) in cooperatively breeding species. Both estimates were highly uncertain.</p>
+<p><strong>Prevalence on the probability scale</strong></p><div class="cell"><div class="cell-output-display"><table class="table table-sm table-striped small"><thead><tr><th>Cooperative breeding</th><th>Posterior mean prevalence (%)</th><th>Lower 95% CrI</th><th>Upper 95% CrI</th></tr></thead><tbody><tr><td>Non-cooperative</td><td style="text-align: right;">15.96</td><td style="text-align: right;">1.03</td><td style="text-align: right;">57.04</td></tr><tr><td>Cooperative</td><td style="text-align: right;">13.80</td><td style="text-align: right;">0.83</td><td style="text-align: right;">52.02</td></tr></tbody></table></div></div><p>Posterior mean prevalence was 16.0% (95% equal-tailed CrI 1.0–57.0%) in non-cooperative species and 13.8% (0.8–52.0%) in cooperatively breeding species. Both estimates were highly uncertain. The posterior mean coefficient was −0.209 (95% equal-tailed CrI −0.716 to 0.304), and the posterior mean OR was 0.839 (0.489 to 1.355). OR is summarised as mean(exp(beta_draws)), whereas exp(mean(beta_draws)) = 0.812; the difference follows from nonlinear averaging.</p><div class="cell"><details class="code-fold"><summary>Code</summary><pre class="sourceCode r"><code>beta_draws &lt;- brms::fixef(model_cooperative, summary = FALSE)[, &quot;cooperative_breedingyes&quot;]
+knitr::kable(data.frame(
+  beta_mean = mean(beta_draws),
+  exp_beta_mean = exp(mean(beta_draws)),
+  OR_mean = mean(exp(beta_draws))
+), digits = 6)</code></pre></details><div class="cell-output-display"><table class="table"><thead><tr><th>beta_mean</th><th>exp_beta_mean</th><th>OR_mean</th></tr></thead><tbody><tr><td>-0.208590</td><td>0.811728</td><td>0.839498</td></tr></tbody></table></div></div>
 </section>
 <section id="heterogeneity-summary" class="level2" data-number="6.9">
 <h2 data-number="6.9" class="anchored" data-anchor-id="heterogeneity-summary"><span class="header-section-number">6.9</span> Heterogeneity summary</h2>
@@ -1914,7 +1919,18 @@ cooperative_prevalence &lt;- data.frame(
 knitr::kable(cooperative_prevalence, digits = 2)
 ```
 
-Posterior mean prevalence was 16.0% (95% equal-tailed CrI 1.0–57.0%) in non-cooperative species and 13.8% (0.8–52.0%) in cooperatively breeding species. Both estimates were highly uncertain.
+Posterior mean prevalence was 16.0% (95% equal-tailed CrI 1.0–57.0%) in non-cooperative species and 13.8% (0.8–52.0%) in cooperatively breeding species. Both estimates were highly uncertain. The posterior mean coefficient was −0.209 (95% equal-tailed CrI −0.716 to 0.304), and the posterior mean OR was 0.839 (0.489 to 1.355). OR is summarised as mean(exp(beta_draws)), whereas exp(mean(beta_draws)) = 0.812; the difference follows from nonlinear averaging.
+
+```{r}
+#| label: cooperative-or-scale-check
+#| code-fold: true
+beta_draws &lt;- brms::fixef(model_cooperative, summary = FALSE)[, &quot;cooperative_breedingyes&quot;]
+knitr::kable(data.frame(
+  beta_mean = mean(beta_draws),
+  exp_beta_mean = exp(mean(beta_draws)),
+  OR_mean = mean(exp(beta_draws))
+), digits = 6)
+```
 
 ## Heterogeneity summary
 

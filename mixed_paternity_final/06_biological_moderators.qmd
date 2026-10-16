@@ -190,7 +190,7 @@ knitr::kable(nest_type_contrasts, digits = 3,
 
 ## Migration
 
-This model tested whether mixed-paternity prevalence differed between strong and weak migrant categories. Migration status was analysed using two categories following BIRDBASE database: strong migrants and weak migrants. Here, strong migrants represent regular seasonal or long-distance migration, whereas weak migrants correspond to partial migration.
+This model compared the two analytical migration categories derived from BIRDBASE: regular migrants (Strong) and species that are resident or show weak, local or irregular movements (Weak). Weak is broader than partial migration alone.
 
 ### Figure
 
@@ -213,6 +213,8 @@ summary(model_migration)
 ### Model estimates
 
 The intercept represents the reference migration category, while the remaining coefficients describe differences relative to that reference category on the logit scale.
+
+The single-moderator model used 619 records and estimated beta = −0.387 (95% equal-tailed CrI −0.704 to −0.066; posterior mean OR = 0.688). The primary multivariable model used 533 records and estimated beta = −0.492 (−0.861 to −0.132; posterior mean OR = 0.622). The direction is consistent, and the adjusted point estimate is more negative. Because both covariate adjustment and sample composition differ, this descriptive comparison does not establish a change in association strength. In both models, OR means are calculated after exponentiating each coefficient draw.
 
 ```{r}
 #| label: migration-effect
