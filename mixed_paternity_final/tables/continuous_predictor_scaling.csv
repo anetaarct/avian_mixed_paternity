@@ -1,0 +1,5 @@
+predictor,standardized_variable,transformation,unit,n_used,raw_mean,raw_sd,reference_dataset
+study_duration,study_duration_sc,none,years,607,3.6490939044481054,3.452233457387075,overall analytical dataset (619 records)
+CS_max,CS_max_sc,none,eggs,618,6.762135922330097,4.033898898719852,overall analytical dataset (619 records)
+log_body_mass,log_body_mass_sc,log10(body mass),log10(g),619,1.7269365654242048,0.7500992984813457,overall analytical dataset (619 records)
+abs_lat,abs_lat_sc,absolute latitude,degrees,592,41.624138513513515,14.959639155270706,overall analytical dataset (619 records)

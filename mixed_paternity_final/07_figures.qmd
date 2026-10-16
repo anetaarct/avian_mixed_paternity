@@ -49,9 +49,9 @@ options(mc.cores = parallel::detectCores())
 mixed_pat <- readRDS("data/mixed_pat_prepared.rds")
 data_overall_study <- readRDS("data/data_overall_study.rds")
 
-data_abs_latitude <- readRDS("data/data_abs_latitude.rds")
-data_body_mass <- readRDS("data/data_body_mass_log.rds")
-data_clutch_size <- readRDS("data/data_clutch_size.rds")
+data_abs_latitude <- readRDS("data/common_scaling/data_abs_latitude.rds")
+data_body_mass <- readRDS("data/common_scaling/data_log_body_mass.rds")
+data_clutch_size <- readRDS("data/common_scaling/data_clutch_size.rds")
 data_coloniality <- readRDS("data/data_coloniality.rds")
 data_cooperative <- readRDS("data/data_cooperative.rds")
 data_marker_type <- readRDS("data/data_marker_type.rds")
@@ -60,7 +60,7 @@ data_mono_poly <- readRDS("data/data_mono_poly.rds")
 data_nest_box <- readRDS("data/data_nest_box.rds")
 data_nest_type <- readRDS("data/data_nest_type.rds")
 data_parental_care <- readRDS("data/data_parental_care.rds")
-data_study_duration <- readRDS("data/data_study_duration.rds")
+data_study_duration <- readRDS("data/common_scaling/data_study_duration.rds")
 data_breeding_system <- readRDS("data/data_breeding_system.rds")
 
 phylo_mat <- readRDS("data/phylo_mat.rds")
@@ -82,7 +82,701 @@ model_marker_type_0 <- readRDS("models/model_marker_type_0.rds")
 model_nest_box <- readRDS("models/model_nest_box.rds")
 ```
 
-The four continuous-moderator figures below use the common-scaling refits stored in `models/common_scaling/`. Their plotting script is `scripts/generate_common_scaling_figures.R`; the rendered files are included here so that this chapter does not refit the Bayesian models.
+The continuous-moderator and full-model figures use the accepted fits in `models/common_scaling/`. Other models retain their accepted files in `models/`. The [common-scaling model code](https://github.com/anetaarct/avian_mixed_paternity/tree/main/mixed_paternity_final/common_scaling_refit) and [figure-generation code](https://github.com/anetaarct/avian_mixed_paternity/blob/main/mixed_paternity_final/scripts/generate_common_scaling_figures.R) are provided with the analysis. Figure generation reads saved fits and uses posterior means and equal-tailed intervals for prevalence predictions; it does not refit the models.
+
+The code below records the common-scaling preparation, model specifications and figure generation. These code blocks are displayed without execution during website rendering. The accepted fits used R 4.5.3, brms 2.23.0 and rstan 2.32.7; generating figures requires the corresponding saved model objects.
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-fold: true
+#| code-summary: "Code: common scaling and data preparation"
+
+library(dplyr)
+library(readr)
+library(tibble)
+
+dir.create("data", showWarnings = FALSE, recursive = TRUE)
+dir.create("logs", showWarnings = FALSE, recursive = TRUE)
+dir.create("tables", showWarnings = FALSE, recursive = TRUE)
+
+input_path <- "data/data_overall_study.rds"
+if (!file.exists(input_path)) {
+  stop("Missing required file: ", input_path)
+}
+
+dat <- readRDS(input_path)
+if (nrow(dat) != 619L) {
+  stop(
+    "The common scaling reference must be the 619-record overall analytical dataset; found ",
+    nrow(dat), " records."
+  )
+}
+
+to_numeric <- function(x) {
+  if (is.numeric(x)) return(x)
+  readr::parse_number(as.character(x), na = c("", "NA", "NaN"))
+}
+
+if (!"study_duration" %in% names(dat)) {
+  if (!"study_duration_num" %in% names(dat)) {
+    stop("Neither study_duration nor study_duration_num is available.")
+  }
+  dat$study_duration <- to_numeric(dat$study_duration_num)
+} else {
+  dat$study_duration <- to_numeric(dat$study_duration)
+}
+
+required_raw <- c("CS_max", "body_mass", "abs_lat")
+missing_raw <- setdiff(required_raw, names(dat))
+if (length(missing_raw) > 0L) {
+  stop("Missing raw continuous predictors: ", paste(missing_raw, collapse = ", "))
+}
+
+dat <- dat %>%
+  mutate(
+    CS_max = to_numeric(CS_max),
+    body_mass = to_numeric(body_mass),
+    abs_lat = to_numeric(abs_lat),
+    log_body_mass = if_else(
+      is.finite(body_mass) & body_mass > 0,
+      log10(body_mass),
+      NA_real_
+    )
+  )
+
+raw_values <- list(
+  study_duration = dat$study_duration,
+  CS_max = dat$CS_max,
+  log_body_mass = dat$log_body_mass,
+  abs_lat = dat$abs_lat
+)
+
+scaling <- tibble(
+  predictor = names(raw_values),
+  standardized_variable = c(
+    "study_duration_sc", "CS_max_sc", "log_body_mass_sc", "abs_lat_sc"
+  ),
+  transformation = c("none", "none", "log10(body mass)", "absolute latitude"),
+  unit = c("years", "eggs", "log10(g)", "degrees"),
+  n_used = vapply(raw_values, function(x) sum(is.finite(x)), integer(1)),
+  raw_mean = vapply(raw_values, function(x) mean(x[is.finite(x)]), numeric(1)),
+  raw_sd = vapply(raw_values, function(x) stats::sd(x[is.finite(x)]), numeric(1)),
+  reference_dataset = "overall analytical dataset (619 records)"
+)
+
+if (any(!is.finite(scaling$raw_sd)) || any(scaling$raw_sd <= 0)) {
+  stop("At least one scaling SD is non-finite or non-positive.")
+}
+
+scale_from_table <- function(x, predictor_name) {
+  row <- scaling %>% filter(predictor == predictor_name)
+  if (nrow(row) != 1L) stop("Scaling row not uniquely identified: ", predictor_name)
+  (x - row$raw_mean) / row$raw_sd
+}
+
+dat <- dat %>%
+  mutate(
+    study_duration_sc = scale_from_table(study_duration, "study_duration"),
+    CS_max_sc = scale_from_table(CS_max, "CS_max"),
+    log_body_mass_sc = scale_from_table(log_body_mass, "log_body_mass"),
+    abs_lat_sc = scale_from_table(abs_lat, "abs_lat")
+  )
+
+scaled_names <- scaling$standardized_variable
+validation <- tibble(
+  standardized_variable = scaled_names,
+  mean_after_scaling = vapply(
+    dat[scaled_names], function(x) mean(x[is.finite(x)]), numeric(1)
+  ),
+  sd_after_scaling = vapply(
+    dat[scaled_names], function(x) stats::sd(x[is.finite(x)]), numeric(1)
+  )
+)
+
+if (any(abs(validation$mean_after_scaling) > 1e-10) ||
+    any(abs(validation$sd_after_scaling - 1) > 1e-10)) {
+  stop("Common-scaling validation failed.")
+}
+
+write_csv(scaling, "tables/continuous_predictor_scaling.csv")
+write_csv(validation, "tables/continuous_predictor_scaling_validation.csv")
+saveRDS(scaling, "data/continuous_predictor_scaling.rds")
+saveRDS(dat, "data/data_overall_study_common_scaled.rds")
+
+writeLines(
+  c(
+    "Common scaling reference: overall analytical dataset",
+    paste("Records:", nrow(dat)),
+    "",
+    capture.output(print(scaling, n = Inf)),
+    "",
+    capture.output(print(validation, n = Inf)),
+    "",
+    paste0(
+      "One SD of study duration corresponds to ",
+      formatC(
+        scaling$raw_sd[scaling$predictor == "study_duration"],
+        digits = 4,
+        format = "f"
+      ),
+      " years."
+    )
+  ),
+  "logs/common_scaling_summary.txt"
+)
+
+message("Common scaling data, constants, validation, and summary saved.")
+```
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-fold: true
+#| code-summary: "Code: four continuous-moderator models"
+
+library(brms)
+library(dplyr)
+library(posterior)
+library(readr)
+library(tibble)
+
+options(mc.cores = min(4L, parallel::detectCores()))
+
+model_dir <- "models/common_scaling"
+data_dir <- "data/common_scaling"
+table_dir <- "tables/common_scaling"
+log_dir <- "logs/common_scaling"
+
+invisible(lapply(
+  c(model_dir, data_dir, table_dir, log_dir),
+  dir.create,
+  showWarnings = FALSE,
+  recursive = TRUE
+))
+
+required <- c(
+  "data/data_overall_study_common_scaled.rds",
+  "data/phylo_mat.rds",
+  "data/continuous_predictor_scaling.rds"
+)
+missing <- required[!file.exists(required)]
+if (length(missing) > 0L) stop("Missing required files: ", paste(missing, collapse = ", "))
+
+dat_all <- readRDS("data/data_overall_study_common_scaled.rds")
+phylo_mat <- readRDS("data/phylo_mat.rds")
+
+if (nrow(dat_all) != 619L) stop("Expected the 619-record common scaling dataset.")
+
+model_specs <- tribble(
+  ~model_id, ~predictor, ~raw_predictor,
+  "study_duration", "study_duration_sc", "study_duration",
+  "clutch_size", "CS_max_sc", "CS_max",
+  "log_body_mass", "log_body_mass_sc", "log_body_mass",
+  "abs_latitude", "abs_lat_sc", "abs_lat"
+)
+
+diagnose_fit <- function(fit, model_id) {
+  draw_summary <- posterior::summarise_draws(posterior::as_draws_array(fit))
+  nuts <- brms::nuts_params(fit)
+  max_depth <- tryCatch(
+    fit$fit@stan_args[[1]]$control$max_treedepth,
+    error = function(e) NULL
+  )
+  if (is.null(max_depth) || length(max_depth) != 1L) max_depth <- 15L
+
+  tibble(
+    model = model_id,
+    observations = nobs(fit),
+    max_rhat = max(draw_summary$rhat, na.rm = TRUE),
+    min_bulk_ess = min(draw_summary$ess_bulk, na.rm = TRUE),
+    min_tail_ess = min(draw_summary$ess_tail, na.rm = TRUE),
+    divergences = sum(nuts$Parameter == "divergent__" & nuts$Value == 1),
+    treedepth_hits = sum(nuts$Parameter == "treedepth__" & nuts$Value >= max_depth),
+    maximum_observed_treedepth = max(nuts$Value[nuts$Parameter == "treedepth__"]),
+    configured_max_treedepth = max_depth
+  )
+}
+
+fit_one <- function(model_id, predictor, raw_predictor) {
+  dat <- dat_all %>%
+    filter(is.finite(.data[[predictor]]), is.finite(.data[[raw_predictor]])) %>%
+    droplevels()
+
+  saveRDS(dat, file.path(data_dir, paste0("data_", model_id, ".rds")))
+
+  model_formula <- stats::as.formula(paste0(
+    "n_mixed_broods | trials(n_total_broods) ~ ", predictor,
+    " + (1 | Study_ID) + (1 | species_nonphylo)",
+    " + (1 | gr(species_phylo_brms, cov = phylo_mat))"
+  ))
+
+  fit <- brm(
+    formula = model_formula,
+    family = beta_binomial(link = "logit"),
+    data = dat,
+    data2 = list(phylo_mat = phylo_mat),
+    chains = 4,
+    cores = 4,
+    iter = 10000,
+    warmup = 5000,
+    control = list(adapt_delta = 0.99, max_treedepth = 15),
+    seed = 123,
+    file = file.path(model_dir, paste0("model_", model_id)),
+    file_refit = "on_change"
+  )
+
+  writeLines(
+    capture.output(summary(fit)),
+    file.path(log_dir, paste0("model_", model_id, "_summary.txt"))
+  )
+  readr::write_csv(
+    as.data.frame(brms::prior_summary(fit)),
+    file.path(table_dir, paste0("model_", model_id, "_priors.csv"))
+  )
+  readr::write_csv(
+    tibble::rownames_to_column(as.data.frame(brms::fixef(fit)), "term"),
+    file.path(table_dir, paste0("model_", model_id, "_fixed_effects.csv"))
+  )
+  readr::write_csv(
+    diagnose_fit(fit, model_id),
+    file.path(table_dir, paste0("model_", model_id, "_diagnostics.csv"))
+  )
+
+  invisible(fit)
+}
+
+for (i in seq_len(nrow(model_specs))) {
+  message("Fitting ", model_specs$model_id[[i]], " ...")
+  fit_one(
+    model_specs$model_id[[i]],
+    model_specs$predictor[[i]],
+    model_specs$raw_predictor[[i]]
+  )
+}
+
+diagnostic_files <- list.files(
+  table_dir,
+  pattern = "_diagnostics[.]csv$",
+  full.names = TRUE
+)
+diagnostics <- bind_rows(lapply(diagnostic_files, readr::read_csv, show_col_types = FALSE))
+write_csv(diagnostics, file.path(table_dir, "continuous_models_diagnostics.csv"))
+
+message("Four common-scaling continuous-moderator models finished.")
+```
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-fold: true
+#| code-summary: "Code: full multivariable model"
+
+library(brms)
+library(dplyr)
+library(posterior)
+library(readr)
+library(tibble)
+
+options(mc.cores = min(4L, parallel::detectCores()))
+
+model_dir <- "models/common_scaling"
+data_dir <- "data/common_scaling"
+table_dir <- "tables/common_scaling"
+log_dir <- "logs/common_scaling"
+
+invisible(lapply(
+  c(model_dir, data_dir, table_dir, log_dir),
+  dir.create,
+  showWarnings = FALSE,
+  recursive = TRUE
+))
+
+required <- c(
+  "data/data_overall_study_common_scaled.rds",
+  "data/phylo_mat.rds",
+  "data/continuous_predictor_scaling.rds"
+)
+missing <- required[!file.exists(required)]
+if (length(missing) > 0L) stop("Missing required files: ", paste(missing, collapse = ", "))
+
+dat_all <- readRDS("data/data_overall_study_common_scaled.rds")
+phylo_mat <- readRDS("data/phylo_mat.rds")
+
+if (nrow(dat_all) != 619L) stop("Expected the 619-record common scaling dataset.")
+
+valid_breeding_levels <- dat_all %>%
+  count(breeding_system) %>%
+  filter(!is.na(breeding_system), n >= 5) %>%
+  pull(breeding_system)
+
+dat_full <- dat_all %>%
+  filter(
+    !is.na(marker_type_model),
+    is.finite(study_duration_sc),
+    !is.na(breeding_system),
+    breeding_system %in% valid_breeding_levels,
+    !is.na(nest_type_model),
+    !is.na(migration),
+    !is.na(coloniality),
+    is.finite(CS_max_sc),
+    is.finite(log_body_mass_sc),
+    is.finite(abs_lat_sc)
+  ) %>%
+  mutate(
+    across(
+      c(
+        marker_type_model, breeding_system, nest_type_model, migration,
+        coloniality, Study_ID, species_nonphylo, species_phylo_brms
+      ),
+      droplevels
+    )
+  ) %>%
+  group_by(breeding_system) %>%
+  filter(n() >= 5) %>%
+  ungroup() %>%
+  droplevels()
+
+if (nrow(dat_full) != 533L) {
+  stop("Expected 533 records in the accepted full-model dataset; found ", nrow(dat_full), ".")
+}
+
+saveRDS(dat_full, file.path(data_dir, "data_full_brouwer_griffith.rds"))
+
+writeLines(
+  c(
+    "Common-scaling full model",
+    paste("Observations:", nrow(dat_full)),
+    paste("Studies:", n_distinct(dat_full$Study_ID)),
+    paste("Species:", n_distinct(dat_full$species_nonphylo)),
+    "",
+    "Breeding-system counts:",
+    capture.output(table(dat_full$breeding_system))
+  ),
+  file.path(log_dir, "model_full_brouwer_griffith_dataset.txt")
+)
+
+full_formula <- bf(
+  n_mixed_broods | trials(n_total_broods) ~
+    marker_type_model +
+    study_duration_sc +
+    breeding_system +
+    nest_type_model +
+    migration +
+    coloniality +
+    CS_max_sc +
+    log_body_mass_sc +
+    abs_lat_sc +
+    (1 | Study_ID) +
+    (1 | species_nonphylo) +
+    (1 | gr(species_phylo_brms, cov = phylo_mat))
+)
+
+fit <- brm(
+  formula = full_formula,
+  family = beta_binomial(link = "logit"),
+  data = dat_full,
+  data2 = list(phylo_mat = phylo_mat),
+  chains = 4,
+  cores = 4,
+  iter = 10000,
+  warmup = 5000,
+  control = list(adapt_delta = 0.99, max_treedepth = 15),
+  seed = 123,
+  file = file.path(model_dir, "model_full_brouwer_griffith"),
+  file_refit = "on_change"
+)
+
+writeLines(
+  capture.output(summary(fit)),
+  file.path(log_dir, "model_full_brouwer_griffith_summary.txt")
+)
+write_csv(
+  as.data.frame(prior_summary(fit)),
+  file.path(table_dir, "model_full_brouwer_griffith_priors.csv")
+)
+write_csv(
+  rownames_to_column(as.data.frame(fixef(fit)), "term"),
+  file.path(table_dir, "model_full_brouwer_griffith_fixed_effects.csv")
+)
+
+draw_summary <- posterior::summarise_draws(posterior::as_draws_array(fit))
+nuts <- brms::nuts_params(fit)
+configured_depth <- tryCatch(
+  fit$fit@stan_args[[1]]$control$max_treedepth,
+  error = function(e) NULL
+)
+if (is.null(configured_depth) || length(configured_depth) != 1L) configured_depth <- 15L
+
+diagnostics <- tibble(
+  model = "full_brouwer_griffith",
+  observations = nobs(fit),
+  max_rhat = max(draw_summary$rhat, na.rm = TRUE),
+  min_bulk_ess = min(draw_summary$ess_bulk, na.rm = TRUE),
+  min_tail_ess = min(draw_summary$ess_tail, na.rm = TRUE),
+  divergences = sum(nuts$Parameter == "divergent__" & nuts$Value == 1),
+  treedepth_hits = sum(
+    nuts$Parameter == "treedepth__" & nuts$Value >= configured_depth
+  ),
+  maximum_observed_treedepth = max(nuts$Value[nuts$Parameter == "treedepth__"]),
+  configured_max_treedepth = configured_depth
+)
+write_csv(diagnostics, file.path(table_dir, "model_full_brouwer_griffith_diagnostics.csv"))
+
+message("Common-scaling full model finished.")
+```
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-fold: true
+#| code-summary: "Code: continuous and full-model figures"
+
+# Run from mixed_paternity_final. Uses accepted saved fits; no model fitting.
+library(brms)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+library(readr)
+library(scales)
+library(tibble)
+
+out_dir <- "Figures/common_scaling"
+dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
+
+summarise_epred <- function(fit, newdata) {
+  ep <- posterior_epred(fit, newdata = newdata, re_formula = NA)
+  tibble(
+    estimate = apply(ep, 2, mean),
+    lower = apply(ep, 2, quantile, probs = 0.025),
+    upper = apply(ep, 2, quantile, probs = 0.975)
+  )
+}
+
+save_both <- function(plot, stem, width, height) {
+  ggsave(file.path(out_dir, paste0(stem, ".pdf")), plot,
+        width = width, height = height, units = "in")
+  ggsave(file.path(out_dir, paste0(stem, ".png")), plot,
+        width = width, height = height, units = "in", dpi = 300)
+}
+
+theme_mp <- theme_classic(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    axis.title = element_text(face = "bold"),
+    legend.position = "none"
+  )
+
+scaling <- read_csv("tables/continuous_predictor_scaling.csv", show_col_types = FALSE)
+
+single_specs <- tribble(
+  ~model_file, ~data_file, ~raw_var, ~scaled_var, ~x_label, ~stem,
+  "model_study_duration.rds", "data_study_duration.rds", "study_duration", "study_duration_sc", "Study duration (years)", "study_duration",
+  "model_clutch_size.rds", "data_clutch_size.rds", "CS_max", "CS_max_sc", "Maximum clutch size", "clutch_size",
+  "model_log_body_mass.rds", "data_log_body_mass.rds", "log_body_mass", "log_body_mass_sc", "Log10 body mass (g)", "body_mass",
+  "model_abs_latitude.rds", "data_abs_latitude.rds", "abs_lat", "abs_lat_sc", "Absolute latitude (degrees)", "abs_latitude"
+)
+
+for (i in seq_len(nrow(single_specs))) {
+  spec <- single_specs[i, ]
+  fit <- readRDS(file.path("models/common_scaling", spec$model_file))
+  dat <- readRDS(file.path("data/common_scaling", spec$data_file))
+  stopifnot(isTRUE(all.equal(as.data.frame(fit$data),
+    as.data.frame(dat[, names(fit$data), drop = FALSE]), check.attributes = FALSE)))
+  scale_row <- scaling |> filter(standardized_variable == spec$scaled_var)
+  stopifnot(nrow(scale_row) == 1L,
+    max(abs((dat[[spec$raw_var]] - scale_row$raw_mean[[1]]) /
+      scale_row$raw_sd[[1]] - dat[[spec$scaled_var]])) < 1e-8)
+
+  raw_grid <- seq(
+    min(dat[[spec$raw_var]], na.rm = TRUE),
+    max(dat[[spec$raw_var]], na.rm = TRUE),
+    length.out = 120
+  )
+  newdata <- dat[rep(1, length(raw_grid)), , drop = FALSE]
+  newdata[[spec$raw_var]] <- raw_grid
+  newdata[[spec$scaled_var]] <-
+    (raw_grid - scale_row$raw_mean[[1]]) / scale_row$raw_sd[[1]]
+  newdata$n_total_broods <- 1L
+
+  pred <- bind_cols(
+    tibble(raw_value = raw_grid),
+    summarise_epred(fit, newdata)
+  )
+  observed <- dat |>
+    mutate(observed = n_mixed_broods / n_total_broods)
+
+  p <- ggplot() +
+    geom_ribbon(
+      data = pred,
+      aes(x = raw_value, ymin = lower, ymax = upper),
+      fill = "#2C4A7A", alpha = 0.18
+    ) +
+    geom_point(
+      data = observed,
+      aes(x = .data[[spec$raw_var]], y = observed, size = n_total_broods),
+      colour = "#5AA6C8", alpha = 0.28
+    ) +
+    geom_line(
+      data = pred,
+      aes(x = raw_value, y = estimate),
+      colour = "#1F3B73", linewidth = 1.1
+    ) +
+    scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+    scale_size_continuous(range = c(1, 5)) +
+    labs(x = spec$x_label[[1]], y = "Mixed-paternity prevalence") +
+    theme_mp
+
+  save_both(p, spec$stem, 7.2, 5.2)
+  rm(fit)
+  invisible(gc())
+}
+
+fit_full <- readRDS("models/common_scaling/model_full_brouwer_griffith.rds")
+dat_full <- readRDS("data/common_scaling/data_full_brouwer_griffith.rds")
+stopifnot(nrow(dat_full) == 533L,
+  isTRUE(all.equal(as.data.frame(fit_full$data),
+    as.data.frame(dat_full[, names(fit_full$data), drop = FALSE]), check.attributes = FALSE)))
+
+fixed <- as.data.frame(fixef(fit_full)) |>
+  rownames_to_column("term") |>
+  filter(term != "Intercept") |>
+  transmute(
+    term,
+    estimate = Estimate,
+    lower = Q2.5,
+    upper = Q97.5,
+    label = recode(
+      term,
+      marker_type_modelmicrosatellite = "Marker: microsatellite",
+      marker_type_modelmixed_other = "Marker: mixed / other",
+      marker_type_modelSNPs = "Marker: SNPs",
+      study_duration_sc = "Study duration",
+      breeding_systemmonogamy = "Breeding: monogamy",
+      breeding_systemno_social_bond = "Breeding: no social bond",
+      breeding_systempolyandry = "Breeding: polyandry",
+      nest_type_modelground = "Nest type: ground",
+      nest_type_modelopen = "Nest type: open",
+      nest_type_modelother_enclosed = "Nest type: other enclosed",
+      migrationWeak = "Migration: partial/resident",
+      coloniality1 = "Coloniality",
+      CS_max_sc = "Maximum clutch size",
+      log_body_mass_sc = "Body mass (log10)",
+      abs_lat_sc = "Absolute latitude"
+    ),
+    group = case_when(
+      grepl("^marker|study_duration", term) ~ "Methodological",
+      grepl("^breeding", term) ~ "Breeding system",
+      term == "abs_lat_sc" ~ "Geography",
+      TRUE ~ "Ecology/life history"
+    )
+  ) |>
+  mutate(label = factor(label, levels = rev(label)))
+
+group_colours <- c(
+  "Methodological" = "#2F7478",
+  "Breeding system" = "#A81D54",
+  "Ecology/life history" = "#BE6233",
+  "Geography" = "#4E75A8"
+)
+
+p_forest <- ggplot(fixed, aes(x = estimate, y = label, colour = group)) +
+  geom_vline(xintercept = 0, linetype = "dashed", colour = "grey45") +
+  geom_hline(yintercept = seq_along(levels(fixed$label)), colour = "grey90") +
+  geom_errorbarh(aes(xmin = lower, xmax = upper), height = 0, linewidth = 1) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = group_colours) +
+  labs(x = "Posterior effect size (log-odds scale)", y = NULL, colour = NULL) +
+  theme_classic(base_size = 12) +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 10),
+    axis.title.x = element_text(face = "bold")
+  )
+save_both(p_forest, "full_model", 10.2, 8.2)
+
+reference_row <- dat_full[1, , drop = FALSE]
+for (nm in names(dat_full)) {
+  if (is.factor(dat_full[[nm]])) {
+    reference_row[[nm]] <- factor(levels(dat_full[[nm]])[1], levels = levels(dat_full[[nm]]))
+  }
+}
+for (nm in c("study_duration_sc", "CS_max_sc", "log_body_mass_sc", "abs_lat_sc")) {
+  reference_row[[nm]] <- 0
+}
+reference_row$coloniality <- factor(levels(dat_full$coloniality)[1], levels = levels(dat_full$coloniality))
+reference_row$n_total_broods <- 1L
+
+categorical_prediction <- function(variable, labels) {
+  lvls <- levels(dat_full[[variable]])
+  nd <- reference_row[rep(1, length(lvls)), , drop = FALSE]
+  nd[[variable]] <- factor(lvls, levels = lvls)
+  bind_cols(
+    tibble(category = factor(labels, levels = labels)),
+    summarise_epred(fit_full, nd)
+  )
+}
+
+marker_labels <- c(
+  "DNA\nfingerprinting", "Microsatellite", "Mixed /\nother", "SNPs"
+)
+pred_marker <- categorical_prediction("marker_type_model", marker_labels)
+pred_migration <- categorical_prediction(
+  "migration",
+  c("Regular\nmigrant", "Partial /\nresident")
+)
+
+continuous_prediction <- function(raw_var, scaled_var, n = 120) {
+  scale_row <- scaling |> filter(standardized_variable == scaled_var)
+  raw_values <- seq(
+    min(dat_full[[raw_var]], na.rm = TRUE),
+    max(dat_full[[raw_var]], na.rm = TRUE),
+    length.out = n
+  )
+  nd <- reference_row[rep(1, n), , drop = FALSE]
+  nd[[raw_var]] <- raw_values
+  nd[[scaled_var]] <- (raw_values - scale_row$raw_mean[[1]]) / scale_row$raw_sd[[1]]
+  bind_cols(tibble(raw_value = raw_values), summarise_epred(fit_full, nd))
+}
+
+pred_clutch <- continuous_prediction("CS_max", "CS_max_sc")
+pred_lat <- continuous_prediction("abs_lat", "abs_lat_sc")
+
+plot_cat <- function(pred, title) {
+  ggplot(pred, aes(x = category, y = estimate, ymin = lower, ymax = upper)) +
+    geom_pointrange(colour = "#244E5E", linewidth = 0.8, size = 0.8) +
+    scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+    labs(x = NULL, y = "Predicted prevalence", title = title) +
+    theme_mp
+}
+
+plot_cont <- function(pred, title, x_label) {
+  ggplot(pred, aes(x = raw_value, y = estimate)) +
+    geom_ribbon(aes(ymin = lower, ymax = upper), fill = "#7CB6CD", alpha = 0.28) +
+    geom_line(colour = "#244E5E", linewidth = 1.1) +
+    scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+    labs(x = x_label, y = "Predicted prevalence", title = title) +
+    theme_mp
+}
+
+p_effects <- (
+  plot_cat(pred_marker, "A. Marker type") +
+    plot_cat(pred_migration, "B. Migration")
+) / (
+  plot_cont(pred_clutch, "C. Maximum clutch size", "Maximum clutch size") +
+    plot_cont(pred_lat, "D. Absolute latitude", "Absolute latitude (degrees)")
+) + plot_layout(guides = "collect")
+
+save_both(p_effects, "full_model_key_effects", 11.5, 8.4)
+
+write_csv(fixed, file.path(out_dir, "full_model_fixed_effects_plot_data.csv"))
+write_csv(pred_marker, file.path(out_dir, "full_model_marker_predictions.csv"))
+write_csv(pred_migration, file.path(out_dir, "full_model_migration_predictions.csv"))
+write_csv(pred_clutch, file.path(out_dir, "full_model_clutch_predictions.csv"))
+write_csv(pred_lat, file.path(out_dir, "full_model_latitude_predictions.csv"))
+
+message("Common-scaling figures generated without refitting models.")
+```
 
 ## Phylogeny plot
 
@@ -1068,80 +1762,133 @@ p_cooperative
 #| code-fold: true
 #| code-summary: "Code"
 
-forest_dat_unchanged <- tibble::tribble(
-  ~group, ~moderator, ~estimate, ~lower, ~upper,
-  "Methodological", "Nest box vs. natural nests", 0.29, -0.06, 0.63,
-  "Methodological", "Marker type: DNA fingerprinting vs. microsatellites", -0.48, -0.67, -0.30,
-  "Ecological and life-history", "Migratory strategy: partial/resident vs. regular", -0.39, -0.70, -0.07,
-  "Ecological and life-history", "Nest type: ground vs. other enclosed nests", 0.50, -0.30, 1.07,
-  "Ecological and life-history", "Coloniality", -0.14, -0.54, 0.26,
-  "Breeding systems", "Cooperative breeding", -0.21, -0.72, 0.30,
-  "Breeding systems", "Brouwer & Griffith: social monogamy vs. no social bond", -0.95, -1.79, -0.08,
-  "Breeding systems", "BIRDBASE mono-/polygamy: mixed vs. polygamy", -0.534, -1.049, -0.029,
-  "Breeding systems", "BIRDBASE mono-/polygamy: monogamy vs. polygamy", -0.588, -1.093, -0.085,
-  "Breeding systems", "Parental care: biparental vs. uniparental", -0.892, -1.494, -0.273,
-  "Breeding systems", "Parental care: cooperative care vs. uniparental", -1.138, -1.865, -0.398
-)
+fixed_effect_draws <- function(fit) {
+  sim <- attr(fit$fit, "sim")
+  stopifnot(!is.null(sim), sim$chains > 0L)
+  pars <- grep("^b_", names(sim$samples[[1L]]), value = TRUE)
+  draws <- sapply(pars, function(p) unlist(lapply(seq_len(sim$chains), function(ch) {
+    # Explicitly discard saved warm-up draws in every chain.
+    sim$samples[[ch]][[p]][seq.int(sim$warmup2[ch] + 1L, sim$n_save[ch])]
+  }), use.names = FALSE))
+  stopifnot(is.matrix(draws), all(is.finite(draws)))
+  draws
+}
 
-forest_dat_refitted <- tibble::tribble(
-  ~group, ~moderator, ~estimate, ~lower, ~upper,
-  "Methodological", "Study duration", -0.088, -0.167, -0.009,
-  "Ecological and life-history", "Clutch size", 0.330, 0.116, 0.545,
-  "Ecological and life-history", "Body mass", -0.008, -0.303, 0.289,
-  "Ecological and life-history", "Absolute latitude", -0.129, -0.251, -0.004
-)
+hpd_interval <- function(x, probability = 0.95) {
+  # Shortest contiguous empirical interval, as in coda::HPDinterval.
+  x <- sort(x)
+  gap <- round(probability * length(x))
+  starts <- seq_len(length(x) - gap)
+  i <- which.min(x[starts + gap] - x[starts])
+  c(x[i], x[i + gap])
+}
 
-forest_dat <- dplyr::bind_rows(forest_dat_unchanged, forest_dat_refitted)
+forest_specification <- function() {
+  row <- function(group, label, model, coefficient, subtract = "",
+                  summary = "Mean + equal-tailed", common = FALSE) {
+    data.frame(group, moderator = label, model, coefficient, subtract, summary, common)
+  }
+  do.call(rbind, list(
+    row("Methodological", "Nest box vs natural nests", "model_nest_box", "b_nest_box_modelyes"),
+    row("Methodological", "Markers: DNA fingerprinting\nvs microsatellites", "model_marker_type_0", "b_marker_type_modelDNA_fingerprinting", "b_marker_type_modelmicrosatellite", "Median + HPD"),
+    row("Methodological", "Study duration (+1 SD)", "model_study_duration", "b_study_duration_sc", common = TRUE),
+    row("Ecological and life-history", "Migration: weak/resident\nvs regular", "model_migration", "b_migrationWeak"),
+    row("Ecological and life-history", "Nests: ground vs other enclosed", "model_nest_type_0", "b_nest_type_modelground", "b_nest_type_modelother_enclosed", "Median + HPD"),
+    row("Ecological and life-history", "Colonial vs non-colonial", "model_coloniality", "b_coloniality1"),
+    row("Ecological and life-history", "Maximum clutch size (+1 SD)", "model_clutch_size", "b_CS_max_sc", common = TRUE),
+    row("Ecological and life-history", "Log10 body mass (+1 SD)", "model_log_body_mass", "b_log_body_mass_sc", common = TRUE),
+    row("Ecological and life-history", "Absolute latitude (+1 SD)", "model_abs_latitude", "b_abs_lat_sc", common = TRUE),
+    row("Breeding systems", "Cooperative vs non-cooperative", "model_cooperative", "b_cooperative_breedingyes"),
+    row("Breeding systems", "BG: monogamy vs no social bond", "model_breeding_system_0", "b_breeding_systemmonogamy", "b_breeding_systemno_social_bond", "Median + HPD"),
+    row("Breeding systems", "BIRDBASE: mixed vs polygamy", "model_mono_poly_0", "b_mono_poly_modelmixed", "b_mono_poly_modelpolygamy", "Median + HPD"),
+    row("Breeding systems", "BIRDBASE: monogamy vs polygamy", "model_mono_poly_0", "b_mono_poly_modelmonogamy", "b_mono_poly_modelpolygamy", "Median + HPD"),
+    row("Breeding systems", "Care: biparental vs uniparental", "model_parental_care_0", "b_parental_carebiparental", "b_parental_careuniparental"),
+    row("Breeding systems", "Care: cooperative vs uniparental", "model_parental_care_0", "b_parental_carecooperation", "b_parental_careuniparental")
+  ))
+}
 
-forest_dat <- forest_dat %>%
-  dplyr::mutate(
-    group = factor(group, levels = c("Methodological", "Ecological and life-history", "Breeding systems")),
-    moderator = factor(moderator, levels = rev(moderator))
-  )
+summarise_forest <- function(model_dir = "models", common_dir = file.path(model_dir, "common_scaling")) {
+  spec <- forest_specification()
+  output <- vector("list", nrow(spec))
+  for (model in unique(spec$model)) {
+    ix <- which(spec$model == model)
+    directory <- if (spec$common[ix[1L]]) common_dir else model_dir
+    path <- file.path(directory, paste0(model, ".rds"))
+    message("Reading ", path)
+    fit <- readRDS(path)
+    b <- fixed_effect_draws(fit)
+    for (i in ix) {
+      required <- c(spec$coefficient[i], spec$subtract[i])
+      stopifnot(all(required[nzchar(required)] %in% colnames(b)))
+      z <- b[, spec$coefficient[i]]
+      if (nzchar(spec$subtract[i])) z <- z - b[, spec$subtract[i]]
+      eti <- unname(quantile(z, c(0.025, 0.975)))
+      hpd <- hpd_interval(z)
+      median_hpd <- spec$summary[i] == "Median + HPD"
+      output[[i]] <- cbind(spec[i, ], data.frame(
+        estimate = if (median_hpd) median(z) else mean(z),
+        lower = if (median_hpd) hpd[1L] else eti[1L],
+        upper = if (median_hpd) hpd[2L] else eti[2L],
+        posterior_mean = mean(z), posterior_median = median(z),
+        eti_lower = eti[1L], eti_upper = eti[2L], hpd_lower = hpd[1L], hpd_upper = hpd[2L],
+        records = nrow(fit$data), draws = length(z),
+        model_formula = paste(deparse(fit$formula$formula), collapse = " ")
+      ))
+    }
+    rm(fit, b)
+    invisible(gc())
+  }
+  result <- do.call(rbind, output)
+  stopifnot(nrow(result) == 15L, all(result$draws == 20000L),
+            all(result$lower < result$estimate), all(result$upper > result$estimate))
+  result
+}
 
-p_forest_main <- ggplot2::ggplot(forest_dat, ggplot2::aes(x = estimate, y = moderator, color = group)) +
-  ggplot2::geom_vline(xintercept = 0, linewidth = 0.5, color = "grey60") +
-  ggplot2::geom_errorbarh(ggplot2::aes(xmin = lower, xmax = upper), height = 0.15, linewidth = 1.2) +
-  ggplot2::geom_point(size = 4.5) +
-  ggplot2::facet_grid(group ~ ., scales = "free_y", space = "free_y") +
-  ggplot2::scale_color_manual(values = c(
-    "Methodological" = "#E69F00",
-    "Ecological and life-history" = "#0072B2",
-    "Breeding systems" = "#009E73"
-  )) +
-  ggplot2::labs(x = "Posterior effect size (log-odds scale)", y = NULL) +
-  ggplot2::theme_classic(base_size = 14) +
-  ggplot2::theme(
-    strip.background = ggplot2::element_blank(),
-    strip.text.y = ggplot2::element_text(face = "bold", angle = 0, hjust = 0, size = 11),
-    axis.text.y = ggplot2::element_text(size = 11, color = "black"),
-    axis.text.x = ggplot2::element_text(color = "black"),
-    axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 12), face = "bold"),
-    legend.position = "none",
-    panel.spacing = grid::unit(1.5, "lines"),
-    plot.margin = ggplot2::margin(10, 25, 10, 20)
-  )
+plot_forest <- function(forest_dat) {
+  forest_dat$group <- factor(forest_dat$group,
+    levels = c("Methodological", "Ecological and life-history", "Breeding systems"))
+  forest_dat$moderator <- factor(forest_dat$moderator, levels = rev(forest_dat$moderator))
+  forest_dat$summary <- factor(forest_dat$summary, levels = c("Mean + equal-tailed", "Median + HPD"))
+  ggplot(forest_dat, aes(x = estimate, y = moderator, colour = group)) +
+    geom_vline(xintercept = 0, linewidth = 0.4, colour = "grey65") +
+    geom_errorbar(aes(xmin = lower, xmax = upper), orientation = "y", width = 0.12, linewidth = 0.85) +
+    geom_point(aes(shape = summary), size = 3.1) +
+    facet_grid(group ~ ., scales = "free_y", space = "free_y", labeller = labeller(group = c(
+      Methodological = "Methodological", "Ecological and life-history" = "Ecological and\nlife-history",
+      "Breeding systems" = "Breeding\nsystems"))) +
+    scale_colour_manual(values = c("Methodological" = "#D89000", "Ecological and life-history" = "#0072B2",
+      "Breeding systems" = "#009E73"), guide = "none") +
+    scale_shape_manual(values = c("Mean + equal-tailed" = 16, "Median + HPD" = 17), name = NULL) +
+    scale_x_continuous(breaks = seq(-2, 1, 0.5)) +
+    labs(x = "Effect or contrast (log-odds scale)", y = NULL) +
+    theme_classic(base_size = 13) +
+    theme(strip.background = element_blank(),
+      strip.text.y = element_text(face = "bold", angle = 0, hjust = 0, size = 11),
+      axis.text.y = element_text(size = 11.5, colour = "black"), axis.text.x = element_text(colour = "black"),
+      axis.title.x = element_text(margin = margin(t = 10)), legend.position = "bottom",
+      legend.text = element_text(size = 11.5), panel.spacing = grid::unit(0.8, "lines"),
+      plot.margin = margin(8, 10, 8, 8))
+}
 
+forest_dat <- summarise_forest("models", "models/common_scaling")
+p_forest_main <- plot_forest(forest_dat)
+dir.create("tables", recursive = TRUE, showWarnings = FALSE)
 dir.create("Figures", recursive = TRUE, showWarnings = FALSE)
-ggplot2::ggsave(
-  "Figures/Forest_plot8.pdf", p_forest_main,
-  width = 14, height = 10.5, units = "in"
-)
-ggplot2::ggsave(
-  "Figures/Forest_plot8.png", p_forest_main,
-  width = 14, height = 10.5, units = "in", dpi = 300
-)
-
+write.csv(forest_dat, "tables/single_moderator_forest_plot_data.csv", row.names = FALSE)
+ggplot2::ggsave("Figures/Forest_plot8.pdf", p_forest_main, width = 10, height = 8.6)
+ggplot2::ggsave("Figures/Forest_plot8.png", p_forest_main, width = 10, height = 8.6, dpi = 300)
 ```
 
 ```{r}
 #| label: fig-forest-plot
-#| fig-cap: "Posterior mean effects and 95% credible intervals from the single-moderator models. Continuous predictors are expressed per one standard deviation using the common scaling derived from the overall analytical dataset. For multi-category reproductive classifications, the plot shows the biologically interpretable contrasts reported in the Results; complete pairwise comparisons are provided in the breeding-system chapter."
+#| fig-cap: "Selected fixed effects and contrasts from single-moderator beta-binomial models, on the log-odds scale. Circles show posterior means and 95% equal-tailed credible intervals. Triangles show posterior medians and 95% highest-posterior-density (HPD) intervals for marker-type, nest-type, BG and BIRDBASE contrasts. Categorical contrasts compare the first category with the second; positive values indicate higher odds in the first category. Continuous effects are per one standard deviation, using common scaling from the 619-record overall dataset; body mass was log10-transformed before standardisation. All plotted summaries were calculated directly from retained posterior draws."
 #| echo: false
 #| out-width: "100%"
 
 knitr::include_graphics("Figures/Forest_plot8.png")
 ```
+
+Exact plotted estimates, interval types, model identifiers and sample sizes are available in the [posterior summary table](tables/single_moderator_forest_plot_data.csv).
 
 ### Full multivariable model
 
@@ -1206,14 +1953,8 @@ knitr::kable(
 #| code-fold: true
 #| code-summary: "Code"
 
-full_model_path <- c(
-  "models/model_full_BG.rds",
-  "models/model_full_brouwer_griffith.rds"
-) |>
-  purrr::keep(file.exists) |>
-  dplyr::first(default = NA_character_)
-
-stopifnot(!is.na(full_model_path))
+full_model_path <- "models/common_scaling/model_full_brouwer_griffith.rds"
+stopifnot(file.exists(full_model_path))
 model_full_brouwer_griffith <- readRDS(full_model_path)
 
 full_fixef <- as.data.frame(brms::fixef(model_full_brouwer_griffith)) |>

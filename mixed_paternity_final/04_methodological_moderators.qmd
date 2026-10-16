@@ -46,7 +46,7 @@ phylo_mat <- readRDS("data/phylo_mat.rds")
 
 ```{r}
 data_marker_type <- readRDS("data/data_marker_type.rds")
-data_study_duration <- readRDS("data/data_study_duration.rds")
+data_study_duration <- readRDS("data/common_scaling/data_study_duration.rds")
 data_nest_box <- readRDS("data/data_nest_box.rds")
 
 ```

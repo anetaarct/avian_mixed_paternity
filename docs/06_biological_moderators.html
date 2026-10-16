@@ -318,9 +318,9 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>mixed_pat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/mixed_pat_prepared.rds"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data_overall_study <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/data_overall_study.rds"</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>data_abs_latitude <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/data_abs_latitude.rds"</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>data_body_mass <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/data_body_mass_log.rds"</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>data_clutch_size <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/data_clutch_size.rds"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>data_abs_latitude <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/common_scaling/data_abs_latitude.rds"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>data_body_mass <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/common_scaling/data_log_body_mass.rds"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>data_clutch_size <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/common_scaling/data_clutch_size.rds"</span>)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>data_coloniality <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/data_coloniality.rds"</span>)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>data_migration <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/data_migration.rds"</span>)</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>data_nest_type <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/data_nest_type.rds"</span>)</span>
@@ -1746,9 +1746,9 @@ phylo_mat &lt;- readRDS(&quot;data/phylo_mat.rds&quot;)
 mixed_pat &lt;- readRDS(&quot;data/mixed_pat_prepared.rds&quot;)
 data_overall_study &lt;- readRDS(&quot;data/data_overall_study.rds&quot;)
 
-data_abs_latitude &lt;- readRDS(&quot;data/data_abs_latitude.rds&quot;)
-data_body_mass &lt;- readRDS(&quot;data/data_body_mass_log.rds&quot;)
-data_clutch_size &lt;- readRDS(&quot;data/data_clutch_size.rds&quot;)
+data_abs_latitude &lt;- readRDS(&quot;data/common_scaling/data_abs_latitude.rds&quot;)
+data_body_mass &lt;- readRDS(&quot;data/common_scaling/data_log_body_mass.rds&quot;)
+data_clutch_size &lt;- readRDS(&quot;data/common_scaling/data_clutch_size.rds&quot;)
 data_coloniality &lt;- readRDS(&quot;data/data_coloniality.rds&quot;)
 data_migration &lt;- readRDS(&quot;data/data_migration.rds&quot;)
 data_nest_type &lt;- readRDS(&quot;data/data_nest_type.rds&quot;)
