@@ -26,7 +26,7 @@ metadata_table <- tibble::tribble(
   "breeding_system", "breeding-system classification following Brouwer and Griffith (2019)",
   "mono_poly_model", "BIRDBASE breeding-system classification",
   "parental_care", "parental-care classification following Cockburn (2006) and Griesser et al (2017) ",
-  "cooperative_breeding", "classification of cooperative breeding status Co‐BreeD dtabase following McTavish et al. 2025",
+  "cooperative_breeding", "classification of cooperative breeding status from the Co-BreeD database following Ben Mocha et al. (2025)",
   "migration", "migratory status classification from BIRDBASE",
   "coloniality", "colonial breeding classification from BIRDBASE",
   "CS_max", "maximum clutch size from BIRDBASE",
