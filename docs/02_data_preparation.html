@@ -274,7 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="3.2" class="anchored" data-anchor-id="import-data"><span class="header-section-number">3.2</span> Import data</h2>
 <section id="the-input-files-used-in-the-analysis-the-mixed-paternity-dataset-and-the-dated-clements-phylogenetic-tree." class="level3" data-number="3.2.1">
 <h3 data-number="3.2.1" class="anchored" data-anchor-id="the-input-files-used-in-the-analysis-the-mixed-paternity-dataset-and-the-dated-clements-phylogenetic-tree."><span class="header-section-number">3.2.1</span> The input files used in the analysis: the mixed-paternity dataset and the dated Clements phylogenetic tree.</h3>
-<p>This table summarises the main input files used in the analysis, including the size of the raw dataset and the number of tips and internal nodes in the phylogenetic tree.</p>
+<p>This table summarises the curated input dataset and the phylogenetic tree.</p><p>The input CSV is the curated database: 676 records grouped under 607 distinct study identifiers (Study_ID), covering 393 species. The manuscript documents its derivation from 702 assembled records after removal of 26 overlapping records. Excluding 57 records without the brood-level outcome or denominator leaves 619 analytical records, 554 study identifiers and 375 species. Thus, 607 and 554 refer to different dataset stages. The supplement lists 608 distinct source-publication entries for the broader curated database; bibliographic entries and analytical study identifiers are different counting units.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -286,7 +286,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Raw dataset</td>
+<td style="text-align: left;">Curated dataset</td>
 <td style="text-align: left;">676 rows and 39 columns</td>
 </tr>
 <tr class="even">
@@ -1263,7 +1263,7 @@ knitr::kable(overlap_table, caption = &quot;Table S7. Nest-box use by nest type 
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown">---
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-shortcodes="false"><pre><code>---
 format:
  html:
     toc: true
@@ -1309,7 +1309,9 @@ mixed_pat_raw &lt;- readr::read_csv(data_file, show_col_types = FALSE)
 tree &lt;- ape::read.nexus(tree_file)
 ```
 
-This table summarises the main input files used in the analysis, including the size of the raw dataset and the number of tips and internal nodes in the phylogenetic tree.
+This table summarises the curated input dataset and the phylogenetic tree.
+
+The input CSV is the curated database: 676 records grouped under 607 distinct study identifiers (Study_ID), covering 393 species. The manuscript documents its derivation from 702 assembled records after removal of 26 overlapping records. Excluding 57 records without the brood-level outcome or denominator leaves 619 analytical records, 554 study identifiers and 375 species. Thus, 607 and 554 refer to different dataset stages. The supplement lists 608 distinct source-publication entries for the broader curated database; bibliographic entries and analytical study identifiers are different counting units.
 
 ```{r}
 #| label: data-summary-table
@@ -1318,7 +1320,7 @@ This table summarises the main input files used in the analysis, including the s
 #| warning: false
 
 data_summary &lt;- tibble::tibble(
-  Item = c(&quot;Raw dataset&quot;, &quot;Phylogenetic tree&quot;),
+  Item = c(&quot;Curated dataset&quot;, &quot;Phylogenetic tree&quot;),
   Summary = c(
     paste0(nrow(mixed_pat_raw), &quot; rows and &quot;, ncol(mixed_pat_raw), &quot; columns&quot;),
     paste0(length(tree$tip.label), &quot; tips and &quot;, tree$Nnode, &quot; internal nodes&quot;)

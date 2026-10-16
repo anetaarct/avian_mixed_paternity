@@ -8,7 +8,7 @@ format:
 ::: section-card
 ## Overall model
 
-This section presents the intercept-only beta-binomial phylogenetic model used to estimate the population-level intercept and quantify heterogeneity in mixed-paternity prevalence across birds. The model accounts for study identity, non-phylogenetic species-level variation, and phylogenetically structured species-level variation.
+This section presents the intercept-only beta-binomial phylogenetic model used to estimate the population-level intercept and quantify heterogeneity in mixed-paternity prevalence across birds. The model accounts for study identifier, non-phylogenetic species-level variation, and phylogenetically structured species-level variation.
 :::
 
 ## Packages
@@ -48,7 +48,7 @@ phylo_mat <- readRDS("data/phylo_mat.rds")
 overall_data_summary <- data_overall_study %>%
   summarise(
     Observations = n(),
-    `Study identities` = n_distinct(Study_ID),
+    `Study identifiers` = n_distinct(Study_ID),
     Species = n_distinct(species_phylo_brms),
     `Total broods` = sum(n_total_broods, na.rm = TRUE),
     `Mixed-paternity broods` = sum(n_mixed_broods, na.rm = TRUE),
@@ -66,17 +66,42 @@ $$y_i \sim \mathrm{BetaBinomial}(n_i, \mu_i, \phi)$$
 
 where $y_i$ is the number of broods with mixed paternity, $n_i$ is the total number of broods genotyped, $\mu_i$ is the expected mixed-paternity prevalence, and the precision parameter $\phi$ describes extra-binomial variation among study units.
 
-The linear predictor was modelled as:
+For models with a population-level intercept, the linear predictor was:
 
 $$\mathrm{logit}(\mu_i) = \alpha + \mathbf{X}_i \boldsymbol{\beta} + u_{\mathrm{reference}[i]} + u_{\mathrm{species}[i]} + u_{\mathrm{phylo}[i]}$$
 
-where $\alpha$ is the intercept, $\mathbf{X}_i \boldsymbol{\beta}$ represents fixed biological and methodological moderators, and $u_{\mathrm{reference}}$, $u_{\mathrm{species}}$, and $u_{\mathrm{phylo}}$ represent study-identity-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively. Study identity (`Study_ID`) is an analytical grouping variable, not a bibliographic-publication count; one study identity can incorporate evidence reported across more than one source.
+where $\alpha$ is the intercept, $\mathbf{X}_i \boldsymbol{\beta}$ represents fixed biological and methodological moderators, and $u_{\mathrm{reference}}$, $u_{\mathrm{species}}$, and $u_{\mathrm{phylo}}$ represent study-identifier-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively. Study identifier (`Study_ID`) is an analytical grouping variable, not a bibliographic-publication count; one study identifier can incorporate evidence reported across more than one source.
+
+The single-moderator models for marker type, nest type, BG breeding system, BIRDBASE mating system, and parental care use `0 + category`: each fitted category has its own logit coefficient, with no shared population-level intercept or reference category. Pairwise contrasts subtract category coefficients within each posterior draw. The primary multivariable model and binary single-moderator models instead use an intercept and reference-category contrasts. All models retain the three random-intercept terms.
+
+### Model coding and priors {#model-coding-and-priors}
+
+Reference categories apply only to models with a population-level intercept. Primary = primary multivariable model; single = single-moderator model; both = both model types. The five models fitted with `0 + category` have no reference category.
+
+| Predictor | Model | Reference category | Other fitted categories |
+| --- | --- | --- | --- |
+| Marker type | Primary | DNA fingerprinting | Microsatellite; mixed/other; SNPs |
+| BG breeding system | Primary | Cooperative breeder | Monogamy; no social bond; polyandry |
+| Nest type | Primary | Cavity | Ground; open; other enclosed |
+| Migration | Both | Regular migrant (Strong) | Resident, weak/local or irregular migrant (Weak) |
+| Coloniality | Both | Non-colonial (0) | Colonial (1) |
+| Nest-box use | Single | Natural nest (no) | Nest box (yes) |
+| Cooperative breeding | Single | Non-cooperative (no) | Cooperative (yes) |
+
+| Parameter class | Prior | Applicability |
+| --- | --- | --- |
+| Population-level coefficients (b) | Flat (improper) | Slopes and reference-category contrasts, or all category logits in 0 + category models; absent from the overall and matched-sample intercept-only models. |
+| Population-level intercept | Student-t(3, 0, 2.5) | Models with a shared population-level intercept only; absent from the five 0 + category models. |
+| Group-level SDs | Half-Student-t(3, 0, 2.5), positive | All models; one SD for each of the three random-intercept terms. |
+| Beta-binomial precision (phi) | Gamma(0.01, 0.01), positive | All models; shape–rate parameterisation. |
+
+These priors were verified in the saved fits. The Intercept prior applies to the internally centred intercept used by brms, where applicable; it does not apply to category logits in 0 + category models. Flat priors are improper, so the complete specification should not be described collectively as weakly informative. Priors are on group-level SDs; posterior heterogeneity is reported as variance by squaring each SD draw. See the [brms prior documentation](https://paulbuerkner.com/brms/reference/set_prior.html).
 
 ## Population-level intercept prevalence
 
 ### Model
 
-The intercept-only model estimated the population-level intercept while quantifying study-identity-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed study identities or species.
+The intercept-only model estimated the population-level intercept while quantifying study-identifier-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed study identifiers or species.
 
 ```{r}
 #| eval: false
@@ -290,9 +315,9 @@ knitr::include_graphics(
 
 ## Matched-sample model without moderators {#matched-sample-model-without-moderators}
 
-This additional intercept-only model provides a matched-sample reference for the final multivariable model (Supplementary Table S12). It uses exactly the same 533 observations from 481 studies and 326 species. It is distinct from the overall model above, which uses the full dataset of 619 observations; it is not a replacement estimate of overall mixed-paternity prevalence.
+This additional intercept-only model provides a matched-sample reference for the final multivariable model (Supplementary Table S12). It uses exactly the same 533 observations from 481 study identifiers and 326 species. It is distinct from the overall model above, which uses the full dataset of 619 observations; it is not a replacement estimate of overall mixed-paternity prevalence.
 
-The response is the number of mixed-paternity broods out of the total number of broods, modelled with a beta-binomial distribution and a logit link. The matched model includes an intercept and random intercepts for study identity, non-phylogenetic species identity, and phylogenetically structured species identity, with no moderators. The data, phylogenetic covariance matrix, grouping structure and corresponding priors are retained from the final multivariable model. Priors are Student-t(3, 0, 2.5) for the intercept and group-level standard deviations (restricted to positive values for standard deviations), and Gamma(0.01, 0.01), in shape-rate notation, for beta-binomial precision.
+The response is the number of mixed-paternity broods out of the total number of broods, modelled with a beta-binomial distribution and a logit link. The matched model includes an intercept and random intercepts for study identifier, non-phylogenetic species identity, and phylogenetically structured species identity, with no moderators. The data, phylogenetic covariance matrix, grouping structure and corresponding priors are retained from the final multivariable model. Priors are Student-t(3, 0, 2.5) for the intercept and group-level standard deviations (restricted to positive values for standard deviations), and Gamma(0.01, 0.01), in shape-rate notation, for beta-binomial precision.
 
 ### Load prepared objects {#matched-load-objects}
 
@@ -344,7 +369,7 @@ The table reports posterior mean variances and equal-tailed 95% credible interva
 | --- | --- | --- | --- |
 | Phylogenetic species | 3.941 [2.206, 6.251] | 3.230 [1.544, 5.530] | 18.0 |
 | Non-phylogenetic species | 0.426 [0.139, 0.770] | 0.461 [0.143, 0.828] | -8.2 |
-| Study identity | 0.076 [0.00030, 0.220] | 0.102 [0.00141, 0.244] | -33.9 |
+| Study identifier | 0.076 [0.00030, 0.220] | 0.102 [0.00141, 0.244] | -33.9 |
 | Sum of group-level variances | 4.443 [2.838, 6.606] | 3.792 [2.261, 5.901] | 14.6 |
 
 Posterior mean phylogenetic variance was 18.0% lower in the multivariable model; the sum of the three group-level variances was 14.6% lower. These are descriptive reductions in group-level variance, not proportions of total response variance explained or predictive R-squared. Binomial sampling variation and beta-binomial dispersion remain in the observation model and are not included as additive components in this sum. No uncertainty interval is reported for the between-model reduction.

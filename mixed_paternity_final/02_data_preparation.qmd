@@ -44,7 +44,9 @@ mixed_pat_raw <- readr::read_csv(data_file, show_col_types = FALSE)
 tree <- ape::read.nexus(tree_file)
 ```
 
-This table summarises the main input files used in the analysis, including the size of the raw dataset and the number of tips and internal nodes in the phylogenetic tree.
+This table summarises the curated input dataset and the phylogenetic tree.
+
+The input CSV is the curated database: 676 records grouped under 607 distinct study identifiers (Study_ID), covering 393 species. The manuscript documents its derivation from 702 assembled records after removal of 26 overlapping records. Excluding 57 records without the brood-level outcome or denominator leaves 619 analytical records, 554 study identifiers and 375 species. Thus, 607 and 554 refer to different dataset stages. The supplement lists 608 distinct source-publication entries for the broader curated database; bibliographic entries and analytical study identifiers are different counting units.
 
 ```{r}
 #| label: data-summary-table
@@ -53,7 +55,7 @@ This table summarises the main input files used in the analysis, including the s
 #| warning: false
 
 data_summary <- tibble::tibble(
-  Item = c("Raw dataset", "Phylogenetic tree"),
+  Item = c("Curated dataset", "Phylogenetic tree"),
   Summary = c(
     paste0(nrow(mixed_pat_raw), " rows and ", ncol(mixed_pat_raw), " columns"),
     paste0(length(tree$tip.label), " tips and ", tree$Nnode, " internal nodes")

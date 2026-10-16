@@ -403,7 +403,7 @@ window.Quarto = {
 </section>
 <section id="model" class="level2" data-number="7.3">
 <h2 data-number="7.3" class="anchored" data-anchor-id="model"><span class="header-section-number">7.3</span> Model</h2>
-<p>This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as <code>.rds</code> files.</p>
+<p>This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as <code>.rds</code> files.</p><p>The nest-type model uses 0 + nest_type_model, with one logit coefficient per category and no shared population-level intercept. The other models in this chapter retain an intercept. Model-specific reference categories and priors are documented in the <a href="03_overall_model.html#model-coding-and-priors">overall-model chapter</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1013,7 +1013,13 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </table>
 </div>
 </div>
-<p>There was no clear association between log10 body mass and mixed-paternity prevalence (<span class="math inline">\(\beta\)</span> = -0.008, 95% CrI -0.303 to 0.289).</p>
+<p>There was no clear directional association between log10 body mass and mixed-paternity prevalence: posterior mean beta = −0.008 (95% equal-tailed CrI −0.303 to 0.289), and posterior mean OR = 1.004 (0.739 to 1.335). The means are calculated on their respective scales: exp(mean(beta_draws)) = 0.992, whereas mean(exp(beta_draws)) = 1.004. Their positions on opposite sides of the null values arise from nonlinear averaging (Jensen’s inequality). In 52.3% of draws, both beta &lt; 0 and OR &lt; 1; neither direction was clearly supported.</p><div class="cell"><details class="code-fold"><summary>Code</summary><pre class="sourceCode r"><code>beta_draws &lt;- brms::fixef(model_log_body_mass, summary = FALSE)[, &quot;log_body_mass_sc&quot;]
+scale_check &lt;- data.frame(
+  beta_mean = mean(beta_draws),
+  exp_beta_mean = exp(mean(beta_draws)),
+  OR_mean = mean(exp(beta_draws))
+)
+knitr::kable(scale_check, digits = 6)</code></pre></details><div class="cell-output-display"><table class="table"><thead><tr><th>beta_mean</th><th>exp_beta_mean</th><th>OR_mean</th></tr></thead><tbody><tr><td>-0.007933</td><td>0.992099</td><td>1.003562</td></tr></tbody></table></div></div>
 </section>
 </section>
 <section id="absolute-latitude" class="level2" data-number="7.9">
@@ -1760,6 +1766,8 @@ knitr::kable(bio_dataset_sizes)
 
 This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as `.rds` files.
 
+The nest-type model uses 0 + nest_type_model, with one logit coefficient per category and no shared population-level intercept. The other models in this chapter retain an intercept. Model-specific reference categories and priors are documented in the [overall-model chapter](03_overall_model.qmd#model-coding-and-priors).
+
 ```{r}
 
 #| eval: false
@@ -2044,7 +2052,19 @@ knitr::kable(body_mass_table, digits = 3)
 
 ```
 
-There was no clear association between log10 body mass and mixed-paternity prevalence ($\beta$ = -0.008, 95% CrI -0.303 to 0.289).
+There was no clear directional association between log10 body mass and mixed-paternity prevalence: posterior mean beta = −0.008 (95% equal-tailed CrI −0.303 to 0.289), and posterior mean OR = 1.004 (0.739 to 1.335). The means are calculated on their respective scales: exp(mean(beta_draws)) = 0.992, whereas mean(exp(beta_draws)) = 1.004. Their positions on opposite sides of the null values arise from nonlinear averaging (Jensen’s inequality). In 52.3% of draws, both beta &lt; 0 and OR &lt; 1; neither direction was clearly supported.
+
+```{r}
+#| label: body-mass-or-scale-check
+#| code-fold: true
+beta_draws &lt;- brms::fixef(model_log_body_mass, summary = FALSE)[, &quot;log_body_mass_sc&quot;]
+scale_check &lt;- data.frame(
+  beta_mean = mean(beta_draws),
+  exp_beta_mean = exp(mean(beta_draws)),
+  OR_mean = mean(exp(beta_draws))
+)
+knitr::kable(scale_check, digits = 6)
+```
 
 ## Absolute latitude
 

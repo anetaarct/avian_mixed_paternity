@@ -398,7 +398,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="model" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="model"><span class="header-section-number">6.4</span> Model</h2>
-<p>This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as <code>.rds</code> files.</p>
+<p>This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as <code>.rds</code> files.</p><p>The BG breeding-system, BIRDBASE mating-system and parental-care models use 0 + category, with one logit coefficient per category and no shared population-level intercept. The binary cooperative-breeding model retains an intercept. Model-specific reference categories and priors are documented in the <a href="03_overall_model.html#model-coding-and-priors">overall-model chapter</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1618,6 +1618,8 @@ knitr::kable(breeding_dataset_sizes)
 ## Model
 
 This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as `.rds` files.
+
+The BG breeding-system, BIRDBASE mating-system and parental-care models use 0 + category, with one logit coefficient per category and no shared population-level intercept. The binary cooperative-breeding model retains an intercept. Model-specific reference categories and priors are documented in the [overall-model chapter](03_overall_model.qmd#model-coding-and-priors).
 
 ```{r}
 #| label: single-moderator-helper

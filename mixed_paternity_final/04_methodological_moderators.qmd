@@ -81,6 +81,8 @@ knitr::kable(methodological_dataset_sizes)
 
 This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as `.rds` files.
 
+The marker-type model uses 0 + marker_type_model, with one logit coefficient per marker category and no shared population-level intercept. Nest-box use and study duration retain an intercept. Model-specific reference categories and priors are documented in the [overall-model chapter](03_overall_model.qmd#model-coding-and-priors).
+
 ```{r}
 
 #| eval: false
@@ -264,7 +266,19 @@ nest_box_table <- tibble::tibble(
 knitr::kable(nest_box_table, digits = 3)
 ```
 
-The nest-box model estimated a positive but uncertain association between nest-box use and mixed-paternity prevalence. Compared with natural nests, nest-box studies had a higher estimated log-odds of mixed paternity, although the 95% credible interval overlapped zero.
+The nest-box association was positive but uncertain: posterior mean beta = 0.285 (95% equal-tailed CrI −0.062 to 0.632), and posterior mean OR = 1.351 (0.940 to 1.882). The OR mean is calculated as mean(exp(beta_draws)), whereas exp(mean(beta_draws)) = 1.330. The difference is due to nonlinear averaging (Jensen’s inequality), not rounding. Both intervals include their respective null values.
+
+```{r}
+#| label: nest-box-or-scale-check
+#| code-fold: true
+beta_draws <- brms::fixef(model_nest_box, summary = FALSE)[, "nest_box_modelyes"]
+scale_check <- data.frame(
+  beta_mean = mean(beta_draws),
+  exp_beta_mean = exp(mean(beta_draws)),
+  OR_mean = mean(exp(beta_draws))
+)
+knitr::kable(scale_check, digits = 6)
+```
 
 ## Heterogeneity summary
 
