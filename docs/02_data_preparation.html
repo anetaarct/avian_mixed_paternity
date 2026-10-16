@@ -225,7 +225,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#relationship-among-candidate-random-effects-grouping-factors" id="toc-relationship-among-candidate-random-effects-grouping-factors" class="nav-link" data-scroll-target="#relationship-among-candidate-random-effects-grouping-factors"><span class="header-section-number">3.5</span> Relationship among candidate random-effects grouping factors</a></li>
   <li><a href="#reproducibility-information" id="toc-reproducibility-information" class="nav-link" data-scroll-target="#reproducibility-information"><span class="header-section-number">3.6</span> Reproducibility information</a></li>
-  </ul>
+  <li><a href="#nest-box-nest-type-overlap" id="toc-nest-box-nest-type-overlap" class="nav-link" data-scroll-target="#nest-box-nest-type-overlap"><span class="header-section-number">3.7</span> Overlap between nest-box use and nest type (Table S7)</a></li>
+</ul>
 </nav>
     </div>
 <!-- main -->
@@ -765,6 +766,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </section>
 
+<section id="nest-box-nest-type-overlap" class="level2"><h2 class="anchored" data-anchor-id="nest-box-nest-type-overlap"><span class="header-section-number">3.7</span> Overlap between nest-box use and nest type (Table S7)</h2><p>This descriptive table uses the overall analytical dataset prepared in this chapter: 575 of its 619 records have both nest-box use and nest type available. The remaining 44 records have missing information for one or both variables. Counts refer to records, not unique species or publications. This is a different sample from the 533 complete cases used for the primary multivariable model and Tables S5 and S8.</p><p>Of the 165 nest-box records, 119 (72.1%) were classified as cavity nesting. Nest type is included in the primary multivariable model, whereas nest-box use was evaluated in a separate single-moderator model. The table describes overlap between these candidate variables; it does not estimate their independent associations with mixed paternity.</p><details class="code-fold nest-overlap-code"><summary>Code: reproduce Table S7</summary><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">summarise_nest_box_overlap &lt;- function(data_overall_study) {
+  required &lt;- c(&quot;nest_box_model&quot;, &quot;nest_type_model&quot;)
+  stopifnot(nrow(data_overall_study) == 619L,
+            all(required %in% names(data_overall_study)))
+  complete &lt;- complete.cases(data_overall_study[required])
+  dat &lt;- data_overall_study[complete, required, drop = FALSE]
+  stopifnot(nrow(dat) == 575L, sum(!complete) == 44L)
+  box_levels &lt;- c(&quot;no&quot;, &quot;yes&quot;)
+  nest_levels &lt;- c(&quot;cavity&quot;, &quot;ground&quot;, &quot;open&quot;, &quot;other_enclosed&quot;)
+  stopifnot(all(as.character(dat$nest_box_model) %in% box_levels),
+            all(as.character(dat$nest_type_model) %in% nest_levels))
+  counts &lt;- table(
+    factor(dat$nest_box_model, levels = box_levels),
+    factor(dat$nest_type_model, levels = nest_levels)
+  )
+  counts &lt;- rbind(counts, Total = colSums(counts))
+  counts &lt;- cbind(counts, Total = rowSums(counts))
+  stopifnot(counts[&quot;Total&quot;, &quot;Total&quot;] == 575L)
+  data.frame(
+    `Nest-box use` = c(&quot;No&quot;, &quot;Yes&quot;, &quot;Total&quot;),
+    Cavity = as.integer(counts[, &quot;cavity&quot;]),
+    Ground = as.integer(counts[, &quot;ground&quot;]),
+    Open = as.integer(counts[, &quot;open&quot;]),
+    `Other enclosed` = as.integer(counts[, &quot;other_enclosed&quot;]),
+    Total = as.integer(counts[, &quot;Total&quot;]),
+    check.names = FALSE
+  )
+}
+
+overlap_table &lt;- summarise_nest_box_overlap(data_overall_study)
+dir.create(&quot;tables&quot;, showWarnings = FALSE, recursive = TRUE)
+write.csv(overlap_table, &quot;tables/nest_box_nest_type_overlap.csv&quot;, row.names = FALSE)
+knitr::kable(overlap_table, caption = &quot;Table S7. Nest-box use by nest type in 575 complete records from the 619-record overall analytical dataset; 44 records with missing information are excluded.&quot;)</code></pre></div></details><table class="table table-sm table-striped small"><caption>Table S7. Nest-box use by nest type in 575 complete records from the 619-record overall analytical dataset; 44 records with missing information are excluded.</caption><thead><tr><th>Nest-box use</th><th>Cavity</th><th>Ground</th><th>Open</th><th>Other enclosed</th><th>Total</th></tr></thead><tbody><tr><td>No</td><td>58</td><td>109</td><td>208</td><td>35</td><td>410</td></tr><tr><td>Yes</td><td>119</td><td>2</td><td>42</td><td>2</td><td>165</td></tr><tr><td>Total</td><td>177</td><td>111</td><td>250</td><td>37</td><td>575</td></tr></tbody></table><p><a href="tables/nest_box_nest_type_overlap.csv">Download Table S7</a>.</p></section>
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1229,409 +1263,464 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"> html:</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 3</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>::: section-card</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data preparation</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>This section documents the construction of the analytical dataset, including population identifiers, taxonomic matching, phylogenetic filtering, moderator preparation, and random-effect structure checks.</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Packeges</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>The R packages required for data preparation.</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maps)</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>())</span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="fu">## Import data</span></span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="fu">### The input files used in the analysis: the mixed-paternity dataset and the dated Clements phylogenetic tree.</span></span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load-data</span></span>
-<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
-<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>data_file <span class="ot">&lt;-</span> <span class="st">"mixed_pat_final.csv"</span></span>
-<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>tree_file <span class="ot">&lt;-</span> <span class="st">"summary_dated_clements.nex"</span></span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>mixed_pat_raw <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(data_file, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">read.nexus</span>(tree_file)</span>
-<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>This table summarises the main input files used in the analysis, including the size of the raw dataset and the number of tips and internal nodes in the phylogenetic tree.</span>
-<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data-summary-table</span></span>
-<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>data_summary <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>  <span class="at">Item =</span> <span class="fu">c</span>(<span class="st">"Raw dataset"</span>, <span class="st">"Phylogenetic tree"</span>),</span>
-<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>  <span class="at">Summary =</span> <span class="fu">c</span>(</span>
-<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="fu">nrow</span>(mixed_pat_raw), <span class="st">" rows and "</span>, <span class="fu">ncol</span>(mixed_pat_raw), <span class="st">" columns"</span>),</span>
-<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="fu">length</span>(tree<span class="sc">$</span>tip.label), <span class="st">" tips and "</span>, tree<span class="sc">$</span>Nnode, <span class="st">" internal nodes"</span>)</span>
-<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(data_summary)</span>
-<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a><span class="fu">## Prepare data</span></span>
-<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a><span class="fu">### Population identifier</span></span>
-<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a>Population identity was defined using study identity and rounded geographic coordinates, with latitude and longitude rounded to two decimal places prior to constructing the population identifier.</span>
-<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a>mixed_pat <span class="ot">&lt;-</span> mixed_pat_raw <span class="sc">%&gt;%</span></span>
-<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">Lat_round =</span> <span class="fu">round</span>(Lat, <span class="dv">2</span>),</span>
-<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">Long_round =</span> <span class="fu">round</span>(Long, <span class="dv">2</span>),</span>
-<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a>    <span class="at">population_id =</span> <span class="fu">paste</span>(Study_ID, Lat_round, Long_round, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
-<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a>    <span class="at">population_id =</span> <span class="fu">as.factor</span>(population_id)</span>
-<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a><span class="fu">### Study and species formatting</span></span>
-<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a>The following step formats the main grouping variables used in the models and calculates the total number of broods by combining mixed- and non-mixed-brood counts.</span>
-<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: study-species-formatting</span></span>
-<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a>mixed_pat <span class="ot">&lt;-</span> mixed_pat <span class="sc">%&gt;%</span></span>
-<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a>    <span class="at">Study_ID =</span> <span class="fu">as.factor</span>(Study_ID),</span>
-<span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a>    <span class="at">species_phylo_brms =</span> <span class="fu">as.factor</span>(Clements_name),</span>
-<span id="cb10-103"><a href="#cb10-103" aria-hidden="true" tabindex="-1"></a>    <span class="at">species_nonphylo =</span> <span class="fu">as.factor</span>(Clements_name),</span>
-<span id="cb10-104"><a href="#cb10-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-105"><a href="#cb10-105" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_mixed_broods =</span> <span class="fu">as.numeric</span>(n_mixed_broods),</span>
-<span id="cb10-106"><a href="#cb10-106" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_non_mixed_broods =</span> <span class="fu">as.numeric</span>(n_non_mixed_broods),</span>
-<span id="cb10-107"><a href="#cb10-107" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_total_broods =</span> n_mixed_broods <span class="sc">+</span> n_non_mixed_broods</span>
-<span id="cb10-108"><a href="#cb10-108" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-109"><a href="#cb10-109" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-110"><a href="#cb10-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-111"><a href="#cb10-111" aria-hidden="true" tabindex="-1"></a><span class="fu">### Phylogeny preparation</span></span>
-<span id="cb10-112"><a href="#cb10-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-113"><a href="#cb10-113" aria-hidden="true" tabindex="-1"></a>Species names were harmonised between the mixed-paternity dataset and the phylogenetic tree prior to pruning the tree and generating the phylogenetic covariance matrix used in the Bayesian models.</span>
-<span id="cb10-114"><a href="#cb10-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-117"><a href="#cb10-117" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-118"><a href="#cb10-118" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb10-119"><a href="#cb10-119" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb10-120"><a href="#cb10-120" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb10-121"><a href="#cb10-121" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb10-122"><a href="#cb10-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-123"><a href="#cb10-123" aria-hidden="true" tabindex="-1"></a>species_data <span class="ot">&lt;-</span> mixed_pat <span class="sc">%&gt;%</span></span>
-<span id="cb10-124"><a href="#cb10-124" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(species_phylo_brms)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-125"><a href="#cb10-125" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(species_phylo_brms) <span class="sc">%&gt;%</span></span>
-<span id="cb10-126"><a href="#cb10-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.character</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb10-127"><a href="#cb10-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
-<span id="cb10-128"><a href="#cb10-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-129"><a href="#cb10-129" aria-hidden="true" tabindex="-1"></a>species_tree <span class="ot">&lt;-</span> tree<span class="sc">$</span>tip.label</span>
-<span id="cb10-130"><a href="#cb10-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-131"><a href="#cb10-131" aria-hidden="true" tabindex="-1"></a>species_for_tree <span class="ot">&lt;-</span> <span class="fu">intersect</span>(species_data, species_tree)</span>
-<span id="cb10-132"><a href="#cb10-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-133"><a href="#cb10-133" aria-hidden="true" tabindex="-1"></a>tree_analysis <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">keep.tip</span>(tree, species_for_tree)</span>
-<span id="cb10-134"><a href="#cb10-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-135"><a href="#cb10-135" aria-hidden="true" tabindex="-1"></a>phylo_mat <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">vcv.phylo</span>(tree_analysis, <span class="at">corr =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb10-136"><a href="#cb10-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-137"><a href="#cb10-137" aria-hidden="true" tabindex="-1"></a>phylo_mat <span class="ot">&lt;-</span> phylo_mat[</span>
-<span id="cb10-138"><a href="#cb10-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="fu">rownames</span>(phylo_mat)),</span>
-<span id="cb10-139"><a href="#cb10-139" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="fu">colnames</span>(phylo_mat))</span>
-<span id="cb10-140"><a href="#cb10-140" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb10-141"><a href="#cb10-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-142"><a href="#cb10-142" aria-hidden="true" tabindex="-1"></a>mixed_pat <span class="ot">&lt;-</span> mixed_pat <span class="sc">%&gt;%</span></span>
-<span id="cb10-143"><a href="#cb10-143" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species_phylo_brms <span class="sc">%in%</span> <span class="fu">rownames</span>(phylo_mat)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-144"><a href="#cb10-144" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb10-145"><a href="#cb10-145" aria-hidden="true" tabindex="-1"></a>    <span class="at">species_phylo_brms =</span> <span class="fu">droplevels</span>(species_phylo_brms),</span>
-<span id="cb10-146"><a href="#cb10-146" aria-hidden="true" tabindex="-1"></a>    <span class="at">species_nonphylo =</span> <span class="fu">droplevels</span>(species_nonphylo)</span>
-<span id="cb10-147"><a href="#cb10-147" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-148"><a href="#cb10-148" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-149"><a href="#cb10-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-150"><a href="#cb10-150" aria-hidden="true" tabindex="-1"></a><span class="fu">### Phylogeny - summary</span></span>
-<span id="cb10-151"><a href="#cb10-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-154"><a href="#cb10-154" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-155"><a href="#cb10-155" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb10-156"><a href="#cb10-156" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb10-157"><a href="#cb10-157" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb10-158"><a href="#cb10-158" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb10-159"><a href="#cb10-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-160"><a href="#cb10-160" aria-hidden="true" tabindex="-1"></a>phylo_summary <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb10-161"><a href="#cb10-161" aria-hidden="true" tabindex="-1"></a>  <span class="at">Item =</span> <span class="fu">c</span>(</span>
-<span id="cb10-162"><a href="#cb10-162" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Species matched to phylogeny"</span>,</span>
-<span id="cb10-163"><a href="#cb10-163" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Tips in source tree"</span>,</span>
-<span id="cb10-164"><a href="#cb10-164" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Species retained after phylogenetic filtering"</span></span>
-<span id="cb10-165"><a href="#cb10-165" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb10-166"><a href="#cb10-166" aria-hidden="true" tabindex="-1"></a>  <span class="at">Value =</span> <span class="fu">c</span>(</span>
-<span id="cb10-167"><a href="#cb10-167" aria-hidden="true" tabindex="-1"></a>    <span class="fu">length</span>(species_for_tree),</span>
-<span id="cb10-168"><a href="#cb10-168" aria-hidden="true" tabindex="-1"></a>    <span class="fu">length</span>(tree<span class="sc">$</span>tip.label),</span>
-<span id="cb10-169"><a href="#cb10-169" aria-hidden="true" tabindex="-1"></a>    <span class="fu">n_distinct</span>(mixed_pat<span class="sc">$</span>species_phylo_brms)</span>
-<span id="cb10-170"><a href="#cb10-170" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-171"><a href="#cb10-171" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-172"><a href="#cb10-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-173"><a href="#cb10-173" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(phylo_summary)</span>
-<span id="cb10-174"><a href="#cb10-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-175"><a href="#cb10-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-176"><a href="#cb10-176" aria-hidden="true" tabindex="-1"></a><span class="fu">### Moderator variable preparation</span></span>
-<span id="cb10-177"><a href="#cb10-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-180"><a href="#cb10-180" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-181"><a href="#cb10-181" aria-hidden="true" tabindex="-1"></a>min_n <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb10-182"><a href="#cb10-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-183"><a href="#cb10-183" aria-hidden="true" tabindex="-1"></a>mixed_pat <span class="ot">&lt;-</span> mixed_pat <span class="sc">%&gt;%</span></span>
-<span id="cb10-184"><a href="#cb10-184" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb10-185"><a href="#cb10-185" aria-hidden="true" tabindex="-1"></a>    <span class="at">marker_type_model =</span> <span class="fu">as.factor</span>(marker_type_model),</span>
-<span id="cb10-186"><a href="#cb10-186" aria-hidden="true" tabindex="-1"></a>    <span class="at">nest_box_model =</span> <span class="fu">as.factor</span>(nest_box_model),</span>
-<span id="cb10-187"><a href="#cb10-187" aria-hidden="true" tabindex="-1"></a>    <span class="at">nest_type_model =</span> <span class="fu">as.factor</span>(nest_type_model),</span>
-<span id="cb10-188"><a href="#cb10-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-189"><a href="#cb10-189" aria-hidden="true" tabindex="-1"></a>    <span class="at">breeding_system =</span> <span class="fu">as.factor</span>(breeding_system),</span>
-<span id="cb10-190"><a href="#cb10-190" aria-hidden="true" tabindex="-1"></a>    <span class="at">mono_poly_model =</span> <span class="fu">as.factor</span>(mono_poly_model),</span>
-<span id="cb10-191"><a href="#cb10-191" aria-hidden="true" tabindex="-1"></a>    <span class="at">parental_care =</span> <span class="fu">as.factor</span>(parental_care),</span>
-<span id="cb10-192"><a href="#cb10-192" aria-hidden="true" tabindex="-1"></a>    <span class="at">cooperative_breeding =</span> <span class="fu">as.factor</span>(cooperative_breeding),</span>
-<span id="cb10-193"><a href="#cb10-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-194"><a href="#cb10-194" aria-hidden="true" tabindex="-1"></a>    <span class="at">migration =</span> <span class="fu">as.factor</span>(migration),</span>
-<span id="cb10-195"><a href="#cb10-195" aria-hidden="true" tabindex="-1"></a>    <span class="at">coloniality =</span> <span class="fu">as.factor</span>(coloniality),</span>
-<span id="cb10-196"><a href="#cb10-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-197"><a href="#cb10-197" aria-hidden="true" tabindex="-1"></a>    <span class="at">CS_max =</span> <span class="fu">as.numeric</span>(CS_max),</span>
-<span id="cb10-198"><a href="#cb10-198" aria-hidden="true" tabindex="-1"></a>    <span class="at">body_mass =</span> <span class="fu">as.numeric</span>(body_mass),</span>
-<span id="cb10-199"><a href="#cb10-199" aria-hidden="true" tabindex="-1"></a>    <span class="at">study_duration =</span> <span class="fu">as.numeric</span>(study_duration_num),</span>
-<span id="cb10-200"><a href="#cb10-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-201"><a href="#cb10-201" aria-hidden="true" tabindex="-1"></a>    <span class="at">Lat_round =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(Lat), <span class="dv">2</span>),</span>
-<span id="cb10-202"><a href="#cb10-202" aria-hidden="true" tabindex="-1"></a>    <span class="at">abs_lat =</span> <span class="fu">abs</span>(Lat_round)</span>
-<span id="cb10-203"><a href="#cb10-203" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-204"><a href="#cb10-204" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-205"><a href="#cb10-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-206"><a href="#cb10-206" aria-hidden="true" tabindex="-1"></a><span class="fu">## Preparation of the database</span></span>
-<span id="cb10-207"><a href="#cb10-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-208"><a href="#cb10-208" aria-hidden="true" tabindex="-1"></a><span class="fu">### Database overall study</span></span>
-<span id="cb10-209"><a href="#cb10-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-212"><a href="#cb10-212" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-213"><a href="#cb10-213" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data-overall-study</span></span>
-<span id="cb10-214"><a href="#cb10-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-215"><a href="#cb10-215" aria-hidden="true" tabindex="-1"></a>data_overall_study <span class="ot">&lt;-</span> mixed_pat <span class="sc">%&gt;%</span></span>
-<span id="cb10-216"><a href="#cb10-216" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb10-217"><a href="#cb10-217" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(n_mixed_broods),</span>
-<span id="cb10-218"><a href="#cb10-218" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(n_non_mixed_broods),</span>
-<span id="cb10-219"><a href="#cb10-219" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(n_total_broods),</span>
-<span id="cb10-220"><a href="#cb10-220" aria-hidden="true" tabindex="-1"></a>    n_total_broods <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
-<span id="cb10-221"><a href="#cb10-221" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(Study_ID),</span>
-<span id="cb10-222"><a href="#cb10-222" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(species_phylo_brms)</span>
-<span id="cb10-223"><a href="#cb10-223" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb10-224"><a href="#cb10-224" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb10-225"><a href="#cb10-225" aria-hidden="true" tabindex="-1"></a>    <span class="at">Study_ID =</span> <span class="fu">droplevels</span>(Study_ID),</span>
-<span id="cb10-226"><a href="#cb10-226" aria-hidden="true" tabindex="-1"></a>    <span class="at">species_nonphylo =</span> <span class="fu">droplevels</span>(species_nonphylo),</span>
-<span id="cb10-227"><a href="#cb10-227" aria-hidden="true" tabindex="-1"></a>    <span class="at">species_phylo_brms =</span> <span class="fu">droplevels</span>(species_phylo_brms),</span>
-<span id="cb10-228"><a href="#cb10-228" aria-hidden="true" tabindex="-1"></a>    <span class="at">population_id =</span> <span class="fu">droplevels</span>(population_id)</span>
-<span id="cb10-229"><a href="#cb10-229" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-230"><a href="#cb10-230" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-231"><a href="#cb10-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-232"><a href="#cb10-232" aria-hidden="true" tabindex="-1"></a><span class="fu">### Common scaling of continuous moderators</span></span>
-<span id="cb10-233"><a href="#cb10-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-234"><a href="#cb10-234" aria-hidden="true" tabindex="-1"></a>The centring and scaling constants are calculated once from the 619-record overall analytical dataset, before moderator-specific complete-case filtering. The same constants are then reused in every single-moderator and multivariable analysis.</span>
-<span id="cb10-235"><a href="#cb10-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-238"><a href="#cb10-238" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-239"><a href="#cb10-239" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: common-continuous-scaling</span></span>
-<span id="cb10-240"><a href="#cb10-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-241"><a href="#cb10-241" aria-hidden="true" tabindex="-1"></a>data_overall_study <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-242"><a href="#cb10-242" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb10-243"><a href="#cb10-243" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_body_mass =</span> <span class="fu">replace</span>(</span>
-<span id="cb10-244"><a href="#cb10-244" aria-hidden="true" tabindex="-1"></a>      body_mass,</span>
-<span id="cb10-245"><a href="#cb10-245" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span><span class="fu">is.na</span>(body_mass) <span class="sc">&amp;</span> body_mass <span class="sc">&lt;=</span> <span class="dv">0</span>,</span>
-<span id="cb10-246"><a href="#cb10-246" aria-hidden="true" tabindex="-1"></a>      <span class="cn">NA_real_</span></span>
-<span id="cb10-247"><a href="#cb10-247" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb10-248"><a href="#cb10-248" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_body_mass =</span> <span class="fu">log10</span>(log_body_mass)</span>
-<span id="cb10-249"><a href="#cb10-249" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-250"><a href="#cb10-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-251"><a href="#cb10-251" aria-hidden="true" tabindex="-1"></a>scaling_constants <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-252"><a href="#cb10-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb10-253"><a href="#cb10-253" aria-hidden="true" tabindex="-1"></a>    <span class="at">study_duration_mean =</span> <span class="fu">mean</span>(study_duration, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb10-254"><a href="#cb10-254" aria-hidden="true" tabindex="-1"></a>    <span class="at">study_duration_sd =</span> <span class="fu">sd</span>(study_duration, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb10-255"><a href="#cb10-255" aria-hidden="true" tabindex="-1"></a>    <span class="at">CS_max_mean =</span> <span class="fu">mean</span>(CS_max, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb10-256"><a href="#cb10-256" aria-hidden="true" tabindex="-1"></a>    <span class="at">CS_max_sd =</span> <span class="fu">sd</span>(CS_max, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb10-257"><a href="#cb10-257" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_body_mass_mean =</span> <span class="fu">mean</span>(log_body_mass, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb10-258"><a href="#cb10-258" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_body_mass_sd =</span> <span class="fu">sd</span>(log_body_mass, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb10-259"><a href="#cb10-259" aria-hidden="true" tabindex="-1"></a>    <span class="at">abs_lat_mean =</span> <span class="fu">mean</span>(abs_lat, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb10-260"><a href="#cb10-260" aria-hidden="true" tabindex="-1"></a>    <span class="at">abs_lat_sd =</span> <span class="fu">sd</span>(abs_lat, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb10-261"><a href="#cb10-261" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-262"><a href="#cb10-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-263"><a href="#cb10-263" aria-hidden="true" tabindex="-1"></a>data_overall_study <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-264"><a href="#cb10-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb10-265"><a href="#cb10-265" aria-hidden="true" tabindex="-1"></a>    <span class="at">study_duration_sc =</span></span>
-<span id="cb10-266"><a href="#cb10-266" aria-hidden="true" tabindex="-1"></a>      (study_duration <span class="sc">-</span> scaling_constants<span class="sc">$</span>study_duration_mean) <span class="sc">/</span></span>
-<span id="cb10-267"><a href="#cb10-267" aria-hidden="true" tabindex="-1"></a>      scaling_constants<span class="sc">$</span>study_duration_sd,</span>
-<span id="cb10-268"><a href="#cb10-268" aria-hidden="true" tabindex="-1"></a>    <span class="at">CS_max_sc =</span></span>
-<span id="cb10-269"><a href="#cb10-269" aria-hidden="true" tabindex="-1"></a>      (CS_max <span class="sc">-</span> scaling_constants<span class="sc">$</span>CS_max_mean) <span class="sc">/</span></span>
-<span id="cb10-270"><a href="#cb10-270" aria-hidden="true" tabindex="-1"></a>      scaling_constants<span class="sc">$</span>CS_max_sd,</span>
-<span id="cb10-271"><a href="#cb10-271" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_body_mass_sc =</span></span>
-<span id="cb10-272"><a href="#cb10-272" aria-hidden="true" tabindex="-1"></a>      (log_body_mass <span class="sc">-</span> scaling_constants<span class="sc">$</span>log_body_mass_mean) <span class="sc">/</span></span>
-<span id="cb10-273"><a href="#cb10-273" aria-hidden="true" tabindex="-1"></a>      scaling_constants<span class="sc">$</span>log_body_mass_sd,</span>
-<span id="cb10-274"><a href="#cb10-274" aria-hidden="true" tabindex="-1"></a>    <span class="at">abs_lat_sc =</span></span>
-<span id="cb10-275"><a href="#cb10-275" aria-hidden="true" tabindex="-1"></a>      (abs_lat <span class="sc">-</span> scaling_constants<span class="sc">$</span>abs_lat_mean) <span class="sc">/</span></span>
-<span id="cb10-276"><a href="#cb10-276" aria-hidden="true" tabindex="-1"></a>      scaling_constants<span class="sc">$</span>abs_lat_sd</span>
-<span id="cb10-277"><a href="#cb10-277" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-278"><a href="#cb10-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-279"><a href="#cb10-279" aria-hidden="true" tabindex="-1"></a>scaling_table <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
-<span id="cb10-280"><a href="#cb10-280" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Predictor, <span class="sc">~</span>N, <span class="sc">~</span>Mean, <span class="sc">~</span>SD, <span class="sc">~</span>Unit,</span>
-<span id="cb10-281"><a href="#cb10-281" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Study duration"</span>, <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(data_overall_study<span class="sc">$</span>study_duration)),</span>
-<span id="cb10-282"><a href="#cb10-282" aria-hidden="true" tabindex="-1"></a>    scaling_constants<span class="sc">$</span>study_duration_mean, scaling_constants<span class="sc">$</span>study_duration_sd, <span class="st">"years"</span>,</span>
-<span id="cb10-283"><a href="#cb10-283" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Maximum clutch size"</span>, <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(data_overall_study<span class="sc">$</span>CS_max)),</span>
-<span id="cb10-284"><a href="#cb10-284" aria-hidden="true" tabindex="-1"></a>    scaling_constants<span class="sc">$</span>CS_max_mean, scaling_constants<span class="sc">$</span>CS_max_sd, <span class="st">"eggs"</span>,</span>
-<span id="cb10-285"><a href="#cb10-285" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Body mass"</span>, <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(data_overall_study<span class="sc">$</span>log_body_mass)),</span>
-<span id="cb10-286"><a href="#cb10-286" aria-hidden="true" tabindex="-1"></a>    scaling_constants<span class="sc">$</span>log_body_mass_mean, scaling_constants<span class="sc">$</span>log_body_mass_sd, <span class="st">"log10(g)"</span>,</span>
-<span id="cb10-287"><a href="#cb10-287" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Absolute latitude"</span>, <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(data_overall_study<span class="sc">$</span>abs_lat)),</span>
-<span id="cb10-288"><a href="#cb10-288" aria-hidden="true" tabindex="-1"></a>    scaling_constants<span class="sc">$</span>abs_lat_mean, scaling_constants<span class="sc">$</span>abs_lat_sd, <span class="st">"degrees"</span></span>
-<span id="cb10-289"><a href="#cb10-289" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-290"><a href="#cb10-290" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(Mean, SD), <span class="sc">~</span> <span class="fu">round</span>(.x, <span class="dv">3</span>)))</span>
-<span id="cb10-291"><a href="#cb10-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-292"><a href="#cb10-292" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(scaling_table)</span>
-<span id="cb10-293"><a href="#cb10-293" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-294"><a href="#cb10-294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-295"><a href="#cb10-295" aria-hidden="true" tabindex="-1"></a><span class="fu">### Database single moderators</span></span>
-<span id="cb10-296"><a href="#cb10-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-299"><a href="#cb10-299" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-300"><a href="#cb10-300" aria-hidden="true" tabindex="-1"></a>data_nest_box <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-301"><a href="#cb10-301" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(nest_box_model)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-302"><a href="#cb10-302" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb10-303"><a href="#cb10-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-304"><a href="#cb10-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-305"><a href="#cb10-305" aria-hidden="true" tabindex="-1"></a>data_migration <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-306"><a href="#cb10-306" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(migration)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-307"><a href="#cb10-307" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb10-308"><a href="#cb10-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-309"><a href="#cb10-309" aria-hidden="true" tabindex="-1"></a>data_coloniality <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-310"><a href="#cb10-310" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(coloniality)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-311"><a href="#cb10-311" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb10-312"><a href="#cb10-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-313"><a href="#cb10-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-314"><a href="#cb10-314" aria-hidden="true" tabindex="-1"></a>data_cooperative <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-315"><a href="#cb10-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(cooperative_breeding)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-316"><a href="#cb10-316" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb10-317"><a href="#cb10-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-318"><a href="#cb10-318" aria-hidden="true" tabindex="-1"></a>data_study_duration <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-319"><a href="#cb10-319" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(study_duration_sc)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-320"><a href="#cb10-320" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb10-321"><a href="#cb10-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-322"><a href="#cb10-322" aria-hidden="true" tabindex="-1"></a>data_clutch_size <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-323"><a href="#cb10-323" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(CS_max_sc)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-324"><a href="#cb10-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb10-325"><a href="#cb10-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-326"><a href="#cb10-326" aria-hidden="true" tabindex="-1"></a>data_body_mass <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-327"><a href="#cb10-327" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb10-328"><a href="#cb10-328" aria-hidden="true" tabindex="-1"></a>    <span class="fu">is.finite</span>(log_body_mass),</span>
-<span id="cb10-329"><a href="#cb10-329" aria-hidden="true" tabindex="-1"></a>    <span class="fu">is.finite</span>(log_body_mass_sc)</span>
-<span id="cb10-330"><a href="#cb10-330" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb10-331"><a href="#cb10-331" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb10-332"><a href="#cb10-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-333"><a href="#cb10-333" aria-hidden="true" tabindex="-1"></a>data_abs_latitude <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-334"><a href="#cb10-334" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(abs_lat_sc)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-335"><a href="#cb10-335" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb10-336"><a href="#cb10-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-337"><a href="#cb10-337" aria-hidden="true" tabindex="-1"></a>data_marker_type <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-338"><a href="#cb10-338" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(marker_type_model)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-339"><a href="#cb10-339" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb10-340"><a href="#cb10-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-341"><a href="#cb10-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-342"><a href="#cb10-342" aria-hidden="true" tabindex="-1"></a>data_nest_type <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-343"><a href="#cb10-343" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(nest_type_model)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-344"><a href="#cb10-344" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb10-345"><a href="#cb10-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-346"><a href="#cb10-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-347"><a href="#cb10-347" aria-hidden="true" tabindex="-1"></a>valid_breeding_levels <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-348"><a href="#cb10-348" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(breeding_system) <span class="sc">%&gt;%</span></span>
-<span id="cb10-349"><a href="#cb10-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(breeding_system), n <span class="sc">&gt;=</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-350"><a href="#cb10-350" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(breeding_system)</span>
-<span id="cb10-351"><a href="#cb10-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-352"><a href="#cb10-352" aria-hidden="true" tabindex="-1"></a>data_breeding_system <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-353"><a href="#cb10-353" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb10-354"><a href="#cb10-354" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(breeding_system),</span>
-<span id="cb10-355"><a href="#cb10-355" aria-hidden="true" tabindex="-1"></a>    breeding_system <span class="sc">%in%</span> valid_breeding_levels</span>
-<span id="cb10-356"><a href="#cb10-356" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb10-357"><a href="#cb10-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb10-358"><a href="#cb10-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-359"><a href="#cb10-359" aria-hidden="true" tabindex="-1"></a>data_mono_poly <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-360"><a href="#cb10-360" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(mono_poly_model)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-361"><a href="#cb10-361" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb10-362"><a href="#cb10-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-363"><a href="#cb10-363" aria-hidden="true" tabindex="-1"></a>data_parental_care <span class="ot">&lt;-</span> data_overall_study <span class="sc">%&gt;%</span></span>
-<span id="cb10-364"><a href="#cb10-364" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(parental_care)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-365"><a href="#cb10-365" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb10-366"><a href="#cb10-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-367"><a href="#cb10-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-368"><a href="#cb10-368" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-369"><a href="#cb10-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-370"><a href="#cb10-370" aria-hidden="true" tabindex="-1"></a><span class="fu">## Relationship among candidate random-effects grouping factors</span></span>
-<span id="cb10-371"><a href="#cb10-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-372"><a href="#cb10-372" aria-hidden="true" tabindex="-1"></a>Before fitting the models, we evaluated the degree of overlap and nesting among candidate random-effects grouping factors, including species identity, study identity, and the pragmatic population identifier.</span>
-<span id="cb10-373"><a href="#cb10-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-376"><a href="#cb10-376" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-377"><a href="#cb10-377" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: random-effect-structure</span></span>
-<span id="cb10-378"><a href="#cb10-378" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb10-379"><a href="#cb10-379" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb10-380"><a href="#cb10-380" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb10-381"><a href="#cb10-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-382"><a href="#cb10-382" aria-hidden="true" tabindex="-1"></a>count_one_match <span class="ot">&lt;-</span> <span class="cf">function</span>(data, group_var, match_var, comparison_label) {</span>
-<span id="cb10-383"><a href="#cb10-383" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">%&gt;%</span></span>
-<span id="cb10-384"><a href="#cb10-384" aria-hidden="true" tabindex="-1"></a>    <span class="fu">distinct</span>({{ group_var }}, {{ match_var }}) <span class="sc">%&gt;%</span></span>
-<span id="cb10-385"><a href="#cb10-385" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>({{ group_var }}, <span class="at">name =</span> <span class="st">"n_matches"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-386"><a href="#cb10-386" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
-<span id="cb10-387"><a href="#cb10-387" aria-hidden="true" tabindex="-1"></a>      <span class="at">Comparison =</span> comparison_label,</span>
-<span id="cb10-388"><a href="#cb10-388" aria-hidden="true" tabindex="-1"></a>      <span class="at">Groups_with_only_one_match =</span> <span class="fu">sum</span>(n_matches <span class="sc">==</span> <span class="dv">1</span>),</span>
-<span id="cb10-389"><a href="#cb10-389" aria-hidden="true" tabindex="-1"></a>      <span class="at">Total_groups =</span> <span class="fu">n</span>(),</span>
-<span id="cb10-390"><a href="#cb10-390" aria-hidden="true" tabindex="-1"></a>      <span class="at">Percent_only_one_match =</span> <span class="fu">round</span>(<span class="fu">mean</span>(n_matches <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>),</span>
-<span id="cb10-391"><a href="#cb10-391" aria-hidden="true" tabindex="-1"></a>      <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb10-392"><a href="#cb10-392" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb10-393"><a href="#cb10-393" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-394"><a href="#cb10-394" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-395"><a href="#cb10-395" aria-hidden="true" tabindex="-1"></a>random_effect_structure <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
-<span id="cb10-396"><a href="#cb10-396" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count_one_match</span>(data_overall_study, species_nonphylo, population_id, <span class="st">"Populations per species"</span>),</span>
-<span id="cb10-397"><a href="#cb10-397" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count_one_match</span>(data_overall_study, population_id, species_nonphylo, <span class="st">"Species per population"</span>),</span>
-<span id="cb10-398"><a href="#cb10-398" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count_one_match</span>(data_overall_study, Study_ID, population_id, <span class="st">"Populations per reference"</span>),</span>
-<span id="cb10-399"><a href="#cb10-399" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count_one_match</span>(data_overall_study, population_id, Study_ID, <span class="st">"References per population"</span>),</span>
-<span id="cb10-400"><a href="#cb10-400" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count_one_match</span>(data_overall_study, species_nonphylo, Study_ID, <span class="st">"References per species"</span>),</span>
-<span id="cb10-401"><a href="#cb10-401" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count_one_match</span>(data_overall_study, Study_ID, species_nonphylo, <span class="st">"Species per reference"</span>)</span>
-<span id="cb10-402"><a href="#cb10-402" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-403"><a href="#cb10-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-404"><a href="#cb10-404" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(random_effect_structure)</span>
-<span id="cb10-405"><a href="#cb10-405" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-406"><a href="#cb10-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-407"><a href="#cb10-407" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reproducibility information</span></span>
-<span id="cb10-408"><a href="#cb10-408" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-411"><a href="#cb10-411" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-412"><a href="#cb10-412" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb10-413"><a href="#cb10-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-414"><a href="#cb10-414" aria-hidden="true" tabindex="-1"></a>software_versions <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
-<span id="cb10-415"><a href="#cb10-415" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Software, <span class="sc">~</span>Version,</span>
-<span id="cb10-416"><a href="#cb10-416" aria-hidden="true" tabindex="-1"></a>  <span class="st">"R"</span>, <span class="st">"4.5.3"</span>,</span>
-<span id="cb10-417"><a href="#cb10-417" aria-hidden="true" tabindex="-1"></a>  <span class="st">"brms"</span>, <span class="st">"2.23.0"</span>,</span>
-<span id="cb10-418"><a href="#cb10-418" aria-hidden="true" tabindex="-1"></a>  <span class="st">"rstan"</span>, <span class="st">"2.32.7"</span>,</span>
-<span id="cb10-419"><a href="#cb10-419" aria-hidden="true" tabindex="-1"></a>  <span class="st">"StanHeaders"</span>, <span class="st">"2.32.10"</span>,</span>
-<span id="cb10-420"><a href="#cb10-420" aria-hidden="true" tabindex="-1"></a>  <span class="st">"loo"</span>, <span class="st">"2.9.0"</span>,</span>
-<span id="cb10-421"><a href="#cb10-421" aria-hidden="true" tabindex="-1"></a>  <span class="st">"posterior"</span>, <span class="st">"1.7.0"</span>,</span>
-<span id="cb10-422"><a href="#cb10-422" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tidybayes"</span>, <span class="st">"3.0.7"</span></span>
-<span id="cb10-423"><a href="#cb10-423" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-424"><a href="#cb10-424" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-425"><a href="#cb10-425" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
-<span id="cb10-426"><a href="#cb10-426" aria-hidden="true" tabindex="-1"></a>  software_versions,</span>
-<span id="cb10-427"><a href="#cb10-427" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Software environment recorded for the final common-scaling model fits."</span></span>
-<span id="cb10-428"><a href="#cb10-428" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-429"><a href="#cb10-429" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown">---
+format:
+ html:
+    toc: true
+    toc-depth: 3
+---
+
+::: section-card
+## Data preparation
+
+This section documents the construction of the analytical dataset, including population identifiers, taxonomic matching, phylogenetic filtering, moderator preparation, and random-effect structure checks.
+:::
+
+## Packeges
+
+The R packages required for data preparation.
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(ape)
+library(brms)
+library(maps)
+library(knitr)
+
+options(mc.cores = parallel::detectCores())
+```
+
+## Import data
+
+### The input files used in the analysis: the mixed-paternity dataset and the dated Clements phylogenetic tree.
+
+```{r}
+#| label: load-data
+#| include: false
+
+data_file &lt;- &quot;mixed_pat_final.csv&quot;
+tree_file &lt;- &quot;summary_dated_clements.nex&quot;
+
+mixed_pat_raw &lt;- readr::read_csv(data_file, show_col_types = FALSE)
+tree &lt;- ape::read.nexus(tree_file)
+```
+
+This table summarises the main input files used in the analysis, including the size of the raw dataset and the number of tips and internal nodes in the phylogenetic tree.
+
+```{r}
+#| label: data-summary-table
+#| echo: false
+#| message: false
+#| warning: false
+
+data_summary &lt;- tibble::tibble(
+  Item = c(&quot;Raw dataset&quot;, &quot;Phylogenetic tree&quot;),
+  Summary = c(
+    paste0(nrow(mixed_pat_raw), &quot; rows and &quot;, ncol(mixed_pat_raw), &quot; columns&quot;),
+    paste0(length(tree$tip.label), &quot; tips and &quot;, tree$Nnode, &quot; internal nodes&quot;)
+  )
+)
+
+knitr::kable(data_summary)
+```
+
+## Prepare data
+
+### Population identifier
+
+Population identity was defined using study identity and rounded geographic coordinates, with latitude and longitude rounded to two decimal places prior to constructing the population identifier.
+
+```{r}
+
+mixed_pat &lt;- mixed_pat_raw %&gt;%
+  mutate(
+    Lat_round = round(Lat, 2),
+    Long_round = round(Long, 2),
+    population_id = paste(Study_ID, Lat_round, Long_round, sep = &quot;_&quot;),
+    population_id = as.factor(population_id)
+  )
+```
+
+### Study and species formatting
+
+The following step formats the main grouping variables used in the models and calculates the total number of broods by combining mixed- and non-mixed-brood counts.
+
+```{r}
+#| label: study-species-formatting
+
+mixed_pat &lt;- mixed_pat %&gt;%
+  mutate(
+    Study_ID = as.factor(Study_ID),
+    species_phylo_brms = as.factor(Clements_name),
+    species_nonphylo = as.factor(Clements_name),
+
+    n_mixed_broods = as.numeric(n_mixed_broods),
+    n_non_mixed_broods = as.numeric(n_non_mixed_broods),
+    n_total_broods = n_mixed_broods + n_non_mixed_broods
+  )
+```
+
+### Phylogeny preparation
+
+Species names were harmonised between the mixed-paternity dataset and the phylogenetic tree prior to pruning the tree and generating the phylogenetic covariance matrix used in the Bayesian models.
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| message: false
+#| warning: false
+
+species_data &lt;- mixed_pat %&gt;%
+  filter(!is.na(species_phylo_brms)) %&gt;%
+  pull(species_phylo_brms) %&gt;%
+  as.character() %&gt;%
+  unique()
+
+species_tree &lt;- tree$tip.label
+
+species_for_tree &lt;- intersect(species_data, species_tree)
+
+tree_analysis &lt;- ape::keep.tip(tree, species_for_tree)
+
+phylo_mat &lt;- ape::vcv.phylo(tree_analysis, corr = TRUE)
+
+phylo_mat &lt;- phylo_mat[
+  sort(rownames(phylo_mat)),
+  sort(colnames(phylo_mat))
+]
+
+mixed_pat &lt;- mixed_pat %&gt;%
+  filter(species_phylo_brms %in% rownames(phylo_mat)) %&gt;%
+  mutate(
+    species_phylo_brms = droplevels(species_phylo_brms),
+    species_nonphylo = droplevels(species_nonphylo)
+  )
+```
+
+### Phylogeny - summary
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| message: false
+#| warning: false
+
+phylo_summary &lt;- tibble::tibble(
+  Item = c(
+    &quot;Species matched to phylogeny&quot;,
+    &quot;Tips in source tree&quot;,
+    &quot;Species retained after phylogenetic filtering&quot;
+  ),
+  Value = c(
+    length(species_for_tree),
+    length(tree$tip.label),
+    n_distinct(mixed_pat$species_phylo_brms)
+  )
+)
+
+knitr::kable(phylo_summary)
+```
+
+### Moderator variable preparation
+
+```{r}
+
+min_n &lt;- 5
+
+mixed_pat &lt;- mixed_pat %&gt;%
+  mutate(
+    marker_type_model = as.factor(marker_type_model),
+    nest_box_model = as.factor(nest_box_model),
+    nest_type_model = as.factor(nest_type_model),
+
+    breeding_system = as.factor(breeding_system),
+    mono_poly_model = as.factor(mono_poly_model),
+    parental_care = as.factor(parental_care),
+    cooperative_breeding = as.factor(cooperative_breeding),
+
+    migration = as.factor(migration),
+    coloniality = as.factor(coloniality),
+
+    CS_max = as.numeric(CS_max),
+    body_mass = as.numeric(body_mass),
+    study_duration = as.numeric(study_duration_num),
+
+    Lat_round = round(as.numeric(Lat), 2),
+    abs_lat = abs(Lat_round)
+  )
+```
+
+## Preparation of the database
+
+### Database overall study
+
+```{r}
+#| label: data-overall-study
+
+data_overall_study &lt;- mixed_pat %&gt;%
+  filter(
+    !is.na(n_mixed_broods),
+    !is.na(n_non_mixed_broods),
+    !is.na(n_total_broods),
+    n_total_broods &gt; 0,
+    !is.na(Study_ID),
+    !is.na(species_phylo_brms)
+  ) %&gt;%
+  mutate(
+    Study_ID = droplevels(Study_ID),
+    species_nonphylo = droplevels(species_nonphylo),
+    species_phylo_brms = droplevels(species_phylo_brms),
+    population_id = droplevels(population_id)
+  )
+```
+
+### Common scaling of continuous moderators
+
+The centring and scaling constants are calculated once from the 619-record overall analytical dataset, before moderator-specific complete-case filtering. The same constants are then reused in every single-moderator and multivariable analysis.
+
+```{r}
+#| label: common-continuous-scaling
+
+data_overall_study &lt;- data_overall_study %&gt;%
+  mutate(
+    log_body_mass = replace(
+      body_mass,
+      !is.na(body_mass) &amp; body_mass &lt;= 0,
+      NA_real_
+    ),
+    log_body_mass = log10(log_body_mass)
+  )
+
+scaling_constants &lt;- data_overall_study %&gt;%
+  summarise(
+    study_duration_mean = mean(study_duration, na.rm = TRUE),
+    study_duration_sd = sd(study_duration, na.rm = TRUE),
+    CS_max_mean = mean(CS_max, na.rm = TRUE),
+    CS_max_sd = sd(CS_max, na.rm = TRUE),
+    log_body_mass_mean = mean(log_body_mass, na.rm = TRUE),
+    log_body_mass_sd = sd(log_body_mass, na.rm = TRUE),
+    abs_lat_mean = mean(abs_lat, na.rm = TRUE),
+    abs_lat_sd = sd(abs_lat, na.rm = TRUE)
+  )
+
+data_overall_study &lt;- data_overall_study %&gt;%
+  mutate(
+    study_duration_sc =
+      (study_duration - scaling_constants$study_duration_mean) /
+      scaling_constants$study_duration_sd,
+    CS_max_sc =
+      (CS_max - scaling_constants$CS_max_mean) /
+      scaling_constants$CS_max_sd,
+    log_body_mass_sc =
+      (log_body_mass - scaling_constants$log_body_mass_mean) /
+      scaling_constants$log_body_mass_sd,
+    abs_lat_sc =
+      (abs_lat - scaling_constants$abs_lat_mean) /
+      scaling_constants$abs_lat_sd
+  )
+
+scaling_table &lt;- tibble::tribble(
+  ~Predictor, ~N, ~Mean, ~SD, ~Unit,
+  &quot;Study duration&quot;, sum(!is.na(data_overall_study$study_duration)),
+    scaling_constants$study_duration_mean, scaling_constants$study_duration_sd, &quot;years&quot;,
+  &quot;Maximum clutch size&quot;, sum(!is.na(data_overall_study$CS_max)),
+    scaling_constants$CS_max_mean, scaling_constants$CS_max_sd, &quot;eggs&quot;,
+  &quot;Body mass&quot;, sum(!is.na(data_overall_study$log_body_mass)),
+    scaling_constants$log_body_mass_mean, scaling_constants$log_body_mass_sd, &quot;log10(g)&quot;,
+  &quot;Absolute latitude&quot;, sum(!is.na(data_overall_study$abs_lat)),
+    scaling_constants$abs_lat_mean, scaling_constants$abs_lat_sd, &quot;degrees&quot;
+) %&gt;%
+  mutate(across(c(Mean, SD), ~ round(.x, 3)))
+
+knitr::kable(scaling_table)
+```
+
+### Database single moderators
+
+```{r}
+
+data_nest_box &lt;- data_overall_study %&gt;%
+  filter(!is.na(nest_box_model)) %&gt;%
+  droplevels()
+
+
+data_migration &lt;- data_overall_study %&gt;%
+  filter(!is.na(migration)) %&gt;%
+  droplevels()
+
+data_coloniality &lt;- data_overall_study %&gt;%
+  filter(!is.na(coloniality)) %&gt;%
+  droplevels()
+
+
+data_cooperative &lt;- data_overall_study %&gt;%
+  filter(!is.na(cooperative_breeding)) %&gt;%
+  droplevels()
+
+data_study_duration &lt;- data_overall_study %&gt;%
+  filter(!is.na(study_duration_sc)) %&gt;%
+  droplevels()
+
+data_clutch_size &lt;- data_overall_study %&gt;%
+  filter(!is.na(CS_max_sc)) %&gt;%
+  droplevels()
+
+data_body_mass &lt;- data_overall_study %&gt;%
+  filter(
+    is.finite(log_body_mass),
+    is.finite(log_body_mass_sc)
+  ) %&gt;%
+  droplevels()
+
+data_abs_latitude &lt;- data_overall_study %&gt;%
+  filter(!is.na(abs_lat_sc)) %&gt;%
+  droplevels()
+
+data_marker_type &lt;- data_overall_study %&gt;%
+  filter(!is.na(marker_type_model)) %&gt;%
+  droplevels()
+
+
+data_nest_type &lt;- data_overall_study %&gt;%
+  filter(!is.na(nest_type_model)) %&gt;%
+  droplevels()
+
+
+valid_breeding_levels &lt;- data_overall_study %&gt;%
+  count(breeding_system) %&gt;%
+  filter(!is.na(breeding_system), n &gt;= 5) %&gt;%
+  pull(breeding_system)
+
+data_breeding_system &lt;- data_overall_study %&gt;%
+  filter(
+    !is.na(breeding_system),
+    breeding_system %in% valid_breeding_levels
+  ) %&gt;%
+  droplevels()
+
+data_mono_poly &lt;- data_overall_study %&gt;%
+  filter(!is.na(mono_poly_model)) %&gt;%
+  droplevels()
+
+data_parental_care &lt;- data_overall_study %&gt;%
+  filter(!is.na(parental_care)) %&gt;%
+  droplevels()
+
+
+```
+
+## Relationship among candidate random-effects grouping factors
+
+Before fitting the models, we evaluated the degree of overlap and nesting among candidate random-effects grouping factors, including species identity, study identity, and the pragmatic population identifier.
+
+```{r}
+#| label: random-effect-structure
+#| echo: false
+#| message: false
+#| warning: false
+
+count_one_match &lt;- function(data, group_var, match_var, comparison_label) {
+  data %&gt;%
+    distinct({{ group_var }}, {{ match_var }}) %&gt;%
+    count({{ group_var }}, name = &quot;n_matches&quot;) %&gt;%
+    summarise(
+      Comparison = comparison_label,
+      Groups_with_only_one_match = sum(n_matches == 1),
+      Total_groups = n(),
+      Percent_only_one_match = round(mean(n_matches == 1) * 100, 1),
+      .groups = &quot;drop&quot;
+    )
+}
+
+random_effect_structure &lt;- bind_rows(
+  count_one_match(data_overall_study, species_nonphylo, population_id, &quot;Populations per species&quot;),
+  count_one_match(data_overall_study, population_id, species_nonphylo, &quot;Species per population&quot;),
+  count_one_match(data_overall_study, Study_ID, population_id, &quot;Populations per reference&quot;),
+  count_one_match(data_overall_study, population_id, Study_ID, &quot;References per population&quot;),
+  count_one_match(data_overall_study, species_nonphylo, Study_ID, &quot;References per species&quot;),
+  count_one_match(data_overall_study, Study_ID, species_nonphylo, &quot;Species per reference&quot;)
+)
+
+knitr::kable(random_effect_structure)
+```
+
+## Reproducibility information
+
+```{r}
+#| echo: false
+
+software_versions &lt;- tibble::tribble(
+  ~Software, ~Version,
+  &quot;R&quot;, &quot;4.5.3&quot;,
+  &quot;brms&quot;, &quot;2.23.0&quot;,
+  &quot;rstan&quot;, &quot;2.32.7&quot;,
+  &quot;StanHeaders&quot;, &quot;2.32.10&quot;,
+  &quot;loo&quot;, &quot;2.9.0&quot;,
+  &quot;posterior&quot;, &quot;1.7.0&quot;,
+  &quot;tidybayes&quot;, &quot;3.0.7&quot;
+)
+
+knitr::kable(
+  software_versions,
+  caption = &quot;Software environment recorded for the final common-scaling model fits.&quot;
+)
+```
+
+The versions above describe the analytical environment used to fit the final models and produce the reported posterior summaries. Any `sessionInfo()` retained in legacy local Quarto output describes only the website-rendering environment (R 4.5.1; posterior 1.6.1) and was not used to fit or summarise the final models.
+
+
+## Overlap between nest-box use and nest type (Table S7) {#nest-box-nest-type-overlap}
+
+This descriptive table uses the overall analytical dataset prepared in this chapter: 575 of its 619 records have both nest-box use and nest type available. The remaining 44 records have missing information for one or both variables. Counts refer to records, not unique species or publications. This is a different sample from the 533 complete cases used for the primary multivariable model and Tables S5 and S8.
+
+Of the 165 nest-box records, 119 (72.1%) were classified as cavity nesting. Nest type is included in the primary multivariable model, whereas nest-box use was evaluated in a separate single-moderator model. The table describes overlap between these candidate variables; it does not estimate their independent associations with mixed paternity.
+
+```{r}
+#| label: nest-box-nest-type-overlap-table
+#| echo: true
+#| code-fold: true
+#| code-summary: &quot;Code: reproduce Table S7&quot;
+
+summarise_nest_box_overlap &lt;- function(data_overall_study) {
+  required &lt;- c(&quot;nest_box_model&quot;, &quot;nest_type_model&quot;)
+  stopifnot(nrow(data_overall_study) == 619L,
+            all(required %in% names(data_overall_study)))
+  complete &lt;- complete.cases(data_overall_study[required])
+  dat &lt;- data_overall_study[complete, required, drop = FALSE]
+  stopifnot(nrow(dat) == 575L, sum(!complete) == 44L)
+  box_levels &lt;- c(&quot;no&quot;, &quot;yes&quot;)
+  nest_levels &lt;- c(&quot;cavity&quot;, &quot;ground&quot;, &quot;open&quot;, &quot;other_enclosed&quot;)
+  stopifnot(all(as.character(dat$nest_box_model) %in% box_levels),
+            all(as.character(dat$nest_type_model) %in% nest_levels))
+  counts &lt;- table(
+    factor(dat$nest_box_model, levels = box_levels),
+    factor(dat$nest_type_model, levels = nest_levels)
+  )
+  counts &lt;- rbind(counts, Total = colSums(counts))
+  counts &lt;- cbind(counts, Total = rowSums(counts))
+  stopifnot(counts[&quot;Total&quot;, &quot;Total&quot;] == 575L)
+  data.frame(
+    `Nest-box use` = c(&quot;No&quot;, &quot;Yes&quot;, &quot;Total&quot;),
+    Cavity = as.integer(counts[, &quot;cavity&quot;]),
+    Ground = as.integer(counts[, &quot;ground&quot;]),
+    Open = as.integer(counts[, &quot;open&quot;]),
+    `Other enclosed` = as.integer(counts[, &quot;other_enclosed&quot;]),
+    Total = as.integer(counts[, &quot;Total&quot;]),
+    check.names = FALSE
+  )
+}
+
+overlap_table &lt;- summarise_nest_box_overlap(data_overall_study)
+dir.create(&quot;tables&quot;, showWarnings = FALSE, recursive = TRUE)
+write.csv(overlap_table, &quot;tables/nest_box_nest_type_overlap.csv&quot;, row.names = FALSE)
+knitr::kable(overlap_table, caption = &quot;Table S7. Nest-box use by nest type in 575 complete records from the 619-record overall analytical dataset; 44 records with missing information are excluded.&quot;)
+```
+
+[Download Table S7](tables/nest_box_nest_type_overlap.csv).
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

@@ -1,5 +1,5 @@
 ---
-format: 
+format:
  html:
     toc: true
     toc-depth: 3
@@ -406,3 +406,53 @@ knitr::kable(
 ```
 
 The versions above describe the analytical environment used to fit the final models and produce the reported posterior summaries. Any `sessionInfo()` retained in legacy local Quarto output describes only the website-rendering environment (R 4.5.1; posterior 1.6.1) and was not used to fit or summarise the final models.
+
+
+## Overlap between nest-box use and nest type (Table S7) {#nest-box-nest-type-overlap}
+
+This descriptive table uses the overall analytical dataset prepared in this chapter: 575 of its 619 records have both nest-box use and nest type available. The remaining 44 records have missing information for one or both variables. Counts refer to records, not unique species or publications. This is a different sample from the 533 complete cases used for the primary multivariable model and Tables S5 and S8.
+
+Of the 165 nest-box records, 119 (72.1%) were classified as cavity nesting. Nest type is included in the primary multivariable model, whereas nest-box use was evaluated in a separate single-moderator model. The table describes overlap between these candidate variables; it does not estimate their independent associations with mixed paternity.
+
+```{r}
+#| label: nest-box-nest-type-overlap-table
+#| echo: true
+#| code-fold: true
+#| code-summary: "Code: reproduce Table S7"
+
+summarise_nest_box_overlap <- function(data_overall_study) {
+  required <- c("nest_box_model", "nest_type_model")
+  stopifnot(nrow(data_overall_study) == 619L,
+            all(required %in% names(data_overall_study)))
+  complete <- complete.cases(data_overall_study[required])
+  dat <- data_overall_study[complete, required, drop = FALSE]
+  stopifnot(nrow(dat) == 575L, sum(!complete) == 44L)
+  box_levels <- c("no", "yes")
+  nest_levels <- c("cavity", "ground", "open", "other_enclosed")
+  stopifnot(all(as.character(dat$nest_box_model) %in% box_levels),
+            all(as.character(dat$nest_type_model) %in% nest_levels))
+  counts <- table(
+    factor(dat$nest_box_model, levels = box_levels),
+    factor(dat$nest_type_model, levels = nest_levels)
+  )
+  counts <- rbind(counts, Total = colSums(counts))
+  counts <- cbind(counts, Total = rowSums(counts))
+  stopifnot(counts["Total", "Total"] == 575L)
+  data.frame(
+    `Nest-box use` = c("No", "Yes", "Total"),
+    Cavity = as.integer(counts[, "cavity"]),
+    Ground = as.integer(counts[, "ground"]),
+    Open = as.integer(counts[, "open"]),
+    `Other enclosed` = as.integer(counts[, "other_enclosed"]),
+    Total = as.integer(counts[, "Total"]),
+    check.names = FALSE
+  )
+}
+
+overlap_table <- summarise_nest_box_overlap(data_overall_study)
+dir.create("tables", showWarnings = FALSE, recursive = TRUE)
+write.csv(overlap_table, "tables/nest_box_nest_type_overlap.csv", row.names = FALSE)
+knitr::kable(overlap_table, caption = "Table S7. Nest-box use by nest type in 575 complete records from the 619-record overall analytical dataset; 44 records with missing information are excluded.")
+```
+
+[Download Table S7](tables/nest_box_nest_type_overlap.csv).

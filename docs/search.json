@@ -515,5 +515,15 @@
     "crumbs": [
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>Figures</span>"
     ]
+  },
+  {
+    "objectID": "02_data_preparation.html#nest-box-nest-type-overlap",
+    "href": "02_data_preparation.html#nest-box-nest-type-overlap",
+    "title": "3  Data preparation",
+    "section": "3.7 Overlap between nest-box use and nest type (Table S7)",
+    "text": "This descriptive table uses the overall analytical dataset prepared in this chapter: 575 of its 619 records have both nest-box use and nest type available. The remaining 44 records have missing information for one or both variables. Counts refer to records, not unique species or publications. This is a different sample from the 533 complete cases used for the primary multivariable model and Tables S5 and S8. Of the 165 nest-box records, 119 (72.1%) were classified as cavity nesting. Nest type is included in the primary multivariable model, whereas nest-box use was evaluated in a separate single-moderator model. The table describes overlap between these candidate variables; it does not estimate their independent associations with mixed paternity.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Data preparation</span>"
+    ]
   }
 ]
