@@ -1513,7 +1513,7 @@ knitr::include_graphics("Figures/common_scaling/study_duration.png")
 
 ```{r}
 #| label: fig-abs-latitude
-#| fig-cap: "Population-level predicted mixed-paternity prevalence across absolute latitude from the common-scaling refit. Absolute latitude was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval."
+#| fig-cap: "Predicted mixed-paternity prevalence across absolute latitude from the single-moderator beta-binomial model fitted to 592 records. Points show observed record-level prevalence, with point size scaled by the number of broods. The solid line shows the posterior mean on the probability scale, and the shaded band shows the 95% equal-tailed credible interval, with all random effects set to zero. Absolute latitude was standardised using the overall analytical dataset and is displayed in degrees."
 
 knitr::include_graphics("Figures/common_scaling/abs_latitude.png")
 ```
