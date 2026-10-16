@@ -1875,8 +1875,8 @@ p_forest_main <- plot_forest(forest_dat)
 dir.create("tables", recursive = TRUE, showWarnings = FALSE)
 dir.create("Figures", recursive = TRUE, showWarnings = FALSE)
 write.csv(forest_dat, "tables/single_moderator_forest_plot_data.csv", row.names = FALSE)
-ggplot2::ggsave("Figures/Forest_plot8.pdf", p_forest_main, width = 10, height = 8.6)
-ggplot2::ggsave("Figures/Forest_plot8.png", p_forest_main, width = 10, height = 8.6, dpi = 300)
+ggplot2::ggsave("Figures/single_moderator_forest_plot.pdf", p_forest_main, width = 10, height = 8.6)
+ggplot2::ggsave("Figures/single_moderator_forest_plot.png", p_forest_main, width = 10, height = 8.6, dpi = 300)
 ```
 
 ```{r}
@@ -1885,7 +1885,7 @@ ggplot2::ggsave("Figures/Forest_plot8.png", p_forest_main, width = 10, height = 
 #| echo: false
 #| out-width: "100%"
 
-knitr::include_graphics("Figures/Forest_plot8.png")
+knitr::include_graphics("Figures/single_moderator_forest_plot.png")
 ```
 
 Exact plotted estimates, interval types, model identifiers and sample sizes are available in the [posterior summary table](tables/single_moderator_forest_plot_data.csv).

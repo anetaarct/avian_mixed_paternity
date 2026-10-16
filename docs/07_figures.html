@@ -2248,14 +2248,14 @@ p_forest_main &lt;- plot_forest(forest_dat)
 dir.create(&quot;tables&quot;, recursive = TRUE, showWarnings = FALSE)
 dir.create(&quot;Figures&quot;, recursive = TRUE, showWarnings = FALSE)
 write.csv(forest_dat, &quot;tables/single_moderator_forest_plot_data.csv&quot;, row.names = FALSE)
-ggplot2::ggsave(&quot;Figures/Forest_plot8.pdf&quot;, p_forest_main, width = 10, height = 8.6)
-ggplot2::ggsave(&quot;Figures/Forest_plot8.png&quot;, p_forest_main, width = 10, height = 8.6, dpi = 300)
+ggplot2::ggsave(&quot;Figures/single_moderator_forest_plot.pdf&quot;, p_forest_main, width = 10, height = 8.6)
+ggplot2::ggsave(&quot;Figures/single_moderator_forest_plot.png&quot;, p_forest_main, width = 10, height = 8.6, dpi = 300)
 </code></pre></div>
 </details>
 <div id="fig-forest-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-forest-plot-caption">
-<img src="Figures/Forest_plot8.png" class="img-fluid figure-img" style="width:100.0%">
+<img src="Figures/single_moderator_forest_plot.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forest-plot-caption">
 Figure&nbsp;8.14: Selected fixed effects and contrasts from single-moderator beta-binomial models, on the log-odds scale. Circles show posterior means and 95% equal-tailed credible intervals. Triangles show posterior medians and 95% highest-posterior-density (HPD) intervals for marker-type, nest-type, BG and BIRDBASE contrasts. Categorical contrasts compare the first category with the second; positive values indicate higher odds in the first category. Continuous effects are per one standard deviation, using common scaling from the 619-record overall dataset; body mass was log10-transformed before standardisation. All plotted summaries were calculated directly from retained posterior draws.
@@ -4765,8 +4765,8 @@ p_forest_main &lt;- plot_forest(forest_dat)
 dir.create(&quot;tables&quot;, recursive = TRUE, showWarnings = FALSE)
 dir.create(&quot;Figures&quot;, recursive = TRUE, showWarnings = FALSE)
 write.csv(forest_dat, &quot;tables/single_moderator_forest_plot_data.csv&quot;, row.names = FALSE)
-ggplot2::ggsave(&quot;Figures/Forest_plot8.pdf&quot;, p_forest_main, width = 10, height = 8.6)
-ggplot2::ggsave(&quot;Figures/Forest_plot8.png&quot;, p_forest_main, width = 10, height = 8.6, dpi = 300)
+ggplot2::ggsave(&quot;Figures/single_moderator_forest_plot.pdf&quot;, p_forest_main, width = 10, height = 8.6)
+ggplot2::ggsave(&quot;Figures/single_moderator_forest_plot.png&quot;, p_forest_main, width = 10, height = 8.6, dpi = 300)
 ```
 
 ```{r}
@@ -4775,7 +4775,7 @@ ggplot2::ggsave(&quot;Figures/Forest_plot8.png&quot;, p_forest_main, width = 10,
 #| echo: false
 #| out-width: &quot;100%&quot;
 
-knitr::include_graphics(&quot;Figures/Forest_plot8.png&quot;)
+knitr::include_graphics(&quot;Figures/single_moderator_forest_plot.png&quot;)
 ```
 
 Exact plotted estimates, interval types, model identifiers and sample sizes are available in the [posterior summary table](tables/single_moderator_forest_plot_data.csv).

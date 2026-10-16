@@ -131,7 +131,7 @@ for (directory in c(project_dir, docs_dir)) {
   dir.create(file.path(directory, "tables"), recursive = TRUE, showWarnings = FALSE)
   dir.create(file.path(directory, "Figures"), recursive = TRUE, showWarnings = FALSE)
   write.csv(forest_dat, file.path(directory, "tables/single_moderator_forest_plot_data.csv"), row.names = FALSE)
-  ggsave(file.path(directory, "Figures/Forest_plot8.pdf"), p_forest_main, width = 10, height = 8.6, units = "in")
-  ggsave(file.path(directory, "Figures/Forest_plot8.png"), p_forest_main, width = 10, height = 8.6, units = "in", dpi = 300)
+  ggsave(file.path(directory, "Figures/single_moderator_forest_plot.pdf"), p_forest_main, width = 10, height = 8.6, units = "in")
+  ggsave(file.path(directory, "Figures/single_moderator_forest_plot.png"), p_forest_main, width = 10, height = 8.6, units = "in", dpi = 300)
 }
 message("Saved 15 posterior-derived summaries and the PDF/PNG figure.")
