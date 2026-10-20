@@ -12,6 +12,8 @@ format:
 :::: overview-text
 This website presents the complete reproducible workflow for the global comparative meta-analysis of mixed-paternity prevalence across birds.
 
+Studies using microsatellites, single-nucleotide polymorphisms or mixed/other marker systems reported higher mixed-paternity prevalence than those using DNA fingerprinting, suggesting that the older method may underestimate its prevalence. This observational pattern does not directly measure detection sensitivity; the mixed/other category combines different approaches rather than representing a single newer technology.
+
 ::: {.callout-important title="Core idea"}
 Birds are central model systems for studying sexual selection and reproductive conflict, yet mixed-paternity prevalence is often comparatively low across species. This study aims to understand which ecological, social, and methodological factors explain variation in mixed paternity across birds.
 :::

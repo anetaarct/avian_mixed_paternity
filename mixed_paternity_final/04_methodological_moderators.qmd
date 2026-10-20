@@ -111,6 +111,10 @@ fit_single_moderator <- function(formula, data) {
 
 This model tested whether estimated mixed-paternity prevalence differed among molecular marker types.
 
+DNA fingerprinting studies had lower estimated mixed-paternity prevalence than microsatellite, SNP and mixed/other studies in the single-moderator comparisons. These are comparative associations among studies; the category-specific prevalence intervals and the pairwise contrasts answer different questions. The primary multivariable model also retained higher prevalence for each of the other marker categories relative to DNA fingerprinting after adjustment for the other moderators.
+
+The lower reported prevalence in DNA fingerprinting studies is consistent with underdetection of mixed-paternity broods by this older method and, consequently, possible underestimation of their prevalence. This does not directly establish differences in detection sensitivity or quantify detection bias. Marker type is associated with study era, taxonomic composition, candidate-parent sampling, genotyping completeness, exclusion power, error checking and parentage-assignment criteria. The mixed/other category is heterogeneous and should not be interpreted as one newer technology.
+
 ### Figure
 
 ```{r}
