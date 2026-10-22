@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: ../docs
 
 book:
   title: "Evolutionary history strongly structures brood-level mixed paternity across birds"
@@ -12,6 +13,7 @@ book:
     - 04_methodological_moderators.qmd
     - 05_breeding_system_moderators.qmd
     - 06_biological_moderators.qmd
+    - 07_multivariable_model.qmd
     - 07_figures.qmd
 
 format:

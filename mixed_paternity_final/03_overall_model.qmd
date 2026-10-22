@@ -246,8 +246,9 @@ phylo_signal_summary <- draws_phylo_signal %>%
   )
 
 knitr::kable(
-  phylo_signal_summary,
-  digits = 3,
+  phylo_signal_summary |>
+    dplyr::mutate(dplyr::across(where(is.numeric), ~ sprintf("%.3f", .x))),
+  align = c("l", "r", "r", "r"),
   caption = "Posterior mean estimate of the phylogenetic signal with a 95% equal-tailed credible interval."
 )
 ```

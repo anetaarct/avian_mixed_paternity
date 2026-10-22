@@ -24,7 +24,7 @@ Birds are central model systems for studying sexual selection and reproductive c
 
 :::::::::: card-grid
 ::: chapter-card
-1\. Analysis metadata
+2\. Analysis metadata
 
 Description of analytical variables used in the statistical models.
 
@@ -32,7 +32,7 @@ Description of analytical variables used in the statistical models.
 :::
 
 ::: chapter-card
-2\. Database preparation
+3\. Database preparation
 
 Screening workflow, data extraction, and taxonomic harmonisation.
 
@@ -40,7 +40,7 @@ Screening workflow, data extraction, and taxonomic harmonisation.
 :::
 
 ::: chapter-card
-3\. Overall model
+4\. Overall model
 
 Intercept-only models estimating overall mixed-paternity prevalence.
 
@@ -48,7 +48,7 @@ Intercept-only models estimating overall mixed-paternity prevalence.
 :::
 
 ::: chapter-card
-4\. Methodological moderators
+5\. Methodological moderators
 
 Single-moderator models for methodological predictors.
 
@@ -56,7 +56,7 @@ Single-moderator models for methodological predictors.
 :::
 
 ::: chapter-card
-5\. Breeding-system moderators
+6\. Breeding-system moderators
 
 Single-moderator analyses for breeding-system classifications.
 
@@ -64,7 +64,7 @@ Single-moderator analyses for breeding-system classifications.
 :::
 
 ::: chapter-card
-6\. Biological moderators
+7\. Biological moderators
 
 Single-moderator models for biological predictors.
 
@@ -72,7 +72,15 @@ Single-moderator models for biological predictors.
 :::
 
 ::: chapter-card
-7\. Figures
+8\. Multivariable model
+
+Joint model specification, coefficient estimates, forest plot and design diagnostics.
+
+[Open chapter](07_multivariable_model.html)
+:::
+
+::: chapter-card
+9\. Figures
 
 Reproducible figures used in the manuscript and supplement.
 
