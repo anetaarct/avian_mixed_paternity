@@ -470,7 +470,7 @@ p_migration <- plot_categorical_moderator(
   x_lab = "Migration status",
   labels = c(
     "Strong" = "Regular migrant",
-    "Weak" = "Partial migrant"
+    "Weak" = "Partial/resident"
   )
 )
 p_migration
@@ -621,7 +621,7 @@ p_parental_care <- plot_social_moderator(
     "biparental" = "Biparental",
     "broodparasite" = "Brood parasite",
     "cooperation" = "Cooperative care",
-    "nk_cooperation" = "No known coop.",
+    "nk_cooperation" = "Non-kin coop.",
     "pair" = "Pair",
     "uniparental" = "Uniparental"
   )

@@ -269,7 +269,7 @@ knitr::kable(mono_poly_contrasts, digits = 3,
 
 ## Parental care
 
-This model tested whether mixed-paternity prevalence differed among parental-care categories.
+This model tested whether mixed-paternity prevalence differed among parental-care categories. The label "Non-kin coop." denotes cooperation among unrelated individuals (nk_cooperation).
 
 ### Figure
 

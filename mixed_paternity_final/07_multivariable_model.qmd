@@ -427,3 +427,33 @@ knitr::kable(design_table, digits = 2, caption = "Table S8. Fixed-effect design 
 ```
 
 [Download the S5 correlation table](tables/common_scaling/full_model_correlations.csv) · [Download the S8 diagnostics](tables/common_scaling/full_model_design_diagnostics.csv) · [Inspect the 16 design columns](tables/common_scaling/full_model_design_columns.csv).
+
+
+## Convergence diagnostics and beta-binomial precision {#full-model-convergence}
+
+The accepted primary model used four chains with 10,000 iterations each, including 5,000 warm-up iterations per chain, yielding 20,000 retained posterior draws. The diagnostics below refer to the same 533-record fit reported in the main text and Supplementary Table S10. The maximum R-hat is 1.0114 (1.011 when rounded to three decimal places). There were no divergent transitions or maximum-treedepth hits.
+
+| Diagnostic | Value |
+|:--|--:|
+| Observations | 533 |
+| Study identifiers | 481 |
+| Species | 326 |
+| Chains | 4 |
+| Post-warm-up draws | 20,000 |
+| Maximum R-hat | 1.0114 |
+| Minimum bulk ESS | 899 |
+| Minimum tail ESS | 2,096 |
+| Divergent transitions | 0 |
+| Maximum-treedepth hits | 0 |
+| Maximum observed tree depth | 10 |
+| Configured maximum tree depth | 15 |
+
+The posterior mean beta-binomial precision parameter is φ = 29.76, with a 95% equal-tailed credible interval of [16.12, 59.41]. These summaries were calculated directly from the retained posterior draws. In this beta-binomial parameterisation, larger φ corresponds to less extra-binomial dispersion; the finite estimate indicates residual extra-binomial variation after accounting for predictors and random effects.
+
+[Download convergence diagnostics](tables/common_scaling/model_full_brouwer_griffith_diagnostics.csv) · [Download the precision summary](tables/common_scaling/full_model_precision.csv).
+
+## Response-scale predictions {#full-model-predictions}
+
+![ Population-level fixed-effect predictions from the primary multivariable model. Points and vertical intervals show posterior means and 95% equal-tailed credible intervals for (A) molecular marker type and (B) migration. The label "Partial/resident" denotes the analytical Weak category, which includes resident species and species exhibiting weak seasonal, local or irregular movements. Lines and shaded areas show posterior means and 95% equal-tailed credible intervals for (C) maximum clutch size and (D) absolute latitude. Random effects are set to zero; non-focal continuous predictors are set to zero on their common standardised scales and categorical predictors to their reference levels. ](Figures/common_scaling/full_model_key_effects.png){#fig-full-model-key-effects width=100%}
+
+[Download the prediction figure as PDF](Figures/common_scaling/full_model_key_effects.pdf). The figure uses the accepted common-scaling fit and is the same version as in the main manuscript. [Figure-generation code](scripts/generate_common_scaling_figures.R).

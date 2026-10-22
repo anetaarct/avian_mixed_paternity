@@ -1,0 +1,2 @@
+model,observations,max_rhat,min_bulk_ess,min_tail_ess,divergences,treedepth_hits,maximum_observed_treedepth,configured_max_treedepth
+full_brouwer_griffith,533,1.011400529330605,899.0387610648429,2095.56045949338,0,0,10,15

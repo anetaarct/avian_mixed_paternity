@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <button aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" class="quarto-btn-toggle btn" data-bs-target=".quarto-sidebar-collapse-item" data-bs-toggle="collapse" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }" role="button" type="button">
 <i class="bi bi-layout-text-sidebar-reverse"></i>
 </button>
-<nav aria-label="breadcrumb" class="quarto-page-breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07_figures.html"><span class="chapter-number">8</span>  <span class="chapter-title">Figures</span></a></li></ol></nav>
+<nav aria-label="breadcrumb" class="quarto-page-breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07_figures.html"><span class="chapter-number">9</span>  <span class="chapter-title">Figures</span></a></li></ol></nav>
 <a aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" class="flex-grow-1" data-bs-target=".quarto-sidebar-collapse-item" data-bs-toggle="collapse" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }" role="navigation">
 </a>
 <button aria-label="Search" class="btn quarto-search-button" onclick="window.quartoOpenSearch();" type="button">
@@ -497,7 +497,6 @@ diagnostics &lt;- bind_rows(lapply(diagnostic_files, readr::read_csv, show_col_t
 write_csv(diagnostics, file.path(table_dir, "continuous_models_diagnostics.csv"))
 
 message("Four common-scaling continuous-moderator models finished.")</code></pre></div></details>
-
 <details class="code-fold current-analysis-code" data-source="scripts/generate_common_scaling_figures.R"><summary>Code: continuous and full-model figures</summary><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"># Run from mixed_paternity_final. Uses accepted saved fits; no model fitting.
 library(brms)
 library(dplyr)
@@ -1594,7 +1593,7 @@ Figure 9.6: Population-level predicted mixed-paternity prevalence across log10 
 <span id="cb21-5"><a aria-hidden="true" href="#cb21-5" tabindex="-1"></a>  <span class="at">x_lab =</span> <span class="st">"Migration status"</span>,</span>
 <span id="cb21-6"><a aria-hidden="true" href="#cb21-6" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(</span>
 <span id="cb21-7"><a aria-hidden="true" href="#cb21-7" tabindex="-1"></a>    <span class="st">"Strong"</span> <span class="ot">=</span> <span class="st">"Regular migrant"</span>,</span>
-<span id="cb21-8"><a aria-hidden="true" href="#cb21-8" tabindex="-1"></a>    <span class="st">"Weak"</span> <span class="ot">=</span> <span class="st">"Partial migrant"</span></span>
+<span id="cb21-8"><a aria-hidden="true" href="#cb21-8" tabindex="-1"></a>    <span class="st">"Weak"</span> <span class="ot">=</span> <span class="st">"Partial/resident"</span></span>
 <span id="cb21-9"><a aria-hidden="true" href="#cb21-9" tabindex="-1"></a>  )</span>
 <span id="cb21-10"><a aria-hidden="true" href="#cb21-10" tabindex="-1"></a>)</span>
 <span id="cb21-11"><a aria-hidden="true" href="#cb21-11" tabindex="-1"></a>p_migration</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
@@ -1607,7 +1606,7 @@ Figure 9.6: Population-level predicted mixed-paternity prevalence across log10 
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-migration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure 9.7: Predicted mixed-paternity prevalence across migration categories.
-</figcaption>
+ The label "Partial/resident" denotes the analytical Weak category, which includes resident species and species exhibiting weak seasonal, local or irregular movements.</figcaption>
 </figure>
 </div>
 </div>
@@ -1829,7 +1828,7 @@ Figure 9.11: Predicted mixed-paternity prevalence across mono-/polygamy categor
 <span id="cb27-7"><a aria-hidden="true" href="#cb27-7" tabindex="-1"></a>    <span class="st">"biparental"</span> <span class="ot">=</span> <span class="st">"Biparental"</span>,</span>
 <span id="cb27-8"><a aria-hidden="true" href="#cb27-8" tabindex="-1"></a>    <span class="st">"broodparasite"</span> <span class="ot">=</span> <span class="st">"Brood parasite"</span>,</span>
 <span id="cb27-9"><a aria-hidden="true" href="#cb27-9" tabindex="-1"></a>    <span class="st">"cooperation"</span> <span class="ot">=</span> <span class="st">"Cooperative care"</span>,</span>
-<span id="cb27-10"><a aria-hidden="true" href="#cb27-10" tabindex="-1"></a>    <span class="st">"nk_cooperation"</span> <span class="ot">=</span> <span class="st">"No known coop."</span>,</span>
+<span id="cb27-10"><a aria-hidden="true" href="#cb27-10" tabindex="-1"></a>    <span class="st">"nk_cooperation"</span> <span class="ot">=</span> <span class="st">"Non-kin coop."</span>,</span>
 <span id="cb27-11"><a aria-hidden="true" href="#cb27-11" tabindex="-1"></a>    <span class="st">"pair"</span> <span class="ot">=</span> <span class="st">"Pair"</span>,</span>
 <span id="cb27-12"><a aria-hidden="true" href="#cb27-12" tabindex="-1"></a>    <span class="st">"uniparental"</span> <span class="ot">=</span> <span class="st">"Uniparental"</span></span>
 <span id="cb27-13"><a aria-hidden="true" href="#cb27-13" tabindex="-1"></a>  )</span>
@@ -1847,7 +1846,7 @@ Figure 9.11: Predicted mixed-paternity prevalence across mono-/polygamy categor
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-parental-care-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure 9.12: Predicted mixed-paternity prevalence across parental-care categories.
-</figcaption>
+ The label "Non-kin coop." denotes cooperation among unrelated individuals (nk_cooperation).</figcaption>
 </figure>
 </div>
 </div>
@@ -2010,7 +2009,6 @@ Figure 9.14: Selected fixed effects and contrasts from single-moderator beta-bi
 </div>
 <p>Exact plotted estimates, interval types, model identifiers and sample sizes are available in the <a href="tables/single_moderator_forest_plot_data.csv">posterior summary table</a>.</p>
 <p>The <a href="07_multivariable_model.html">multivariable model chapter</a> presents the full model specification, coefficient table, forest plot and fixed-effect design diagnostics.</p></section>
-
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -3842,7 +3840,7 @@ knitr::include_graphics("Figures/common_scaling/body_mass.png")
 
 ```{r}
 #| label: fig-migration
-#| fig-cap: "Predicted mixed-paternity prevalence across migration categories."
+#| fig-cap: 'Predicted mixed-paternity prevalence across migration categories. The label "Partial/resident" denotes the analytical Weak category, which includes resident species and species exhibiting weak seasonal, local or irregular movements.'
 p_migration &lt;- plot_categorical_moderator(
   data_migration,
   model_migration,
@@ -3850,7 +3848,7 @@ p_migration &lt;- plot_categorical_moderator(
   x_lab = "Migration status",
   labels = c(
     "Strong" = "Regular migrant",
-    "Weak" = "Partial migrant"
+    "Weak" = "Partial/resident"
   )
 )
 p_migration
@@ -4019,7 +4017,7 @@ p_mono_poly
 
 ```{r}
 #| label: fig-parental-care
-#| fig-cap: "Predicted mixed-paternity prevalence across parental-care categories."
+#| fig-cap: 'Predicted mixed-paternity prevalence across parental-care categories. The label "Non-kin coop." denotes cooperation among unrelated individuals (nk_cooperation).'
 p_parental_care &lt;- plot_social_moderator(
   data_parental_care,
   model_parental_care_0,
@@ -4029,7 +4027,7 @@ p_parental_care &lt;- plot_social_moderator(
     "biparental" = "Biparental",
     "broodparasite" = "Brood parasite",
     "cooperation" = "Cooperative care",
-    "nk_cooperation" = "No known coop.",
+    "nk_cooperation" = "Non-kin coop.",
     "pair" = "Pair",
     "uniparental" = "Uniparental"
   )

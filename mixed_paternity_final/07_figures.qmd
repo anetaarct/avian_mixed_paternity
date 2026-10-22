@@ -1376,7 +1376,7 @@ knitr::include_graphics("Figures/common_scaling/body_mass.png")
 
 ```{r}
 #| label: fig-migration
-#| fig-cap: "Predicted mixed-paternity prevalence across migration categories."
+#| fig-cap: 'Predicted mixed-paternity prevalence across migration categories. The label "Partial/resident" denotes the analytical Weak category, which includes resident species and species exhibiting weak seasonal, local or irregular movements.'
 p_migration <- plot_categorical_moderator(
   data_migration,
   model_migration,
@@ -1384,7 +1384,7 @@ p_migration <- plot_categorical_moderator(
   x_lab = "Migration status",
   labels = c(
     "Strong" = "Regular migrant",
-    "Weak" = "Partial migrant"
+    "Weak" = "Partial/resident"
   )
 )
 p_migration
@@ -1553,7 +1553,7 @@ p_mono_poly
 
 ```{r}
 #| label: fig-parental-care
-#| fig-cap: "Predicted mixed-paternity prevalence across parental-care categories."
+#| fig-cap: 'Predicted mixed-paternity prevalence across parental-care categories. The label "Non-kin coop." denotes cooperation among unrelated individuals (nk_cooperation).'
 p_parental_care <- plot_social_moderator(
   data_parental_care,
   model_parental_care_0,
@@ -1563,7 +1563,7 @@ p_parental_care <- plot_social_moderator(
     "biparental" = "Biparental",
     "broodparasite" = "Brood parasite",
     "cooperation" = "Cooperative care",
-    "nk_cooperation" = "No known coop.",
+    "nk_cooperation" = "Non-kin coop.",
     "pair" = "Pair",
     "uniparental" = "Uniparental"
   )

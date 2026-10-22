@@ -190,7 +190,7 @@ knitr::kable(nest_type_contrasts, digits = 3,
 
 ## Migration
 
-This model compared the two analytical migration categories derived from BIRDBASE: regular migrants (Strong) and species that are resident or show weak, local or irregular movements (Weak). Weak is broader than partial migration alone.
+This model compared the two analytical migration categories derived from BIRDBASE: regular migrants (Strong) and species that are resident or show weak, local or irregular movements (Weak). Weak is broader than partial migration alone. The label "Partial/resident" denotes the analytical Weak category, which includes resident species and species exhibiting weak seasonal, local or irregular movements.
 
 ### Figure
 
