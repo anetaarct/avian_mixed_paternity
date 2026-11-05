@@ -15,10 +15,7 @@ This section documents the construction of the analytical dataset, including pop
 
 The R packages required for data preparation.
 
-```{r}
-#| label: setup
-#| message: false
-#| warning: false
+```r
 
 library(tidyverse)
 library(ape)
@@ -33,9 +30,7 @@ options(mc.cores = parallel::detectCores())
 
 ### The input files used in the analysis: the mixed-paternity dataset and the dated Clements phylogenetic tree.
 
-```{r}
-#| label: load-data
-#| include: false
+```r
 
 data_file <- "mixed_pat_final.csv"
 tree_file <- "summary_dated_clements.nex"
@@ -46,15 +41,11 @@ tree <- ape::read.nexus(tree_file)
 
 This table summarises the curated input dataset and the phylogenetic tree.
 
-The input CSV is the curated database: 676 records grouped under 607 distinct study identifiers (Study_ID), covering 393 species. The manuscript documents its derivation from 702 assembled records after removal of 26 overlapping records. Excluding 57 records without the brood-level outcome or denominator leaves 619 analytical records, 554 study identifiers and 375 species. Thus, 607 and 554 refer to different dataset stages. The supplement lists 608 distinct source-publication entries for the broader curated database; bibliographic entries and analytical study identifiers are different counting units.
+The input CSV is the curated database: 676 records grouped under 607 distinct study identifiers (Study_ID), covering 393 species. The manuscript documents its derivation from 702 assembled records after removal of 26 overlapping records. Excluding 57 records without the required outcome or denominator leaves 619 records; exclusion of the two ambiguous records then leaves 617 analytical records, 553 study identifiers and 373 species. Thus, 607 and 553 refer to different dataset stages. The supplement lists 608 distinct source-publication entries for the broader curated database; bibliographic entries and analytical study identifiers are different counting units.
 
 The updated literature search has a separate counting sequence: 2,288 identified bibliographic records minus 623 duplicates gives 1,665 screened records; excluding 1,476 at title/abstract screening leaves 189 reports for full-text assessment. Of these, 46 were excluded and 143 reports were included. Reports are source documents, not unique analytical study identifiers or database rows. See the [updated search flow diagram](Figures/prisma_reporting.pdf).
 
-```{r}
-#| label: data-summary-table
-#| echo: false
-#| message: false
-#| warning: false
+```r
 
 data_summary <- tibble::tibble(
   Item = c("Curated dataset", "Phylogenetic tree"),
@@ -73,7 +64,7 @@ knitr::kable(data_summary)
 
 Population identity was defined using study identity and rounded geographic coordinates, with latitude and longitude rounded to two decimal places prior to constructing the population identifier.
 
-```{r}
+```r
 
 mixed_pat <- mixed_pat_raw %>%
   mutate(
@@ -88,8 +79,7 @@ mixed_pat <- mixed_pat_raw %>%
 
 The following step formats the main grouping variables used in the models and calculates the total number of broods by combining mixed- and non-mixed-brood counts.
 
-```{r}
-#| label: study-species-formatting
+```r
 
 mixed_pat <- mixed_pat %>%
   mutate(
@@ -107,11 +97,7 @@ mixed_pat <- mixed_pat %>%
 
 Species names were harmonised between the mixed-paternity dataset and the phylogenetic tree prior to pruning the tree and generating the phylogenetic covariance matrix used in the Bayesian models.
 
-```{r}
-#| echo: true
-#| code-fold: true
-#| message: false
-#| warning: false
+```r
 
 species_data <- mixed_pat %>%
   filter(!is.na(species_phylo_brms)) %>%
@@ -142,11 +128,7 @@ mixed_pat <- mixed_pat %>%
 
 ### Phylogeny - summary
 
-```{r}
-#| echo: true
-#| code-fold: true
-#| message: false
-#| warning: false
+```r
 
 phylo_summary <- tibble::tibble(
   Item = c(
@@ -166,7 +148,7 @@ knitr::kable(phylo_summary)
 
 ### Moderator variable preparation
 
-```{r}
+```r
 
 min_n <- 5
 
@@ -197,8 +179,7 @@ mixed_pat <- mixed_pat %>%
 
 ### Database overall study
 
-```{r}
-#| label: data-overall-study
+```r
 
 data_overall_study <- mixed_pat %>%
   filter(
@@ -221,8 +202,7 @@ data_overall_study <- mixed_pat %>%
 
 The centring and scaling constants are calculated once from the 619-record overall analytical dataset, before moderator-specific complete-case filtering. The same constants are then reused in every single-moderator and multivariable analysis.
 
-```{r}
-#| label: common-continuous-scaling
+```r
 
 data_overall_study <- data_overall_study %>%
   mutate(
@@ -280,7 +260,7 @@ knitr::kable(scaling_table)
 
 ### Database single moderators
 
-```{r}
+```r
 
 data_nest_box <- data_overall_study %>%
   filter(!is.na(nest_box_model)) %>%
@@ -356,11 +336,7 @@ data_parental_care <- data_overall_study %>%
 
 Before fitting the models, we evaluated the degree of overlap and nesting among candidate random-effects grouping factors, including species identity, study identity, and the pragmatic population identifier.
 
-```{r}
-#| label: random-effect-structure
-#| echo: false
-#| message: false
-#| warning: false
+```r
 
 count_one_match <- function(data, group_var, match_var, comparison_label) {
   data %>%
@@ -389,8 +365,7 @@ knitr::kable(random_effect_structure)
 
 ## Reproducibility information
 
-```{r}
-#| echo: false
+```r
 
 software_versions <- tibble::tribble(
   ~Software, ~Version,
@@ -418,11 +393,7 @@ This descriptive table uses the overall analytical dataset prepared in this chap
 
 Of the 165 nest-box records, 119 (72.1%) were classified as cavity nesting. Nest type is included in the primary multivariable model, whereas nest-box use was evaluated in a separate single-moderator model. The table describes overlap between these candidate variables; it does not estimate their independent associations with mixed paternity.
 
-```{r}
-#| label: nest-box-nest-type-overlap-table
-#| echo: true
-#| code-fold: true
-#| code-summary: "Code: reproduce Table S7"
+```r
 
 summarise_nest_box_overlap <- function(data_overall_study) {
   required <- c("nest_box_model", "nest_type_model")
@@ -460,3 +431,38 @@ knitr::kable(overlap_table, caption = "Table S7. Nest-box use by nest type in 57
 ```
 
 [Download Table S7](tables/nest_box_nest_type_overlap.csv).
+
+## Two-record analytical exclusion (5 November 2026)
+
+All results on this page use the models after exclusion of the two records for the common ostrich (6/6) and Nelson’s sparrow (8/8), whose exact counts could not be verified as broods with at least two genetic sires. Other records were retained, including the saltmarsh-sparrow record from the same Walsh study. Updated 5 November 2026.
+
+The curated input CSV remains unchanged so that exclusions remain auditable. Apply this rule to each prepared model dataset before fitting; retain original scaling constants and priors.
+
+```r
+exclude <- (d$Study_ID == "100Kimwele2002" & d$n_mixed_broods == 6 & d$n_total_broods == 6) |
+           (d$Study_ID == "670Walsh2018" & d$n_mixed_broods == 8 & d$n_total_broods == 8)
+d <- d[!replace(exclude, is.na(exclude), FALSE), , drop = FALSE]
+```
+
+The preparation code above documents the original construction; the model tables below give the refitted sample sizes.
+
+| Model | Records | Study identifiers | Species |
+| --- | --- | --- | --- |
+| Absolute latitude | 590 | 531 | 361 |
+| BG breeding system | 603 | 540 | 366 |
+| Maximum clutch size | 616 | 552 | 372 |
+| Coloniality | 617 | 553 | 373 |
+| Cooperative breeding | 259 | 228 | 115 |
+| Multivariable model | 531 | 480 | 324 |
+| Log body mass | 617 | 553 | 373 |
+| Marker type | 612 | 549 | 371 |
+| Migration | 617 | 553 | 373 |
+| BIRDBASE mating system | 509 | 457 | 286 |
+| Nest-box use | 604 | 542 | 366 |
+| Nest architecture | 585 | 525 | 348 |
+| Matched-sample intercept-only model | 531 | 480 | 324 |
+| Study-only model (no species effects) | 617 | 553 | 373 |
+| Overall model | 617 | 553 | 373 |
+| Parental care | 604 | 543 | 363 |
+| Study duration | 605 | 544 | 371 |
+

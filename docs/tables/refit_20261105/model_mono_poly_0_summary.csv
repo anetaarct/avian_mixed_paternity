@@ -1,0 +1,11 @@
+"model","quantity","mean","lower","upper"
+"model_mono_poly_0","b_mono_poly_modelmixed",-1.5292561895753,-3.56204713216772,0.452112393801998
+"model_mono_poly_0","b_mono_poly_modelmonogamy",-1.58585086303404,-3.61424893142921,0.388647858552259
+"model_mono_poly_0","b_mono_poly_modelpolygamy",-1.01974927636827,-3.01348982866564,0.986289837589253
+"model_mono_poly_0","sd_species_nonphylo__Intercept",0.485636997663016,0.130049197427221,0.757720516765235
+"model_mono_poly_0","sd_species_phylo_brms__Intercept",1.84522428707538,1.35080648031144,2.36874706957849
+"model_mono_poly_0","sd_Study_ID__Intercept",0.372395400497086,0.0455450703937502,0.577232095548209
+"model_mono_poly_0","phi",25.4381664046004,12.9788719515313,50.2708806848857
+"model_mono_poly_0","variance_sd_species_nonphylo__Intercept",0.259815062939774,0.0169127958080453,0.574140382328025
+"model_mono_poly_0","variance_sd_species_phylo_brms__Intercept",3.47280101910014,1.82467814747717,5.61096268063455
+"model_mono_poly_0","variance_sd_Study_ID__Intercept",0.156758839253881,0.00207435385342304,0.333196892188353

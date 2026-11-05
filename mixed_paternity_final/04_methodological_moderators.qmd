@@ -1,298 +1,153 @@
 ---
+title: "Methodological moderators"
 format:
   html:
     toc: true
     toc-depth: 3
 ---
 
-::: section-card
-## **Methodological moderators**
+All results on this page use the models after exclusion of the two records for the common ostrich (6/6) and Nelson’s sparrow (8/8), whose exact counts could not be verified as broods with at least two genetic sires. Other records were retained, including the saltmarsh-sparrow record from the same Walsh study. Updated 5 November 2026.
 
-This section presents methodological moderators that may influence estimates of mixed-paternity prevalence across studies. We focus on marker type, nest-box use, nest type, and study duration, because these variables can affect both the detection and reporting of mixed paternity. All models use the same multilevel phylogenetic beta-binomial structure as the overall model.
-:::
-
-Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.
-
-## Packages
-
-The R packages required for model fitting.
-
-```{r}
-#| label: setup
-#| message: false
-#| warning: false
-#| code-fold: true
-
-library(tidyverse)
-library(brms)
-library(posterior)
-library(bayesplot)
-library(loo)
-library(emmeans)
-
-options(mc.cores = parallel::detectCores())
-```
-
-## Load prepared objects
-
-```{r}
-
-#| message: false
-#| warning: false
-
-data_overall_study <- readRDS("data/data_overall_study.rds")
-phylo_mat <- readRDS("data/phylo_mat.rds")
-```
-
-```{r}
-data_marker_type <- readRDS("data/data_marker_type.rds")
-data_study_duration <- readRDS("data/common_scaling/data_study_duration.rds")
-data_nest_box <- readRDS("data/data_nest_box.rds")
-
-```
-
-## Dataset sizes
-
-The table below shows the number of observations available for each methodological moderator after removing missing values and, where relevant, rare categories.
-
-```{r}
-
-#| echo: false
-#| message: false
-#| warning: false
-
-methodological_dataset_sizes <- tibble(
-  Moderator = c(
-    "Marker type",
-    "Nest box",
-    "Study duration"
-  ),
-  Observations = c(
-    nrow(data_marker_type),
-    nrow(data_nest_box),
-    nrow(data_study_duration)
-  )
-)
-
-knitr::kable(methodological_dataset_sizes)
-```
-
-## Model
-
-This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as `.rds` files.
-
-The marker-type model uses 0 + marker_type_model, with one logit coefficient per marker category and no shared population-level intercept. Nest-box use and study duration retain an intercept. Model-specific reference categories and priors are documented in the [overall-model chapter](03_overall_model.qmd#model-coding-and-priors).
-
-```{r}
-
-#| eval: false
-#| echo: true
-
-fit_single_moderator <- function(formula, data) {
-  brm(
-    formula = formula,
-    data = data,
-    family = beta_binomial(link = "logit"),
-    data2 = list(phylo_mat = phylo_mat),
-    chains = 4,
-    cores = 4,
-    iter = 10000,
-    warmup = 5000,
-    control = list(
-      adapt_delta = 0.99,
-      max_treedepth = 15
-    ),
-    seed = 123
-  )
-}
-```
+Estimates are posterior means with 95% equal-tailed credible intervals (CrI). Odds ratios are summarised after exponentiating each contrast draw. Prevalence predictions are summarised after inverse-logit transformation, with random effects set to zero. Continuous effects use the original common scaling constants, retained unchanged after exclusion. Mixed paternity refers to the source-derived brood-level measure described in Methods; source reporting sometimes used brood-level EPP without identifying sire number.
 
 ## Marker type
 
-This model tested whether estimated mixed-paternity prevalence differed among molecular marker types.
+612 records, 549 study identifiers and 371 species; 16047 mixed-paternity broods out of 46164 sampled broods.
 
-DNA fingerprinting studies had lower estimated mixed-paternity prevalence than microsatellite, SNP and mixed/other studies in the single-moderator comparisons. These are comparative associations among studies; the category-specific prevalence intervals and the pairwise contrasts answer different questions. The primary multivariable model also retained higher prevalence for each of the other marker categories relative to DNA fingerprinting after adjustment for the other moderators.
+| Coefficient | Mean log odds [95% CrI] | Mean OR [95% CrI] |
+| --- | --- | --- |
+| marker type modelDNA fingerprinting | -1.900 [-3.727, -0.043] | 0.234 [0.024, 0.958] |
+| marker type modelmicrosatellite | -1.423 [-3.242, 0.412] | 0.375 [0.039, 1.510] |
+| marker type modelmixed other | -1.288 [-3.204, 0.632] | 0.447 [0.041, 1.882] |
+| marker type modelSNPs | -1.404 [-3.267, 0.502] | 0.392 [0.038, 1.652] |
 
-The lower reported prevalence in DNA fingerprinting studies is consistent with underdetection of mixed-paternity broods by this older method and, consequently, possible underestimation of their prevalence. This does not directly establish differences in detection sensitivity or quantify detection bias. Marker type is associated with study era, taxonomic composition, candidate-parent sampling, genotyping completeness, exclusion power, error checking and parentage-assignment criteria. The mixed/other category is heterogeneous and should not be interpreted as one newer technology.
+### Pairwise contrasts
 
-### Figure
+Each contrast compares the first category with the second.
 
-```{r}
-knitr::include_graphics("Figures/Figuresmarker_type.png")
-```
+| Contrast | Mean log odds [95% CrI] | Mean OR [95% CrI] |
+| --- | --- | --- |
+| DNA fingerprinting - microsatellite | -0.477 [-0.667, -0.290] | 0.624 [0.513, 0.748] |
+| DNA fingerprinting - mixed other | -0.612 [-1.213, 0.005] | 0.569 [0.297, 1.005] |
+| DNA fingerprinting - SNPs | -0.496 [-0.992, -0.006] | 0.628 [0.371, 0.994] |
+| microsatellite - mixed other | -0.135 [-0.729, 0.458] | 0.914 [0.483, 1.582] |
+| microsatellite - SNPs | -0.020 [-0.486, 0.453] | 1.009 [0.615, 1.573] |
+| mixed other - SNPs | 0.116 [-0.635, 0.863] | 1.208 [0.530, 2.371] |
 
-### Model summary
+### Conditional prevalence
 
-```{r}
+| Category | Prevalence (%) [95% CrI] |
+| --- | --- |
+| DNA fingerprinting | 16.307 [2.350, 48.937] |
+| microsatellite | 22.840 [3.760, 60.155] |
+| mixed other | 25.255 [3.900, 65.303] |
+| SNPs | 23.310 [3.670, 62.289] |
 
-#| #| message: false
-#| #| warning: false
-#| #| code-fold: true
-model_marker_type_0 <- readRDS("models/model_marker_type_0.rds")
-summary(model_marker_type_0)
-```
+### Variance components and precision
 
-### Prevalence table
+| Quantity | Posterior mean [95% CrI] |
+| --- | --- |
+| Phylogenetic species variance | 2.869 [1.556, 4.651] |
+| Non-phylogenetic species variance | 0.476 [0.219, 0.785] |
+| Study variance | 0.088 [0.000, 0.244] |
+| Beta-binomial precision | 19.670 [12.440, 34.811] |
+| Species-level phylogenetic heritability | 0.848 [0.697, 0.949] |
 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
+### Sampling diagnostics
 
-marker_type_probability_draws <- 100 * plogis(brms::fixef(model_marker_type_0, summary = FALSE))
-marker_type_prevalence <- data.frame(
-  `Marker type` = sub("^marker_type_model", "", colnames(marker_type_probability_draws)),
-  `Posterior mean prevalence (%)` = colMeans(marker_type_probability_draws),
-  `Lower 95% CrI` = apply(marker_type_probability_draws, 2, quantile, 0.025),
-  `Upper 95% CrI` = apply(marker_type_probability_draws, 2, quantile, 0.975),
-  row.names = NULL, check.names = FALSE
-)
-knitr::kable(marker_type_prevalence, digits = 2)
-```
+| Maximum R-hat | Minimum bulk ESS | Minimum tail ESS | Divergences | Treedepth hits |
+| --- | --- | --- | --- | --- |
+| 1.0100 | 726 | 2074 | 0 | 0 |
 
-### Post-hoc comparisons
+[Download posterior summary](tables/refit_20261105/model_marker_type_0_summary.csv) · [Parameter-level diagnostics](tables/refit_20261105/model_marker_type_0_parameter_diagnostics.csv).
 
-Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.
+![Posterior predictions for marker type: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/model_marker_type_0_prevalence.png)
 
-```{r}
-#| echo: true
-#| code-fold: true
-#| message: false
-#| warning: false
+[Download PDF](Figures/refit_20261105/model_marker_type_0_prevalence.pdf).
 
-b <- brms::fixef(model_marker_type_0, summary = FALSE)
-pairs <- combn(colnames(b), 2L, simplify = FALSE)
-marker_type_contrasts <- do.call(rbind, lapply(pairs, function(pair) {
-  difference <- b[, pair[1L]] - b[, pair[2L]]
-  odds_ratio <- exp(difference)
-  data.frame(
-    contrast = paste(sub("marker_type_model", "", pair, fixed = TRUE), collapse = " - "),
-    estimate = mean(difference),
-    lower.CrI = unname(quantile(difference, 0.025)),
-    upper.CrI = unname(quantile(difference, 0.975)),
-    OR = mean(odds_ratio),
-    lower.OR = unname(quantile(odds_ratio, 0.025)),
-    upper.OR = unname(quantile(odds_ratio, 0.975))
-  )
-}))
-knitr::kable(marker_type_contrasts, digits = 3,
-  caption = "Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.")
-```
+### Posterior predictive check
+
+![Observed and posterior-replicated counts.](Figures/refit_20261105/model_marker_type_0_ppc.png)
 
 ## Study duration
 
-Study duration was included as a methodological moderator because longer studies may provide more stable estimates of mixed-paternity prevalence and may differ from short-term studies in sampling intensity and temporal coverage. It was standardised using all 607 non-missing records in the 619-record overall analytical dataset (mean = 3.649 years, SD = 3.452 years).
+605 records, 544 study identifiers and 371 species; 15822 mixed-paternity broods out of 45623 sampled broods.
 
-### Figure
+| Coefficient | Mean log odds [95% CrI] | Mean OR [95% CrI] |
+| --- | --- | --- |
+| Intercept | -1.315 [-3.088, 0.479] | 0.408 [0.046, 1.614] |
+| study duration sc | -0.086 [-0.165, -0.009] | 0.918 [0.848, 0.991] |
 
-```{r}
-#| label: fig-study-duration-common-scaling
-#| fig-cap: "Population-level predicted mixed-paternity prevalence across study duration from the refitted single-moderator model. Study duration was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval."
-#| echo: false
+### Variance components and precision
 
-knitr::include_graphics("Figures/common_scaling/study_duration.png")
-```
+| Quantity | Posterior mean [95% CrI] |
+| --- | --- |
+| Phylogenetic species variance | 3.182 [1.786, 5.063] |
+| Non-phylogenetic species variance | 0.529 [0.259, 0.850] |
+| Study variance | 0.060 [0.000, 0.196] |
+| Beta-binomial precision | 20.059 [13.169, 35.029] |
+| Species-level phylogenetic heritability | 0.848 [0.707, 0.944] |
+| Prevalence at zero random effects (proportion) | 0.244 [0.044, 0.617] |
 
-### Model summary
+### Sampling diagnostics
 
-```{r}
-#| echo: false
-#| code-fold: true
-#| code-summary: "Show fitted-model summary"
+| Maximum R-hat | Minimum bulk ESS | Minimum tail ESS | Divergences | Treedepth hits |
+| --- | --- | --- | --- | --- |
+| 1.0032 | 974 | 1934 | 0 | 0 |
 
-cat(readLines("logs/common_scaling/model_study_duration_summary.txt"), sep = "\n")
-```
+[Download posterior summary](tables/refit_20261105/model_study_duration_summary.csv) · [Parameter-level diagnostics](tables/refit_20261105/model_study_duration_parameter_diagnostics.csv).
 
-###  Model estimates
+![Posterior predictions for study duration: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/study_duration.png)
 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
+[Download PDF](Figures/refit_20261105/study_duration.pdf).
 
-study_duration_table <- readr::read_csv(
-  "tables/common_scaling/model_study_duration_fixed_effects.csv",
-  show_col_types = FALSE
-) |>
-  dplyr::filter(term == "study_duration_sc") |>
-  dplyr::transmute(
-    Parameter = "Study duration (per 1 SD = 3.452 years)",
-    Estimate,
-    `Lower 95% CrI` = Q2.5,
-    `Upper 95% CrI` = Q97.5
-  )
+### Posterior predictive check
 
-knitr::kable(study_duration_table, digits = 3)
-```
+![Observed and posterior-replicated counts.](Figures/refit_20261105/model_study_duration_ppc.png)
 
-Longer studies were associated with lower mixed-paternity prevalence on the log-odds scale ($\beta$ = -0.088, 95% CrI -0.167 to -0.009).
+## Nest-box use
 
-## Nest box
+604 records, 542 study identifiers and 366 species; 15819 mixed-paternity broods out of 45413 sampled broods.
 
-Nest-box use was included as a methodological moderator because studies conducted in nest-box populations may differ from studies of natural nests in monitoring accessibility, sampling completeness, and opportunities for detecting mixed paternity. This variable may also capture biological differences associated with nesting-site availability, breeding density, and local neighbourhood structure.
+| Coefficient | Mean log odds [95% CrI] | Mean OR [95% CrI] |
+| --- | --- | --- |
+| Intercept | -1.330 [-3.087, 0.445] | 0.394 [0.046, 1.561] |
+| nest box modelyes | 0.287 [-0.061, 0.628] | 1.353 [0.941, 1.873] |
 
-The intercept represents the reference category - natural nests .
+### Conditional prevalence
 
-### Figure
+| Category | Prevalence (%) [95% CrI] |
+| --- | --- |
+| no | 24.063 [4.364, 60.956] |
+| yes | 29.001 [5.619, 67.910] |
 
-```{r}
-knitr::include_graphics("Figures/Figuresnest_box.png")
-```
+### Variance components and precision
 
-### Model summary
+| Quantity | Posterior mean [95% CrI] |
+| --- | --- |
+| Phylogenetic species variance | 3.002 [1.687, 4.794] |
+| Non-phylogenetic species variance | 0.525 [0.258, 0.844] |
+| Study variance | 0.079 [0.000, 0.243] |
+| Beta-binomial precision | 18.493 [11.834, 32.796] |
+| Species-level phylogenetic heritability | 0.842 [0.703, 0.941] |
+| Prevalence at zero random effects (proportion) | 0.241 [0.044, 0.610] |
 
-```{r}
-#| message: false
-#| warning: false
-#| code-fold: true
+### Sampling diagnostics
 
-model_nest_box <- readRDS("models/model_nest_box.rds")
-summary(model_nest_box)
-```
+| Maximum R-hat | Minimum bulk ESS | Minimum tail ESS | Divergences | Treedepth hits |
+| --- | --- | --- | --- | --- |
+| 1.0039 | 818 | 1526 | 0 | 0 |
 
-###  Model estimates
+[Download posterior summary](tables/refit_20261105/model_nest_box_summary.csv) · [Parameter-level diagnostics](tables/refit_20261105/model_nest_box_parameter_diagnostics.csv).
 
-```{r}
-#| label: nest-box-effect-table
-#| echo: false
-#| message: false
-#| warning: false
+![Posterior predictions for nest-box use: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/model_nest_box_prevalence.png)
 
-s_nest_box <- summary(model_nest_box)
+[Download PDF](Figures/refit_20261105/model_nest_box_prevalence.pdf).
 
-nest_box_table <- tibble::tibble(
-  Parameter = rownames(s_nest_box$fixed),
-  Estimate = s_nest_box$fixed[, "Estimate"],
-  `Lower 95% CrI` = s_nest_box$fixed[, "l-95% CI"],
-  `Upper 95% CrI` = s_nest_box$fixed[, "u-95% CI"]
-)
+### Posterior predictive check
 
-knitr::kable(nest_box_table, digits = 3)
-```
+![Observed and posterior-replicated counts.](Figures/refit_20261105/model_nest_box_ppc.png)
 
-The nest-box association was positive but uncertain: posterior mean beta = 0.285 (95% equal-tailed CrI −0.062 to 0.632), and posterior mean OR = 1.351 (0.940 to 1.882). The OR mean is calculated as mean(exp(beta_draws)), whereas exp(mean(beta_draws)) = 1.330. The difference is due to nonlinear averaging (Jensen’s inequality), not rounding. Both intervals include their respective null values.
+## Reproducibility
 
-```{r}
-#| label: nest-box-or-scale-check
-#| code-fold: true
-beta_draws <- brms::fixef(model_nest_box, summary = FALSE)[, "nest_box_modelyes"]
-scale_check <- data.frame(
-  beta_mean = mean(beta_draws),
-  exp_beta_mean = exp(mean(beta_draws)),
-  OR_mean = mean(exp(beta_draws))
-)
-knitr::kable(scale_check, digits = 6)
-```
-
-## Heterogeneity summary
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-variance_table <- readr::read_csv("tables/variance_audit/group_level_variances.csv", show_col_types = FALSE) |>
-  dplyr::filter(Model %in% c("Overall model", "Marker type", "Nest box", "Study duration"))
-knitr::kable(variance_table, digits = 3)
-```
-
-Group-level entries are posterior mean variances on the logit scale, calculated by squaring each posterior SD draw before averaging. Phi is the beta-binomial precision parameter. Models use different complete-case samples; these tables do not measure heterogeneity explained by individual moderators.
+[Posterior summaries and contrasts](tables/refit_20261105/contrasts_equal_tailed.csv) · [Export code](scripts/refit_20261105/export_results.R) · [Prediction code](scripts/refit_20261105/prepare_release.R).

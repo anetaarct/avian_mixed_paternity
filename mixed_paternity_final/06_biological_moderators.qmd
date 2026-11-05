@@ -1,462 +1,268 @@
 ---
+title: "Biological moderators"
 format:
   html:
     toc: true
     toc-depth: 3
 ---
 
-::: section-card
-## Biological moderators
+All results on this page use the models after exclusion of the two records for the common ostrich (6/6) and Nelson’s sparrow (8/8), whose exact counts could not be verified as broods with at least two genetic sires. Other records were retained, including the saltmarsh-sparrow record from the same Walsh study. Updated 5 November 2026.
 
-This section presents single-moderator models for ecological, life-history, and geographic predictors of brood-level mixed paternity. These models evaluate whether mixed-paternity prevalence varies with nest type, migration status, coloniality, clutch size, body mass, and absolute latitude, while retaining the same multilevel phylogenetic beta-binomial structure used in the overall model.
-:::
+Estimates are posterior means with 95% equal-tailed credible intervals (CrI). Odds ratios are summarised after exponentiating each contrast draw. Prevalence predictions are summarised after inverse-logit transformation, with random effects set to zero. Continuous effects use the original common scaling constants, retained unchanged after exclusion. Mixed paternity refers to the source-derived brood-level measure described in Methods; source reporting sometimes used brood-level EPP without identifying sire number.
 
-Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.
+## Nest architecture
 
-## Packages
+585 records, 525 study identifiers and 348 species; 15687 mixed-paternity broods out of 44233 sampled broods.
 
-The R packages required for model fitting.
+| Coefficient | Mean log odds [95% CrI] | Mean OR [95% CrI] |
+| --- | --- | --- |
+| nest type modelcavity | -1.549 [-3.668, 0.572] | 0.378 [0.026, 1.773] |
+| nest type modelground | -1.342 [-3.410, 0.737] | 0.462 [0.033, 2.089] |
+| nest type modelopen | -1.540 [-3.644, 0.554] | 0.380 [0.026, 1.740] |
+| nest type modelother enclosed | -1.771 [-3.933, 0.361] | 0.311 [0.020, 1.434] |
 
-```{r}
-#| label: setup
-#| include: false
+### Pairwise contrasts
 
-library(tidyverse)
-library(brms)
-library(posterior)
-library(bayesplot)
-library(loo)
-library(ggplot2)
+Each contrast compares the first category with the second.
 
-options(mc.cores = parallel::detectCores())
-```
+| Contrast | Mean log odds [95% CrI] | Mean OR [95% CrI] |
+| --- | --- | --- |
+| cavity - ground | -0.207 [-0.751, 0.335] | 0.845 [0.472, 1.398] |
+| cavity - open | -0.009 [-0.434, 0.424] | 1.015 [0.648, 1.528] |
+| cavity - other enclosed | 0.222 [-0.400, 0.854] | 1.314 [0.670, 2.349] |
+| ground - open | 0.198 [-0.302, 0.699] | 1.258 [0.740, 2.012] |
+| ground - other enclosed | 0.429 [-0.217, 1.085] | 1.623 [0.805, 2.960] |
+| open - other enclosed | 0.231 [-0.341, 0.814] | 1.317 [0.711, 2.257] |
 
-## Load prepared objects
+### Conditional prevalence
 
-```{r}
-#| include: false
+| Category | Prevalence (%) [95% CrI] |
+| --- | --- |
+| cavity | 21.810 [2.490, 63.933] |
+| ground | 24.856 [3.198, 67.628] |
+| open | 21.916 [2.548, 63.510] |
+| other enclosed | 18.910 [1.921, 58.918] |
 
-data_overall_study <- readRDS("data/data_overall_study.rds")
-phylo_mat <- readRDS("data/phylo_mat.rds")
-```
+### Variance components and precision
 
-```{r}
+| Quantity | Posterior mean [95% CrI] |
+| --- | --- |
+| Phylogenetic species variance | 3.561 [1.920, 5.664] |
+| Non-phylogenetic species variance | 0.435 [0.160, 0.770] |
+| Study variance | 0.068 [0.000, 0.218] |
+| Beta-binomial precision | 18.782 [12.224, 32.989] |
+| Species-level phylogenetic heritability | 0.882 [0.743, 0.968] |
 
-mixed_pat <- readRDS("data/mixed_pat_prepared.rds")
-data_overall_study <- readRDS("data/data_overall_study.rds")
+### Sampling diagnostics
 
-data_abs_latitude <- readRDS("data/common_scaling/data_abs_latitude.rds")
-data_body_mass <- readRDS("data/common_scaling/data_log_body_mass.rds")
-data_clutch_size <- readRDS("data/common_scaling/data_clutch_size.rds")
-data_coloniality <- readRDS("data/data_coloniality.rds")
-data_migration <- readRDS("data/data_migration.rds")
-data_nest_type <- readRDS("data/data_nest_type.rds")
+| Maximum R-hat | Minimum bulk ESS | Minimum tail ESS | Divergences | Treedepth hits |
+| --- | --- | --- | --- | --- |
+| 1.0031 | 898 | 2077 | 0 | 0 |
 
+[Download posterior summary](tables/refit_20261105/model_nest_type_0_summary.csv) · [Parameter-level diagnostics](tables/refit_20261105/model_nest_type_0_parameter_diagnostics.csv).
 
-phylo_mat <- readRDS("data/phylo_mat.rds")
-tree_analysis <- readRDS("data/tree_analysis.rds")
-```
+![Posterior predictions for nest architecture: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/model_nest_type_0_prevalence.png)
 
-### Dataset sizes
+[Download PDF](Figures/refit_20261105/model_nest_type_0_prevalence.pdf).
 
-The table below shows the number of observations available for each biological moderator after removing missing values.
+### Posterior predictive check
 
-```{r}
-
-#| label: bio-dataset-sizes
-#| echo: false
-#| message: false
-#| warning: false
-
-bio_dataset_sizes <- tibble::tibble(
-  Moderator = c(
-    "Nest type",
-    "Migration",
-    "Coloniality",
-    "Maximum clutch size",
-    "Body mass",
-    "Absolute latitude"
-  ),
-  Observations = c(
-    nrow(data_nest_type),
-    nrow(data_migration),
-    nrow(data_coloniality),
-    nrow(data_clutch_size),
-    nrow(data_body_mass),
-    nrow(data_abs_latitude)
-  )
-)
-
-knitr::kable(bio_dataset_sizes)
-```
-
-## Model
-
-This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as `.rds` files.
-
-The nest-type model uses 0 + nest_type_model, with one logit coefficient per category and no shared population-level intercept. The other models in this chapter retain an intercept. Model-specific reference categories and priors are documented in the [overall-model chapter](03_overall_model.qmd#model-coding-and-priors).
-
-```{r}
-
-#| eval: false
-#| echo: true
-
-fit_single_moderator <- function(formula, data) {
-  brm(
-    formula = formula,
-    data = data,
-    family = beta_binomial(link = "logit"),
-    data2 = list(phylo_mat = phylo_mat),
-    chains = 4,
-    cores = 4,
-    iter = 10000,
-    warmup = 5000,
-    control = list(
-      adapt_delta = 0.99,
-      max_treedepth = 15
-    ),
-    seed = 123
-  )
-}
-```
-
-## Nest type architecture
-
-This model tested whether mixed-paternity prevalence differed among nest-type categories. Nest type was derived from BIRDBASE and simplified into four broad nest-architecture categories: cavity, ground, open, and other enclosed nests. Cavity nests included tree cavities and crevices; ground nests included burrows, scrapes, mounds, and nests placed directly on or in the ground; open nests included cups, saucers, platforms, and half-cups; and other enclosed nests included domes, pendant and globular nests, as well as nests built in other birds’ nests.
-
-### Figure
-
-```{r}
-knitr::include_graphics("Figures/Figuresnest_type.png")
-```
-
-### Model summary
-
-```{r}
-#| message: false
-#| warning: false
-#| code-fold: true
-
-model_nest_type <- readRDS("models/model_nest_type_0.rds")
-summary(model_nest_type)
-```
-
-### Nest type model estimates
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-
-nest_type_probability_draws <- 100 * plogis(brms::fixef(model_nest_type, summary = FALSE))
-nest_type_prevalence <- data.frame(
-  `Nest type` = sub("^nest_type_model", "", colnames(nest_type_probability_draws)),
-  `Posterior mean prevalence (%)` = colMeans(nest_type_probability_draws),
-  `Lower 95% CrI` = apply(nest_type_probability_draws, 2, quantile, 0.025),
-  `Upper 95% CrI` = apply(nest_type_probability_draws, 2, quantile, 0.975),
-  row.names = NULL, check.names = FALSE
-)
-knitr::kable(nest_type_prevalence, digits = 2)
-```
-
-### Post-hoc pairwise contrasts
-
-Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.
-
-```{r}
-#| echo: true
-#| code-fold: true
-#| message: false
-#| warning: false
-
-b <- brms::fixef(model_nest_type, summary = FALSE)
-pairs <- combn(colnames(b), 2L, simplify = FALSE)
-nest_type_contrasts <- do.call(rbind, lapply(pairs, function(pair) {
-  difference <- b[, pair[1L]] - b[, pair[2L]]
-  odds_ratio <- exp(difference)
-  data.frame(
-    contrast = paste(sub("nest_type_model", "", pair, fixed = TRUE), collapse = " - "),
-    estimate = mean(difference),
-    lower.CrI = unname(quantile(difference, 0.025)),
-    upper.CrI = unname(quantile(difference, 0.975)),
-    OR = mean(odds_ratio),
-    lower.OR = unname(quantile(odds_ratio, 0.025)),
-    upper.OR = unname(quantile(odds_ratio, 0.975))
-  )
-}))
-knitr::kable(nest_type_contrasts, digits = 3,
-  caption = "Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.")
-```
+![Observed and posterior-replicated counts.](Figures/refit_20261105/model_nest_type_0_ppc.png)
 
 ## Migration
 
-This model compared the two analytical migration categories derived from BIRDBASE: regular migrants (Strong) and species that are resident or show weak, local or irregular movements (Weak). Weak is broader than partial migration alone. The label "Partial/resident" denotes the analytical Weak category, which includes resident species and species exhibiting weak seasonal, local or irregular movements.
+617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.
 
-### Figure
+| Coefficient | Mean log odds [95% CrI] | Mean OR [95% CrI] |
+| --- | --- | --- |
+| Intercept | -1.013 [-2.784, 0.749] | 0.549 [0.062, 2.116] |
+| migrationWeak | -0.373 [-0.696, -0.050] | 0.698 [0.499, 0.951] |
 
-```{r}
-knitr::include_graphics("Figures/Figuresmigration.png")
-```
+### Conditional prevalence
 
-### Model summary
+| Category | Prevalence (%) [95% CrI] |
+| --- | --- |
+| Strong | 29.576 [5.822, 67.907] |
+| Weak | 23.252 [4.091, 59.339] |
 
-```{r}
-#| label: migration-summary
-#| message: false
-#| warning: false
-#| code-fold: true
+### Variance components and precision
 
-model_migration <- readRDS("models/model_migration.rds")
-summary(model_migration)
-```
+| Quantity | Posterior mean [95% CrI] |
+| --- | --- |
+| Phylogenetic species variance | 3.070 [1.720, 4.909] |
+| Non-phylogenetic species variance | 0.476 [0.211, 0.785] |
+| Study variance | 0.066 [0.000, 0.217] |
+| Beta-binomial precision | 17.971 [11.863, 30.761] |
+| Species-level phylogenetic heritability | 0.857 [0.718, 0.952] |
+| Prevalence at zero random effects (proportion) | 0.296 [0.058, 0.679] |
 
-### Model estimates
+### Sampling diagnostics
 
-The intercept represents the reference migration category, while the remaining coefficients describe differences relative to that reference category on the logit scale.
+| Maximum R-hat | Minimum bulk ESS | Minimum tail ESS | Divergences | Treedepth hits |
+| --- | --- | --- | --- | --- |
+| 1.0016 | 850 | 1405 | 0 | 0 |
 
-The single-moderator model used 619 records and estimated beta = −0.387 (95% equal-tailed CrI −0.704 to −0.066; posterior mean OR = 0.688). The primary multivariable model used 533 records and estimated beta = −0.492 (−0.861 to −0.132; posterior mean OR = 0.622). The direction is consistent, and the adjusted point estimate is more negative. Because both covariate adjustment and sample composition differ, this descriptive comparison does not establish a change in association strength. In both models, OR means are calculated after exponentiating each coefficient draw.
+[Download posterior summary](tables/refit_20261105/model_migration_summary.csv) · [Parameter-level diagnostics](tables/refit_20261105/model_migration_parameter_diagnostics.csv).
 
-```{r}
-#| label: migration-effect
-#| echo: false
-#| message: false
-#| warning: false
+![Posterior predictions for migration: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/model_migration_prevalence.png)
 
-s_migration <- summary(model_migration)
+[Download PDF](Figures/refit_20261105/model_migration_prevalence.pdf).
 
-migration_table <- tibble::tibble(
-  Parameter = rownames(s_migration$fixed),
-  Estimate = s_migration$fixed[, "Estimate"],
-  `Lower 95% CrI` = s_migration$fixed[, "l-95% CI"],
-  `Upper 95% CrI` = s_migration$fixed[, "u-95% CI"]
-)
+### Posterior predictive check
 
-knitr::kable(migration_table, digits = 3)
-```
+![Observed and posterior-replicated counts.](Figures/refit_20261105/model_migration_ppc.png)
 
 ## Coloniality
 
-This model tested whether mixed-paternity prevalence differed between colonial and non-colonial species following BIRDBASE database.
+617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.
 
-### Figures
+| Coefficient | Mean log odds [95% CrI] | Mean OR [95% CrI] |
+| --- | --- | --- |
+| Intercept | -1.241 [-3.026, 0.540] | 0.437 [0.049, 1.716] |
+| coloniality1 | -0.137 [-0.540, 0.262] | 0.890 [0.583, 1.299] |
 
-```{r}
-knitr::include_graphics("Figures/Figurescoloniality.png")
-```
+### Conditional prevalence
 
-### Model summary
+| Category | Prevalence (%) [95% CrI] |
+| --- | --- |
+| 0 | 25.591 [4.628, 63.187] |
+| 1 | 23.429 [3.994, 60.352] |
 
-```{r}
+### Variance components and precision
 
-#| message: false
-#| warning: false
-#| code-fold: true
+| Quantity | Posterior mean [95% CrI] |
+| --- | --- |
+| Phylogenetic species variance | 3.065 [1.718, 4.888] |
+| Non-phylogenetic species variance | 0.498 [0.235, 0.804] |
+| Study variance | 0.070 [0.000, 0.225] |
+| Beta-binomial precision | 18.322 [12.030, 32.262] |
+| Species-level phylogenetic heritability | 0.851 [0.715, 0.947] |
+| Prevalence at zero random effects (proportion) | 0.256 [0.046, 0.632] |
 
-model_coloniality <- readRDS("models/model_coloniality.rds")
-summary(model_coloniality)
+### Sampling diagnostics
 
+| Maximum R-hat | Minimum bulk ESS | Minimum tail ESS | Divergences | Treedepth hits |
+| --- | --- | --- | --- | --- |
+| 1.0044 | 896 | 1881 | 0 | 0 |
 
-```
+[Download posterior summary](tables/refit_20261105/model_coloniality_summary.csv) · [Parameter-level diagnostics](tables/refit_20261105/model_coloniality_parameter_diagnostics.csv).
 
-### Model estimates
+![Posterior predictions for coloniality: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/model_coloniality_prevalence.png)
 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
+[Download PDF](Figures/refit_20261105/model_coloniality_prevalence.pdf).
 
-s_coloniality <- summary(model_coloniality)
+### Posterior predictive check
 
-coloniality_table <- tibble::tibble(
-  Parameter = rownames(s_coloniality$fixed),
-  Estimate = s_coloniality$fixed[, "Estimate"],
-  `Lower 95% CrI` = s_coloniality$fixed[, "l-95% CI"],
-  `Upper 95% CrI` = s_coloniality$fixed[, "u-95% CI"]
-)
+![Observed and posterior-replicated counts.](Figures/refit_20261105/model_coloniality_ppc.png)
 
-knitr::kable(coloniality_table, digits = 3)
-```
+## Maximum clutch size
 
-## Clutch size
+616 records, 552 study identifiers and 372 species; 16074 mixed-paternity broods out of 46207 sampled broods.
 
-This model tested whether mixed-paternity prevalence was associated with maximum clutch size. Maximum clutch size was standardised using all 618 non-missing records in the 619-record overall analytical dataset (mean = 6.762 eggs, SD = 4.034 eggs), so the coefficient represents the change in log-odds per one standard deviation.
+| Coefficient | Mean log odds [95% CrI] | Mean OR [95% CrI] |
+| --- | --- | --- |
+| Intercept | -1.373 [-3.125, 0.374] | 0.376 [0.044, 1.453] |
+| CS max sc | 0.319 [0.103, 0.533] | 1.384 [1.109, 1.705] |
 
-### Figure
+### Variance components and precision
 
-```{r}
-#| label: fig-clutch-size-common-scaling
-#| fig-cap: "Population-level predicted mixed-paternity prevalence across maximum clutch size from the refitted single-moderator model. Maximum clutch size was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval."
-#| echo: false
+| Quantity | Posterior mean [95% CrI] |
+| --- | --- |
+| Phylogenetic species variance | 2.947 [1.635, 4.686] |
+| Non-phylogenetic species variance | 0.495 [0.239, 0.806] |
+| Study variance | 0.064 [0.000, 0.216] |
+| Beta-binomial precision | 17.891 [11.924, 31.101] |
+| Species-level phylogenetic heritability | 0.847 [0.704, 0.944] |
+| Prevalence at zero random effects (proportion) | 0.233 [0.042, 0.592] |
 
-knitr::include_graphics("Figures/common_scaling/clutch_size.png")
-```
+### Sampling diagnostics
 
-### Model summary
+| Maximum R-hat | Minimum bulk ESS | Minimum tail ESS | Divergences | Treedepth hits |
+| --- | --- | --- | --- | --- |
+| 1.0034 | 804 | 1763 | 0 | 0 |
 
-```{r}
-#| message: false
-#| warning: false
-#| code-fold: true
+[Download posterior summary](tables/refit_20261105/model_clutch_size_summary.csv) · [Parameter-level diagnostics](tables/refit_20261105/model_clutch_size_parameter_diagnostics.csv).
 
-cat(readLines("logs/common_scaling/model_clutch_size_summary.txt"), sep = "\n")
-```
+![Posterior predictions for maximum clutch size: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/clutch_size.png)
 
-###  Model estimates
+[Download PDF](Figures/refit_20261105/clutch_size.pdf).
 
-```{r}
+### Posterior predictive check
 
-#| echo: false
-#| message: false
-#| warning: false
+![Observed and posterior-replicated counts.](Figures/refit_20261105/model_clutch_size_ppc.png)
 
-clutch_size_table <- readr::read_csv(
-  "tables/common_scaling/model_clutch_size_fixed_effects.csv",
-  show_col_types = FALSE
-) |>
-  dplyr::transmute(
-    Parameter = dplyr::recode(
-      term,
-      Intercept = "Intercept",
-      CS_max_sc = "Maximum clutch size (per 1 SD = 4.034 eggs)"
-    ),
-    Estimate,
-    `Lower 95% CrI` = Q2.5,
-    `Upper 95% CrI` = Q97.5
-  )
+## Log body mass
 
-knitr::kable(clutch_size_table, digits = 3)
-```
+617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.
 
-Mixed-paternity prevalence increased with maximum clutch size ($\beta$ = 0.330, 95% CrI 0.116 to 0.545).
+| Coefficient | Mean log odds [95% CrI] | Mean OR [95% CrI] |
+| --- | --- | --- |
+| Intercept | -1.229 [-3.015, 0.582] | 0.448 [0.049, 1.789] |
+| log body mass sc | -0.058 [-0.356, 0.242] | 0.955 [0.701, 1.274] |
 
-## Body mass
+### Variance components and precision
 
-This model tested whether mixed-paternity prevalence was associated with adult body mass. Body mass was log10-transformed and then standardised using all 619 records in the overall analytical dataset (mean = 1.727 log10[g], SD = 0.750 log10[g]). The coefficient therefore represents the change in log-odds per one standard deviation increase in log10-transformed body mass.
+| Quantity | Posterior mean [95% CrI] |
+| --- | --- |
+| Phylogenetic species variance | 3.120 [1.766, 4.936] |
+| Non-phylogenetic species variance | 0.497 [0.234, 0.801] |
+| Study variance | 0.068 [0.000, 0.220] |
+| Beta-binomial precision | 18.293 [12.040, 32.273] |
+| Species-level phylogenetic heritability | 0.854 [0.719, 0.947] |
+| Prevalence at zero random effects (proportion) | 0.259 [0.047, 0.641] |
 
-### Figure
+### Sampling diagnostics
 
-```{r}
-#| label: fig-body-mass-common-scaling
-#| fig-cap: "Population-level predicted mixed-paternity prevalence across log10 adult body mass from the refitted single-moderator model. Log10 body mass was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval."
-#| echo: false
+| Maximum R-hat | Minimum bulk ESS | Minimum tail ESS | Divergences | Treedepth hits |
+| --- | --- | --- | --- | --- |
+| 1.0103 | 714 | 1436 | 0 | 0 |
 
-knitr::include_graphics("Figures/common_scaling/body_mass.png")
-```
+[Download posterior summary](tables/refit_20261105/model_log_body_mass_summary.csv) · [Parameter-level diagnostics](tables/refit_20261105/model_log_body_mass_parameter_diagnostics.csv).
 
-### Model summary
+![Posterior predictions for log body mass: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/body_mass.png)
 
-```{r}
-#| message: false
-#| #| warning: false
-#| #| code-fold: true
+[Download PDF](Figures/refit_20261105/body_mass.pdf).
 
-cat(readLines("logs/common_scaling/model_log_body_mass_summary.txt"), sep = "\n")
+### Posterior predictive check
 
-
-```
-
-### Model estimates
-
-```{r}
-
-#| echo: false
-#| message: false
-#| warning: false
-
-body_mass_table <- readr::read_csv(
-  "tables/common_scaling/model_log_body_mass_fixed_effects.csv",
-  show_col_types = FALSE
-) |>
-  dplyr::transmute(
-    Parameter = dplyr::recode(
-      term,
-      Intercept = "Intercept",
-      log_body_mass_sc = "Log10 body mass (per 1 SD = 0.750 log10[g])"
-    ),
-    Estimate,
-    `Lower 95% CrI` = Q2.5,
-    `Upper 95% CrI` = Q97.5
-  )
-
-knitr::kable(body_mass_table, digits = 3)
-
-```
-
-There was no clear directional association between log10 body mass and mixed-paternity prevalence: posterior mean beta = −0.008 (95% equal-tailed CrI −0.303 to 0.289), and posterior mean OR = 1.004 (0.739 to 1.335). The means are calculated on their respective scales: exp(mean(beta_draws)) = 0.992, whereas mean(exp(beta_draws)) = 1.004. Their positions on opposite sides of the null values arise from nonlinear averaging (Jensen’s inequality). In 52.3% of draws, both beta < 0 and OR < 1; neither direction was clearly supported.
-
-```{r}
-#| label: body-mass-or-scale-check
-#| code-fold: true
-beta_draws <- brms::fixef(model_log_body_mass, summary = FALSE)[, "log_body_mass_sc"]
-scale_check <- data.frame(
-  beta_mean = mean(beta_draws),
-  exp_beta_mean = exp(mean(beta_draws)),
-  OR_mean = mean(exp(beta_draws))
-)
-knitr::kable(scale_check, digits = 6)
-```
+![Observed and posterior-replicated counts.](Figures/refit_20261105/model_log_body_mass_ppc.png)
 
 ## Absolute latitude
 
-This model tested whether mixed-paternity prevalence varied with absolute latitude. Absolute latitude was used to examine broad geographic patterns independent of hemisphere, with larger values corresponding to populations located farther from the equator. It was standardised using all 592 non-missing records in the 619-record overall analytical dataset (mean = 41.624 degrees, SD = 14.960 degrees), so the coefficient represents the change in log-odds per one standard deviation.
+590 records, 531 study identifiers and 361 species; 15797 mixed-paternity broods out of 45168 sampled broods.
 
-### Figure
+| Coefficient | Mean log odds [95% CrI] | Mean OR [95% CrI] |
+| --- | --- | --- |
+| Intercept | -1.297 [-3.095, 0.510] | 0.419 [0.045, 1.665] |
+| abs lat sc | -0.123 [-0.244, -0.002] | 0.886 [0.784, 0.998] |
 
-```{r}
-#| label: fig-absolute-latitude-common-scaling
-#| fig-cap: "Predicted mixed-paternity prevalence across absolute latitude from the single-moderator beta-binomial model fitted to 592 records. Points show observed record-level prevalence, with point size scaled by the number of broods. The solid line shows the posterior mean on the probability scale, and the shaded band shows the 95% equal-tailed credible interval, with all random effects set to zero. Absolute latitude was standardised using the overall analytical dataset and is displayed in degrees."
-#| echo: false
+### Variance components and precision
 
-knitr::include_graphics("Figures/common_scaling/abs_latitude.png")
-```
+| Quantity | Posterior mean [95% CrI] |
+| --- | --- |
+| Phylogenetic species variance | 3.189 [1.797, 5.058] |
+| Non-phylogenetic species variance | 0.533 [0.254, 0.860] |
+| Study variance | 0.056 [0.000, 0.198] |
+| Beta-binomial precision | 19.189 [12.799, 32.954] |
+| Species-level phylogenetic heritability | 0.848 [0.709, 0.946] |
+| Prevalence at zero random effects (proportion) | 0.248 [0.043, 0.625] |
 
-### Model  summary
+### Sampling diagnostics
 
-```{r}
-#| message: false
-#| #| warning: false
-#| #| code-fold: true
+| Maximum R-hat | Minimum bulk ESS | Minimum tail ESS | Divergences | Treedepth hits |
+| --- | --- | --- | --- | --- |
+| 1.0051 | 872 | 1455 | 0 | 0 |
 
-cat(readLines("logs/common_scaling/model_abs_latitude_summary.txt"), sep = "\n")
+[Download posterior summary](tables/refit_20261105/model_abs_latitude_summary.csv) · [Parameter-level diagnostics](tables/refit_20261105/model_abs_latitude_parameter_diagnostics.csv).
 
-```
+![Posterior predictions for absolute latitude: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/abs_latitude.png)
 
-### Model estimates
+[Download PDF](Figures/refit_20261105/abs_latitude.pdf).
 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
+### Posterior predictive check
 
-abs_latitude_table <- readr::read_csv(
-  "tables/common_scaling/model_abs_latitude_fixed_effects.csv",
-  show_col_types = FALSE
-) |>
-  dplyr::transmute(
-    Parameter = dplyr::recode(
-      term,
-      Intercept = "Intercept",
-      abs_lat_sc = "Absolute latitude (per 1 SD = 14.960 degrees)"
-    ),
-    Estimate,
-    `Lower 95% CrI` = Q2.5,
-    `Upper 95% CrI` = Q97.5
-  )
+![Observed and posterior-replicated counts.](Figures/refit_20261105/model_abs_latitude_ppc.png)
 
-knitr::kable(abs_latitude_table, digits = 3)
-```
+## Reproducibility
 
-Mixed-paternity prevalence decreased with absolute latitude ($\beta$ = -0.129, 95% CrI -0.251 to -0.004).
-
-## Heterogeneity summary
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-variance_table <- readr::read_csv("tables/variance_audit/group_level_variances.csv", show_col_types = FALSE) |>
-  dplyr::filter(Model %in% c("Overall model", "Nest type", "Migration", "Coloniality", "Clutch size", "Body mass", "Absolute latitude"))
-knitr::kable(variance_table, digits = 3)
-```
-
-Group-level entries are posterior mean variances on the logit scale, calculated by squaring each posterior SD draw before averaging. Phi is the beta-binomial precision parameter. Models use different complete-case samples; these tables do not measure heterogeneity explained by individual moderators.
+[Posterior summaries and contrasts](tables/refit_20261105/contrasts_equal_tailed.csv) · [Export code](scripts/refit_20261105/export_results.R) · [Prediction code](scripts/refit_20261105/prepare_release.R).

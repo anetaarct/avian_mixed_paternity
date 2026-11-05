@@ -1,0 +1,11 @@
+"model","quantity","mean","lower","upper"
+"model_migration","b_Intercept",-1.01324033219774,-2.78358371909962,0.749490112651585
+"model_migration","b_migrationWeak",-0.37262644075011,-0.69570423714066,-0.0498202895266051
+"model_migration","sd_species_nonphylo__Intercept",0.681284085686543,0.459138595334604,0.885751527503343
+"model_migration","sd_species_phylo_brms__Intercept",1.73689049479298,1.31150706180479,2.21551399883873
+"model_migration","sd_Study_ID__Intercept",0.221543978282737,0.012674367516407,0.466062984207322
+"model_migration","phi",17.9711962648812,11.8632128447407,30.7605724926452
+"model_migration","variance_sd_species_nonphylo__Intercept",0.475888453122222,0.210808250044527,0.784555768506503
+"model_migration","variance_sd_species_phylo_brms__Intercept",3.07047702581641,1.72005077333812,4.9085022846051
+"model_migration","variance_sd_Study_ID__Intercept",0.065650622054651,0.000160639615910178,0.217214705259023
+"model_migration","prevalence_zero_random_effects",0.295759539626648,0.0582177544556057,0.679067586727267

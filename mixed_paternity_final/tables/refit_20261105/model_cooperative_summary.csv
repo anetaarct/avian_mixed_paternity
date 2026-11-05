@@ -1,0 +1,11 @@
+"model","quantity","mean","lower","upper"
+"model_cooperative","b_Intercept",-2.09182393467403,-4.56355325124229,0.283549201450065
+"model_cooperative","b_cooperative_breedingyes",-0.208590393905367,-0.71608167099087,0.30388748209182
+"model_cooperative","sd_species_nonphylo__Intercept",0.547734103064215,0.105026563148329,0.920817101092274
+"model_cooperative","sd_species_phylo_brms__Intercept",1.89211348887121,1.28414446250564,2.60779052827119
+"model_cooperative","sd_Study_ID__Intercept",0.310649146261842,0.0192535506539848,0.597974922485053
+"model_cooperative","phi",18.9721211464315,10.14435260403,41.0361435833982
+"model_cooperative","variance_sd_species_nonphylo__Intercept",0.341977322767416,0.0110305825252388,0.847904149621699
+"model_cooperative","variance_sd_species_phylo_brms__Intercept",3.6951420437352,1.64902700471097,6.80057144572224
+"model_cooperative","variance_sd_Study_ID__Intercept",0.122794493934713,0.000370699228194764,0.357574008138218
+"model_cooperative","prevalence_zero_random_effects",0.159580810449489,0.0103173927284275,0.570416141831174

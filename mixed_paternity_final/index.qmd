@@ -20,6 +20,12 @@ Birds are central model systems for studying sexual selection and reproductive c
 ::::
 :::::
 
+## Updated analytical dataset
+
+All results on this page use the models after exclusion of the two records for the common ostrich (6/6) and Nelson’s sparrow (8/8), whose exact counts could not be verified as broods with at least two genetic sires. Other records were retained, including the saltmarsh-sparrow record from the same Walsh study. Updated 5 November 2026.
+
+The overall model contains **617 records, 553 study identifiers and 373 species**. The primary multivariable model contains **531 records, 480 study identifiers and 324 species**.
+
 **Website structure**
 
 :::::::::: card-grid

@@ -1,0 +1,11 @@
+"model","quantity","mean","lower","upper"
+"model_coloniality","b_Intercept",-1.24133270591881,-3.02555007587919,0.54025521107859
+"model_coloniality","b_coloniality1",-0.137039699949869,-0.539719237573141,0.261664398744976
+"model_coloniality","sd_species_nonphylo__Intercept",0.698031694477925,0.484845214176466,0.896757181723725
+"model_coloniality","sd_species_phylo_brms__Intercept",1.73577977989531,1.31056873185467,2.21081745715435
+"model_coloniality","sd_Study_ID__Intercept",0.230655955394863,0.0132065704729583,0.474387564220016
+"model_coloniality","phi",18.3224885068481,12.0303512845452,32.2618451693165
+"model_coloniality","variance_sd_species_nonphylo__Intercept",0.498152347508123,0.235074881724481,0.80417344312475
+"model_coloniality","variance_sd_species_phylo_brms__Intercept",3.06474933515273,1.7175904009212,4.88771383018813
+"model_coloniality","variance_sd_Study_ID__Intercept",0.0695921555928369,0.000174413518660395,0.225043564457187
+"model_coloniality","prevalence_zero_random_effects",0.255909179762667,0.0462848620913451,0.631871781669201
