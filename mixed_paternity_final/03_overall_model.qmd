@@ -1,125 +1,376 @@
 ---
-title: "Overall model"
 format:
-  html:
+ html:
     toc: true
     toc-depth: 3
 ---
 
-All results on this page use the models after exclusion of the two records for the common ostrich (6/6) and Nelson’s sparrow (8/8), whose exact counts could not be verified as broods with at least two genetic sires. Other records were retained, including the saltmarsh-sparrow record from the same Walsh study. Models updated 5 November 2026; marginal mean added 6 November 2026.
-
-Estimates are posterior means with 95% equal-tailed credible intervals (CrI). Odds ratios are summarised after exponentiating each contrast draw. The overall marginal mean integrates over the fitted random-effect distributions. Conditional estimates at zero random effects are explicitly labelled for comparison. Continuous effects use the original common scaling constants, retained unchanged after exclusion. Mixed paternity refers to the source-derived brood-level measure described in Methods; source reporting sometimes used brood-level EPP without identifying sire number.
-
-**The estimated mean prevalence of mixed paternity was 31.6% (95% CrI: 11.8–57.2%).** This marginal mean averages over the fitted distributions of study, non-phylogenetic species and phylogenetic species effects. The pooled raw proportion is 16,075 / 46,235 = 34.77%; it weights observations by their brood denominators and is a different summary.
-
+::: section-card
 ## Overall model
 
-617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.
+This section presents the intercept-only beta-binomial phylogenetic model used to estimate the population-level intercept and quantify heterogeneity in mixed-paternity prevalence across birds. The model accounts for study identifier, non-phylogenetic species-level variation, and phylogenetically structured species-level variation.
+:::
 
-| Coefficient | Mean log odds [95% CrI] | Mean OR [95% CrI] |
-| --- | --- | --- |
-| Intercept | -1.295 [-3.066, 0.476] | 0.412 [0.047, 1.610] |
+## Packages
 
-### Variance components and precision
+The R packages required for model fitting and diagnostics.
 
-| Quantity | Posterior mean [95% CrI] |
-| --- | --- |
-| Phylogenetic species variance | 3.084 [1.737, 4.874] |
-| Non-phylogenetic species variance | 0.496 [0.223, 0.802] |
-| Study variance | 0.068 [0.000, 0.214] |
-| Beta-binomial precision | 18.179 [12.095, 30.707] |
-| Species-level phylogenetic heritability | 0.853 [0.715, 0.949] |
-| Marginal mean prevalence (proportion) | 0.316 [0.118, 0.572] |
-| Conditional prevalence at zero random effects (proportion) | 0.247 [0.045, 0.617] |
+```{r}
+#| message: false
+#| warning: false
 
-### Sampling diagnostics
+library(tidyverse)
+library(brms)
+library(posterior)
+library(bayesplot)
+library(loo)
 
-| Maximum R-hat | Minimum bulk ESS | Minimum tail ESS | Divergences | Treedepth hits |
-| --- | --- | --- | --- | --- |
-| 1.0031 | 785 | 1720 | 0 | 0 |
+options(mc.cores = parallel::detectCores())
+```
 
-[Download posterior summary](tables/refit_20261105/model_overall_study_summary.csv) · [Parameter-level diagnostics](tables/refit_20261105/model_overall_study_parameter_diagnostics.csv).
+## Load prepared objects
 
-## Averaging over random effects
+```{r}
+#| message: false
+#| warning: false
 
-For each of 20,000 joint posterior draws, we calculated
+data_overall_study <- readRDS("data/data_overall_study.rds")
+phylo_mat <- readRDS("data/phylo_mat.rds")
+```
 
-$$
-\bar p_s = \int \operatorname{logit}^{-1}(\alpha_s + \sqrt{V_s}z)\varphi(z)\,dz,
-\quad V_s=\sigma^2_{\mathrm{study},s}+\sigma^2_{\mathrm{nonphylo},s}+\sigma^2_{\mathrm{phylo},s}.
-$$
+## Overall dataset
 
-Here, $\varphi$ is the standard normal density. The phylogenetic covariance matrix has unit diagonal. We used 160-node Gaussian quadrature and summarised the resulting marginal probabilities by their posterior mean and 2.5th and 97.5th percentiles. Checks with 80 nodes and independent adaptive integration agreed to better than $4\times10^{-9}$ in probability. Beta-binomial precision controls sampling dispersion and does not change the expected probability.
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
 
-This estimates a mean under the fitted study and species distributions, not an empirical or census-weighted average of all birds. Moderator-specific curves and category predictions elsewhere remain conditional on zero random effects. No models were refitted for this calculation.
+overall_data_summary <- data_overall_study %>%
+  summarise(
+    Observations = n(),
+    `Study identifiers` = n_distinct(Study_ID),
+    Species = n_distinct(species_phylo_brms),
+    `Total broods` = sum(n_total_broods, na.rm = TRUE),
+    `Mixed-paternity broods` = sum(n_mixed_broods, na.rm = TRUE),
+    `Raw prevalence (%)` = 100 * `Mixed-paternity broods` / `Total broods`
+  )
 
-[Download marginal summary](tables/refit_20261105/overall_marginal_prevalence.csv) · [Calculation script](scripts/refit_20261105/marginal_prevalence.R).
+knitr::kable(overall_data_summary, digits = 2)
+```
 
-## Conditional posterior predictive checks
+## Modelling framework
 
-The following checks use 2,000 retained draws and include fitted study and species effects; they assess fit within the observed sample.
+Because brood-level paternity data are expected to exhibit substantial extra-binomial heterogeneity across references, populations, and species, we modelled mixed-paternity prevalence using beta-binomial generalised linear mixed-effects models with a logit link:
 
-![Overall posterior predictive checks.](Figures/refit_20261105/ppc_overall.png)
+$$y_i \sim \mathrm{BetaBinomial}(n_i, \mu_i, \phi)$$
 
-## Matched-sample variance comparison
+where $y_i$ is the number of broods with mixed paternity, $n_i$ is the total number of broods genotyped, $\mu_i$ is the expected mixed-paternity prevalence, and the precision parameter $\phi$ describes extra-binomial variation among study units.
 
-The full and intercept-only models both use 531 records. Percentage reductions compare posterior means; negative values indicate increases. They are descriptive and do not represent total response variance explained.
+For models with a population-level intercept, the linear predictor was:
 
-| Component | Intercept-only [95% CrI] | Multivariable [95% CrI] | Reduction (%) |
+$$\mathrm{logit}(\mu_i) = \alpha + \mathbf{X}_i \boldsymbol{\beta} + u_{\mathrm{reference}[i]} + u_{\mathrm{species}[i]} + u_{\mathrm{phylo}[i]}$$
+
+where $\alpha$ is the intercept, $\mathbf{X}_i \boldsymbol{\beta}$ represents fixed biological and methodological moderators, and $u_{\mathrm{reference}}$, $u_{\mathrm{species}}$, and $u_{\mathrm{phylo}}$ represent study-identifier-level, non-phylogenetic species-level, and phylogenetically structured random effects, respectively. Study identifier (`Study_ID`) is an analytical grouping variable, not a bibliographic-publication count; one study identifier can incorporate evidence reported across more than one source.
+
+The single-moderator models for marker type, nest type, BG breeding system, BIRDBASE mating system, and parental care use `0 + category`: each fitted category has its own logit coefficient, with no shared population-level intercept or reference category. Pairwise contrasts subtract category coefficients within each posterior draw. The primary multivariable model and binary single-moderator models instead use an intercept and reference-category contrasts. All models retain the three random-intercept terms.
+
+### Model coding and priors {#model-coding-and-priors}
+
+Reference categories apply only to models with a population-level intercept. Primary = primary multivariable model; single = single-moderator model; both = both model types. The five models fitted with `0 + category` have no reference category.
+
+| Predictor | Model | Reference category | Other fitted categories |
 | --- | --- | --- | --- |
-| species phylo brms | 3.562 [1.922, 5.804] | 3.120 [1.487, 5.377] | 12.4 |
-| species nonphylo | 0.464 [0.169, 0.804] | 0.463 [0.138, 0.821] | 0.4 |
-| Study ID | 0.072 [0.000, 0.213] | 0.091 [0.001, 0.232] | -26.9 |
-| variance sum | 4.098 [2.604, 6.193] | 3.674 [2.192, 5.751] | 10.3 |
+| Marker type | Primary | DNA fingerprinting | Microsatellite; mixed/other; SNPs |
+| BG breeding system | Primary | Cooperative breeder | Monogamy; no social bond; polyandry |
+| Nest type | Primary | Cavity | Ground; open; other enclosed |
+| Migration | Both | Regular migrant (Strong) | Resident, weak/local or irregular migrant (Weak) |
+| Coloniality | Both | Non-colonial (0) | Colonial (1) |
+| Nest-box use | Single | Natural nest (no) | Nest box (yes) |
+| Cooperative breeding | Single | Non-cooperative (no) | Cooperative (yes) |
 
-## Matched-sample intercept-only model
-
-531 records, 480 study identifiers and 324 species; 14903 mixed-paternity broods out of 41511 sampled broods.
-
-| Coefficient | Mean log odds [95% CrI] | Mean OR [95% CrI] |
+| Parameter class | Prior | Applicability |
 | --- | --- | --- |
-| Intercept | -1.241 [-3.137, 0.642] | 0.460 [0.043, 1.899] |
+| Population-level coefficients (b) | Flat (improper) | Slopes and reference-category contrasts, or all category logits in 0 + category models; absent from the overall and matched-sample intercept-only models. |
+| Population-level intercept | Student-t(3, 0, 2.5) | Models with a shared population-level intercept only; absent from the five 0 + category models. |
+| Group-level SDs | Half-Student-t(3, 0, 2.5), positive | All models; one SD for each of the three random-intercept terms. |
+| Beta-binomial precision (phi) | Gamma(0.01, 0.01), positive | All models; shape–rate parameterisation. |
 
-### Variance components and precision
+These priors were verified in the saved fits. The Intercept prior applies to the internally centred intercept used by brms, where applicable; it does not apply to category logits in 0 + category models. Flat priors are improper, so the complete specification should not be described collectively as weakly informative. Priors are on group-level SDs; posterior heterogeneity is reported as variance by squaring each SD draw. See the [brms prior documentation](https://paulbuerkner.com/brms/reference/set_prior.html).
 
-| Quantity | Posterior mean [95% CrI] |
-| --- | --- |
-| Phylogenetic species variance | 3.562 [1.922, 5.804] |
-| Non-phylogenetic species variance | 0.464 [0.169, 0.804] |
-| Study variance | 0.072 [0.000, 0.213] |
-| Beta-binomial precision | 22.812 [14.050, 42.054] |
-| Species-level phylogenetic heritability | 0.875 [0.733, 0.967] |
-| Prevalence at zero random effects (proportion) | 0.259 [0.042, 0.655] |
+## Population-level intercept prevalence
 
-### Sampling diagnostics
+### Model
 
-| Maximum R-hat | Minimum bulk ESS | Minimum tail ESS | Divergences | Treedepth hits |
-| --- | --- | --- | --- | --- |
-| 1.0056 | 889 | 1868 | 0 | 0 |
+The intercept-only model estimated the population-level intercept while quantifying study-identifier-level, non-phylogenetic species-level, and phylogenetically structured species-level variation. Its inverse-logit transformation is the expected prevalence when all random effects are set to zero; it is not a marginal average across the observed study identifiers or species.
 
-[Download posterior summary](tables/refit_20261105/model_null_matched_533_summary.csv) · [Parameter-level diagnostics](tables/refit_20261105/model_null_matched_533_parameter_diagnostics.csv).
+```{r}
+#| eval: false
+#| echo: true
 
-## Study-only model (no species effects)
+model_overall_study <- brm(
+  n_mixed_broods | trials(n_total_broods) ~
+    1 +
+    (1 | Study_ID) +
+    (1 | species_nonphylo) +
+    (1 | gr(species_phylo_brms, cov = phylo_mat)),
+  family = beta_binomial(link = "logit"),
+  data = data_overall_study,
+  data2 = list(phylo_mat = phylo_mat),
+  chains = 4,
+  cores = 4,
+  iter = 10000,
+  warmup = 5000,
+  control = list(adapt_delta = 0.99, max_treedepth = 15),
+  seed = 123
+)
 
-617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.
+```
 
-| Coefficient | Mean log odds [95% CrI] | Mean OR [95% CrI] |
-| --- | --- | --- |
-| Intercept | -1.087 [-1.217, -0.962] | 0.338 [0.296, 0.382] |
+### Figure
 
-### Variance components and precision
+```{r}
+knitr::include_graphics(
+  "Figures/model_diagnostics/overall_prevalence_intercept_plot.png"
+)
+```
 
-| Quantity | Posterior mean [95% CrI] |
-| --- | --- |
-| Study variance | 1.002 [0.622, 1.422] |
-| Beta-binomial precision | 6.627 [4.547, 9.605] |
-| Prevalence at zero random effects (proportion) | 0.252 [0.228, 0.276] |
+### Model summary
 
-### Sampling diagnostics
+```{r}
+#| message: false
+#| warning: false
 
-| Maximum R-hat | Minimum bulk ESS | Minimum tail ESS | Divergences | Treedepth hits |
-| --- | --- | --- | --- | --- |
-| 1.0021 | 1388 | 2972 | 0 | 0 |
+model_overall_study <- readRDS("models/model_overall_study.rds")
+summary(model_overall_study)
+```
 
-[Download posterior summary](tables/refit_20261105/model_overall_no_species_summary.csv) · [Parameter-level diagnostics](tables/refit_20261105/model_overall_no_species_parameter_diagnostics.csv).
+### Model estimates
 
+Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.
+
+The posterior mean overall prevalence is 34.71% (95% equal-tailed CrI 8.12–73.16%).
+
+Group-level estimates are posterior mean variances on the logit scale, with equal-tailed 95% credible intervals calculated from squared posterior SD draws. Raw brms diagnostic summaries retain their native SD parameterisation.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+s <- summary(model_overall_study)
+overall_probability <- 100 * plogis(brms::fixef(model_overall_study, summary = FALSE)[, "Intercept"])
+v <- readr::read_csv("tables/variance_audit/posterior_variance_summaries.csv", show_col_types = FALSE) |>
+  dplyr::filter(model == "model_overall_study")
+get_variance <- function(parameter_name, statistic) v[[statistic]][match(parameter_name, v$parameter)]
+
+model_summary_table <- tibble::tibble(
+  Parameter = c(
+    "Intercept (logit scale)",
+    "Posterior mean prevalence at zero random effects (%)",
+    "Study-level variance",
+    "Non-phylogenetic species-level variance",
+    "Phylogenetic species-level variance",
+    "Beta-binomial precision (phi)"
+  ),
+  Estimate = c(
+    s$fixed["Intercept", "Estimate"],
+    mean(overall_probability),
+    get_variance("sd_Study_ID__Intercept", "mean"),
+    get_variance("sd_species_nonphylo__Intercept", "mean"),
+    get_variance("sd_species_phylo_brms__Intercept", "mean"),
+    s$spec_pars["phi", "Estimate"]
+  ),
+  `Lower 95% CrI` = c(
+    s$fixed["Intercept", "l-95% CI"],
+    unname(quantile(overall_probability, 0.025)),
+    get_variance("sd_Study_ID__Intercept", "q025"),
+    get_variance("sd_species_nonphylo__Intercept", "q025"),
+    get_variance("sd_species_phylo_brms__Intercept", "q025"),
+    s$spec_pars["phi", "l-95% CI"]
+  ),
+  `Upper 95% CrI` = c(
+    s$fixed["Intercept", "u-95% CI"],
+    unname(quantile(overall_probability, 0.975)),
+    get_variance("sd_Study_ID__Intercept", "q975"),
+    get_variance("sd_species_nonphylo__Intercept", "q975"),
+    get_variance("sd_species_phylo_brms__Intercept", "q975"),
+    s$spec_pars["phi", "u-95% CI"]
+  )
+)
+
+knitr::kable(model_summary_table, digits = 3)
+```
+
+```{}
+```
+
+### Phylogenetic signal
+
+We quantified the phylogenetic signal in between-species variation as the proportion of species-level variance attributable to the phylogenetically structured random effect:
+
+$$
+\nu =
+\frac{\sigma^2_{\mathrm{phylo}}}
+{\sigma^2_{\mathrm{phylo}} + \sigma^2_{\mathrm{nonphylo}}}
+$$
+
+where $\sigma^2_{\mathrm{phylo}}$ is the variance of the phylogenetically structured species-level random effect and $\sigma^2_{\mathrm{nonphylo}}$ is the variance of the non-phylogenetic species-level random effect.
+
+The table below summarises the relative contribution of the phylogenetic and non-phylogenetic species-level variance components in the overall model.
+
+```{r}
+#| label: phylogenetic-signal-table
+#| echo: false
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(tidybayes)
+
+draws_phylo_signal <- model_overall_study %>%
+  spread_draws(
+    sd_species_phylo_brms__Intercept,
+    sd_species_nonphylo__Intercept
+  ) %>%
+  mutate(
+    phylo_signal = sd_species_phylo_brms__Intercept^2 /
+      (sd_species_phylo_brms__Intercept^2 + sd_species_nonphylo__Intercept^2)
+  )
+
+phylo_signal_summary <- draws_phylo_signal %>%
+  summarise(
+    Statistic = "Phylogenetic signal (ν)",
+    Estimate = mean(phylo_signal),
+    `Lower 95% CrI` = quantile(phylo_signal, 0.025),
+    `Upper 95% CrI` = quantile(phylo_signal, 0.975)
+  )
+
+knitr::kable(
+  phylo_signal_summary |>
+    dplyr::mutate(dplyr::across(where(is.numeric), ~ sprintf("%.3f", .x))),
+  align = c("l", "r", "r", "r"),
+  caption = "Posterior mean estimate of the phylogenetic signal with a 95% equal-tailed credible interval."
+)
+```
+
+## Diagnostics
+
+### Posterior predictive checks
+
+```{r}
+pp_check(model_overall_study)
+```
+
+### Divergences
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+divergence_table <- nuts_params(model_overall_study) |>
+  filter(Parameter == "divergent__") |>
+  count(Value) |>
+  mutate(
+    Value = ifelse(Value == 0, "Non-divergent", "Divergent")
+  )
+
+knitr::kable(divergence_table)
+```
+
+### Traceplots
+
+```{r}
+#| label: save-overall-traceplot
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 8
+
+dir.create("Figures/model_diagnostics", recursive = TRUE, showWarnings = FALSE)
+
+png(
+  filename = "Figures/model_diagnostics/model_overall_traceplots.png",
+  width = 3000,
+  height = 2400,
+  res = 300
+)
+
+plot(model_overall_study)
+
+dev.off()
+```
+
+```{r}
+
+#| label: show-overall-traceplot
+#| echo: false
+#| out-width: "100%"
+
+knitr::include_graphics(
+  "Figures/model_diagnostics/model_overall_traceplots.png"
+)
+```
+
+
+## Matched-sample model without moderators {#matched-sample-model-without-moderators}
+
+This additional intercept-only model provides a matched-sample reference for the final multivariable model (Supplementary Table S12). It uses exactly the same 533 observations from 481 study identifiers and 326 species. It is distinct from the overall model above, which uses the full dataset of 619 observations; it is not a replacement estimate of overall mixed-paternity prevalence.
+
+The response is the number of mixed-paternity broods out of the total number of broods, modelled with a beta-binomial distribution and a logit link. The matched model includes an intercept and random intercepts for study identifier, non-phylogenetic species identity, and phylogenetically structured species identity, with no moderators. The data, phylogenetic covariance matrix, grouping structure and corresponding priors are retained from the final multivariable model. Priors are Student-t(3, 0, 2.5) for the intercept and group-level standard deviations (restricted to positive values for standard deviations), and Gamma(0.01, 0.01), in shape-rate notation, for beta-binomial precision.
+
+### Load prepared objects {#matched-load-objects}
+
+```{r}
+#| label: load-matched-objects
+#| message: false
+#| warning: false
+
+data_null_matched <- readRDS("data/data_null_matched_533.rds")
+phylo_mat_matched <- readRDS("data/phylo_mat_matched_533.rds")
+```
+
+### Model {#matched-model}
+
+```{r}
+#| label: matched-null-model
+#| eval: false
+#| code-fold: true
+
+matched_priors <- c(
+  set_prior("student_t(3, 0, 2.5)", class = "Intercept"),
+  set_prior("student_t(3, 0, 2.5)", class = "sd"),
+  set_prior("gamma(0.01, 0.01)", class = "phi")
+)
+
+model_null_matched <- brm(
+  n_mixed_broods | trials(n_total_broods) ~ 1 +
+    (1 | Study_ID) + (1 | species_nonphylo) +
+    (1 | gr(species_phylo_brms, cov = phylo_mat_matched)),
+  data = data_null_matched,
+  data2 = list(phylo_mat_matched = phylo_mat_matched),
+  family = beta_binomial(link = "logit"),
+  prior = matched_priors,
+  chains = 4, cores = 4, iter = 10000, warmup = 5000,
+  seed = 20261015,
+  control = list(adapt_delta = 0.99, max_treedepth = 15),
+  file = "comment44_variance_20261015/model_null_matched_533",
+  file_refit = "on_change"
+)
+```
+
+### Results {#matched-results}
+
+The null model was fitted on Totoro with four chains, 10,000 iterations per chain including 5,000 warmup iterations (20,000 retained draws), seed 20261015, adapt_delta = 0.99 and max_treedepth = 15. Maximum R-hat was 1.003; minimum bulk and tail effective sample sizes were 844 and 1,738, respectively. There were no divergent transitions or maximum-treedepth hits. The existing final multivariable model was not refitted.
+
+The table reports posterior mean variances and equal-tailed 95% credible intervals on the logit scale. Each posterior standard-deviation draw was squared before summarising; the sum was calculated within each model draw. Descriptive reduction (%) = 100 × (1 − posterior mean variance in the multivariable model / posterior mean variance in the matched intercept-only model). Negative reductions indicate an increase.
+
+| Component | Matched intercept-only model | Multivariable model | Reduction (%) |
+| --- | --- | --- | --- |
+| Phylogenetic species | 3.941 [2.206, 6.251] | 3.230 [1.544, 5.530] | 18.0 |
+| Non-phylogenetic species | 0.426 [0.139, 0.770] | 0.461 [0.143, 0.828] | -8.2 |
+| Study identifier | 0.076 [0.00030, 0.220] | 0.102 [0.00141, 0.244] | -33.9 |
+| Sum of group-level variances | 4.443 [2.838, 6.606] | 3.792 [2.261, 5.901] | 14.6 |
+
+Posterior mean phylogenetic variance was 18.0% lower in the multivariable model; the sum of the three group-level variances was 14.6% lower. These are descriptive reductions in group-level variance, not proportions of total response variance explained or predictive R-squared. Binomial sampling variation and beta-binomial dispersion remain in the observation model and are not included as additive components in this sum. No uncertainty interval is reported for the between-model reduction.

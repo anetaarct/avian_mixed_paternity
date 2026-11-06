@@ -1,29 +1,23 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
-<title>7&nbsp; Biological moderators – Evolutionary history strongly structures brood-level mixed paternity across birds</title>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta charset="utf-8"/>
+<meta content="quarto-1.9.37" name="generator"/>
+<meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport"/>
+<title>7  Biological moderators – Evolutionary history strongly structures brood-level mixed paternity across birds</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
+code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: 1.5em;}
-div.column{flex: auto;}
-@media screen {
-div.columns{gap: min(4vw, 1.5em);}
-div.column{overflow-x: auto;}
-}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
@@ -62,27 +56,25 @@ div.sourceCode
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
-
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./07_multivariable_model.html" rel="next">
-<link href="./05_breeding_system_moderators.html" rel="prev">
+<meta content="./" name="quarto:offset"/>
+<link href="./07_figures.html" rel="next"/>
+<link href="./05_breeding_system_moderators.html" rel="prev"/>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet"/>
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" id="quarto-text-highlighting-styles" rel="stylesheet"/>
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c574c73dd0d0ff61020859ffc61752ee.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet"/>
+<link append-hash="true" data-mode="light" href="site_libs/bootstrap/bootstrap-12eeb4b20e9f5a2b0bfc604bfaf942bb.min.css" id="quarto-bootstrap" rel="stylesheet"/>
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -110,992 +102,1031 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-
-
-<link rel="stylesheet" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+<link href="styles.css" rel="stylesheet"/>
 </head>
-
 <body class="nav-sidebar floating quarto-light">
-
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06_biological_moderators.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Biological moderators</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </nav>
+<header class="headroom fixed-top" id="quarto-header">
+<nav class="quarto-secondary-nav">
+<div class="container-fluid d-flex">
+<button aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" class="quarto-btn-toggle btn" data-bs-target=".quarto-sidebar-collapse-item" data-bs-toggle="collapse" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }" role="button" type="button">
+<i class="bi bi-layout-text-sidebar-reverse"></i>
+</button>
+<nav aria-label="breadcrumb" class="quarto-page-breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06_biological_moderators.html"><span class="chapter-number">7</span>  <span class="chapter-title">Biological moderators</span></a></li></ol></nav>
+<a aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" class="flex-grow-1" data-bs-target=".quarto-sidebar-collapse-item" data-bs-toggle="collapse" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }" role="navigation">
+</a>
+<button aria-label="Search" class="btn quarto-search-button" onclick="window.quartoOpenSearch();" type="button">
+<i class="bi bi-search"></i>
+</button>
+</div>
+</nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div class="quarto-container page-columns page-rows-contents page-layout-article" id="quarto-content">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="./">Evolutionary history strongly structures brood-level mixed paternity across birds</a> 
-    </div>
-      </div>
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./01_analysis_metadata.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Analysis metadata</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./02_data_preparation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data preparation</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./03_overall_model.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Overall model</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./04_methodological_moderators.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Methodological moderators</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./05_breeding_system_moderators.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Breeding system moderators</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06_biological_moderators.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Biological moderators</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07_multivariable_model.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multivariable model</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07_figures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Figures</span></span></a>
-  </div>
-</li>
-    </ul>
-    </div>
+<nav class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" id="quarto-sidebar">
+<div class="pt-lg-2 mt-2 text-left sidebar-header">
+<div class="sidebar-title mb-0 py-0">
+<a href="./">Evolutionary history strongly structures brood-level mixed paternity across birds</a>
+</div>
+</div>
+<div class="mt-2 flex-shrink-0 align-items-center">
+<div class="sidebar-search">
+<div class="" id="quarto-search" title="Search"></div>
+</div>
+</div>
+<div class="sidebar-menu-container"><ul class="list-unstyled mt-1"><li class="sidebar-item"><div class="sidebar-item-container"><a class="sidebar-item-text sidebar-link" href="./index.html"><span class="menu-text"><span class="chapter-number">1</span>  <span class="chapter-title">Overview</span></span></a></div></li><li class="sidebar-item"><div class="sidebar-item-container"><a class="sidebar-item-text sidebar-link" href="./01_analysis_metadata.html"><span class="menu-text"><span class="chapter-number">2</span>  <span class="chapter-title">Analytical variables</span></span></a></div></li><li class="sidebar-item"><div class="sidebar-item-container"><a class="sidebar-item-text sidebar-link" href="./02_data_preparation.html"><span class="menu-text"><span class="chapter-number">3</span>  <span class="chapter-title">Data preparation</span></span></a></div></li><li class="sidebar-item"><div class="sidebar-item-container"><a class="sidebar-item-text sidebar-link" href="./03_overall_model.html"><span class="menu-text"><span class="chapter-number">4</span>  <span class="chapter-title">Overall model</span></span></a></div></li><li class="sidebar-item"><div class="sidebar-item-container"><a class="sidebar-item-text sidebar-link" href="./04_methodological_moderators.html"><span class="menu-text"><span class="chapter-number">5</span>  <span class="chapter-title">Methodological moderators</span></span></a></div></li><li class="sidebar-item"><div class="sidebar-item-container"><a class="sidebar-item-text sidebar-link" href="./05_breeding_system_moderators.html"><span class="menu-text"><span class="chapter-number">6</span>  <span class="chapter-title">Breeding system moderators</span></span></a></div></li><li class="sidebar-item"><div class="sidebar-item-container"><a class="sidebar-item-text sidebar-link active" href="./06_biological_moderators.html"><span class="menu-text"><span class="chapter-number">7</span>  <span class="chapter-title">Biological moderators</span></span></a></div></li><li class="sidebar-item"><div class="sidebar-item-container"><a class="sidebar-item-text sidebar-link" href="./07_multivariable_model.html"><span class="menu-text"><span class="chapter-number">8</span>  <span class="chapter-title">Multivariable model</span></span></a></div></li><li class="sidebar-item"><div class="sidebar-item-container"><a class="sidebar-item-text sidebar-link" href="./07_figures.html"><span class="menu-text"><span class="chapter-number">9</span>  <span class="chapter-title">Figures</span></span></a></div></li></ul></div>
 </nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<div class="quarto-sidebar-collapse-item" data-bs-target=".quarto-sidebar-collapse-item" data-bs-toggle="collapse" id="quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#nest-architecture" id="toc-nest-architecture" class="nav-link active" data-scroll-target="#nest-architecture"><span class="header-section-number">7.1</span> Nest architecture</a>
-  <ul class="collapse">
-  <li><a href="#pairwise-contrasts" id="toc-pairwise-contrasts" class="nav-link" data-scroll-target="#pairwise-contrasts"><span class="header-section-number">7.1.1</span> Pairwise contrasts</a></li>
-  <li><a href="#conditional-prevalence" id="toc-conditional-prevalence" class="nav-link" data-scroll-target="#conditional-prevalence"><span class="header-section-number">7.1.2</span> Conditional prevalence</a></li>
-  <li><a href="#variance-components-and-precision" id="toc-variance-components-and-precision" class="nav-link" data-scroll-target="#variance-components-and-precision"><span class="header-section-number">7.1.3</span> Variance components and precision</a></li>
-  <li><a href="#sampling-diagnostics" id="toc-sampling-diagnostics" class="nav-link" data-scroll-target="#sampling-diagnostics"><span class="header-section-number">7.1.4</span> Sampling diagnostics</a></li>
-  <li><a href="#posterior-predictive-check" id="toc-posterior-predictive-check" class="nav-link" data-scroll-target="#posterior-predictive-check"><span class="header-section-number">7.1.5</span> Posterior predictive check</a></li>
-  </ul></li>
-  <li><a href="#migration" id="toc-migration" class="nav-link" data-scroll-target="#migration"><span class="header-section-number">7.2</span> Migration</a>
-  <ul class="collapse">
-  <li><a href="#conditional-prevalence-1" id="toc-conditional-prevalence-1" class="nav-link" data-scroll-target="#conditional-prevalence-1"><span class="header-section-number">7.2.1</span> Conditional prevalence</a></li>
-  <li><a href="#variance-components-and-precision-1" id="toc-variance-components-and-precision-1" class="nav-link" data-scroll-target="#variance-components-and-precision-1"><span class="header-section-number">7.2.2</span> Variance components and precision</a></li>
-  <li><a href="#sampling-diagnostics-1" id="toc-sampling-diagnostics-1" class="nav-link" data-scroll-target="#sampling-diagnostics-1"><span class="header-section-number">7.2.3</span> Sampling diagnostics</a></li>
-  <li><a href="#posterior-predictive-check-1" id="toc-posterior-predictive-check-1" class="nav-link" data-scroll-target="#posterior-predictive-check-1"><span class="header-section-number">7.2.4</span> Posterior predictive check</a></li>
-  </ul></li>
-  <li><a href="#coloniality" id="toc-coloniality" class="nav-link" data-scroll-target="#coloniality"><span class="header-section-number">7.3</span> Coloniality</a>
-  <ul class="collapse">
-  <li><a href="#conditional-prevalence-2" id="toc-conditional-prevalence-2" class="nav-link" data-scroll-target="#conditional-prevalence-2"><span class="header-section-number">7.3.1</span> Conditional prevalence</a></li>
-  <li><a href="#variance-components-and-precision-2" id="toc-variance-components-and-precision-2" class="nav-link" data-scroll-target="#variance-components-and-precision-2"><span class="header-section-number">7.3.2</span> Variance components and precision</a></li>
-  <li><a href="#sampling-diagnostics-2" id="toc-sampling-diagnostics-2" class="nav-link" data-scroll-target="#sampling-diagnostics-2"><span class="header-section-number">7.3.3</span> Sampling diagnostics</a></li>
-  <li><a href="#posterior-predictive-check-2" id="toc-posterior-predictive-check-2" class="nav-link" data-scroll-target="#posterior-predictive-check-2"><span class="header-section-number">7.3.4</span> Posterior predictive check</a></li>
-  </ul></li>
-  <li><a href="#maximum-clutch-size" id="toc-maximum-clutch-size" class="nav-link" data-scroll-target="#maximum-clutch-size"><span class="header-section-number">7.4</span> Maximum clutch size</a>
-  <ul class="collapse">
-  <li><a href="#variance-components-and-precision-3" id="toc-variance-components-and-precision-3" class="nav-link" data-scroll-target="#variance-components-and-precision-3"><span class="header-section-number">7.4.1</span> Variance components and precision</a></li>
-  <li><a href="#sampling-diagnostics-3" id="toc-sampling-diagnostics-3" class="nav-link" data-scroll-target="#sampling-diagnostics-3"><span class="header-section-number">7.4.2</span> Sampling diagnostics</a></li>
-  <li><a href="#posterior-predictive-check-3" id="toc-posterior-predictive-check-3" class="nav-link" data-scroll-target="#posterior-predictive-check-3"><span class="header-section-number">7.4.3</span> Posterior predictive check</a></li>
-  </ul></li>
-  <li><a href="#log-body-mass" id="toc-log-body-mass" class="nav-link" data-scroll-target="#log-body-mass"><span class="header-section-number">7.5</span> Log body mass</a>
-  <ul class="collapse">
-  <li><a href="#variance-components-and-precision-4" id="toc-variance-components-and-precision-4" class="nav-link" data-scroll-target="#variance-components-and-precision-4"><span class="header-section-number">7.5.1</span> Variance components and precision</a></li>
-  <li><a href="#sampling-diagnostics-4" id="toc-sampling-diagnostics-4" class="nav-link" data-scroll-target="#sampling-diagnostics-4"><span class="header-section-number">7.5.2</span> Sampling diagnostics</a></li>
-  <li><a href="#posterior-predictive-check-4" id="toc-posterior-predictive-check-4" class="nav-link" data-scroll-target="#posterior-predictive-check-4"><span class="header-section-number">7.5.3</span> Posterior predictive check</a></li>
-  </ul></li>
-  <li><a href="#absolute-latitude" id="toc-absolute-latitude" class="nav-link" data-scroll-target="#absolute-latitude"><span class="header-section-number">7.6</span> Absolute latitude</a>
-  <ul class="collapse">
-  <li><a href="#variance-components-and-precision-5" id="toc-variance-components-and-precision-5" class="nav-link" data-scroll-target="#variance-components-and-precision-5"><span class="header-section-number">7.6.1</span> Variance components and precision</a></li>
-  <li><a href="#sampling-diagnostics-5" id="toc-sampling-diagnostics-5" class="nav-link" data-scroll-target="#sampling-diagnostics-5"><span class="header-section-number">7.6.2</span> Sampling diagnostics</a></li>
-  <li><a href="#posterior-predictive-check-5" id="toc-posterior-predictive-check-5" class="nav-link" data-scroll-target="#posterior-predictive-check-5"><span class="header-section-number">7.6.3</span> Posterior predictive check</a></li>
-  </ul></li>
-  <li><a href="#reproducibility" id="toc-reproducibility" class="nav-link" data-scroll-target="#reproducibility"><span class="header-section-number">7.7</span> Reproducibility</a></li>
-  </ul>
+<div class="sidebar margin-sidebar" id="quarto-margin-sidebar">
+<nav class="toc-active" id="TOC" role="doc-toc">
+<h2 id="toc-title">Table of contents</h2>
+<ul>
+<li><a class="nav-link active" data-scroll-target="#packages" href="#packages" id="toc-packages"><span class="header-section-number">7.1</span> Packages</a></li>
+<li><a class="nav-link" data-scroll-target="#load-prepared-objects" href="#load-prepared-objects" id="toc-load-prepared-objects"><span class="header-section-number">7.2</span> Load prepared objects</a>
+<ul class="collapse">
+<li><a class="nav-link" data-scroll-target="#dataset-sizes" href="#dataset-sizes" id="toc-dataset-sizes"><span class="header-section-number">7.2.1</span> Dataset sizes</a></li>
+</ul></li>
+<li><a class="nav-link" data-scroll-target="#model" href="#model" id="toc-model"><span class="header-section-number">7.3</span> Model</a></li>
+<li><a class="nav-link" data-scroll-target="#nest-type-architecture" href="#nest-type-architecture" id="toc-nest-type-architecture"><span class="header-section-number">7.4</span> Nest type architecture</a>
+<ul class="collapse">
+<li><a class="nav-link" data-scroll-target="#figure" href="#figure" id="toc-figure"><span class="header-section-number">7.4.1</span> Figure</a></li>
+<li><a class="nav-link" data-scroll-target="#model-summary" href="#model-summary" id="toc-model-summary"><span class="header-section-number">7.4.2</span> Model summary</a></li>
+<li><a class="nav-link" data-scroll-target="#nest-type-model-estimates" href="#nest-type-model-estimates" id="toc-nest-type-model-estimates"><span class="header-section-number">7.4.3</span> Nest type model estimates</a></li>
+<li><a class="nav-link" data-scroll-target="#post-hoc-pairwise-contrasts" href="#post-hoc-pairwise-contrasts" id="toc-post-hoc-pairwise-contrasts"><span class="header-section-number">7.4.4</span> Post-hoc pairwise contrasts</a></li>
+</ul></li>
+<li><a class="nav-link" data-scroll-target="#migration" href="#migration" id="toc-migration"><span class="header-section-number">7.5</span> Migration</a>
+<ul class="collapse">
+<li><a class="nav-link" data-scroll-target="#figure-1" href="#figure-1" id="toc-figure-1"><span class="header-section-number">7.5.1</span> Figure</a></li>
+<li><a class="nav-link" data-scroll-target="#model-summary-1" href="#model-summary-1" id="toc-model-summary-1"><span class="header-section-number">7.5.2</span> Model summary</a></li>
+<li><a class="nav-link" data-scroll-target="#model-estimates" href="#model-estimates" id="toc-model-estimates"><span class="header-section-number">7.5.3</span> Model estimates</a></li>
+</ul></li>
+<li><a class="nav-link" data-scroll-target="#coloniality" href="#coloniality" id="toc-coloniality"><span class="header-section-number">7.6</span> Coloniality</a>
+<ul class="collapse">
+<li><a class="nav-link" data-scroll-target="#figures" href="#figures" id="toc-figures"><span class="header-section-number">7.6.1</span> Figures</a></li>
+<li><a class="nav-link" data-scroll-target="#model-summary-2" href="#model-summary-2" id="toc-model-summary-2"><span class="header-section-number">7.6.2</span> Model summary</a></li>
+<li><a class="nav-link" data-scroll-target="#model-estimates-1" href="#model-estimates-1" id="toc-model-estimates-1"><span class="header-section-number">7.6.3</span> Model estimates</a></li>
+</ul></li>
+<li><a class="nav-link" data-scroll-target="#clutch-size" href="#clutch-size" id="toc-clutch-size"><span class="header-section-number">7.7</span> Clutch size</a>
+<ul class="collapse">
+<li><a class="nav-link" data-scroll-target="#figure-2" href="#figure-2" id="toc-figure-2"><span class="header-section-number">7.7.1</span> Figure</a></li>
+<li><a class="nav-link" data-scroll-target="#model-summary-3" href="#model-summary-3" id="toc-model-summary-3"><span class="header-section-number">7.7.2</span> Model summary</a></li>
+<li><a class="nav-link" data-scroll-target="#model-estimates-2" href="#model-estimates-2" id="toc-model-estimates-2"><span class="header-section-number">7.7.3</span> Model estimates</a></li>
+</ul></li>
+<li><a class="nav-link" data-scroll-target="#body-mass" href="#body-mass" id="toc-body-mass"><span class="header-section-number">7.8</span> Body mass</a>
+<ul class="collapse">
+<li><a class="nav-link" data-scroll-target="#figure-3" href="#figure-3" id="toc-figure-3"><span class="header-section-number">7.8.1</span> Figure</a></li>
+<li><a class="nav-link" data-scroll-target="#model-summary-4" href="#model-summary-4" id="toc-model-summary-4"><span class="header-section-number">7.8.2</span> Model summary</a></li>
+<li><a class="nav-link" data-scroll-target="#model-estimates-3" href="#model-estimates-3" id="toc-model-estimates-3"><span class="header-section-number">7.8.3</span> Model estimates</a></li>
+</ul></li>
+<li><a class="nav-link" data-scroll-target="#absolute-latitude" href="#absolute-latitude" id="toc-absolute-latitude"><span class="header-section-number">7.9</span> Absolute latitude</a>
+<ul class="collapse">
+<li><a class="nav-link" data-scroll-target="#figure-4" href="#figure-4" id="toc-figure-4"><span class="header-section-number">7.9.1</span> Figure</a></li>
+<li><a class="nav-link" data-scroll-target="#model-summary-5" href="#model-summary-5" id="toc-model-summary-5"><span class="header-section-number">7.9.2</span> Model summary</a></li>
+<li><a class="nav-link" data-scroll-target="#model-estimates-4" href="#model-estimates-4" id="toc-model-estimates-4"><span class="header-section-number">7.9.3</span> Model estimates</a></li>
+</ul></li>
+<li><a class="nav-link" data-scroll-target="#heterogeneity-summary" href="#heterogeneity-summary" id="toc-heterogeneity-summary"><span class="header-section-number">7.10</span> Heterogeneity summary</a></li>
+</ul>
 </nav>
-    </div>
+</div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
+<header class="quarto-title-block default" id="title-block-header">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Biological moderators</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">7</span>  <span class="chapter-title">Biological moderators</span></h1><button aria-expanded="false" class="btn code-tools-button dropdown-toggle" data-bs-toggle="dropdown" id="quarto-code-tools-menu" type="button"><i class="bi"></i> Code</button><ul aria-labelelledby="quarto-code-tools-menu" class="dropdown-menu dropdown-menu-end"><li><a class="dropdown-item" href="javascript:void(0)" id="quarto-show-all-code" role="button">Show All Code</a></li><li><a class="dropdown-item" href="javascript:void(0)" id="quarto-hide-all-code" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"/></li><li><a class="dropdown-item" href="javascript:void(0)" id="quarto-view-source" role="button">View Source</a></li></ul></div></div>
 </div>
-
-
-
 <div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
+</div>
 </header>
+<div class="section-card">
+<p>This section presents single-moderator models for ecological, life-history, and geographic predictors of brood-level mixed paternity. These models evaluate whether mixed-paternity prevalence varies with nest type, migration status, coloniality, clutch size, body mass, and absolute latitude, while retaining the same multilevel phylogenetic beta-binomial structure used in the overall model.</p>
+</div>
+<p>Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.</p>
+<section class="level2" data-number="7.1" id="packages">
+<h2 class="anchored" data-anchor-id="packages" data-number="7.1"><span class="header-section-number">7.1</span> Packages</h2>
+<p>The R packages required for model fitting.</p>
+</section>
+<section class="level2" data-number="7.2" id="load-prepared-objects">
+<h2 class="anchored" data-anchor-id="load-prepared-objects" data-number="7.2"><span class="header-section-number">7.2</span> Load prepared objects</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a>mixed_pat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/mixed_pat_prepared.rds"</span>)</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a>data_overall_study <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/data_overall_study.rds"</span>)</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a>data_abs_latitude <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/common_scaling/data_abs_latitude.rds"</span>)</span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a>data_body_mass <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/common_scaling/data_log_body_mass.rds"</span>)</span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a>data_clutch_size <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/common_scaling/data_clutch_size.rds"</span>)</span>
+<span id="cb1-7"><a aria-hidden="true" href="#cb1-7" tabindex="-1"></a>data_coloniality <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/data_coloniality.rds"</span>)</span>
+<span id="cb1-8"><a aria-hidden="true" href="#cb1-8" tabindex="-1"></a>data_migration <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/data_migration.rds"</span>)</span>
+<span id="cb1-9"><a aria-hidden="true" href="#cb1-9" tabindex="-1"></a>data_nest_type <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/data_nest_type.rds"</span>)</span>
+<span id="cb1-10"><a aria-hidden="true" href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a aria-hidden="true" href="#cb1-11" tabindex="-1"></a></span>
+<span id="cb1-12"><a aria-hidden="true" href="#cb1-12" tabindex="-1"></a>phylo_mat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/phylo_mat.rds"</span>)</span>
+<span id="cb1-13"><a aria-hidden="true" href="#cb1-13" tabindex="-1"></a>tree_analysis <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/tree_analysis.rds"</span>)</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+</div>
+<section class="level3" data-number="7.2.1" id="dataset-sizes">
+<h3 class="anchored" data-anchor-id="dataset-sizes" data-number="7.2.1"><span class="header-section-number">7.2.1</span> Dataset sizes</h3>
+<p>The table below shows the number of observations available for each biological moderator after removing missing values.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="co">#| label: bio-dataset-sizes</span></span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb2-4"><a aria-hidden="true" href="#cb2-4" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb2-5"><a aria-hidden="true" href="#cb2-5" tabindex="-1"></a></span>
+<span id="cb2-6"><a aria-hidden="true" href="#cb2-6" tabindex="-1"></a>bio_dataset_sizes <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb2-7"><a aria-hidden="true" href="#cb2-7" tabindex="-1"></a>  <span class="at">Moderator =</span> <span class="fu">c</span>(</span>
+<span id="cb2-8"><a aria-hidden="true" href="#cb2-8" tabindex="-1"></a>    <span class="st">"Nest type"</span>,</span>
+<span id="cb2-9"><a aria-hidden="true" href="#cb2-9" tabindex="-1"></a>    <span class="st">"Migration"</span>,</span>
+<span id="cb2-10"><a aria-hidden="true" href="#cb2-10" tabindex="-1"></a>    <span class="st">"Coloniality"</span>,</span>
+<span id="cb2-11"><a aria-hidden="true" href="#cb2-11" tabindex="-1"></a>    <span class="st">"Maximum clutch size"</span>,</span>
+<span id="cb2-12"><a aria-hidden="true" href="#cb2-12" tabindex="-1"></a>    <span class="st">"Body mass"</span>,</span>
+<span id="cb2-13"><a aria-hidden="true" href="#cb2-13" tabindex="-1"></a>    <span class="st">"Absolute latitude"</span></span>
+<span id="cb2-14"><a aria-hidden="true" href="#cb2-14" tabindex="-1"></a>  ),</span>
+<span id="cb2-15"><a aria-hidden="true" href="#cb2-15" tabindex="-1"></a>  <span class="at">Observations =</span> <span class="fu">c</span>(</span>
+<span id="cb2-16"><a aria-hidden="true" href="#cb2-16" tabindex="-1"></a>    <span class="fu">nrow</span>(data_nest_type),</span>
+<span id="cb2-17"><a aria-hidden="true" href="#cb2-17" tabindex="-1"></a>    <span class="fu">nrow</span>(data_migration),</span>
+<span id="cb2-18"><a aria-hidden="true" href="#cb2-18" tabindex="-1"></a>    <span class="fu">nrow</span>(data_coloniality),</span>
+<span id="cb2-19"><a aria-hidden="true" href="#cb2-19" tabindex="-1"></a>    <span class="fu">nrow</span>(data_clutch_size),</span>
+<span id="cb2-20"><a aria-hidden="true" href="#cb2-20" tabindex="-1"></a>    <span class="fu">nrow</span>(data_body_mass),</span>
+<span id="cb2-21"><a aria-hidden="true" href="#cb2-21" tabindex="-1"></a>    <span class="fu">nrow</span>(data_abs_latitude)</span>
+<span id="cb2-22"><a aria-hidden="true" href="#cb2-22" tabindex="-1"></a>  )</span>
+<span id="cb2-23"><a aria-hidden="true" href="#cb2-23" tabindex="-1"></a>)</span>
+<span id="cb2-24"><a aria-hidden="true" href="#cb2-24" tabindex="-1"></a></span>
+<span id="cb2-25"><a aria-hidden="true" href="#cb2-25" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(bio_dataset_sizes)</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Moderator</th>
+<th style="text-align: right;">Observations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Nest type</td>
+<td style="text-align: right;">587</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Migration</td>
+<td style="text-align: right;">619</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Coloniality</td>
+<td style="text-align: right;">619</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Maximum clutch size</td>
+<td style="text-align: right;">618</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Body mass</td>
+<td style="text-align: right;">619</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Absolute latitude</td>
+<td style="text-align: right;">592</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section class="level2" data-number="7.3" id="model">
+<h2 class="anchored" data-anchor-id="model" data-number="7.3"><span class="header-section-number">7.3</span> Model</h2>
+<p>This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as <code>.rds</code> files.</p><p>The nest-type model uses 0 + nest_type_model, with one logit coefficient per category and no shared population-level intercept. The other models in this chapter retain an intercept. Model-specific reference categories and priors are documented in the <a href="03_overall_model.html#model-coding-and-priors">overall-model chapter</a>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a aria-hidden="true" href="#cb3-4" tabindex="-1"></a>fit_single_moderator <span class="ot">&lt;-</span> <span class="cf">function</span>(formula, data) {</span>
+<span id="cb3-5"><a aria-hidden="true" href="#cb3-5" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
+<span id="cb3-6"><a aria-hidden="true" href="#cb3-6" tabindex="-1"></a>    <span class="at">formula =</span> formula,</span>
+<span id="cb3-7"><a aria-hidden="true" href="#cb3-7" tabindex="-1"></a>    <span class="at">data =</span> data,</span>
+<span id="cb3-8"><a aria-hidden="true" href="#cb3-8" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">beta_binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
+<span id="cb3-9"><a aria-hidden="true" href="#cb3-9" tabindex="-1"></a>    <span class="at">data2 =</span> <span class="fu">list</span>(<span class="at">phylo_mat =</span> phylo_mat),</span>
+<span id="cb3-10"><a aria-hidden="true" href="#cb3-10" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb3-11"><a aria-hidden="true" href="#cb3-11" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb3-12"><a aria-hidden="true" href="#cb3-12" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">10000</span>,</span>
+<span id="cb3-13"><a aria-hidden="true" href="#cb3-13" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">5000</span>,</span>
+<span id="cb3-14"><a aria-hidden="true" href="#cb3-14" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
+<span id="cb3-15"><a aria-hidden="true" href="#cb3-15" tabindex="-1"></a>      <span class="at">adapt_delta =</span> <span class="fl">0.99</span>,</span>
+<span id="cb3-16"><a aria-hidden="true" href="#cb3-16" tabindex="-1"></a>      <span class="at">max_treedepth =</span> <span class="dv">15</span></span>
+<span id="cb3-17"><a aria-hidden="true" href="#cb3-17" tabindex="-1"></a>    ),</span>
+<span id="cb3-18"><a aria-hidden="true" href="#cb3-18" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">123</span></span>
+<span id="cb3-19"><a aria-hidden="true" href="#cb3-19" tabindex="-1"></a>  )</span>
+<span id="cb3-20"><a aria-hidden="true" href="#cb3-20" tabindex="-1"></a>}</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section class="level2" data-number="7.4" id="nest-type-architecture">
+<h2 class="anchored" data-anchor-id="nest-type-architecture" data-number="7.4"><span class="header-section-number">7.4</span> Nest type architecture</h2>
+<p>This model tested whether mixed-paternity prevalence differed among nest-type categories. Nest type was derived from BIRDBASE and simplified into four broad nest-architecture categories: cavity, ground, open, and other enclosed nests. Cavity nests included tree cavities and crevices; ground nests included burrows, scrapes, mounds, and nests placed directly on or in the ground; open nests included cups, saucers, platforms, and half-cups; and other enclosed nests included domes, pendant and globular nests, as well as nests built in other birds’ nests.</p>
+<section class="level3" data-number="7.4.1" id="figure">
+<h3 class="anchored" data-anchor-id="figure" data-number="7.4.1"><span class="header-section-number">7.4.1</span> Figure</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/Figuresnest_type.png"</span>)</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img class="img-fluid figure-img" src="Figures/Figuresnest_type.png" width="1350"/></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section class="level3" data-number="7.4.2" id="model-summary">
+<h3 class="anchored" data-anchor-id="model-summary" data-number="7.4.2"><span class="header-section-number">7.4.2</span> Model summary</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a>model_nest_type <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"models/model_nest_type_0.rds"</span>)</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="fu">summary</span>(model_nest_type)</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: beta_binomial
+  Links: mu = logit
+Formula: n_mixed_broods | trials(n_total_broods) ~ 0 + nest_type_model + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat))
+   Data: data_nest_type (Number of observations: 587)
+  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
+         total post-warmup draws = 20000
 
+Multilevel Hyperparameters:
+~species_nonphylo (Number of levels: 350)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     0.62      0.12     0.36     0.85 1.00     1992     3313
 
-<p>All results on this page use the models after exclusion of the two records for the common ostrich (6/6) and Nelson’s sparrow (8/8), whose exact counts could not be verified as broods with at least two genetic sires. Other records were retained, including the saltmarsh-sparrow record from the same Walsh study. Updated 5 November 2026.</p>
-<p>Estimates are posterior means with 95% equal-tailed credible intervals (CrI). Odds ratios are summarised after exponentiating each contrast draw. Prevalence predictions are summarised after inverse-logit transformation, with random effects set to zero. Continuous effects use the original common scaling constants, retained unchanged after exclusion. Mixed paternity refers to the source-derived brood-level measure described in Methods; source reporting sometimes used brood-level EPP without identifying sire number.</p>
-<section id="nest-architecture" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="nest-architecture"><span class="header-section-number">7.1</span> Nest architecture</h2>
-<p>585 records, 525 study identifiers and 348 species; 15687 mixed-paternity broods out of 44233 sampled broods.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Coefficient</th>
-<th>Mean log odds [95% CrI]</th>
-<th>Mean OR [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>nest type modelcavity</td>
-<td>-1.549 [-3.668, 0.572]</td>
-<td>0.378 [0.026, 1.773]</td>
-</tr>
-<tr class="even">
-<td>nest type modelground</td>
-<td>-1.342 [-3.410, 0.737]</td>
-<td>0.462 [0.033, 2.089]</td>
-</tr>
-<tr class="odd">
-<td>nest type modelopen</td>
-<td>-1.540 [-3.644, 0.554]</td>
-<td>0.380 [0.026, 1.740]</td>
-</tr>
-<tr class="even">
-<td>nest type modelother enclosed</td>
-<td>-1.771 [-3.933, 0.361]</td>
-<td>0.311 [0.020, 1.434]</td>
-</tr>
-</tbody>
-</table>
-<section id="pairwise-contrasts" class="level3" data-number="7.1.1">
-<h3 data-number="7.1.1" class="anchored" data-anchor-id="pairwise-contrasts"><span class="header-section-number">7.1.1</span> Pairwise contrasts</h3>
-<p>Each contrast compares the first category with the second.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Contrast</th>
-<th>Mean log odds [95% CrI]</th>
-<th>Mean OR [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>cavity - ground</td>
-<td>-0.207 [-0.751, 0.335]</td>
-<td>0.845 [0.472, 1.398]</td>
-</tr>
-<tr class="even">
-<td>cavity - open</td>
-<td>-0.009 [-0.434, 0.424]</td>
-<td>1.015 [0.648, 1.528]</td>
-</tr>
-<tr class="odd">
-<td>cavity - other enclosed</td>
-<td>0.222 [-0.400, 0.854]</td>
-<td>1.314 [0.670, 2.349]</td>
-</tr>
-<tr class="even">
-<td>ground - open</td>
-<td>0.198 [-0.302, 0.699]</td>
-<td>1.258 [0.740, 2.012]</td>
-</tr>
-<tr class="odd">
-<td>ground - other enclosed</td>
-<td>0.429 [-0.217, 1.085]</td>
-<td>1.623 [0.805, 2.960]</td>
-</tr>
-<tr class="even">
-<td>open - other enclosed</td>
-<td>0.231 [-0.341, 0.814]</td>
-<td>1.317 [0.711, 2.257]</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="conditional-prevalence" class="level3" data-number="7.1.2">
-<h3 data-number="7.1.2" class="anchored" data-anchor-id="conditional-prevalence"><span class="header-section-number">7.1.2</span> Conditional prevalence</h3>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Category</th>
-<th>Prevalence (%) [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>cavity</td>
-<td>21.810 [2.490, 63.933]</td>
-</tr>
-<tr class="even">
-<td>ground</td>
-<td>24.856 [3.198, 67.628]</td>
-</tr>
-<tr class="odd">
-<td>open</td>
-<td>21.916 [2.548, 63.510]</td>
-</tr>
-<tr class="even">
-<td>other enclosed</td>
-<td>18.910 [1.921, 58.918]</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="variance-components-and-precision" class="level3" data-number="7.1.3">
-<h3 data-number="7.1.3" class="anchored" data-anchor-id="variance-components-and-precision"><span class="header-section-number">7.1.3</span> Variance components and precision</h3>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Quantity</th>
-<th>Posterior mean [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Phylogenetic species variance</td>
-<td>3.561 [1.920, 5.664]</td>
-</tr>
-<tr class="even">
-<td>Non-phylogenetic species variance</td>
-<td>0.435 [0.160, 0.770]</td>
-</tr>
-<tr class="odd">
-<td>Study variance</td>
-<td>0.068 [0.000, 0.218]</td>
-</tr>
-<tr class="even">
-<td>Beta-binomial precision</td>
-<td>18.782 [12.224, 32.989]</td>
-</tr>
-<tr class="odd">
-<td>Species-level phylogenetic heritability</td>
-<td>0.882 [0.743, 0.968]</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="sampling-diagnostics" class="level3" data-number="7.1.4">
-<h3 data-number="7.1.4" class="anchored" data-anchor-id="sampling-diagnostics"><span class="header-section-number">7.1.4</span> Sampling diagnostics</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Maximum R-hat</th>
-<th>Minimum bulk ESS</th>
-<th>Minimum tail ESS</th>
-<th>Divergences</th>
-<th>Treedepth hits</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1.0031</td>
-<td>898</td>
-<td>2077</td>
-<td>0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="tables/refit_20261105/model_nest_type_0_summary.csv">Download posterior summary</a> · <a href="tables/refit_20261105/model_nest_type_0_parameter_diagnostics.csv">Parameter-level diagnostics</a>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Figures/refit_20261105/model_nest_type_0_prevalence.png" class="img-fluid figure-img"></p>
-<figcaption>Posterior predictions for nest architecture: means and 95% equal-tailed credible intervals.</figcaption>
-</figure>
-</div>
-<p><a href="Figures/refit_20261105/model_nest_type_0_prevalence.pdf">Download PDF</a>.</p>
-</section>
-<section id="posterior-predictive-check" class="level3" data-number="7.1.5">
-<h3 data-number="7.1.5" class="anchored" data-anchor-id="posterior-predictive-check"><span class="header-section-number">7.1.5</span> Posterior predictive check</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Figures/refit_20261105/model_nest_type_0_ppc.png" class="img-fluid figure-img"></p>
-<figcaption>Observed and posterior-replicated counts.</figcaption>
-</figure>
-</div>
-</section>
-</section>
-<section id="migration" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="migration"><span class="header-section-number">7.2</span> Migration</h2>
-<p>617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Coefficient</th>
-<th>Mean log odds [95% CrI]</th>
-<th>Mean OR [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Intercept</td>
-<td>-1.013 [-2.784, 0.749]</td>
-<td>0.549 [0.062, 2.116]</td>
-</tr>
-<tr class="even">
-<td>migrationWeak</td>
-<td>-0.373 [-0.696, -0.050]</td>
-<td>0.698 [0.499, 0.951]</td>
-</tr>
-</tbody>
-</table>
-<section id="conditional-prevalence-1" class="level3" data-number="7.2.1">
-<h3 data-number="7.2.1" class="anchored" data-anchor-id="conditional-prevalence-1"><span class="header-section-number">7.2.1</span> Conditional prevalence</h3>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Category</th>
-<th>Prevalence (%) [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Strong</td>
-<td>29.576 [5.822, 67.907]</td>
-</tr>
-<tr class="even">
-<td>Weak</td>
-<td>23.252 [4.091, 59.339]</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="variance-components-and-precision-1" class="level3" data-number="7.2.2">
-<h3 data-number="7.2.2" class="anchored" data-anchor-id="variance-components-and-precision-1"><span class="header-section-number">7.2.2</span> Variance components and precision</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Quantity</th>
-<th>Posterior mean [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Phylogenetic species variance</td>
-<td>3.070 [1.720, 4.909]</td>
-</tr>
-<tr class="even">
-<td>Non-phylogenetic species variance</td>
-<td>0.476 [0.211, 0.785]</td>
-</tr>
-<tr class="odd">
-<td>Study variance</td>
-<td>0.066 [0.000, 0.217]</td>
-</tr>
-<tr class="even">
-<td>Beta-binomial precision</td>
-<td>17.971 [11.863, 30.761]</td>
-</tr>
-<tr class="odd">
-<td>Species-level phylogenetic heritability</td>
-<td>0.857 [0.718, 0.952]</td>
-</tr>
-<tr class="even">
-<td>Prevalence at zero random effects (proportion)</td>
-<td>0.296 [0.058, 0.679]</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="sampling-diagnostics-1" class="level3" data-number="7.2.3">
-<h3 data-number="7.2.3" class="anchored" data-anchor-id="sampling-diagnostics-1"><span class="header-section-number">7.2.3</span> Sampling diagnostics</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Maximum R-hat</th>
-<th>Minimum bulk ESS</th>
-<th>Minimum tail ESS</th>
-<th>Divergences</th>
-<th>Treedepth hits</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1.0016</td>
-<td>850</td>
-<td>1405</td>
-<td>0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="tables/refit_20261105/model_migration_summary.csv">Download posterior summary</a> · <a href="tables/refit_20261105/model_migration_parameter_diagnostics.csv">Parameter-level diagnostics</a>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Figures/refit_20261105/model_migration_prevalence.png" class="img-fluid figure-img"></p>
-<figcaption>Posterior predictions for migration: means and 95% equal-tailed credible intervals.</figcaption>
-</figure>
-</div>
-<p><a href="Figures/refit_20261105/model_migration_prevalence.pdf">Download PDF</a>.</p>
-</section>
-<section id="posterior-predictive-check-1" class="level3" data-number="7.2.4">
-<h3 data-number="7.2.4" class="anchored" data-anchor-id="posterior-predictive-check-1"><span class="header-section-number">7.2.4</span> Posterior predictive check</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Figures/refit_20261105/model_migration_ppc.png" class="img-fluid figure-img"></p>
-<figcaption>Observed and posterior-replicated counts.</figcaption>
-</figure>
-</div>
-</section>
-</section>
-<section id="coloniality" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="coloniality"><span class="header-section-number">7.3</span> Coloniality</h2>
-<p>617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Coefficient</th>
-<th>Mean log odds [95% CrI]</th>
-<th>Mean OR [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Intercept</td>
-<td>-1.241 [-3.026, 0.540]</td>
-<td>0.437 [0.049, 1.716]</td>
-</tr>
-<tr class="even">
-<td>coloniality1</td>
-<td>-0.137 [-0.540, 0.262]</td>
-<td>0.890 [0.583, 1.299]</td>
-</tr>
-</tbody>
-</table>
-<section id="conditional-prevalence-2" class="level3" data-number="7.3.1">
-<h3 data-number="7.3.1" class="anchored" data-anchor-id="conditional-prevalence-2"><span class="header-section-number">7.3.1</span> Conditional prevalence</h3>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Category</th>
-<th>Prevalence (%) [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>0</td>
-<td>25.591 [4.628, 63.187]</td>
-</tr>
-<tr class="even">
-<td>1</td>
-<td>23.429 [3.994, 60.352]</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="variance-components-and-precision-2" class="level3" data-number="7.3.2">
-<h3 data-number="7.3.2" class="anchored" data-anchor-id="variance-components-and-precision-2"><span class="header-section-number">7.3.2</span> Variance components and precision</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Quantity</th>
-<th>Posterior mean [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Phylogenetic species variance</td>
-<td>3.065 [1.718, 4.888]</td>
-</tr>
-<tr class="even">
-<td>Non-phylogenetic species variance</td>
-<td>0.498 [0.235, 0.804]</td>
-</tr>
-<tr class="odd">
-<td>Study variance</td>
-<td>0.070 [0.000, 0.225]</td>
-</tr>
-<tr class="even">
-<td>Beta-binomial precision</td>
-<td>18.322 [12.030, 32.262]</td>
-</tr>
-<tr class="odd">
-<td>Species-level phylogenetic heritability</td>
-<td>0.851 [0.715, 0.947]</td>
-</tr>
-<tr class="even">
-<td>Prevalence at zero random effects (proportion)</td>
-<td>0.256 [0.046, 0.632]</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="sampling-diagnostics-2" class="level3" data-number="7.3.3">
-<h3 data-number="7.3.3" class="anchored" data-anchor-id="sampling-diagnostics-2"><span class="header-section-number">7.3.3</span> Sampling diagnostics</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Maximum R-hat</th>
-<th>Minimum bulk ESS</th>
-<th>Minimum tail ESS</th>
-<th>Divergences</th>
-<th>Treedepth hits</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1.0044</td>
-<td>896</td>
-<td>1881</td>
-<td>0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="tables/refit_20261105/model_coloniality_summary.csv">Download posterior summary</a> · <a href="tables/refit_20261105/model_coloniality_parameter_diagnostics.csv">Parameter-level diagnostics</a>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Figures/refit_20261105/model_coloniality_prevalence.png" class="img-fluid figure-img"></p>
-<figcaption>Posterior predictions for coloniality: means and 95% equal-tailed credible intervals.</figcaption>
-</figure>
-</div>
-<p><a href="Figures/refit_20261105/model_coloniality_prevalence.pdf">Download PDF</a>.</p>
-</section>
-<section id="posterior-predictive-check-2" class="level3" data-number="7.3.4">
-<h3 data-number="7.3.4" class="anchored" data-anchor-id="posterior-predictive-check-2"><span class="header-section-number">7.3.4</span> Posterior predictive check</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Figures/refit_20261105/model_coloniality_ppc.png" class="img-fluid figure-img"></p>
-<figcaption>Observed and posterior-replicated counts.</figcaption>
-</figure>
-</div>
-</section>
-</section>
-<section id="maximum-clutch-size" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="maximum-clutch-size"><span class="header-section-number">7.4</span> Maximum clutch size</h2>
-<p>616 records, 552 study identifiers and 372 species; 16074 mixed-paternity broods out of 46207 sampled broods.</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Coefficient</th>
-<th>Mean log odds [95% CrI]</th>
-<th>Mean OR [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Intercept</td>
-<td>-1.373 [-3.125, 0.374]</td>
-<td>0.376 [0.044, 1.453]</td>
-</tr>
-<tr class="even">
-<td>CS max sc</td>
-<td>0.319 [0.103, 0.533]</td>
-<td>1.384 [1.109, 1.705]</td>
-</tr>
-</tbody>
-</table>
-<section id="variance-components-and-precision-3" class="level3" data-number="7.4.1">
-<h3 data-number="7.4.1" class="anchored" data-anchor-id="variance-components-and-precision-3"><span class="header-section-number">7.4.1</span> Variance components and precision</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Quantity</th>
-<th>Posterior mean [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Phylogenetic species variance</td>
-<td>2.947 [1.635, 4.686]</td>
-</tr>
-<tr class="even">
-<td>Non-phylogenetic species variance</td>
-<td>0.495 [0.239, 0.806]</td>
-</tr>
-<tr class="odd">
-<td>Study variance</td>
-<td>0.064 [0.000, 0.216]</td>
-</tr>
-<tr class="even">
-<td>Beta-binomial precision</td>
-<td>17.891 [11.924, 31.101]</td>
-</tr>
-<tr class="odd">
-<td>Species-level phylogenetic heritability</td>
-<td>0.847 [0.704, 0.944]</td>
-</tr>
-<tr class="even">
-<td>Prevalence at zero random effects (proportion)</td>
-<td>0.233 [0.042, 0.592]</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="sampling-diagnostics-3" class="level3" data-number="7.4.2">
-<h3 data-number="7.4.2" class="anchored" data-anchor-id="sampling-diagnostics-3"><span class="header-section-number">7.4.2</span> Sampling diagnostics</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Maximum R-hat</th>
-<th>Minimum bulk ESS</th>
-<th>Minimum tail ESS</th>
-<th>Divergences</th>
-<th>Treedepth hits</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1.0034</td>
-<td>804</td>
-<td>1763</td>
-<td>0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="tables/refit_20261105/model_clutch_size_summary.csv">Download posterior summary</a> · <a href="tables/refit_20261105/model_clutch_size_parameter_diagnostics.csv">Parameter-level diagnostics</a>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Figures/refit_20261105/clutch_size.png" class="img-fluid figure-img"></p>
-<figcaption>Posterior predictions for maximum clutch size: means and 95% equal-tailed credible intervals.</figcaption>
-</figure>
-</div>
-<p><a href="Figures/refit_20261105/clutch_size.pdf">Download PDF</a>.</p>
-</section>
-<section id="posterior-predictive-check-3" class="level3" data-number="7.4.3">
-<h3 data-number="7.4.3" class="anchored" data-anchor-id="posterior-predictive-check-3"><span class="header-section-number">7.4.3</span> Posterior predictive check</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Figures/refit_20261105/model_clutch_size_ppc.png" class="img-fluid figure-img"></p>
-<figcaption>Observed and posterior-replicated counts.</figcaption>
-</figure>
-</div>
-</section>
-</section>
-<section id="log-body-mass" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="log-body-mass"><span class="header-section-number">7.5</span> Log body mass</h2>
-<p>617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Coefficient</th>
-<th>Mean log odds [95% CrI]</th>
-<th>Mean OR [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Intercept</td>
-<td>-1.229 [-3.015, 0.582]</td>
-<td>0.448 [0.049, 1.789]</td>
-</tr>
-<tr class="even">
-<td>log body mass sc</td>
-<td>-0.058 [-0.356, 0.242]</td>
-<td>0.955 [0.701, 1.274]</td>
-</tr>
-</tbody>
-</table>
-<section id="variance-components-and-precision-4" class="level3" data-number="7.5.1">
-<h3 data-number="7.5.1" class="anchored" data-anchor-id="variance-components-and-precision-4"><span class="header-section-number">7.5.1</span> Variance components and precision</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Quantity</th>
-<th>Posterior mean [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Phylogenetic species variance</td>
-<td>3.120 [1.766, 4.936]</td>
-</tr>
-<tr class="even">
-<td>Non-phylogenetic species variance</td>
-<td>0.497 [0.234, 0.801]</td>
-</tr>
-<tr class="odd">
-<td>Study variance</td>
-<td>0.068 [0.000, 0.220]</td>
-</tr>
-<tr class="even">
-<td>Beta-binomial precision</td>
-<td>18.293 [12.040, 32.273]</td>
-</tr>
-<tr class="odd">
-<td>Species-level phylogenetic heritability</td>
-<td>0.854 [0.719, 0.947]</td>
-</tr>
-<tr class="even">
-<td>Prevalence at zero random effects (proportion)</td>
-<td>0.259 [0.047, 0.641]</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="sampling-diagnostics-4" class="level3" data-number="7.5.2">
-<h3 data-number="7.5.2" class="anchored" data-anchor-id="sampling-diagnostics-4"><span class="header-section-number">7.5.2</span> Sampling diagnostics</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Maximum R-hat</th>
-<th>Minimum bulk ESS</th>
-<th>Minimum tail ESS</th>
-<th>Divergences</th>
-<th>Treedepth hits</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1.0103</td>
-<td>714</td>
-<td>1436</td>
-<td>0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="tables/refit_20261105/model_log_body_mass_summary.csv">Download posterior summary</a> · <a href="tables/refit_20261105/model_log_body_mass_parameter_diagnostics.csv">Parameter-level diagnostics</a>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Figures/refit_20261105/body_mass.png" class="img-fluid figure-img"></p>
-<figcaption>Posterior predictions for log body mass: means and 95% equal-tailed credible intervals.</figcaption>
-</figure>
-</div>
-<p><a href="Figures/refit_20261105/body_mass.pdf">Download PDF</a>.</p>
-</section>
-<section id="posterior-predictive-check-4" class="level3" data-number="7.5.3">
-<h3 data-number="7.5.3" class="anchored" data-anchor-id="posterior-predictive-check-4"><span class="header-section-number">7.5.3</span> Posterior predictive check</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Figures/refit_20261105/model_log_body_mass_ppc.png" class="img-fluid figure-img"></p>
-<figcaption>Observed and posterior-replicated counts.</figcaption>
-</figure>
-</div>
-</section>
-</section>
-<section id="absolute-latitude" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="absolute-latitude"><span class="header-section-number">7.6</span> Absolute latitude</h2>
-<p>590 records, 531 study identifiers and 361 species; 15797 mixed-paternity broods out of 45168 sampled broods.</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Coefficient</th>
-<th>Mean log odds [95% CrI]</th>
-<th>Mean OR [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Intercept</td>
-<td>-1.297 [-3.095, 0.510]</td>
-<td>0.419 [0.045, 1.665]</td>
-</tr>
-<tr class="even">
-<td>abs lat sc</td>
-<td>-0.123 [-0.244, -0.002]</td>
-<td>0.886 [0.784, 0.998]</td>
-</tr>
-</tbody>
-</table>
-<section id="variance-components-and-precision-5" class="level3" data-number="7.6.1">
-<h3 data-number="7.6.1" class="anchored" data-anchor-id="variance-components-and-precision-5"><span class="header-section-number">7.6.1</span> Variance components and precision</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Quantity</th>
-<th>Posterior mean [95% CrI]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Phylogenetic species variance</td>
-<td>3.189 [1.797, 5.058]</td>
-</tr>
-<tr class="even">
-<td>Non-phylogenetic species variance</td>
-<td>0.533 [0.254, 0.860]</td>
-</tr>
-<tr class="odd">
-<td>Study variance</td>
-<td>0.056 [0.000, 0.198]</td>
-</tr>
-<tr class="even">
-<td>Beta-binomial precision</td>
-<td>19.189 [12.799, 32.954]</td>
-</tr>
-<tr class="odd">
-<td>Species-level phylogenetic heritability</td>
-<td>0.848 [0.709, 0.946]</td>
-</tr>
-<tr class="even">
-<td>Prevalence at zero random effects (proportion)</td>
-<td>0.248 [0.043, 0.625]</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="sampling-diagnostics-5" class="level3" data-number="7.6.2">
-<h3 data-number="7.6.2" class="anchored" data-anchor-id="sampling-diagnostics-5"><span class="header-section-number">7.6.2</span> Sampling diagnostics</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Maximum R-hat</th>
-<th>Minimum bulk ESS</th>
-<th>Minimum tail ESS</th>
-<th>Divergences</th>
-<th>Treedepth hits</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1.0051</td>
-<td>872</td>
-<td>1455</td>
-<td>0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="tables/refit_20261105/model_abs_latitude_summary.csv">Download posterior summary</a> · <a href="tables/refit_20261105/model_abs_latitude_parameter_diagnostics.csv">Parameter-level diagnostics</a>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Figures/refit_20261105/abs_latitude.png" class="img-fluid figure-img"></p>
-<figcaption>Posterior predictions for absolute latitude: means and 95% equal-tailed credible intervals.</figcaption>
-</figure>
-</div>
-<p><a href="Figures/refit_20261105/abs_latitude.pdf">Download PDF</a>.</p>
-</section>
-<section id="posterior-predictive-check-5" class="level3" data-number="7.6.3">
-<h3 data-number="7.6.3" class="anchored" data-anchor-id="posterior-predictive-check-5"><span class="header-section-number">7.6.3</span> Posterior predictive check</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Figures/refit_20261105/model_abs_latitude_ppc.png" class="img-fluid figure-img"></p>
-<figcaption>Observed and posterior-replicated counts.</figcaption>
-</figure>
-</div>
-</section>
-</section>
-<section id="reproducibility" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="reproducibility"><span class="header-section-number">7.7</span> Reproducibility</h2>
-<p><a href="tables/refit_20261105/contrasts_equal_tailed.csv">Posterior summaries and contrasts</a> · <a href="scripts/refit_20261105/export_results.R">Export code</a> · <a href="scripts/refit_20261105/prepare_release.R">Prediction code</a>.</p>
+~species_phylo_brms (Number of levels: 350)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     1.97      0.26     1.48     2.49 1.00     2289     5076
 
+~Study_ID (Number of levels: 526)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     0.24      0.13     0.02     0.49 1.00      771     1783
 
+Regression Coefficients:
+                              Estimate Est.Error l-95% CI u-95% CI Rhat
+nest_type_modelcavity            -0.94      1.03    -2.97     1.11 1.00
+nest_type_modelground            -0.66      1.02    -2.65     1.36 1.00
+nest_type_modelopen              -0.96      1.03    -2.96     1.09 1.00
+nest_type_modelother_enclosed    -1.16      1.05    -3.22     0.92 1.00
+                              Bulk_ESS Tail_ESS
+nest_type_modelcavity             5227     7804
+nest_type_modelground             5318     7939
+nest_type_modelopen               5274     7519
+nest_type_modelother_enclosed     5209     7308
+
+Further Distributional Parameters:
+    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+phi    19.44      6.27    12.27    36.14 1.00      853     1554
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+</section>
+<section class="level3" data-number="7.4.3" id="nest-type-model-estimates">
+<h3 class="anchored" data-anchor-id="nest-type-model-estimates" data-number="7.4.3"><span class="header-section-number">7.4.3</span> Nest type model estimates</h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 26%"/>
+<col style="width: 34%"/>
+<col style="width: 19%"/>
+<col style="width: 19%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Nest-type category</th>
+<th style="text-align: right;">Posterior mean prevalence (%)</th>
+<th style="text-align: right;">Lower 95% CrI</th>
+<th style="text-align: right;">Upper 95% CrI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">cavity</td>
+<td style="text-align: right;">31.43</td>
+<td style="text-align: right;">4.87</td>
+<td style="text-align: right;">75.28</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ground</td>
+<td style="text-align: right;">36.56</td>
+<td style="text-align: right;">6.59</td>
+<td style="text-align: right;">79.60</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">open</td>
+<td style="text-align: right;">31.08</td>
+<td style="text-align: right;">4.91</td>
+<td style="text-align: right;">74.76</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">other_enclosed</td>
+<td style="text-align: right;">27.85</td>
+<td style="text-align: right;">3.84</td>
+<td style="text-align: right;">71.42</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="level3" data-number="7.4.4" id="post-hoc-pairwise-contrasts">
+<h3 class="anchored" data-anchor-id="post-hoc-pairwise-contrasts" data-number="7.4.4"><span class="header-section-number">7.4.4</span> Post-hoc pairwise contrasts</h3>
+<p>Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.</p>
+<details class="code-fold eti-contrast-code"><summary>Code</summary><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">b &lt;- brms::fixef(model_nest_type, summary = FALSE)
+pairs &lt;- combn(colnames(b), 2L, simplify = FALSE)
+nest_type_contrasts &lt;- do.call(rbind, lapply(pairs, function(pair) {
+  difference &lt;- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio &lt;- exp(difference)
+  data.frame(
+    contrast = paste(sub("nest_type_model", "", pair, fixed = TRUE), collapse = " - "),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(nest_type_contrasts, digits = 3,
+  caption = "Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.")</code></pre></div></details><table class="table table-sm table-striped small"><caption>Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.</caption><thead><tr><th>contrast</th><th>estimate</th><th>lower.CrI</th><th>upper.CrI</th><th>OR</th><th>lower.OR</th><th>upper.OR</th></tr></thead><tbody><tr><td>cavity - ground</td><td>-0.280</td><td>-0.824</td><td>0.264</td><td>0.785</td><td>0.438</td><td>1.302</td></tr><tr><td>cavity - open</td><td>0.019</td><td>-0.418</td><td>0.458</td><td>1.044</td><td>0.658</td><td>1.581</td></tr><tr><td>cavity - other_enclosed</td><td>0.213</td><td>-0.419</td><td>0.841</td><td>1.303</td><td>0.658</td><td>2.319</td></tr><tr><td>ground - open</td><td>0.299</td><td>-0.200</td><td>0.803</td><td>1.393</td><td>0.819</td><td>2.233</td></tr><tr><td>ground - other_enclosed</td><td>0.494</td><td>-0.155</td><td>1.157</td><td>1.732</td><td>0.857</td><td>3.179</td></tr><tr><td>open - other_enclosed</td><td>0.195</td><td>-0.394</td><td>0.764</td><td>1.270</td><td>0.674</td><td>2.148</td></tr></tbody></table>
+</section>
+</section>
+<section class="level2" data-number="7.5" id="migration">
+<h2 class="anchored" data-anchor-id="migration" data-number="7.5"><span class="header-section-number">7.5</span> Migration</h2>
+<p>This model compared the two analytical migration categories derived from BIRDBASE: regular migrants (Strong) and species that are resident or show weak, local or irregular movements (Weak). Weak is broader than partial migration alone. The label "Partial/resident" denotes the analytical Weak category, which includes resident species and species exhibiting weak seasonal, local or irregular movements.</p>
+<section class="level3" data-number="7.5.1" id="figure-1">
+<h3 class="anchored" data-anchor-id="figure-1" data-number="7.5.1"><span class="header-section-number">7.5.1</span> Figure</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/Figuresmigration.png"</span>)</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img class="img-fluid figure-img" src="Figures/Figuresmigration.png" width="1350"/></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section class="level3" data-number="7.5.2" id="model-summary-1">
+<h3 class="anchored" data-anchor-id="model-summary-1" data-number="7.5.2"><span class="header-section-number">7.5.2</span> Model summary</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a>model_migration <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"models/model_migration.rds"</span>)</span>
+<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="fu">summary</span>(model_migration)</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: beta_binomial
+  Links: mu = logit
+Formula: n_mixed_broods | trials(n_total_broods) ~ migration + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat))
+   Data: data_migration (Number of observations: 619)
+  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
+         total post-warmup draws = 20000
+
+Multilevel Hyperparameters:
+~species_nonphylo (Number of levels: 375)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     0.66      0.11     0.43     0.87 1.00     2294     4142
+
+~species_phylo_brms (Number of levels: 375)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     1.83      0.23     1.39     2.31 1.00     2781     6528
+
+~Study_ID (Number of levels: 554)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     0.23      0.13     0.02     0.48 1.01      742     1854
+
+Regression Coefficients:
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept        -0.44      0.89    -2.17     1.31 1.00    12596    13157
+migrationWeak    -0.39      0.16    -0.70    -0.07 1.00    19290    15611
+
+Further Distributional Parameters:
+    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+phi    18.06      5.06    11.97    31.35 1.01      803     1845
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+</section>
+<section class="level3" data-number="7.5.3" id="model-estimates">
+<h3 class="anchored" data-anchor-id="model-estimates" data-number="7.5.3"><span class="header-section-number">7.5.3</span> Model estimates</h3>
+<p>The intercept represents the reference migration category, while the remaining coefficients describe differences relative to that reference category on the logit scale.</p><p>The single-moderator model used 619 records and estimated beta = −0.387 (95% equal-tailed CrI −0.704 to −0.066; posterior mean OR = 0.688). The primary multivariable model used 533 records and estimated beta = −0.492 (−0.861 to −0.132; posterior mean OR = 0.622). The direction is consistent, and the adjusted point estimate is more negative. Because both covariate adjustment and sample composition differ, this descriptive comparison does not establish a change in association strength. In both models, OR means are calculated after exponentiating each coefficient draw.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Lower 95% CrI</th>
+<th style="text-align: right;">Upper 95% CrI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Intercept</td>
+<td style="text-align: right;">-0.439</td>
+<td style="text-align: right;">-2.171</td>
+<td style="text-align: right;">1.314</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">migrationWeak</td>
+<td style="text-align: right;">-0.387</td>
+<td style="text-align: right;">-0.704</td>
+<td style="text-align: right;">-0.066</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section class="level2" data-number="7.6" id="coloniality">
+<h2 class="anchored" data-anchor-id="coloniality" data-number="7.6"><span class="header-section-number">7.6</span> Coloniality</h2>
+<p>This model tested whether mixed-paternity prevalence differed between colonial and non-colonial species following BIRDBASE database.</p>
+<section class="level3" data-number="7.6.1" id="figures">
+<h3 class="anchored" data-anchor-id="figures" data-number="7.6.1"><span class="header-section-number">7.6.1</span> Figures</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/Figurescoloniality.png"</span>)</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img class="img-fluid figure-img" src="Figures/Figurescoloniality.png" width="1350"/></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section class="level3" data-number="7.6.2" id="model-summary-2">
+<h3 class="anchored" data-anchor-id="model-summary-2" data-number="7.6.2"><span class="header-section-number">7.6.2</span> Model summary</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb11-3"><a aria-hidden="true" href="#cb11-3" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb11-4"><a aria-hidden="true" href="#cb11-4" tabindex="-1"></a></span>
+<span id="cb11-5"><a aria-hidden="true" href="#cb11-5" tabindex="-1"></a>model_coloniality <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"models/model_coloniality.rds"</span>)</span>
+<span id="cb11-6"><a aria-hidden="true" href="#cb11-6" tabindex="-1"></a><span class="fu">summary</span>(model_coloniality)</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: beta_binomial
+  Links: mu = logit
+Formula: n_mixed_broods | trials(n_total_broods) ~ coloniality + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat))
+   Data: data_coloniality (Number of observations: 619)
+  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
+         total post-warmup draws = 20000
+
+Multilevel Hyperparameters:
+~species_nonphylo (Number of levels: 375)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     0.68      0.11     0.46     0.89 1.00     2546     5066
+
+~species_phylo_brms (Number of levels: 375)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     1.81      0.23     1.38     2.30 1.00     3193     6255
+
+~Study_ID (Number of levels: 554)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     0.24      0.13     0.01     0.47 1.00      843     2485
+
+Regression Coefficients:
+             Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept       -0.71      0.87    -2.42     1.04 1.00    12867    13988
+coloniality1    -0.14      0.20    -0.54     0.26 1.00    18449    16191
+
+Further Distributional Parameters:
+    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+phi    18.43      5.17    12.11    31.61 1.00     1006     2210
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+</section>
+<section class="level3" data-number="7.6.3" id="model-estimates-1">
+<h3 class="anchored" data-anchor-id="model-estimates-1" data-number="7.6.3"><span class="header-section-number">7.6.3</span> Model estimates</h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Lower 95% CrI</th>
+<th style="text-align: right;">Upper 95% CrI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Intercept</td>
+<td style="text-align: right;">-0.711</td>
+<td style="text-align: right;">-2.424</td>
+<td style="text-align: right;">1.036</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">coloniality1</td>
+<td style="text-align: right;">-0.142</td>
+<td style="text-align: right;">-0.540</td>
+<td style="text-align: right;">0.260</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section class="level2" data-number="7.7" id="clutch-size">
+<h2 class="anchored" data-anchor-id="clutch-size" data-number="7.7"><span class="header-section-number">7.7</span> Clutch size</h2>
+<p>This model tested whether mixed-paternity prevalence was associated with maximum clutch size. Maximum clutch size was standardised using all 618 non-missing records in the 619-record overall analytical dataset (mean = 6.762 eggs, SD = 4.034 eggs), so the coefficient represents the change in log-odds per one standard deviation.</p>
+<section class="level3" data-number="7.7.1" id="figure-2">
+<h3 class="anchored" data-anchor-id="figure-2" data-number="7.7.1"><span class="header-section-number">7.7.1</span> Figure</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-float quarto-figure quarto-figure-center anchored" id="fig-clutch-size-common-scaling">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clutch-size-common-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img class="img-fluid figure-img" src="Figures/common_scaling/clutch_size.png" width="1080"/>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clutch-size-common-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure 7.1: Population-level predicted mixed-paternity prevalence across maximum clutch size from the refitted single-moderator model. Maximum clutch size was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section class="level3" data-number="7.7.2" id="model-summary-3">
+<h3 class="anchored" data-anchor-id="model-summary-3" data-number="7.7.2"><span class="header-section-number">7.7.2</span> Model summary</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">readLines</span>(<span class="st">"logs/common_scaling/model_clutch_size_summary.txt"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: beta_binomial
+  Links: mu = logit
+Formula: n_mixed_broods | trials(n_total_broods) ~ CS_max_sc + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat))
+   Data: dat (Number of observations: 618)
+  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
+         total post-warmup draws = 20000
+
+Multilevel Hyperparameters:
+~species_nonphylo (Number of levels: 374)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     0.67      0.11     0.46     0.87 1.00     2002     3812
+
+~species_phylo_brms (Number of levels: 374)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     1.78      0.22     1.36     2.24 1.00     2648     6178
+
+~Study_ID (Number of levels: 553)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     0.22      0.13     0.01     0.47 1.00      796     1767
+
+Regression Coefficients:
+          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept    -0.89      0.87    -2.58     0.84 1.00     8931    11715
+CS_max_sc     0.33      0.11     0.12     0.55 1.00    12114    13296
+
+Further Distributional Parameters:
+    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+phi    17.91      4.98    11.89    31.03 1.00      949     1767
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+</section>
+<section class="level3" data-number="7.7.3" id="model-estimates-2">
+<h3 class="anchored" data-anchor-id="model-estimates-2" data-number="7.7.3"><span class="header-section-number">7.7.3</span> Model estimates</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-hidden="true" href="#cb15-1" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb15-2"><a aria-hidden="true" href="#cb15-2" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb15-3"><a aria-hidden="true" href="#cb15-3" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb15-4"><a aria-hidden="true" href="#cb15-4" tabindex="-1"></a></span>
+<span id="cb15-5"><a aria-hidden="true" href="#cb15-5" tabindex="-1"></a>clutch_size_table <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb15-6"><a aria-hidden="true" href="#cb15-6" tabindex="-1"></a>  <span class="st">"tables/common_scaling/model_clutch_size_fixed_effects.csv"</span>,</span>
+<span id="cb15-7"><a aria-hidden="true" href="#cb15-7" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb15-8"><a aria-hidden="true" href="#cb15-8" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb15-9"><a aria-hidden="true" href="#cb15-9" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">transmute</span>(</span>
+<span id="cb15-10"><a aria-hidden="true" href="#cb15-10" tabindex="-1"></a>    <span class="at">Parameter =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(</span>
+<span id="cb15-11"><a aria-hidden="true" href="#cb15-11" tabindex="-1"></a>      term,</span>
+<span id="cb15-12"><a aria-hidden="true" href="#cb15-12" tabindex="-1"></a>      <span class="at">Intercept =</span> <span class="st">"Intercept"</span>,</span>
+<span id="cb15-13"><a aria-hidden="true" href="#cb15-13" tabindex="-1"></a>      <span class="at">CS_max_sc =</span> <span class="st">"Maximum clutch size (per 1 SD = 4.034 eggs)"</span></span>
+<span id="cb15-14"><a aria-hidden="true" href="#cb15-14" tabindex="-1"></a>    ),</span>
+<span id="cb15-15"><a aria-hidden="true" href="#cb15-15" tabindex="-1"></a>    Estimate,</span>
+<span id="cb15-16"><a aria-hidden="true" href="#cb15-16" tabindex="-1"></a>    <span class="st">`</span><span class="at">Lower 95% CrI</span><span class="st">`</span> <span class="ot">=</span> Q2<span class="fl">.5</span>,</span>
+<span id="cb15-17"><a aria-hidden="true" href="#cb15-17" tabindex="-1"></a>    <span class="st">`</span><span class="at">Upper 95% CrI</span><span class="st">`</span> <span class="ot">=</span> Q97<span class="fl">.5</span></span>
+<span id="cb15-18"><a aria-hidden="true" href="#cb15-18" tabindex="-1"></a>  )</span>
+<span id="cb15-19"><a aria-hidden="true" href="#cb15-19" tabindex="-1"></a></span>
+<span id="cb15-20"><a aria-hidden="true" href="#cb15-20" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(clutch_size_table, <span class="at">digits =</span> <span class="dv">3</span>)</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 54%"/>
+<col style="width: 11%"/>
+<col style="width: 17%"/>
+<col style="width: 17%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Lower 95% CrI</th>
+<th style="text-align: right;">Upper 95% CrI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Intercept</td>
+<td style="text-align: right;">-0.889</td>
+<td style="text-align: right;">-2.581</td>
+<td style="text-align: right;">0.839</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Maximum clutch size (per 1 SD = 4.034 eggs)</td>
+<td style="text-align: right;">0.330</td>
+<td style="text-align: right;">0.116</td>
+<td style="text-align: right;">0.545</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Mixed-paternity prevalence increased with maximum clutch size (<span class="math inline">\(\beta\)</span> = 0.330, 95% CrI 0.116 to 0.545).</p>
+</section>
+</section>
+<section class="level2" data-number="7.8" id="body-mass">
+<h2 class="anchored" data-anchor-id="body-mass" data-number="7.8"><span class="header-section-number">7.8</span> Body mass</h2>
+<p>This model tested whether mixed-paternity prevalence was associated with adult body mass. Body mass was log10-transformed and then standardised using all 619 records in the overall analytical dataset (mean = 1.727 log10[g], SD = 0.750 log10[g]). The coefficient therefore represents the change in log-odds per one standard deviation increase in log10-transformed body mass.</p>
+<section class="level3" data-number="7.8.1" id="figure-3">
+<h3 class="anchored" data-anchor-id="figure-3" data-number="7.8.1"><span class="header-section-number">7.8.1</span> Figure</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-float quarto-figure quarto-figure-center anchored" id="fig-body-mass-common-scaling">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-body-mass-common-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img class="img-fluid figure-img" src="Figures/common_scaling/body_mass.png" width="1080"/>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-body-mass-common-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure 7.2: Population-level predicted mixed-paternity prevalence across log10 adult body mass from the refitted single-moderator model. Log10 body mass was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section class="level3" data-number="7.8.2" id="model-summary-4">
+<h3 class="anchored" data-anchor-id="model-summary-4" data-number="7.8.2"><span class="header-section-number">7.8.2</span> Model summary</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-hidden="true" href="#cb16-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">readLines</span>(<span class="st">"logs/common_scaling/model_log_body_mass_summary.txt"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: beta_binomial
+  Links: mu = logit
+Formula: n_mixed_broods | trials(n_total_broods) ~ log_body_mass_sc + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat))
+   Data: dat (Number of observations: 619)
+  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
+         total post-warmup draws = 20000
+
+Multilevel Hyperparameters:
+~species_nonphylo (Number of levels: 375)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     0.67      0.11     0.45     0.88 1.00     2028     3134
+
+~species_phylo_brms (Number of levels: 375)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     1.85      0.24     1.40     2.34 1.00     2322     4103
+
+~Study_ID (Number of levels: 554)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     0.24      0.13     0.01     0.48 1.00      791     1719
+
+Regression Coefficients:
+                 Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept           -0.72      0.93    -2.56     1.13 1.00     7249    10135
+log_body_mass_sc    -0.01      0.15    -0.30     0.29 1.00     9337    13400
+
+Further Distributional Parameters:
+    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+phi    18.74      5.42    12.16    32.91 1.00      973     1703
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+</section>
+<section class="level3" data-number="7.8.3" id="model-estimates-3">
+<h3 class="anchored" data-anchor-id="model-estimates-3" data-number="7.8.3"><span class="header-section-number">7.8.3</span> Model estimates</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-hidden="true" href="#cb18-1" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-2"><a aria-hidden="true" href="#cb18-2" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb18-3"><a aria-hidden="true" href="#cb18-3" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb18-4"><a aria-hidden="true" href="#cb18-4" tabindex="-1"></a></span>
+<span id="cb18-5"><a aria-hidden="true" href="#cb18-5" tabindex="-1"></a>body_mass_table <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb18-6"><a aria-hidden="true" href="#cb18-6" tabindex="-1"></a>  <span class="st">"tables/common_scaling/model_log_body_mass_fixed_effects.csv"</span>,</span>
+<span id="cb18-7"><a aria-hidden="true" href="#cb18-7" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb18-8"><a aria-hidden="true" href="#cb18-8" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb18-9"><a aria-hidden="true" href="#cb18-9" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">transmute</span>(</span>
+<span id="cb18-10"><a aria-hidden="true" href="#cb18-10" tabindex="-1"></a>    <span class="at">Parameter =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(</span>
+<span id="cb18-11"><a aria-hidden="true" href="#cb18-11" tabindex="-1"></a>      term,</span>
+<span id="cb18-12"><a aria-hidden="true" href="#cb18-12" tabindex="-1"></a>      <span class="at">Intercept =</span> <span class="st">"Intercept"</span>,</span>
+<span id="cb18-13"><a aria-hidden="true" href="#cb18-13" tabindex="-1"></a>      <span class="at">log_body_mass_sc =</span> <span class="st">"Log10 body mass (per 1 SD = 0.750 log10[g])"</span></span>
+<span id="cb18-14"><a aria-hidden="true" href="#cb18-14" tabindex="-1"></a>    ),</span>
+<span id="cb18-15"><a aria-hidden="true" href="#cb18-15" tabindex="-1"></a>    Estimate,</span>
+<span id="cb18-16"><a aria-hidden="true" href="#cb18-16" tabindex="-1"></a>    <span class="st">`</span><span class="at">Lower 95% CrI</span><span class="st">`</span> <span class="ot">=</span> Q2<span class="fl">.5</span>,</span>
+<span id="cb18-17"><a aria-hidden="true" href="#cb18-17" tabindex="-1"></a>    <span class="st">`</span><span class="at">Upper 95% CrI</span><span class="st">`</span> <span class="ot">=</span> Q97<span class="fl">.5</span></span>
+<span id="cb18-18"><a aria-hidden="true" href="#cb18-18" tabindex="-1"></a>  )</span>
+<span id="cb18-19"><a aria-hidden="true" href="#cb18-19" tabindex="-1"></a></span>
+<span id="cb18-20"><a aria-hidden="true" href="#cb18-20" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(body_mass_table, <span class="at">digits =</span> <span class="dv">3</span>)</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 54%"/>
+<col style="width: 11%"/>
+<col style="width: 17%"/>
+<col style="width: 17%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Lower 95% CrI</th>
+<th style="text-align: right;">Upper 95% CrI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Intercept</td>
+<td style="text-align: right;">-0.722</td>
+<td style="text-align: right;">-2.559</td>
+<td style="text-align: right;">1.126</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Log10 body mass (per 1 SD = 0.750 log10[g])</td>
+<td style="text-align: right;">-0.008</td>
+<td style="text-align: right;">-0.303</td>
+<td style="text-align: right;">0.289</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>There was no clear directional association between log10 body mass and mixed-paternity prevalence: posterior mean beta = −0.008 (95% equal-tailed CrI −0.303 to 0.289), and posterior mean OR = 1.004 (0.739 to 1.335). The means are calculated on their respective scales: exp(mean(beta_draws)) = 0.992, whereas mean(exp(beta_draws)) = 1.004. Their positions on opposite sides of the null values arise from nonlinear averaging (Jensen’s inequality). In 52.3% of draws, both beta &lt; 0 and OR &lt; 1; neither direction was clearly supported.</p><div class="cell"><details class="code-fold"><summary>Code</summary><pre class="sourceCode r"><code>beta_draws &lt;- brms::fixef(model_log_body_mass, summary = FALSE)[, "log_body_mass_sc"]
+scale_check &lt;- data.frame(
+  beta_mean = mean(beta_draws),
+  exp_beta_mean = exp(mean(beta_draws)),
+  OR_mean = mean(exp(beta_draws))
+)
+knitr::kable(scale_check, digits = 6)</code></pre></details><div class="cell-output-display"><table class="table"><thead><tr><th>beta_mean</th><th>exp_beta_mean</th><th>OR_mean</th></tr></thead><tbody><tr><td>-0.007933</td><td>0.992099</td><td>1.003562</td></tr></tbody></table></div></div>
+</section>
+</section>
+<section class="level2" data-number="7.9" id="absolute-latitude">
+<h2 class="anchored" data-anchor-id="absolute-latitude" data-number="7.9"><span class="header-section-number">7.9</span> Absolute latitude</h2>
+<p>This model tested whether mixed-paternity prevalence varied with absolute latitude. Absolute latitude was used to examine broad geographic patterns independent of hemisphere, with larger values corresponding to populations located farther from the equator. It was standardised using all 592 non-missing records in the 619-record overall analytical dataset (mean = 41.624 degrees, SD = 14.960 degrees), so the coefficient represents the change in log-odds per one standard deviation.</p>
+<section class="level3" data-number="7.9.1" id="figure-4">
+<h3 class="anchored" data-anchor-id="figure-4" data-number="7.9.1"><span class="header-section-number">7.9.1</span> Figure</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-float quarto-figure quarto-figure-center anchored" id="fig-absolute-latitude-common-scaling">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-absolute-latitude-common-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img class="img-fluid figure-img" src="Figures/common_scaling/abs_latitude.png" width="1080"/>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-absolute-latitude-common-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure 7.3: Predicted mixed-paternity prevalence across absolute latitude from the single-moderator beta-binomial model fitted to 592 records. Points show observed record-level prevalence, with point size scaled by the number of broods. The solid line shows the posterior mean on the probability scale, and the shaded band shows the 95% equal-tailed credible interval, with all random effects set to zero. Absolute latitude was standardised using the overall analytical dataset and is displayed in degrees.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section class="level3" data-number="7.9.2" id="model-summary-5">
+<h3 class="anchored" data-anchor-id="model-summary-5" data-number="7.9.2"><span class="header-section-number">7.9.2</span> Model summary</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-hidden="true" href="#cb19-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">readLines</span>(<span class="st">"logs/common_scaling/model_abs_latitude_summary.txt"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button class="code-copy-button" title="Copy to Clipboard"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: beta_binomial
+  Links: mu = logit
+Formula: n_mixed_broods | trials(n_total_broods) ~ abs_lat_sc + (1 | Study_ID) + (1 | species_nonphylo) + (1 | gr(species_phylo_brms, cov = phylo_mat))
+   Data: dat (Number of observations: 592)
+  Draws: 4 chains, each with iter = 10000; warmup = 5000; thin = 1;
+         total post-warmup draws = 20000
+
+Multilevel Hyperparameters:
+~species_nonphylo (Number of levels: 363)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     0.71      0.11     0.48     0.92 1.00     2041     3996
+
+~species_phylo_brms (Number of levels: 363)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     1.85      0.24     1.41     2.35 1.00     2708     5855
+
+~Study_ID (Number of levels: 532)
+              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sd(Intercept)     0.21      0.13     0.01     0.46 1.00      841     1868
+
+Regression Coefficients:
+           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept     -0.81      0.91    -2.57     1.00 1.00     9768    11671
+abs_lat_sc    -0.13      0.06    -0.25    -0.00 1.00    18251    15665
+
+Further Distributional Parameters:
+    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+phi    19.72      5.87    12.90    35.61 1.00     1013     1688
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+</section>
+<section class="level3" data-number="7.9.3" id="model-estimates-4">
+<h3 class="anchored" data-anchor-id="model-estimates-4" data-number="7.9.3"><span class="header-section-number">7.9.3</span> Model estimates</h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 55%"/>
+<col style="width: 10%"/>
+<col style="width: 16%"/>
+<col style="width: 16%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Lower 95% CrI</th>
+<th style="text-align: right;">Upper 95% CrI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Intercept</td>
+<td style="text-align: right;">-0.806</td>
+<td style="text-align: right;">-2.569</td>
+<td style="text-align: right;">0.999</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Absolute latitude (per 1 SD = 14.960 degrees)</td>
+<td style="text-align: right;">-0.129</td>
+<td style="text-align: right;">-0.251</td>
+<td style="text-align: right;">-0.004</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Mixed-paternity prevalence decreased with absolute latitude (<span class="math inline">\(\beta\)</span> = -0.129, 95% CrI -0.251 to -0.004).</p>
+</section>
+</section>
+<section class="level2" data-number="7.10" id="heterogeneity-summary">
+<h2 class="anchored" data-anchor-id="heterogeneity-summary" data-number="7.10"><span class="header-section-number">7.10</span> Heterogeneity summary</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 20%"/>
+<col style="width: 10%"/>
+<col style="width: 32%"/>
+<col style="width: 27%"/>
+<col style="width: 8%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: right;">Study variance</th>
+<th style="text-align: right;">Non-phylogenetic species variance</th>
+<th style="text-align: right;">Phylogenetic species variance</th>
+<th style="text-align: right;">Phi</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Overall model</td>
+<td style="text-align: right;">0.074</td>
+<td style="text-align: right;">0.472</td>
+<td style="text-align: right;">3.365</td>
+<td style="text-align: right;">18.568</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nest type</td>
+<td style="text-align: right;">0.077</td>
+<td style="text-align: right;">0.400</td>
+<td style="text-align: right;">3.938</td>
+<td style="text-align: right;">19.435</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Migration</td>
+<td style="text-align: right;">0.069</td>
+<td style="text-align: right;">0.445</td>
+<td style="text-align: right;">3.397</td>
+<td style="text-align: right;">18.063</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Coloniality</td>
+<td style="text-align: right;">0.073</td>
+<td style="text-align: right;">0.475</td>
+<td style="text-align: right;">3.347</td>
+<td style="text-align: right;">18.434</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clutch size</td>
+<td style="text-align: right;">0.066</td>
+<td style="text-align: right;">0.465</td>
+<td style="text-align: right;">3.229</td>
+<td style="text-align: right;">17.912</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Body mass</td>
+<td style="text-align: right;">0.076</td>
+<td style="text-align: right;">0.466</td>
+<td style="text-align: right;">3.475</td>
+<td style="text-align: right;">18.735</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Absolute latitude</td>
+<td style="text-align: right;">0.062</td>
+<td style="text-align: right;">0.513</td>
+<td style="text-align: right;">3.484</td>
+<td style="text-align: right;">19.722</td>
+</tr>
+</tbody>
+</table>
+<p>Group-level entries are posterior mean variances on the logit scale, calculated by squaring each posterior SD draw before averaging. Phi is the beta-binomial precision parameter. Models use different complete-case samples; these tables do not measure heterogeneity explained by individual moderators.</p>
+</div>
+</div>
 <!-- -->
-
 </section>
-
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1108,7 +1139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     anchorJS.add('.anchored');
     const isCodeAnnotation = (el) => {
       for (const clz of el.classList) {
-        if (clz.startsWith('code-annotation-')) {                     
+        if (clz.startsWith('code-annotation-')) {
           return true;
         }
       }
@@ -1128,11 +1159,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         button.setAttribute("data-bs-toggle", "tooltip");
         button.setAttribute("data-bs-placement", "left");
         button.setAttribute("data-bs-title", "Copied!");
-        tooltip = new bootstrap.Tooltip(button, 
-          { trigger: "manual", 
+        tooltip = new bootstrap.Tooltip(button,
+          { trigger: "manual",
             customClass: "code-copy-button-tooltip",
             offset: [0, -8]});
-        tooltip.show();    
+        tooltip.show();
       }
       setTimeout(function() {
         if (tooltip) {
@@ -1189,16 +1220,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
     function toggleCodeHandler(show) {
       return function(e) {
-        const cellDetails = window.document.querySelectorAll(".cell details.code-fold");
-        for (let i=0; i<cellDetails.length; i++) {
-          const details = cellDetails[i];
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
           if (show) {
             details.open = true;
           } else {
             details.removeAttribute("open");
           }
         }
-        const cellCodeDivs = window.document.querySelectorAll(".cell div.sourceCode.cell-code");
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
         const fromCls = show ? "hidden" : "unhidden";
         const toCls = show ? "unhidden" : "hidden";
         for (let i=0; i<cellCodeDivs.length; i++) {
@@ -1206,7 +1237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           if (codeDiv.classList.contains(fromCls)) {
             codeDiv.classList.remove(fromCls);
             codeDiv.classList.add(toCls);
-          } 
+          }
         }
         return false;
       }
@@ -1260,7 +1291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       if (onUntriggerFn) {
         config.onUntrigger = onUntriggerFn;
       }
-      window.tippy(el, config); 
+      window.tippy(el, config);
     }
     const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
     for (var i=0; i<noterefs.length; i++) {
@@ -1335,7 +1366,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       tippyHover(xref, undefined, function(instance) {
         instance.disable();
         let url = xref.getAttribute('href');
-        let hash = undefined; 
+        let hash = undefined;
         if (url.startsWith('#')) {
           hash = url;
         } else {
@@ -1363,7 +1394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
               if (note !== null) {
                 const html = processXRef(id, note);
                 instance.setContent(html);
-              } 
+              }
             }).finally(() => {
               instance.enable();
               instance.show();
@@ -1387,7 +1418,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
               }
               const html = processXRef(null, note);
               instance.setContent(html);
-            } 
+            }
           }).finally(() => {
             instance.enable();
             instance.show();
@@ -1427,7 +1458,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
               height = bottom - top;
             }
             if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
+              // cook up a div (if necessary) and position it
               let div = window.document.getElementById("code-annotation-line-highlight");
               if (div === null) {
                 div = window.document.createElement("div");
@@ -1548,290 +1579,470 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./05_breeding_system_moderators.html" class="pagination-link" aria-label="Breeding system moderators">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Breeding system moderators</span></span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="./07_multivariable_model.html" class="pagination-link" aria-label="Multivariable model">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multivariable model</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Biological moderators"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 3</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>All results on this page use the models after exclusion of the two records for the common ostrich (6/6) and Nelson’s sparrow (8/8), whose exact counts could not be verified as broods with at least two genetic sires. Other records were retained, including the saltmarsh-sparrow record from the same Walsh study. Updated 5 November 2026.</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>Estimates are posterior means with 95% equal-tailed credible intervals (CrI). Odds ratios are summarised after exponentiating each contrast draw. Prevalence predictions are summarised after inverse-logit transformation, with random effects set to zero. Continuous effects use the original common scaling constants, retained unchanged after exclusion. Mixed paternity refers to the source-derived brood-level measure described in Methods; source reporting sometimes used brood-level EPP without identifying sire number.</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Nest architecture</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>585 records, 525 study identifiers and 348 species; 15687 mixed-paternity broods out of 44233 sampled broods.</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Coefficient <span class="pp">|</span> Mean log odds <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span> Mean OR <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> nest type modelcavity <span class="pp">|</span> -1.549 <span class="co">[</span><span class="ot">-3.668, 0.572</span><span class="co">]</span> <span class="pp">|</span> 0.378 <span class="co">[</span><span class="ot">0.026, 1.773</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> nest type modelground <span class="pp">|</span> -1.342 <span class="co">[</span><span class="ot">-3.410, 0.737</span><span class="co">]</span> <span class="pp">|</span> 0.462 <span class="co">[</span><span class="ot">0.033, 2.089</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> nest type modelopen <span class="pp">|</span> -1.540 <span class="co">[</span><span class="ot">-3.644, 0.554</span><span class="co">]</span> <span class="pp">|</span> 0.380 <span class="co">[</span><span class="ot">0.026, 1.740</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> nest type modelother enclosed <span class="pp">|</span> -1.771 <span class="co">[</span><span class="ot">-3.933, 0.361</span><span class="co">]</span> <span class="pp">|</span> 0.311 <span class="co">[</span><span class="ot">0.020, 1.434</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">### Pairwise contrasts</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>Each contrast compares the first category with the second.</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Contrast <span class="pp">|</span> Mean log odds <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span> Mean OR <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> cavity - ground <span class="pp">|</span> -0.207 <span class="co">[</span><span class="ot">-0.751, 0.335</span><span class="co">]</span> <span class="pp">|</span> 0.845 <span class="co">[</span><span class="ot">0.472, 1.398</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> cavity - open <span class="pp">|</span> -0.009 <span class="co">[</span><span class="ot">-0.434, 0.424</span><span class="co">]</span> <span class="pp">|</span> 1.015 <span class="co">[</span><span class="ot">0.648, 1.528</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> cavity - other enclosed <span class="pp">|</span> 0.222 <span class="co">[</span><span class="ot">-0.400, 0.854</span><span class="co">]</span> <span class="pp">|</span> 1.314 <span class="co">[</span><span class="ot">0.670, 2.349</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> ground - open <span class="pp">|</span> 0.198 <span class="co">[</span><span class="ot">-0.302, 0.699</span><span class="co">]</span> <span class="pp">|</span> 1.258 <span class="co">[</span><span class="ot">0.740, 2.012</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> ground - other enclosed <span class="pp">|</span> 0.429 <span class="co">[</span><span class="ot">-0.217, 1.085</span><span class="co">]</span> <span class="pp">|</span> 1.623 <span class="co">[</span><span class="ot">0.805, 2.960</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> open - other enclosed <span class="pp">|</span> 0.231 <span class="co">[</span><span class="ot">-0.341, 0.814</span><span class="co">]</span> <span class="pp">|</span> 1.317 <span class="co">[</span><span class="ot">0.711, 2.257</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="fu">### Conditional prevalence</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Category <span class="pp">|</span> Prevalence (%) <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> cavity <span class="pp">|</span> 21.810 <span class="co">[</span><span class="ot">2.490, 63.933</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> ground <span class="pp">|</span> 24.856 <span class="co">[</span><span class="ot">3.198, 67.628</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> open <span class="pp">|</span> 21.916 <span class="co">[</span><span class="ot">2.548, 63.510</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> other enclosed <span class="pp">|</span> 18.910 <span class="co">[</span><span class="ot">1.921, 58.918</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">### Variance components and precision</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Quantity <span class="pp">|</span> Posterior mean <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Phylogenetic species variance <span class="pp">|</span> 3.561 <span class="co">[</span><span class="ot">1.920, 5.664</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Non-phylogenetic species variance <span class="pp">|</span> 0.435 <span class="co">[</span><span class="ot">0.160, 0.770</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Study variance <span class="pp">|</span> 0.068 <span class="co">[</span><span class="ot">0.000, 0.218</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Beta-binomial precision <span class="pp">|</span> 18.782 <span class="co">[</span><span class="ot">12.224, 32.989</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Species-level phylogenetic heritability <span class="pp">|</span> 0.882 <span class="co">[</span><span class="ot">0.743, 0.968</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sampling diagnostics</span></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Maximum R-hat <span class="pp">|</span> Minimum bulk ESS <span class="pp">|</span> Minimum tail ESS <span class="pp">|</span> Divergences <span class="pp">|</span> Treedepth hits <span class="pp">|</span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1.0031 <span class="pp">|</span> 898 <span class="pp">|</span> 2077 <span class="pp">|</span> 0 <span class="pp">|</span> 0 <span class="pp">|</span></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download posterior summary</span><span class="co">](tables/refit_20261105/model_nest_type_0_summary.csv)</span> · <span class="co">[</span><span class="ot">Parameter-level diagnostics</span><span class="co">](tables/refit_20261105/model_nest_type_0_parameter_diagnostics.csv)</span>.</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="al">![Posterior predictions for nest architecture: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/model_nest_type_0_prevalence.png)</span></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download PDF</span><span class="co">](Figures/refit_20261105/model_nest_type_0_prevalence.pdf)</span>.</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="fu">### Posterior predictive check</span></span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="al">![Observed and posterior-replicated counts.](Figures/refit_20261105/model_nest_type_0_ppc.png)</span></span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="fu">## Migration</span></span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Coefficient <span class="pp">|</span> Mean log odds <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span> Mean OR <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Intercept <span class="pp">|</span> -1.013 <span class="co">[</span><span class="ot">-2.784, 0.749</span><span class="co">]</span> <span class="pp">|</span> 0.549 <span class="co">[</span><span class="ot">0.062, 2.116</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> migrationWeak <span class="pp">|</span> -0.373 <span class="co">[</span><span class="ot">-0.696, -0.050</span><span class="co">]</span> <span class="pp">|</span> 0.698 <span class="co">[</span><span class="ot">0.499, 0.951</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="fu">### Conditional prevalence</span></span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Category <span class="pp">|</span> Prevalence (%) <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Strong <span class="pp">|</span> 29.576 <span class="co">[</span><span class="ot">5.822, 67.907</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Weak <span class="pp">|</span> 23.252 <span class="co">[</span><span class="ot">4.091, 59.339</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="fu">### Variance components and precision</span></span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Quantity <span class="pp">|</span> Posterior mean <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Phylogenetic species variance <span class="pp">|</span> 3.070 <span class="co">[</span><span class="ot">1.720, 4.909</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Non-phylogenetic species variance <span class="pp">|</span> 0.476 <span class="co">[</span><span class="ot">0.211, 0.785</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Study variance <span class="pp">|</span> 0.066 <span class="co">[</span><span class="ot">0.000, 0.217</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Beta-binomial precision <span class="pp">|</span> 17.971 <span class="co">[</span><span class="ot">11.863, 30.761</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Species-level phylogenetic heritability <span class="pp">|</span> 0.857 <span class="co">[</span><span class="ot">0.718, 0.952</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Prevalence at zero random effects (proportion) <span class="pp">|</span> 0.296 <span class="co">[</span><span class="ot">0.058, 0.679</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sampling diagnostics</span></span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Maximum R-hat <span class="pp">|</span> Minimum bulk ESS <span class="pp">|</span> Minimum tail ESS <span class="pp">|</span> Divergences <span class="pp">|</span> Treedepth hits <span class="pp">|</span></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1.0016 <span class="pp">|</span> 850 <span class="pp">|</span> 1405 <span class="pp">|</span> 0 <span class="pp">|</span> 0 <span class="pp">|</span></span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download posterior summary</span><span class="co">](tables/refit_20261105/model_migration_summary.csv)</span> · <span class="co">[</span><span class="ot">Parameter-level diagnostics</span><span class="co">](tables/refit_20261105/model_migration_parameter_diagnostics.csv)</span>.</span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="al">![Posterior predictions for migration: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/model_migration_prevalence.png)</span></span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download PDF</span><span class="co">](Figures/refit_20261105/model_migration_prevalence.pdf)</span>.</span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="fu">### Posterior predictive check</span></span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="al">![Observed and posterior-replicated counts.](Figures/refit_20261105/model_migration_ppc.png)</span></span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="fu">## Coloniality</span></span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.</span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Coefficient <span class="pp">|</span> Mean log odds <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span> Mean OR <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Intercept <span class="pp">|</span> -1.241 <span class="co">[</span><span class="ot">-3.026, 0.540</span><span class="co">]</span> <span class="pp">|</span> 0.437 <span class="co">[</span><span class="ot">0.049, 1.716</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> coloniality1 <span class="pp">|</span> -0.137 <span class="co">[</span><span class="ot">-0.540, 0.262</span><span class="co">]</span> <span class="pp">|</span> 0.890 <span class="co">[</span><span class="ot">0.583, 1.299</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="fu">### Conditional prevalence</span></span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Category <span class="pp">|</span> Prevalence (%) <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 0 <span class="pp">|</span> 25.591 <span class="co">[</span><span class="ot">4.628, 63.187</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> 23.429 <span class="co">[</span><span class="ot">3.994, 60.352</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a><span class="fu">### Variance components and precision</span></span>
-<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Quantity <span class="pp">|</span> Posterior mean <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Phylogenetic species variance <span class="pp">|</span> 3.065 <span class="co">[</span><span class="ot">1.718, 4.888</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Non-phylogenetic species variance <span class="pp">|</span> 0.498 <span class="co">[</span><span class="ot">0.235, 0.804</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Study variance <span class="pp">|</span> 0.070 <span class="co">[</span><span class="ot">0.000, 0.225</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Beta-binomial precision <span class="pp">|</span> 18.322 <span class="co">[</span><span class="ot">12.030, 32.262</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Species-level phylogenetic heritability <span class="pp">|</span> 0.851 <span class="co">[</span><span class="ot">0.715, 0.947</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Prevalence at zero random effects (proportion) <span class="pp">|</span> 0.256 <span class="co">[</span><span class="ot">0.046, 0.632</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sampling diagnostics</span></span>
-<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Maximum R-hat <span class="pp">|</span> Minimum bulk ESS <span class="pp">|</span> Minimum tail ESS <span class="pp">|</span> Divergences <span class="pp">|</span> Treedepth hits <span class="pp">|</span></span>
-<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1.0044 <span class="pp">|</span> 896 <span class="pp">|</span> 1881 <span class="pp">|</span> 0 <span class="pp">|</span> 0 <span class="pp">|</span></span>
-<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download posterior summary</span><span class="co">](tables/refit_20261105/model_coloniality_summary.csv)</span> · <span class="co">[</span><span class="ot">Parameter-level diagnostics</span><span class="co">](tables/refit_20261105/model_coloniality_parameter_diagnostics.csv)</span>.</span>
-<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="al">![Posterior predictions for coloniality: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/model_coloniality_prevalence.png)</span></span>
-<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download PDF</span><span class="co">](Figures/refit_20261105/model_coloniality_prevalence.pdf)</span>.</span>
-<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a><span class="fu">### Posterior predictive check</span></span>
-<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a><span class="al">![Observed and posterior-replicated counts.](Figures/refit_20261105/model_coloniality_ppc.png)</span></span>
-<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a><span class="fu">## Maximum clutch size</span></span>
-<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>616 records, 552 study identifiers and 372 species; 16074 mixed-paternity broods out of 46207 sampled broods.</span>
-<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Coefficient <span class="pp">|</span> Mean log odds <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span> Mean OR <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Intercept <span class="pp">|</span> -1.373 <span class="co">[</span><span class="ot">-3.125, 0.374</span><span class="co">]</span> <span class="pp">|</span> 0.376 <span class="co">[</span><span class="ot">0.044, 1.453</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> CS max sc <span class="pp">|</span> 0.319 <span class="co">[</span><span class="ot">0.103, 0.533</span><span class="co">]</span> <span class="pp">|</span> 1.384 <span class="co">[</span><span class="ot">1.109, 1.705</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a><span class="fu">### Variance components and precision</span></span>
-<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Quantity <span class="pp">|</span> Posterior mean <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Phylogenetic species variance <span class="pp">|</span> 2.947 <span class="co">[</span><span class="ot">1.635, 4.686</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Non-phylogenetic species variance <span class="pp">|</span> 0.495 <span class="co">[</span><span class="ot">0.239, 0.806</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Study variance <span class="pp">|</span> 0.064 <span class="co">[</span><span class="ot">0.000, 0.216</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Beta-binomial precision <span class="pp">|</span> 17.891 <span class="co">[</span><span class="ot">11.924, 31.101</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Species-level phylogenetic heritability <span class="pp">|</span> 0.847 <span class="co">[</span><span class="ot">0.704, 0.944</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Prevalence at zero random effects (proportion) <span class="pp">|</span> 0.233 <span class="co">[</span><span class="ot">0.042, 0.592</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sampling diagnostics</span></span>
-<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Maximum R-hat <span class="pp">|</span> Minimum bulk ESS <span class="pp">|</span> Minimum tail ESS <span class="pp">|</span> Divergences <span class="pp">|</span> Treedepth hits <span class="pp">|</span></span>
-<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1.0034 <span class="pp">|</span> 804 <span class="pp">|</span> 1763 <span class="pp">|</span> 0 <span class="pp">|</span> 0 <span class="pp">|</span></span>
-<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download posterior summary</span><span class="co">](tables/refit_20261105/model_clutch_size_summary.csv)</span> · <span class="co">[</span><span class="ot">Parameter-level diagnostics</span><span class="co">](tables/refit_20261105/model_clutch_size_parameter_diagnostics.csv)</span>.</span>
-<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a><span class="al">![Posterior predictions for maximum clutch size: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/clutch_size.png)</span></span>
-<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download PDF</span><span class="co">](Figures/refit_20261105/clutch_size.pdf)</span>.</span>
-<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a><span class="fu">### Posterior predictive check</span></span>
-<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a><span class="al">![Observed and posterior-replicated counts.](Figures/refit_20261105/model_clutch_size_ppc.png)</span></span>
-<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a><span class="fu">## Log body mass</span></span>
-<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.</span>
-<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Coefficient <span class="pp">|</span> Mean log odds <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span> Mean OR <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Intercept <span class="pp">|</span> -1.229 <span class="co">[</span><span class="ot">-3.015, 0.582</span><span class="co">]</span> <span class="pp">|</span> 0.448 <span class="co">[</span><span class="ot">0.049, 1.789</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> log body mass sc <span class="pp">|</span> -0.058 <span class="co">[</span><span class="ot">-0.356, 0.242</span><span class="co">]</span> <span class="pp">|</span> 0.955 <span class="co">[</span><span class="ot">0.701, 1.274</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a><span class="fu">### Variance components and precision</span></span>
-<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Quantity <span class="pp">|</span> Posterior mean <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Phylogenetic species variance <span class="pp">|</span> 3.120 <span class="co">[</span><span class="ot">1.766, 4.936</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Non-phylogenetic species variance <span class="pp">|</span> 0.497 <span class="co">[</span><span class="ot">0.234, 0.801</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Study variance <span class="pp">|</span> 0.068 <span class="co">[</span><span class="ot">0.000, 0.220</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Beta-binomial precision <span class="pp">|</span> 18.293 <span class="co">[</span><span class="ot">12.040, 32.273</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Species-level phylogenetic heritability <span class="pp">|</span> 0.854 <span class="co">[</span><span class="ot">0.719, 0.947</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Prevalence at zero random effects (proportion) <span class="pp">|</span> 0.259 <span class="co">[</span><span class="ot">0.047, 0.641</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sampling diagnostics</span></span>
-<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Maximum R-hat <span class="pp">|</span> Minimum bulk ESS <span class="pp">|</span> Minimum tail ESS <span class="pp">|</span> Divergences <span class="pp">|</span> Treedepth hits <span class="pp">|</span></span>
-<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1.0103 <span class="pp">|</span> 714 <span class="pp">|</span> 1436 <span class="pp">|</span> 0 <span class="pp">|</span> 0 <span class="pp">|</span></span>
-<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download posterior summary</span><span class="co">](tables/refit_20261105/model_log_body_mass_summary.csv)</span> · <span class="co">[</span><span class="ot">Parameter-level diagnostics</span><span class="co">](tables/refit_20261105/model_log_body_mass_parameter_diagnostics.csv)</span>.</span>
-<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a><span class="al">![Posterior predictions for log body mass: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/body_mass.png)</span></span>
-<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download PDF</span><span class="co">](Figures/refit_20261105/body_mass.pdf)</span>.</span>
-<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a><span class="fu">### Posterior predictive check</span></span>
-<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a><span class="al">![Observed and posterior-replicated counts.](Figures/refit_20261105/model_log_body_mass_ppc.png)</span></span>
-<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a><span class="fu">## Absolute latitude</span></span>
-<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>590 records, 531 study identifiers and 361 species; 15797 mixed-paternity broods out of 45168 sampled broods.</span>
-<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Coefficient <span class="pp">|</span> Mean log odds <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span> Mean OR <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Intercept <span class="pp">|</span> -1.297 <span class="co">[</span><span class="ot">-3.095, 0.510</span><span class="co">]</span> <span class="pp">|</span> 0.419 <span class="co">[</span><span class="ot">0.045, 1.665</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> abs lat sc <span class="pp">|</span> -0.123 <span class="co">[</span><span class="ot">-0.244, -0.002</span><span class="co">]</span> <span class="pp">|</span> 0.886 <span class="co">[</span><span class="ot">0.784, 0.998</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a><span class="fu">### Variance components and precision</span></span>
-<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Quantity <span class="pp">|</span> Posterior mean <span class="co">[</span><span class="ot">95% CrI</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Phylogenetic species variance <span class="pp">|</span> 3.189 <span class="co">[</span><span class="ot">1.797, 5.058</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Non-phylogenetic species variance <span class="pp">|</span> 0.533 <span class="co">[</span><span class="ot">0.254, 0.860</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Study variance <span class="pp">|</span> 0.056 <span class="co">[</span><span class="ot">0.000, 0.198</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Beta-binomial precision <span class="pp">|</span> 19.189 <span class="co">[</span><span class="ot">12.799, 32.954</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Species-level phylogenetic heritability <span class="pp">|</span> 0.848 <span class="co">[</span><span class="ot">0.709, 0.946</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Prevalence at zero random effects (proportion) <span class="pp">|</span> 0.248 <span class="co">[</span><span class="ot">0.043, 0.625</span><span class="co">]</span> <span class="pp">|</span></span>
-<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sampling diagnostics</span></span>
-<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Maximum R-hat <span class="pp">|</span> Minimum bulk ESS <span class="pp">|</span> Minimum tail ESS <span class="pp">|</span> Divergences <span class="pp">|</span> Treedepth hits <span class="pp">|</span></span>
-<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1.0051 <span class="pp">|</span> 872 <span class="pp">|</span> 1455 <span class="pp">|</span> 0 <span class="pp">|</span> 0 <span class="pp">|</span></span>
-<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download posterior summary</span><span class="co">](tables/refit_20261105/model_abs_latitude_summary.csv)</span> · <span class="co">[</span><span class="ot">Parameter-level diagnostics</span><span class="co">](tables/refit_20261105/model_abs_latitude_parameter_diagnostics.csv)</span>.</span>
-<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a><span class="al">![Posterior predictions for absolute latitude: means and 95% equal-tailed credible intervals.](Figures/refit_20261105/abs_latitude.png)</span></span>
-<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download PDF</span><span class="co">](Figures/refit_20261105/abs_latitude.pdf)</span>.</span>
-<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a><span class="fu">### Posterior predictive check</span></span>
-<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a><span class="al">![Observed and posterior-replicated counts.](Figures/refit_20261105/model_abs_latitude_ppc.png)</span></span>
-<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reproducibility</span></span>
-<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Posterior summaries and contrasts</span><span class="co">](tables/refit_20261105/contrasts_equal_tailed.csv)</span> · <span class="co">[</span><span class="ot">Export code</span><span class="co">](scripts/refit_20261105/export_results.R)</span> · <span class="co">[</span><span class="ot">Prediction code</span><span class="co">](scripts/refit_20261105/prepare_release.R)</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<nav class="page-navigation"><div class="nav-page nav-page-previous"><a aria-label="Breeding system moderators" class="pagination-link" href="./05_breeding_system_moderators.html"><i class="bi bi-arrow-left-short"></i><span class="nav-page-text"><span class="chapter-number">6</span>  <span class="chapter-title">Breeding system moderators</span></span></a></div><div class="nav-page nav-page-next"><a aria-label="Multivariable model" class="pagination-link" href="./07_multivariable_model.html"><i class="bi bi-arrow-right-short"></i><span class="nav-page-text"><span class="chapter-number">8</span>  <span class="chapter-title">Multivariable model</span></span></a></div></nav><div aria-hidden="true" aria-labelledby="quarto-embedded-source-code-modal-label" class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" data-shortcodes="false" id="cb21"><pre><code>---
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+::: section-card
+## Biological moderators
+
+This section presents single-moderator models for ecological, life-history, and geographic predictors of brood-level mixed paternity. These models evaluate whether mixed-paternity prevalence varies with nest type, migration status, coloniality, clutch size, body mass, and absolute latitude, while retaining the same multilevel phylogenetic beta-binomial structure used in the overall model.
+:::
+
+Model-based prevalence is summarised as the posterior mean on the probability scale, with 95% equal-tailed credible intervals. The inverse-logit transformation is applied to each posterior draw before averaging; all random effects are set to zero.
+
+## Packages
+
+The R packages required for model fitting.
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(brms)
+library(posterior)
+library(bayesplot)
+library(loo)
+library(ggplot2)
+
+options(mc.cores = parallel::detectCores())
+```
+
+## Load prepared objects
+
+```{r}
+#| include: false
+
+data_overall_study &lt;- readRDS("data/data_overall_study.rds")
+phylo_mat &lt;- readRDS("data/phylo_mat.rds")
+```
+
+```{r}
+
+mixed_pat &lt;- readRDS("data/mixed_pat_prepared.rds")
+data_overall_study &lt;- readRDS("data/data_overall_study.rds")
+
+data_abs_latitude &lt;- readRDS("data/common_scaling/data_abs_latitude.rds")
+data_body_mass &lt;- readRDS("data/common_scaling/data_log_body_mass.rds")
+data_clutch_size &lt;- readRDS("data/common_scaling/data_clutch_size.rds")
+data_coloniality &lt;- readRDS("data/data_coloniality.rds")
+data_migration &lt;- readRDS("data/data_migration.rds")
+data_nest_type &lt;- readRDS("data/data_nest_type.rds")
+
+
+phylo_mat &lt;- readRDS("data/phylo_mat.rds")
+tree_analysis &lt;- readRDS("data/tree_analysis.rds")
+```
+
+### Dataset sizes
+
+The table below shows the number of observations available for each biological moderator after removing missing values.
+
+```{r}
+
+#| label: bio-dataset-sizes
+#| echo: false
+#| message: false
+#| warning: false
+
+bio_dataset_sizes &lt;- tibble::tibble(
+  Moderator = c(
+    "Nest type",
+    "Migration",
+    "Coloniality",
+    "Maximum clutch size",
+    "Body mass",
+    "Absolute latitude"
+  ),
+  Observations = c(
+    nrow(data_nest_type),
+    nrow(data_migration),
+    nrow(data_coloniality),
+    nrow(data_clutch_size),
+    nrow(data_body_mass),
+    nrow(data_abs_latitude)
+  )
+)
+
+knitr::kable(bio_dataset_sizes)
+```
+
+## Model
+
+This helper function documents the shared model structure used for all single-moderator models. These models are fitted outside this website workflow and saved as `.rds` files.
+
+The nest-type model uses 0 + nest_type_model, with one logit coefficient per category and no shared population-level intercept. The other models in this chapter retain an intercept. Model-specific reference categories and priors are documented in the [overall-model chapter](03_overall_model.qmd#model-coding-and-priors).
+
+```{r}
+
+#| eval: false
+#| echo: true
+
+fit_single_moderator &lt;- function(formula, data) {
+  brm(
+    formula = formula,
+    data = data,
+    family = beta_binomial(link = "logit"),
+    data2 = list(phylo_mat = phylo_mat),
+    chains = 4,
+    cores = 4,
+    iter = 10000,
+    warmup = 5000,
+    control = list(
+      adapt_delta = 0.99,
+      max_treedepth = 15
+    ),
+    seed = 123
+  )
+}
+```
+
+## Nest type architecture
+
+This model tested whether mixed-paternity prevalence differed among nest-type categories. Nest type was derived from BIRDBASE and simplified into four broad nest-architecture categories: cavity, ground, open, and other enclosed nests. Cavity nests included tree cavities and crevices; ground nests included burrows, scrapes, mounds, and nests placed directly on or in the ground; open nests included cups, saucers, platforms, and half-cups; and other enclosed nests included domes, pendant and globular nests, as well as nests built in other birds’ nests.
+
+### Figure
+
+```{r}
+knitr::include_graphics("Figures/Figuresnest_type.png")
+```
+
+### Model summary
+
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+
+model_nest_type &lt;- readRDS("models/model_nest_type_0.rds")
+summary(model_nest_type)
+```
+
+### Nest type model estimates
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+nest_type_probability_draws &lt;- 100 * plogis(brms::fixef(model_nest_type, summary = FALSE))
+nest_type_prevalence &lt;- data.frame(
+  `Nest type` = sub("^nest_type_model", "", colnames(nest_type_probability_draws)),
+  `Posterior mean prevalence (%)` = colMeans(nest_type_probability_draws),
+  `Lower 95% CrI` = apply(nest_type_probability_draws, 2, quantile, 0.025),
+  `Upper 95% CrI` = apply(nest_type_probability_draws, 2, quantile, 0.975),
+  row.names = NULL, check.names = FALSE
+)
+knitr::kable(nest_type_prevalence, digits = 2)
+```
+
+### Post-hoc pairwise contrasts
+
+Pairwise contrasts are posterior means with 95% equal-tailed credible intervals. Each contrast compares the first category with the second. Log-odds differences are calculated within each posterior draw. Odds ratios are summarised after exponentiating each difference, so mean OR is the mean of the transformed draws, not the exponential of the mean log-odds difference.
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| message: false
+#| warning: false
+
+b &lt;- brms::fixef(model_nest_type, summary = FALSE)
+pairs &lt;- combn(colnames(b), 2L, simplify = FALSE)
+nest_type_contrasts &lt;- do.call(rbind, lapply(pairs, function(pair) {
+  difference &lt;- b[, pair[1L]] - b[, pair[2L]]
+  odds_ratio &lt;- exp(difference)
+  data.frame(
+    contrast = paste(sub("nest_type_model", "", pair, fixed = TRUE), collapse = " - "),
+    estimate = mean(difference),
+    lower.CrI = unname(quantile(difference, 0.025)),
+    upper.CrI = unname(quantile(difference, 0.975)),
+    OR = mean(odds_ratio),
+    lower.OR = unname(quantile(odds_ratio, 0.025)),
+    upper.OR = unname(quantile(odds_ratio, 0.975))
+  )
+}))
+knitr::kable(nest_type_contrasts, digits = 3,
+  caption = "Posterior means and 95% equal-tailed intervals: log-odds contrasts and odds ratios.")
+```
+
+## Migration
+
+This model compared the two analytical migration categories derived from BIRDBASE: regular migrants (Strong) and species that are resident or show weak, local or irregular movements (Weak). Weak is broader than partial migration alone. The label "Partial/resident" denotes the analytical Weak category, which includes resident species and species exhibiting weak seasonal, local or irregular movements.
+
+### Figure
+
+```{r}
+knitr::include_graphics("Figures/Figuresmigration.png")
+```
+
+### Model summary
+
+```{r}
+#| label: migration-summary
+#| message: false
+#| warning: false
+#| code-fold: true
+
+model_migration &lt;- readRDS("models/model_migration.rds")
+summary(model_migration)
+```
+
+### Model estimates
+
+The intercept represents the reference migration category, while the remaining coefficients describe differences relative to that reference category on the logit scale.
+
+The single-moderator model used 619 records and estimated beta = −0.387 (95% equal-tailed CrI −0.704 to −0.066; posterior mean OR = 0.688). The primary multivariable model used 533 records and estimated beta = −0.492 (−0.861 to −0.132; posterior mean OR = 0.622). The direction is consistent, and the adjusted point estimate is more negative. Because both covariate adjustment and sample composition differ, this descriptive comparison does not establish a change in association strength. In both models, OR means are calculated after exponentiating each coefficient draw.
+
+```{r}
+#| label: migration-effect
+#| echo: false
+#| message: false
+#| warning: false
+
+s_migration &lt;- summary(model_migration)
+
+migration_table &lt;- tibble::tibble(
+  Parameter = rownames(s_migration$fixed),
+  Estimate = s_migration$fixed[, "Estimate"],
+  `Lower 95% CrI` = s_migration$fixed[, "l-95% CI"],
+  `Upper 95% CrI` = s_migration$fixed[, "u-95% CI"]
+)
+
+knitr::kable(migration_table, digits = 3)
+```
+
+## Coloniality
+
+This model tested whether mixed-paternity prevalence differed between colonial and non-colonial species following BIRDBASE database.
+
+### Figures
+
+```{r}
+knitr::include_graphics("Figures/Figurescoloniality.png")
+```
+
+### Model summary
+
+```{r}
+
+#| message: false
+#| warning: false
+#| code-fold: true
+
+model_coloniality &lt;- readRDS("models/model_coloniality.rds")
+summary(model_coloniality)
+
+
+```
+
+### Model estimates
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+s_coloniality &lt;- summary(model_coloniality)
+
+coloniality_table &lt;- tibble::tibble(
+  Parameter = rownames(s_coloniality$fixed),
+  Estimate = s_coloniality$fixed[, "Estimate"],
+  `Lower 95% CrI` = s_coloniality$fixed[, "l-95% CI"],
+  `Upper 95% CrI` = s_coloniality$fixed[, "u-95% CI"]
+)
+
+knitr::kable(coloniality_table, digits = 3)
+```
+
+## Clutch size
+
+This model tested whether mixed-paternity prevalence was associated with maximum clutch size. Maximum clutch size was standardised using all 618 non-missing records in the 619-record overall analytical dataset (mean = 6.762 eggs, SD = 4.034 eggs), so the coefficient represents the change in log-odds per one standard deviation.
+
+### Figure
+
+```{r}
+#| label: fig-clutch-size-common-scaling
+#| fig-cap: "Population-level predicted mixed-paternity prevalence across maximum clutch size from the refitted single-moderator model. Maximum clutch size was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval."
+#| echo: false
+
+knitr::include_graphics("Figures/common_scaling/clutch_size.png")
+```
+
+### Model summary
+
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+
+cat(readLines("logs/common_scaling/model_clutch_size_summary.txt"), sep = "\n")
+```
+
+###  Model estimates
+
+```{r}
+
+#| echo: false
+#| message: false
+#| warning: false
+
+clutch_size_table &lt;- readr::read_csv(
+  "tables/common_scaling/model_clutch_size_fixed_effects.csv",
+  show_col_types = FALSE
+) |&gt;
+  dplyr::transmute(
+    Parameter = dplyr::recode(
+      term,
+      Intercept = "Intercept",
+      CS_max_sc = "Maximum clutch size (per 1 SD = 4.034 eggs)"
+    ),
+    Estimate,
+    `Lower 95% CrI` = Q2.5,
+    `Upper 95% CrI` = Q97.5
+  )
+
+knitr::kable(clutch_size_table, digits = 3)
+```
+
+Mixed-paternity prevalence increased with maximum clutch size ($\beta$ = 0.330, 95% CrI 0.116 to 0.545).
+
+## Body mass
+
+This model tested whether mixed-paternity prevalence was associated with adult body mass. Body mass was log10-transformed and then standardised using all 619 records in the overall analytical dataset (mean = 1.727 log10[g], SD = 0.750 log10[g]). The coefficient therefore represents the change in log-odds per one standard deviation increase in log10-transformed body mass.
+
+### Figure
+
+```{r}
+#| label: fig-body-mass-common-scaling
+#| fig-cap: "Population-level predicted mixed-paternity prevalence across log10 adult body mass from the refitted single-moderator model. Log10 body mass was standardised using the overall analytical dataset; points show observed record-level prevalence and the ribbon shows the 95% credible interval."
+#| echo: false
+
+knitr::include_graphics("Figures/common_scaling/body_mass.png")
+```
+
+### Model summary
+
+```{r}
+#| message: false
+#| #| warning: false
+#| #| code-fold: true
+
+cat(readLines("logs/common_scaling/model_log_body_mass_summary.txt"), sep = "\n")
+
+
+```
+
+### Model estimates
+
+```{r}
+
+#| echo: false
+#| message: false
+#| warning: false
+
+body_mass_table &lt;- readr::read_csv(
+  "tables/common_scaling/model_log_body_mass_fixed_effects.csv",
+  show_col_types = FALSE
+) |&gt;
+  dplyr::transmute(
+    Parameter = dplyr::recode(
+      term,
+      Intercept = "Intercept",
+      log_body_mass_sc = "Log10 body mass (per 1 SD = 0.750 log10[g])"
+    ),
+    Estimate,
+    `Lower 95% CrI` = Q2.5,
+    `Upper 95% CrI` = Q97.5
+  )
+
+knitr::kable(body_mass_table, digits = 3)
+
+```
+
+There was no clear directional association between log10 body mass and mixed-paternity prevalence: posterior mean beta = −0.008 (95% equal-tailed CrI −0.303 to 0.289), and posterior mean OR = 1.004 (0.739 to 1.335). The means are calculated on their respective scales: exp(mean(beta_draws)) = 0.992, whereas mean(exp(beta_draws)) = 1.004. Their positions on opposite sides of the null values arise from nonlinear averaging (Jensen’s inequality). In 52.3% of draws, both beta &lt; 0 and OR &lt; 1; neither direction was clearly supported.
+
+```{r}
+#| label: body-mass-or-scale-check
+#| code-fold: true
+beta_draws &lt;- brms::fixef(model_log_body_mass, summary = FALSE)[, "log_body_mass_sc"]
+scale_check &lt;- data.frame(
+  beta_mean = mean(beta_draws),
+  exp_beta_mean = exp(mean(beta_draws)),
+  OR_mean = mean(exp(beta_draws))
+)
+knitr::kable(scale_check, digits = 6)
+```
+
+## Absolute latitude
+
+This model tested whether mixed-paternity prevalence varied with absolute latitude. Absolute latitude was used to examine broad geographic patterns independent of hemisphere, with larger values corresponding to populations located farther from the equator. It was standardised using all 592 non-missing records in the 619-record overall analytical dataset (mean = 41.624 degrees, SD = 14.960 degrees), so the coefficient represents the change in log-odds per one standard deviation.
+
+### Figure
+
+```{r}
+#| label: fig-absolute-latitude-common-scaling
+#| fig-cap: "Predicted mixed-paternity prevalence across absolute latitude from the single-moderator beta-binomial model fitted to 592 records. Points show observed record-level prevalence, with point size scaled by the number of broods. The solid line shows the posterior mean on the probability scale, and the shaded band shows the 95% equal-tailed credible interval, with all random effects set to zero. Absolute latitude was standardised using the overall analytical dataset and is displayed in degrees."
+#| echo: false
+
+knitr::include_graphics("Figures/common_scaling/abs_latitude.png")
+```
+
+### Model  summary
+
+```{r}
+#| message: false
+#| #| warning: false
+#| #| code-fold: true
+
+cat(readLines("logs/common_scaling/model_abs_latitude_summary.txt"), sep = "\n")
+
+```
+
+### Model estimates
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+abs_latitude_table &lt;- readr::read_csv(
+  "tables/common_scaling/model_abs_latitude_fixed_effects.csv",
+  show_col_types = FALSE
+) |&gt;
+  dplyr::transmute(
+    Parameter = dplyr::recode(
+      term,
+      Intercept = "Intercept",
+      abs_lat_sc = "Absolute latitude (per 1 SD = 14.960 degrees)"
+    ),
+    Estimate,
+    `Lower 95% CrI` = Q2.5,
+    `Upper 95% CrI` = Q97.5
+  )
+
+knitr::kable(abs_latitude_table, digits = 3)
+```
+
+Mixed-paternity prevalence decreased with absolute latitude ($\beta$ = -0.129, 95% CrI -0.251 to -0.004).
+
+## Heterogeneity summary
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+variance_table &lt;- readr::read_csv("tables/variance_audit/group_level_variances.csv", show_col_types = FALSE) |&gt;
+  dplyr::filter(Model %in% c("Overall model", "Nest type", "Migration", "Coloniality", "Clutch size", "Body mass", "Absolute latitude"))
+knitr::kable(variance_table, digits = 3)
+```
+
+Group-level entries are posterior mean variances on the logit scale, calculated by squaring each posterior SD draw before averaging. Phi is the beta-binomial precision parameter. Models use different complete-case samples; these tables do not measure heterogeneity explained by individual moderators.
+</code></pre></div><button class="code-copy-button" data-in-quarto-modal="" title="Copy to Clipboard"><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
-
-
-
-
 </body></html>

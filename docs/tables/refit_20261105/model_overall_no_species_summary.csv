@@ -1,6 +1,0 @@
-"model","quantity","mean","lower","upper"
-"model_overall_no_species","b_Intercept",-1.08718030613088,-1.21695090337554,-0.9622139216786
-"model_overall_no_species","sd_Study_ID__Intercept",0.995529420225259,0.788780329634171,1.19245858760279
-"model_overall_no_species","phi",6.62680750888321,4.54749016848859,9.60515129949456
-"model_overall_no_species","variance_sd_Study_ID__Intercept",1.00175229474893,0.622174408511691,1.42195748319382
-"model_overall_no_species","prevalence_zero_random_effects",0.252348382915821,0.228473480018951,0.276435149906651
