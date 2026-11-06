@@ -15,6 +15,7 @@ book:
     - 06_biological_moderators.qmd
     - 07_multivariable_model.qmd
     - 07_figures.qmd
+    - 08_phylogenetic_sensitivity.qmd
 
 format:
   html:

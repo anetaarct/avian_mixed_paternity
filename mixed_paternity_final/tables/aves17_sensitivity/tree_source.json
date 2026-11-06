@@ -1,0 +1,9 @@
+{
+  "commit": "4af84f14f8f3df26bd4480202689b08ea0fc2c48",
+  "url": "https://raw.githubusercontent.com/McTavishLab/AvesData/4af84f14f8f3df26bd4480202689b08ea0fc2c48/Tree_versions/Aves_1.7/Clements2025/dated_rand_sample_clements.tre",
+  "git_blob": "8ba05e2957b3595c94d954ca54eb2bb23440a01f",
+  "sha256": "e29d450285fe120f9b05dc8fca140f88d12fca38b3332b100938ab0be3a1e6c1",
+  "seed": 20261106,
+  "sample_without_replacement": 50,
+  "records": 619
+}

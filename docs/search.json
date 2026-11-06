@@ -598,5 +598,55 @@
     "crumbs": [
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>Multivariable model</span>"
     ]
+  },
+  {
+    "objectID": "08_phylogenetic_sensitivity.html",
+    "href": "08_phylogenetic_sensitivity.html",
+    "title": "10  Phylogenetic sensitivity: 50 Aves 1.7 trees",
+    "section": "",
+    "text": "10.1 Scope\nWe refitted the overall intercept-only beta-binomial model to exactly the same 619 records, 554 study identifiers and 375 species as the primary analysis. The response counts, priors and random-effects structure were unchanged. The primary Aves 1.6 analysis remains the reference; moderator models were not refitted across trees.\nWe sampled 50 trees without replacement from the 100 dated stochastic replicates of Aves 1.7, Clements 2025, using seed 20261106. The source is AvesData commit 4af84f1, file dated_rand_sample_clements.tre. The replicates reflect selected uncertainty in taxonomic placement and dating, not a posterior sample from one joint Bayesian phylogenetic analysis. Aves 1.7 includes a date-calibration correction, so this comparison combines the version update and sampled tree variation; it does not isolate either contribution.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Phylogenetic sensitivity: 50 Aves 1.7 trees</span>"
+    ]
+  },
+  {
+    "objectID": "08_phylogenetic_sensitivity.html#results",
+    "href": "08_phylogenetic_sensitivity.html#results",
+    "title": "10  Phylogenetic sensitivity: 50 Aves 1.7 trees",
+    "section": "10.2 Results",
+    "text": "10.2 Results\nThe phylogenetic contribution remained high: H² = 0.850 [0.705, 0.951], compared with 0.869 [0.744, 0.958] under the reference tree. Per-tree posterior means ranged from 0.817 to 0.899. The qualitative conclusion of dominant phylogenetic structure was similar across frameworks.\nPrevalence at zero random effects was more sensitive: 27.16% [7.38, 61.96], compared with 34.71% [8.12, 73.16]. Per-tree means ranged from 15.6% to 37.0%. This is the inverse-logit of the intercept, not a marginal estimate averaged over random effects and not the raw pooled brood proportion.\n\n\n\n\n\n\n\n\nQuantity\nAves 1.6 reference\nAves 1.7: 50-tree mixture\n\n\n\n\nPrevalence at zero random effects (%)\n34.71 [8.12, 73.16]\n27.16 [7.38, 61.96]\n\n\nSpecies-level phylogenetic heritability (H²)\n0.869 [0.744, 0.958]\n0.850 [0.705, 0.951]\n\n\nPhylogenetic species variance\n3.365 [1.947, 5.312]\n2.885 [1.582, 4.750]\n\n\nNon-phylogenetic species variance\n0.472 [0.203, 0.783]\n0.470 [0.203, 0.782]\n\n\nStudy variance\n0.074 [0.00018, 0.234]\n0.074 [0.00020, 0.232]\n\n\nBeta-binomial precision (φ)\n18.568 [12.075, 32.961]\n18.620 [12.110, 32.766]\n\n\n\nEntries are posterior means and 95% equal-tailed intervals. The Aves 1.7 intervals describe an equally weighted mixture of posterior draws across trees. Group-level variances are on the logit scale. H² is phylogenetic variance divided by the sum of phylogenetic and non-phylogenetic species variance; study variance and beta-binomial dispersion are excluded.\n\n\n\nPer-tree estimates, reference analysis and equal-weight mixture. Horizontal bars show 95% equal-tailed intervals.\n\n\nDownload the figure as PDF",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Phylogenetic sensitivity: 50 Aves 1.7 trees</span>"
+    ]
+  },
+  {
+    "objectID": "08_phylogenetic_sensitivity.html#model-settings-and-pooling",
+    "href": "08_phylogenetic_sensitivity.html#model-settings-and-pooling",
+    "title": "10  Phylogenetic sensitivity: 50 Aves 1.7 trees",
+    "section": "10.3 Model settings and pooling",
+    "text": "10.3 Model settings and pooling\nFor each tree we recalculated the phylogenetic correlation matrix, preserving species matching and matrix scaling. Each model used four chains with 10,000 iterations, 5,000 warm-up iterations, adapt_delta = 0.99, and max_treedepth = 15. Fits used brms 2.23.0 and rstan 2.32.7. The prior on each random-effect SD was half-Student-t(3, 0, 2.5); the intercept prior was Student-t(3, 0, 2.5), and precision had a Gamma(0.01, 0.01) prior, matching the reference model.\nWe derived variances, H² and prevalence within each draw, then combined 20,000 draws per tree (1,000,000 draws in total). Equal draw counts give each tree equal weight. Interval endpoints were calculated from the mixture, not averaged across trees. The mixture propagates the sampled tree variation but does not cover all sources of phylogenetic uncertainty.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Phylogenetic sensitivity: 50 Aves 1.7 trees</span>"
+    ]
+  },
+  {
+    "objectID": "08_phylogenetic_sensitivity.html#diagnostics-and-additional-check",
+    "href": "08_phylogenetic_sensitivity.html#diagnostics-and-additional-check",
+    "title": "10  Phylogenetic sensitivity: 50 Aves 1.7 trees",
+    "section": "10.4 Diagnostics and additional check",
+    "text": "10.4 Diagnostics and additional check\nAll 50 fits saved successfully, with zero divergent transitions and zero maximum-treedepth hits. Across all monitored parameters, maximum R̂ was 1.0137, minimum bulk ESS was 562 and minimum tail ESS was 1,256. Five fits (sample indices 14, 21, 41, 42 and 47) exceeded R̂ = 1.01 for study-level SD, precision and/or log posterior. These mild mixing warnings are retained in the diagnostic record rather than described as universally satisfactory convergence.\nFor the reported quantities, maximum R̂ was 1.0032 for H² and 1.0013 for prevalence. Minimum bulk ESS was 1,435 and 5,491, respectively; minimum tail ESS was 1,442 and 8,020.\nAs a diagnostic check, omitting the five flagged fits yielded H² = 0.851 [0.708, 0.952] and prevalence = 27.45% [7.38, 62.45], close to the full mixture. All 50 trees remain in the reported analysis. The 45-tree check is not an alternative phylogenetic sample and does not establish convergence of every parameter.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Phylogenetic sensitivity: 50 Aves 1.7 trees</span>"
+    ]
+  },
+  {
+    "objectID": "08_phylogenetic_sensitivity.html#downloads-and-provenance",
+    "href": "08_phylogenetic_sensitivity.html#downloads-and-provenance",
+    "title": "10  Phylogenetic sensitivity: 50 Aves 1.7 trees",
+    "section": "10.5 Downloads and provenance",
+    "text": "10.5 Downloads and provenance\n\nComparison table\nPer-tree estimates\nAll-model diagnostics\nH² and prevalence diagnostics\nFive flagged fits\n45-tree diagnostic check\nSelected source-tree indices\nTree-source version and checksum\nTree-matrix checks\nAnalysis scripts\n\nThe scripts use the existing reference brms fit and prepared project objects on Totoro; the archive is code, not a standalone bundle of fitted models. Twenty-iteration diagnostic runs used to test file saving were never included in the scientific summaries.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Phylogenetic sensitivity: 50 Aves 1.7 trees</span>"
+    ]
   }
 ]

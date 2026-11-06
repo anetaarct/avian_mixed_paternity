@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>10&nbsp; Phylogenetic sensitivity: 50 Aves 1.7 trees – Evolutionary history strongly structures brood-level mixed paternity across birds</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./07_figures.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-c574c73dd0d0ff61020859ffc61752ee.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08_phylogenetic_sensitivity.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Phylogenetic sensitivity: 50 Aves 1.7 trees</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Evolutionary history strongly structures brood-level mixed paternity across birds</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_analysis_metadata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Analytical variables</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_data_preparation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data preparation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_overall_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Overall model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_methodological_moderators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title"><strong>Methodological moderators</strong></span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_breeding_system_moderators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Breeding system moderators</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_biological_moderators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Biological moderators</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_multivariable_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multivariable model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_figures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Figures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_phylogenetic_sensitivity.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Phylogenetic sensitivity: 50 Aves 1.7 trees</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#scope" id="toc-scope" class="nav-link active" data-scroll-target="#scope"><span class="header-section-number">10.1</span> Scope</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results"><span class="header-section-number">10.2</span> Results</a></li>
+  <li><a href="#model-settings-and-pooling" id="toc-model-settings-and-pooling" class="nav-link" data-scroll-target="#model-settings-and-pooling"><span class="header-section-number">10.3</span> Model settings and pooling</a></li>
+  <li><a href="#diagnostics-and-additional-check" id="toc-diagnostics-and-additional-check" class="nav-link" data-scroll-target="#diagnostics-and-additional-check"><span class="header-section-number">10.4</span> Diagnostics and additional check</a></li>
+  <li><a href="#downloads-and-provenance" id="toc-downloads-and-provenance" class="nav-link" data-scroll-target="#downloads-and-provenance"><span class="header-section-number">10.5</span> Downloads and provenance</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Phylogenetic sensitivity: 50 Aves 1.7 trees</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="scope" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="scope"><span class="header-section-number">10.1</span> Scope</h2>
+<p>We refitted the overall intercept-only beta-binomial model to exactly the same <strong>619 records, 554 study identifiers and 375 species</strong> as the primary analysis. The response counts, priors and random-effects structure were unchanged. The primary Aves 1.6 analysis remains the reference; moderator models were not refitted across trees.</p>
+<p>We sampled 50 trees without replacement from the 100 dated stochastic replicates of <strong>Aves 1.7, Clements 2025</strong>, using seed 20261106. The source is <a href="https://github.com/McTavishLab/AvesData/tree/4af84f14f8f3df26bd4480202689b08ea0fc2c48/Tree_versions/Aves_1.7/Clements2025">AvesData commit 4af84f1</a>, file <code>dated_rand_sample_clements.tre</code>. The replicates reflect selected uncertainty in taxonomic placement and dating, not a posterior sample from one joint Bayesian phylogenetic analysis. Aves 1.7 includes a date-calibration correction, so this comparison combines the version update and sampled tree variation; it does not isolate either contribution.</p>
+</section>
+<section id="results" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="results"><span class="header-section-number">10.2</span> Results</h2>
+<p>The phylogenetic contribution remained high: <strong>H² = 0.850 [0.705, 0.951]</strong>, compared with <strong>0.869 [0.744, 0.958]</strong> under the reference tree. Per-tree posterior means ranged from 0.817 to 0.899. The qualitative conclusion of dominant phylogenetic structure was similar across frameworks.</p>
+<p>Prevalence at zero random effects was more sensitive: <strong>27.16% [7.38, 61.96]</strong>, compared with <strong>34.71% [8.12, 73.16]</strong>. Per-tree means ranged from 15.6% to 37.0%. This is the inverse-logit of the intercept, not a marginal estimate averaged over random effects and not the raw pooled brood proportion.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Quantity</th>
+<th style="text-align: right;">Aves 1.6 reference</th>
+<th style="text-align: right;">Aves 1.7: 50-tree mixture</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Prevalence at zero random effects (%)</td>
+<td style="text-align: right;">34.71 [8.12, 73.16]</td>
+<td style="text-align: right;">27.16 [7.38, 61.96]</td>
+</tr>
+<tr class="even">
+<td>Species-level phylogenetic heritability (H²)</td>
+<td style="text-align: right;">0.869 [0.744, 0.958]</td>
+<td style="text-align: right;">0.850 [0.705, 0.951]</td>
+</tr>
+<tr class="odd">
+<td>Phylogenetic species variance</td>
+<td style="text-align: right;">3.365 [1.947, 5.312]</td>
+<td style="text-align: right;">2.885 [1.582, 4.750]</td>
+</tr>
+<tr class="even">
+<td>Non-phylogenetic species variance</td>
+<td style="text-align: right;">0.472 [0.203, 0.783]</td>
+<td style="text-align: right;">0.470 [0.203, 0.782]</td>
+</tr>
+<tr class="odd">
+<td>Study variance</td>
+<td style="text-align: right;">0.074 [0.00018, 0.234]</td>
+<td style="text-align: right;">0.074 [0.00020, 0.232]</td>
+</tr>
+<tr class="even">
+<td>Beta-binomial precision (φ)</td>
+<td style="text-align: right;">18.568 [12.075, 32.961]</td>
+<td style="text-align: right;">18.620 [12.110, 32.766]</td>
+</tr>
+</tbody>
+</table>
+<p>Entries are posterior means and 95% equal-tailed intervals. The Aves 1.7 intervals describe an equally weighted mixture of posterior draws across trees. Group-level variances are on the logit scale. H² is phylogenetic variance divided by the sum of phylogenetic and non-phylogenetic species variance; study variance and beta-binomial dispersion are excluded.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Figures/aves17_sensitivity.png" class="img-fluid figure-img"></p>
+<figcaption>Per-tree estimates, reference analysis and equal-weight mixture. Horizontal bars show 95% equal-tailed intervals.</figcaption>
+</figure>
+</div>
+<p><a href="Figures/aves17_sensitivity.pdf">Download the figure as PDF</a></p>
+</section>
+<section id="model-settings-and-pooling" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="model-settings-and-pooling"><span class="header-section-number">10.3</span> Model settings and pooling</h2>
+<p>For each tree we recalculated the phylogenetic correlation matrix, preserving species matching and matrix scaling. Each model used four chains with 10,000 iterations, 5,000 warm-up iterations, <code>adapt_delta = 0.99</code>, and <code>max_treedepth = 15</code>. Fits used brms 2.23.0 and rstan 2.32.7. The prior on each random-effect SD was half-Student-t(3, 0, 2.5); the intercept prior was Student-t(3, 0, 2.5), and precision had a Gamma(0.01, 0.01) prior, matching the reference model.</p>
+<p>We derived variances, H² and prevalence within each draw, then combined 20,000 draws per tree (1,000,000 draws in total). Equal draw counts give each tree equal weight. Interval endpoints were calculated from the mixture, not averaged across trees. The mixture propagates the sampled tree variation but does not cover all sources of phylogenetic uncertainty.</p>
+</section>
+<section id="diagnostics-and-additional-check" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="diagnostics-and-additional-check"><span class="header-section-number">10.4</span> Diagnostics and additional check</h2>
+<p>All 50 fits saved successfully, with <strong>zero divergent transitions and zero maximum-treedepth hits</strong>. Across all monitored parameters, maximum R̂ was 1.0137, minimum bulk ESS was 562 and minimum tail ESS was 1,256. Five fits (sample indices 14, 21, 41, 42 and 47) exceeded R̂ = 1.01 for study-level SD, precision and/or log posterior. These mild mixing warnings are retained in the diagnostic record rather than described as universally satisfactory convergence.</p>
+<p>For the reported quantities, maximum R̂ was <strong>1.0032 for H²</strong> and <strong>1.0013 for prevalence</strong>. Minimum bulk ESS was 1,435 and 5,491, respectively; minimum tail ESS was 1,442 and 8,020.</p>
+<p>As a diagnostic check, omitting the five flagged fits yielded <strong>H² = 0.851 [0.708, 0.952]</strong> and <strong>prevalence = 27.45% [7.38, 62.45]</strong>, close to the full mixture. All 50 trees remain in the reported analysis. The 45-tree check is not an alternative phylogenetic sample and does not establish convergence of every parameter.</p>
+</section>
+<section id="downloads-and-provenance" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="downloads-and-provenance"><span class="header-section-number">10.5</span> Downloads and provenance</h2>
+<ul>
+<li><a href="tables/aves17_sensitivity/comparison.csv">Comparison table</a></li>
+<li><a href="tables/aves17_sensitivity/per_tree_estimates.csv">Per-tree estimates</a></li>
+<li><a href="tables/aves17_sensitivity/diagnostics.csv">All-model diagnostics</a></li>
+<li><a href="tables/aves17_sensitivity/key_parameter_diagnostics.csv">H² and prevalence diagnostics</a></li>
+<li><a href="tables/aves17_sensitivity/models_requiring_review.csv">Five flagged fits</a></li>
+<li><a href="tables/aves17_sensitivity/diagnostic_45_tree_check.csv">45-tree diagnostic check</a></li>
+<li><a href="tables/aves17_sensitivity/selected_trees.csv">Selected source-tree indices</a></li>
+<li><a href="tables/aves17_sensitivity/tree_source.json">Tree-source version and checksum</a></li>
+<li><a href="tables/aves17_sensitivity/tree_audit.csv">Tree-matrix checks</a></li>
+<li><a href="tables/aves17_sensitivity/analysis_code.zip">Analysis scripts</a></li>
+</ul>
+<p>The scripts use the existing reference brms fit and prepared project objects on Totoro; the archive is code, not a standalone bundle of fitted models. Twenty-iteration diagnostic runs used to test file saving were never included in the scientific summaries.</p>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const cellDetails = window.document.querySelectorAll(".cell details.code-fold");
+        for (let i=0; i<cellDetails.length; i++) {
+          const details = cellDetails[i];
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell div.sourceCode.cell-code");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./07_figures.html" class="pagination-link" aria-label="Figures">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Figures</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Phylogenetic sensitivity: 50 Aves 1.7 trees"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  enabled: false</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Scope</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>We refitted the overall intercept-only beta-binomial model to exactly the same **619 records, 554 study identifiers and 375 species** as the primary analysis. The response counts, priors and random-effects structure were unchanged. The primary Aves 1.6 analysis remains the reference; moderator models were not refitted across trees.</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>We sampled 50 trees without replacement from the 100 dated stochastic replicates of **Aves 1.7, Clements 2025**, using seed 20261106. The source is <span class="co">[</span><span class="ot">AvesData commit 4af84f1</span><span class="co">](https://github.com/McTavishLab/AvesData/tree/4af84f14f8f3df26bd4480202689b08ea0fc2c48/Tree_versions/Aves_1.7/Clements2025)</span>, file <span class="in">`dated_rand_sample_clements.tre`</span>. The replicates reflect selected uncertainty in taxonomic placement and dating, not a posterior sample from one joint Bayesian phylogenetic analysis. Aves 1.7 includes a date-calibration correction, so this comparison combines the version update and sampled tree variation; it does not isolate either contribution.</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>The phylogenetic contribution remained high: **H² = 0.850 [0.705, 0.951]**, compared with **0.869 [0.744, 0.958]** under the reference tree. Per-tree posterior means ranged from 0.817 to 0.899. The qualitative conclusion of dominant phylogenetic structure was similar across frameworks.</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>Prevalence at zero random effects was more sensitive: **27.16% [7.38, 61.96]**, compared with **34.71% [8.12, 73.16]**. Per-tree means ranged from 15.6% to 37.0%. This is the inverse-logit of the intercept, not a marginal estimate averaged over random effects and not the raw pooled brood proportion.</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Quantity <span class="pp">|</span> Aves 1.6 reference <span class="pp">|</span> Aves 1.7: 50-tree mixture <span class="pp">|</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---:|---:|</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Prevalence at zero random effects (%) <span class="pp">|</span> 34.71 <span class="co">[</span><span class="ot">8.12, 73.16</span><span class="co">]</span> <span class="pp">|</span> 27.16 <span class="co">[</span><span class="ot">7.38, 61.96</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Species-level phylogenetic heritability (H²) <span class="pp">|</span> 0.869 <span class="co">[</span><span class="ot">0.744, 0.958</span><span class="co">]</span> <span class="pp">|</span> 0.850 <span class="co">[</span><span class="ot">0.705, 0.951</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Phylogenetic species variance <span class="pp">|</span> 3.365 <span class="co">[</span><span class="ot">1.947, 5.312</span><span class="co">]</span> <span class="pp">|</span> 2.885 <span class="co">[</span><span class="ot">1.582, 4.750</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Non-phylogenetic species variance <span class="pp">|</span> 0.472 <span class="co">[</span><span class="ot">0.203, 0.783</span><span class="co">]</span> <span class="pp">|</span> 0.470 <span class="co">[</span><span class="ot">0.203, 0.782</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Study variance <span class="pp">|</span> 0.074 <span class="co">[</span><span class="ot">0.00018, 0.234</span><span class="co">]</span> <span class="pp">|</span> 0.074 <span class="co">[</span><span class="ot">0.00020, 0.232</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Beta-binomial precision (φ) <span class="pp">|</span> 18.568 <span class="co">[</span><span class="ot">12.075, 32.961</span><span class="co">]</span> <span class="pp">|</span> 18.620 <span class="co">[</span><span class="ot">12.110, 32.766</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>Entries are posterior means and 95% equal-tailed intervals. The Aves 1.7 intervals describe an equally weighted mixture of posterior draws across trees. Group-level variances are on the logit scale. H² is phylogenetic variance divided by the sum of phylogenetic and non-phylogenetic species variance; study variance and beta-binomial dispersion are excluded.</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="al">![Per-tree estimates, reference analysis and equal-weight mixture. Horizontal bars show 95% equal-tailed intervals.](Figures/aves17_sensitivity.png)</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download the figure as PDF</span><span class="co">](Figures/aves17_sensitivity.pdf)</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Model settings and pooling</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>For each tree we recalculated the phylogenetic correlation matrix, preserving species matching and matrix scaling. Each model used four chains with 10,000 iterations, 5,000 warm-up iterations, <span class="in">`adapt_delta = 0.99`</span>, and <span class="in">`max_treedepth = 15`</span>. Fits used brms 2.23.0 and rstan 2.32.7. The prior on each random-effect SD was half-Student-t(3, 0, 2.5); the intercept prior was Student-t(3, 0, 2.5), and precision had a Gamma(0.01, 0.01) prior, matching the reference model.</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>We derived variances, H² and prevalence within each draw, then combined 20,000 draws per tree (1,000,000 draws in total). Equal draw counts give each tree equal weight. Interval endpoints were calculated from the mixture, not averaged across trees. The mixture propagates the sampled tree variation but does not cover all sources of phylogenetic uncertainty.</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## Diagnostics and additional check</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>All 50 fits saved successfully, with **zero divergent transitions and zero maximum-treedepth hits**. Across all monitored parameters, maximum R̂ was 1.0137, minimum bulk ESS was 562 and minimum tail ESS was 1,256. Five fits (sample indices 14, 21, 41, 42 and 47) exceeded R̂ = 1.01 for study-level SD, precision and/or log posterior. These mild mixing warnings are retained in the diagnostic record rather than described as universally satisfactory convergence.</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>For the reported quantities, maximum R̂ was **1.0032 for H²** and **1.0013 for prevalence**. Minimum bulk ESS was 1,435 and 5,491, respectively; minimum tail ESS was 1,442 and 8,020.</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>As a diagnostic check, omitting the five flagged fits yielded **H² = 0.851 [0.708, 0.952]** and **prevalence = 27.45% [7.38, 62.45]**, close to the full mixture. All 50 trees remain in the reported analysis. The 45-tree check is not an alternative phylogenetic sample and does not establish convergence of every parameter.</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="fu">## Downloads and provenance</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Comparison table</span><span class="co">](tables/aves17_sensitivity/comparison.csv)</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Per-tree estimates</span><span class="co">](tables/aves17_sensitivity/per_tree_estimates.csv)</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">All-model diagnostics</span><span class="co">](tables/aves17_sensitivity/diagnostics.csv)</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">H² and prevalence diagnostics</span><span class="co">](tables/aves17_sensitivity/key_parameter_diagnostics.csv)</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Five flagged fits</span><span class="co">](tables/aves17_sensitivity/models_requiring_review.csv)</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">45-tree diagnostic check</span><span class="co">](tables/aves17_sensitivity/diagnostic_45_tree_check.csv)</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Selected source-tree indices</span><span class="co">](tables/aves17_sensitivity/selected_trees.csv)</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Tree-source version and checksum</span><span class="co">](tables/aves17_sensitivity/tree_source.json)</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Tree-matrix checks</span><span class="co">](tables/aves17_sensitivity/tree_audit.csv)</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Analysis scripts</span><span class="co">](tables/aves17_sensitivity/analysis_code.zip)</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>The scripts use the existing reference brms fit and prepared project objects on Totoro; the archive is code, not a standalone bundle of fitted models. Twenty-iteration diagnostic runs used to test file saving were never included in the scientific summaries.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
