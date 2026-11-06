@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Evolutionary history strongly structures brood-level mixed paternity across birds",
     "section": "",
-    "text": "0.1 Updated analytical dataset\nAll results on this page use the models after exclusion of the two records for the common ostrich (6/6) and Nelson’s sparrow (8/8), whose exact counts could not be verified as broods with at least two genetic sires. Other records were retained, including the saltmarsh-sparrow record from the same Walsh study. Updated 5 November 2026.\nThe overall model contains 617 records, 553 study identifiers and 373 species. The primary multivariable model contains 531 records, 480 study identifiers and 324 species.\nWebsite structure",
+    "text": "0.1 Updated analytical dataset\nAll results on this page use the models after exclusion of the two records for the common ostrich (6/6) and Nelson’s sparrow (8/8), whose exact counts could not be verified as broods with at least two genetic sires. Other records were retained, including the saltmarsh-sparrow record from the same Walsh study. Updated 5 November 2026.\nThe overall model contains 617 records, 553 study identifiers and 373 species. The primary multivariable model contains 531 records, 480 study identifiers and 324 species.\nThe estimated mean prevalence of mixed paternity was 31.6% (95% CrI: 11.8–57.2%), averaged over the fitted study and species random-effect distributions. Calculation and detailed results (updated 6 November 2026).\nWebsite structure",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Overview</span>"
     ]
@@ -134,7 +134,7 @@
     "href": "03_overall_model.html",
     "title": "4  Overall model",
     "section": "",
-    "text": "4.1 Overall model\nAll results on this page use the models after exclusion of the two records for the common ostrich (6/6) and Nelson’s sparrow (8/8), whose exact counts could not be verified as broods with at least two genetic sires. Other records were retained, including the saltmarsh-sparrow record from the same Walsh study. Updated 5 November 2026.\nEstimates are posterior means with 95% equal-tailed credible intervals (CrI). Odds ratios are summarised after exponentiating each contrast draw. Prevalence predictions are summarised after inverse-logit transformation, with random effects set to zero. Continuous effects use the original common scaling constants, retained unchanged after exclusion. Mixed paternity refers to the source-derived brood-level measure described in Methods; source reporting sometimes used brood-level EPP without identifying sire number.\nThe pooled raw proportion is 16,075 / 46,235 = 34.77%. It differs from the conditional model-based prevalence because it weights observations by their brood denominators and is not the model intercept.\n617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.",
+    "text": "4.1 Overall model\nAll results on this page use the models after exclusion of the two records for the common ostrich (6/6) and Nelson’s sparrow (8/8), whose exact counts could not be verified as broods with at least two genetic sires. Other records were retained, including the saltmarsh-sparrow record from the same Walsh study. Models updated 5 November 2026; marginal mean added 6 November 2026.\nEstimates are posterior means with 95% equal-tailed credible intervals (CrI). Odds ratios are summarised after exponentiating each contrast draw. The overall marginal mean integrates over the fitted random-effect distributions. Conditional estimates at zero random effects are explicitly labelled for comparison. Continuous effects use the original common scaling constants, retained unchanged after exclusion. Mixed paternity refers to the source-derived brood-level measure described in Methods; source reporting sometimes used brood-level EPP without identifying sire number.\nThe estimated mean prevalence of mixed paternity was 31.6% (95% CrI: 11.8–57.2%). This marginal mean averages over the fitted distributions of study, non-phylogenetic species and phylogenetic species effects. The pooled raw proportion is 16,075 / 46,235 = 34.77%; it weights observations by their brood denominators and is a different summary.\n617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Overall model</span>"
     ]
@@ -144,7 +144,17 @@
     "href": "03_overall_model.html#overall-model",
     "title": "4  Overall model",
     "section": "",
-    "text": "Coefficient\nMean log odds [95% CrI]\nMean OR [95% CrI]\n\n\n\n\nIntercept\n-1.295 [-3.066, 0.476]\n0.412 [0.047, 1.610]\n\n\n\n\n4.1.1 Variance components and precision\n\n\n\n\n\n\n\nQuantity\nPosterior mean [95% CrI]\n\n\n\n\nPhylogenetic species variance\n3.084 [1.737, 4.874]\n\n\nNon-phylogenetic species variance\n0.496 [0.223, 0.802]\n\n\nStudy variance\n0.068 [0.000, 0.214]\n\n\nBeta-binomial precision\n18.179 [12.095, 30.707]\n\n\nSpecies-level phylogenetic heritability\n0.853 [0.715, 0.949]\n\n\nPrevalence at zero random effects (proportion)\n0.247 [0.045, 0.617]\n\n\n\n\n\n4.1.2 Sampling diagnostics\n\n\n\n\n\n\n\n\n\n\nMaximum R-hat\nMinimum bulk ESS\nMinimum tail ESS\nDivergences\nTreedepth hits\n\n\n\n\n1.0031\n785\n1720\n0\n0\n\n\n\nDownload posterior summary · Parameter-level diagnostics.",
+    "text": "Coefficient\nMean log odds [95% CrI]\nMean OR [95% CrI]\n\n\n\n\nIntercept\n-1.295 [-3.066, 0.476]\n0.412 [0.047, 1.610]\n\n\n\n\n4.1.1 Variance components and precision\n\n\n\n\n\n\n\nQuantity\nPosterior mean [95% CrI]\n\n\n\n\nPhylogenetic species variance\n3.084 [1.737, 4.874]\n\n\nNon-phylogenetic species variance\n0.496 [0.223, 0.802]\n\n\nStudy variance\n0.068 [0.000, 0.214]\n\n\nBeta-binomial precision\n18.179 [12.095, 30.707]\n\n\nSpecies-level phylogenetic heritability\n0.853 [0.715, 0.949]\n\n\nMarginal mean prevalence (proportion)\n0.316 [0.118, 0.572]\n\n\nConditional prevalence at zero random effects (proportion)\n0.247 [0.045, 0.617]\n\n\n\n\n\n4.1.2 Sampling diagnostics\n\n\n\n\n\n\n\n\n\n\nMaximum R-hat\nMinimum bulk ESS\nMinimum tail ESS\nDivergences\nTreedepth hits\n\n\n\n\n1.0031\n785\n1720\n0\n0\n\n\n\nDownload posterior summary · Parameter-level diagnostics.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Overall model</span>"
+    ]
+  },
+  {
+    "objectID": "03_overall_model.html#averaging-over-random-effects",
+    "href": "03_overall_model.html#averaging-over-random-effects",
+    "title": "4  Overall model",
+    "section": "4.2 Averaging over random effects",
+    "text": "4.2 Averaging over random effects\nFor each of 20,000 joint posterior draws, we calculated\n\\[\n\\bar p_s = \\int \\operatorname{logit}^{-1}(\\alpha_s + \\sqrt{V_s}z)\\varphi(z)\\,dz,\n\\quad V_s=\\sigma^2_{\\mathrm{study},s}+\\sigma^2_{\\mathrm{nonphylo},s}+\\sigma^2_{\\mathrm{phylo},s}.\n\\]\nHere, \\(\\varphi\\) is the standard normal density. The phylogenetic covariance matrix has unit diagonal. We used 160-node Gaussian quadrature and summarised the resulting marginal probabilities by their posterior mean and 2.5th and 97.5th percentiles. Checks with 80 nodes and independent adaptive integration agreed to better than \\(4\\times10^{-9}\\) in probability. Beta-binomial precision controls sampling dispersion and does not change the expected probability.\nThis estimates a mean under the fitted study and species distributions, not an empirical or census-weighted average of all birds. Moderator-specific curves and category predictions elsewhere remain conditional on zero random effects. No models were refitted for this calculation.\nDownload marginal summary · Calculation script.",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Overall model</span>"
     ]
@@ -153,8 +163,8 @@
     "objectID": "03_overall_model.html#conditional-posterior-predictive-checks",
     "href": "03_overall_model.html#conditional-posterior-predictive-checks",
     "title": "4  Overall model",
-    "section": "4.2 Conditional posterior predictive checks",
-    "text": "4.2 Conditional posterior predictive checks\nThe following checks use 2,000 retained draws and include fitted study and species effects; they assess fit within the observed sample.\n\n\n\nOverall posterior predictive checks.",
+    "section": "4.3 Conditional posterior predictive checks",
+    "text": "4.3 Conditional posterior predictive checks\nThe following checks use 2,000 retained draws and include fitted study and species effects; they assess fit within the observed sample.\n\n\n\nOverall posterior predictive checks.",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Overall model</span>"
     ]
@@ -163,8 +173,8 @@
     "objectID": "03_overall_model.html#matched-sample-variance-comparison",
     "href": "03_overall_model.html#matched-sample-variance-comparison",
     "title": "4  Overall model",
-    "section": "4.3 Matched-sample variance comparison",
-    "text": "4.3 Matched-sample variance comparison\nThe full and intercept-only models both use 531 records. Percentage reductions compare posterior means; negative values indicate increases. They are descriptive and do not represent total response variance explained.\n\n\n\n\n\n\n\n\n\nComponent\nIntercept-only [95% CrI]\nMultivariable [95% CrI]\nReduction (%)\n\n\n\n\nspecies phylo brms\n3.562 [1.922, 5.804]\n3.120 [1.487, 5.377]\n12.4\n\n\nspecies nonphylo\n0.464 [0.169, 0.804]\n0.463 [0.138, 0.821]\n0.4\n\n\nStudy ID\n0.072 [0.000, 0.213]\n0.091 [0.001, 0.232]\n-26.9\n\n\nvariance sum\n4.098 [2.604, 6.193]\n3.674 [2.192, 5.751]\n10.3",
+    "section": "4.4 Matched-sample variance comparison",
+    "text": "4.4 Matched-sample variance comparison\nThe full and intercept-only models both use 531 records. Percentage reductions compare posterior means; negative values indicate increases. They are descriptive and do not represent total response variance explained.\n\n\n\n\n\n\n\n\n\nComponent\nIntercept-only [95% CrI]\nMultivariable [95% CrI]\nReduction (%)\n\n\n\n\nspecies phylo brms\n3.562 [1.922, 5.804]\n3.120 [1.487, 5.377]\n12.4\n\n\nspecies nonphylo\n0.464 [0.169, 0.804]\n0.463 [0.138, 0.821]\n0.4\n\n\nStudy ID\n0.072 [0.000, 0.213]\n0.091 [0.001, 0.232]\n-26.9\n\n\nvariance sum\n4.098 [2.604, 6.193]\n3.674 [2.192, 5.751]\n10.3",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Overall model</span>"
     ]
@@ -173,8 +183,8 @@
     "objectID": "03_overall_model.html#matched-sample-intercept-only-model",
     "href": "03_overall_model.html#matched-sample-intercept-only-model",
     "title": "4  Overall model",
-    "section": "4.4 Matched-sample intercept-only model",
-    "text": "4.4 Matched-sample intercept-only model\n531 records, 480 study identifiers and 324 species; 14903 mixed-paternity broods out of 41511 sampled broods.\n\n\n\nCoefficient\nMean log odds [95% CrI]\nMean OR [95% CrI]\n\n\n\n\nIntercept\n-1.241 [-3.137, 0.642]\n0.460 [0.043, 1.899]\n\n\n\n\n4.4.1 Variance components and precision\n\n\n\n\n\n\n\nQuantity\nPosterior mean [95% CrI]\n\n\n\n\nPhylogenetic species variance\n3.562 [1.922, 5.804]\n\n\nNon-phylogenetic species variance\n0.464 [0.169, 0.804]\n\n\nStudy variance\n0.072 [0.000, 0.213]\n\n\nBeta-binomial precision\n22.812 [14.050, 42.054]\n\n\nSpecies-level phylogenetic heritability\n0.875 [0.733, 0.967]\n\n\nPrevalence at zero random effects (proportion)\n0.259 [0.042, 0.655]\n\n\n\n\n\n4.4.2 Sampling diagnostics\n\n\n\n\n\n\n\n\n\n\nMaximum R-hat\nMinimum bulk ESS\nMinimum tail ESS\nDivergences\nTreedepth hits\n\n\n\n\n1.0056\n889\n1868\n0\n0\n\n\n\nDownload posterior summary · Parameter-level diagnostics.",
+    "section": "4.5 Matched-sample intercept-only model",
+    "text": "4.5 Matched-sample intercept-only model\n531 records, 480 study identifiers and 324 species; 14903 mixed-paternity broods out of 41511 sampled broods.\n\n\n\nCoefficient\nMean log odds [95% CrI]\nMean OR [95% CrI]\n\n\n\n\nIntercept\n-1.241 [-3.137, 0.642]\n0.460 [0.043, 1.899]\n\n\n\n\n4.5.1 Variance components and precision\n\n\n\n\n\n\n\nQuantity\nPosterior mean [95% CrI]\n\n\n\n\nPhylogenetic species variance\n3.562 [1.922, 5.804]\n\n\nNon-phylogenetic species variance\n0.464 [0.169, 0.804]\n\n\nStudy variance\n0.072 [0.000, 0.213]\n\n\nBeta-binomial precision\n22.812 [14.050, 42.054]\n\n\nSpecies-level phylogenetic heritability\n0.875 [0.733, 0.967]\n\n\nPrevalence at zero random effects (proportion)\n0.259 [0.042, 0.655]\n\n\n\n\n\n4.5.2 Sampling diagnostics\n\n\n\n\n\n\n\n\n\n\nMaximum R-hat\nMinimum bulk ESS\nMinimum tail ESS\nDivergences\nTreedepth hits\n\n\n\n\n1.0056\n889\n1868\n0\n0\n\n\n\nDownload posterior summary · Parameter-level diagnostics.",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Overall model</span>"
     ]
@@ -183,8 +193,8 @@
     "objectID": "03_overall_model.html#study-only-model-no-species-effects",
     "href": "03_overall_model.html#study-only-model-no-species-effects",
     "title": "4  Overall model",
-    "section": "4.5 Study-only model (no species effects)",
-    "text": "4.5 Study-only model (no species effects)\n617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.\n\n\n\nCoefficient\nMean log odds [95% CrI]\nMean OR [95% CrI]\n\n\n\n\nIntercept\n-1.087 [-1.217, -0.962]\n0.338 [0.296, 0.382]\n\n\n\n\n4.5.1 Variance components and precision\n\n\n\n\n\n\n\nQuantity\nPosterior mean [95% CrI]\n\n\n\n\nStudy variance\n1.002 [0.622, 1.422]\n\n\nBeta-binomial precision\n6.627 [4.547, 9.605]\n\n\nPrevalence at zero random effects (proportion)\n0.252 [0.228, 0.276]\n\n\n\n\n\n4.5.2 Sampling diagnostics\n\n\n\n\n\n\n\n\n\n\nMaximum R-hat\nMinimum bulk ESS\nMinimum tail ESS\nDivergences\nTreedepth hits\n\n\n\n\n1.0021\n1388\n2972\n0\n0\n\n\n\nDownload posterior summary · Parameter-level diagnostics.",
+    "section": "4.6 Study-only model (no species effects)",
+    "text": "4.6 Study-only model (no species effects)\n617 records, 553 study identifiers and 373 species; 16075 mixed-paternity broods out of 46235 sampled broods.\n\n\n\nCoefficient\nMean log odds [95% CrI]\nMean OR [95% CrI]\n\n\n\n\nIntercept\n-1.087 [-1.217, -0.962]\n0.338 [0.296, 0.382]\n\n\n\n\n4.6.1 Variance components and precision\n\n\n\n\n\n\n\nQuantity\nPosterior mean [95% CrI]\n\n\n\n\nStudy variance\n1.002 [0.622, 1.422]\n\n\nBeta-binomial precision\n6.627 [4.547, 9.605]\n\n\nPrevalence at zero random effects (proportion)\n0.252 [0.228, 0.276]\n\n\n\n\n\n4.6.2 Sampling diagnostics\n\n\n\n\n\n\n\n\n\n\nMaximum R-hat\nMinimum bulk ESS\nMinimum tail ESS\nDivergences\nTreedepth hits\n\n\n\n\n1.0021\n1388\n2972\n0\n0\n\n\n\nDownload posterior summary · Parameter-level diagnostics.",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Overall model</span>"
     ]

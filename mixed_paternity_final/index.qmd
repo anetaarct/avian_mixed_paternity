@@ -26,6 +26,8 @@ All results on this page use the models after exclusion of the two records for t
 
 The overall model contains **617 records, 553 study identifiers and 373 species**. The primary multivariable model contains **531 records, 480 study identifiers and 324 species**.
 
+The estimated mean prevalence of mixed paternity was **31.6% (95% CrI: 11.8–57.2%)**, averaged over the fitted study and species random-effect distributions. [Calculation and detailed results](03_overall_model.qmd#averaging-over-random-effects) (updated 6 November 2026).
+
 **Website structure**
 
 :::::::::: card-grid

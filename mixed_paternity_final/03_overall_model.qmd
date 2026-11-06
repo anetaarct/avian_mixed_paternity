@@ -6,11 +6,11 @@ format:
     toc-depth: 3
 ---
 
-All results on this page use the models after exclusion of the two records for the common ostrich (6/6) and Nelson’s sparrow (8/8), whose exact counts could not be verified as broods with at least two genetic sires. Other records were retained, including the saltmarsh-sparrow record from the same Walsh study. Updated 5 November 2026.
+All results on this page use the models after exclusion of the two records for the common ostrich (6/6) and Nelson’s sparrow (8/8), whose exact counts could not be verified as broods with at least two genetic sires. Other records were retained, including the saltmarsh-sparrow record from the same Walsh study. Models updated 5 November 2026; marginal mean added 6 November 2026.
 
-Estimates are posterior means with 95% equal-tailed credible intervals (CrI). Odds ratios are summarised after exponentiating each contrast draw. Prevalence predictions are summarised after inverse-logit transformation, with random effects set to zero. Continuous effects use the original common scaling constants, retained unchanged after exclusion. Mixed paternity refers to the source-derived brood-level measure described in Methods; source reporting sometimes used brood-level EPP without identifying sire number.
+Estimates are posterior means with 95% equal-tailed credible intervals (CrI). Odds ratios are summarised after exponentiating each contrast draw. The overall marginal mean integrates over the fitted random-effect distributions. Conditional estimates at zero random effects are explicitly labelled for comparison. Continuous effects use the original common scaling constants, retained unchanged after exclusion. Mixed paternity refers to the source-derived brood-level measure described in Methods; source reporting sometimes used brood-level EPP without identifying sire number.
 
-The pooled raw proportion is 16,075 / 46,235 = 34.77%. It differs from the conditional model-based prevalence because it weights observations by their brood denominators and is not the model intercept.
+**The estimated mean prevalence of mixed paternity was 31.6% (95% CrI: 11.8–57.2%).** This marginal mean averages over the fitted distributions of study, non-phylogenetic species and phylogenetic species effects. The pooled raw proportion is 16,075 / 46,235 = 34.77%; it weights observations by their brood denominators and is a different summary.
 
 ## Overall model
 
@@ -29,7 +29,8 @@ The pooled raw proportion is 16,075 / 46,235 = 34.77%. It differs from the condi
 | Study variance | 0.068 [0.000, 0.214] |
 | Beta-binomial precision | 18.179 [12.095, 30.707] |
 | Species-level phylogenetic heritability | 0.853 [0.715, 0.949] |
-| Prevalence at zero random effects (proportion) | 0.247 [0.045, 0.617] |
+| Marginal mean prevalence (proportion) | 0.316 [0.118, 0.572] |
+| Conditional prevalence at zero random effects (proportion) | 0.247 [0.045, 0.617] |
 
 ### Sampling diagnostics
 
@@ -38,6 +39,21 @@ The pooled raw proportion is 16,075 / 46,235 = 34.77%. It differs from the condi
 | 1.0031 | 785 | 1720 | 0 | 0 |
 
 [Download posterior summary](tables/refit_20261105/model_overall_study_summary.csv) · [Parameter-level diagnostics](tables/refit_20261105/model_overall_study_parameter_diagnostics.csv).
+
+## Averaging over random effects
+
+For each of 20,000 joint posterior draws, we calculated
+
+$$
+\bar p_s = \int \operatorname{logit}^{-1}(\alpha_s + \sqrt{V_s}z)\varphi(z)\,dz,
+\quad V_s=\sigma^2_{\mathrm{study},s}+\sigma^2_{\mathrm{nonphylo},s}+\sigma^2_{\mathrm{phylo},s}.
+$$
+
+Here, $\varphi$ is the standard normal density. The phylogenetic covariance matrix has unit diagonal. We used 160-node Gaussian quadrature and summarised the resulting marginal probabilities by their posterior mean and 2.5th and 97.5th percentiles. Checks with 80 nodes and independent adaptive integration agreed to better than $4\times10^{-9}$ in probability. Beta-binomial precision controls sampling dispersion and does not change the expected probability.
+
+This estimates a mean under the fitted study and species distributions, not an empirical or census-weighted average of all birds. Moderator-specific curves and category predictions elsewhere remain conditional on zero random effects. No models were refitted for this calculation.
+
+[Download marginal summary](tables/refit_20261105/overall_marginal_prevalence.csv) · [Calculation script](scripts/refit_20261105/marginal_prevalence.R).
 
 ## Conditional posterior predictive checks
 
