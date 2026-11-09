@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>10&nbsp; Phylogenetic sensitivity: 50 Aves 1.7 trees – Evolutionary history strongly structures brood-level mixed paternity across birds</title>
+<title>9&nbsp; Phylogenetic sensitivity: 50 Aves 1.7 trees – Evolutionary history strongly structures brood-level mixed paternity across birds</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -71,7 +71,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./07_figures.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -112,6 +111,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
+<link href="./07_multivariable_model.html" rel="prev">
+<link href="./07_figures.html" rel="next">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -123,7 +124,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08_phylogenetic_sensitivity.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Phylogenetic sensitivity: 50 Aves 1.7 trees</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08_phylogenetic_sensitivity.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Phylogenetic sensitivity: 50 Aves 1.7 trees</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -198,14 +199,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07_figures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Figures</span></span></a>
+  <a href="./08_phylogenetic_sensitivity.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Phylogenetic sensitivity: 50 Aves 1.7 trees</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08_phylogenetic_sensitivity.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Phylogenetic sensitivity: 50 Aves 1.7 trees</span></span></a>
+  <a href="./07_figures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Figures</span></span></a>
   </div>
 </li>
     </ul>
@@ -218,11 +219,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#scope" id="toc-scope" class="nav-link active" data-scroll-target="#scope"><span class="header-section-number">10.1</span> Scope</a></li>
-  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results"><span class="header-section-number">10.2</span> Results</a></li>
-  <li><a href="#model-settings-and-pooling" id="toc-model-settings-and-pooling" class="nav-link" data-scroll-target="#model-settings-and-pooling"><span class="header-section-number">10.3</span> Model settings and pooling</a></li>
-  <li><a href="#diagnostics-and-additional-check" id="toc-diagnostics-and-additional-check" class="nav-link" data-scroll-target="#diagnostics-and-additional-check"><span class="header-section-number">10.4</span> Diagnostics and additional check</a></li>
-  <li><a href="#downloads-and-provenance" id="toc-downloads-and-provenance" class="nav-link" data-scroll-target="#downloads-and-provenance"><span class="header-section-number">10.5</span> Downloads and provenance</a></li>
+  <li><a href="#scope" id="toc-scope" class="nav-link active" data-scroll-target="#scope"><span class="header-section-number">9.1</span> Scope</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results"><span class="header-section-number">9.2</span> Results</a></li>
+  <li><a href="#model-settings-and-pooling" id="toc-model-settings-and-pooling" class="nav-link" data-scroll-target="#model-settings-and-pooling"><span class="header-section-number">9.3</span> Model settings and pooling</a></li>
+  <li><a href="#diagnostics-and-additional-check" id="toc-diagnostics-and-additional-check" class="nav-link" data-scroll-target="#diagnostics-and-additional-check"><span class="header-section-number">9.4</span> Diagnostics and additional check</a></li>
+  <li><a href="#downloads-and-provenance" id="toc-downloads-and-provenance" class="nav-link" data-scroll-target="#downloads-and-provenance"><span class="header-section-number">9.5</span> Downloads and provenance</a></li>
   </ul>
 </nav>
     </div>
@@ -231,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Phylogenetic sensitivity: 50 Aves 1.7 trees</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Phylogenetic sensitivity: 50 Aves 1.7 trees</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -248,13 +249,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="scope" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="scope"><span class="header-section-number">10.1</span> Scope</h2>
+<section id="scope" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="scope"><span class="header-section-number">9.1</span> Scope</h2>
 <p>We refitted the overall intercept-only beta-binomial model to exactly the same <strong>619 records, 554 study identifiers and 375 species</strong> as the primary analysis. The response counts, priors and random-effects structure were unchanged. The primary Aves 1.6 analysis remains the reference; moderator models were not refitted across trees.</p>
 <p>We sampled 50 trees without replacement from the 100 dated stochastic replicates of <strong>Aves 1.7, Clements 2025</strong>, using seed 20261106. The source is <a href="https://github.com/McTavishLab/AvesData/tree/4af84f14f8f3df26bd4480202689b08ea0fc2c48/Tree_versions/Aves_1.7/Clements2025">AvesData commit 4af84f1</a>, file <code>dated_rand_sample_clements.tre</code>. The replicates reflect selected uncertainty in taxonomic placement and dating, not a posterior sample from one joint Bayesian phylogenetic analysis. Aves 1.7 includes a date-calibration correction, so this comparison combines the version update and sampled tree variation; it does not isolate either contribution.</p>
 </section>
-<section id="results" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="results"><span class="header-section-number">10.2</span> Results</h2>
+<section id="results" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="results"><span class="header-section-number">9.2</span> Results</h2>
 <p>The phylogenetic contribution remained high: <strong>H² = 0.850 [0.705, 0.951]</strong>, compared with <strong>0.869 [0.744, 0.958]</strong> under the reference tree. Per-tree posterior means ranged from 0.817 to 0.899. The qualitative conclusion of dominant phylogenetic structure was similar across frameworks.</p>
 <p>Prevalence at zero random effects was more sensitive: <strong>27.16% [7.38, 61.96]</strong>, compared with <strong>34.71% [8.12, 73.16]</strong>. Per-tree means ranged from 15.6% to 37.0%. This is the inverse-logit of the intercept, not a marginal estimate averaged over random effects and not the raw pooled brood proportion.</p>
 <table class="caption-top table">
@@ -312,19 +313,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><a href="Figures/aves17_sensitivity.pdf">Download the figure as PDF</a></p>
 </section>
-<section id="model-settings-and-pooling" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="model-settings-and-pooling"><span class="header-section-number">10.3</span> Model settings and pooling</h2>
+<section id="model-settings-and-pooling" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="model-settings-and-pooling"><span class="header-section-number">9.3</span> Model settings and pooling</h2>
 <p>For each tree we recalculated the phylogenetic correlation matrix, preserving species matching and matrix scaling. Each model used four chains with 10,000 iterations, 5,000 warm-up iterations, <code>adapt_delta = 0.99</code>, and <code>max_treedepth = 15</code>. Fits used brms 2.23.0 and rstan 2.32.7. The prior on each random-effect SD was half-Student-t(3, 0, 2.5); the intercept prior was Student-t(3, 0, 2.5), and precision had a Gamma(0.01, 0.01) prior, matching the reference model.</p>
 <p>We derived variances, H² and prevalence within each draw, then combined 20,000 draws per tree (1,000,000 draws in total). Equal draw counts give each tree equal weight. Interval endpoints were calculated from the mixture, not averaged across trees. The mixture propagates the sampled tree variation but does not cover all sources of phylogenetic uncertainty.</p>
 </section>
-<section id="diagnostics-and-additional-check" class="level2" data-number="10.4">
-<h2 data-number="10.4" class="anchored" data-anchor-id="diagnostics-and-additional-check"><span class="header-section-number">10.4</span> Diagnostics and additional check</h2>
+<section id="diagnostics-and-additional-check" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="diagnostics-and-additional-check"><span class="header-section-number">9.4</span> Diagnostics and additional check</h2>
 <p>All 50 fits saved successfully, with <strong>zero divergent transitions and zero maximum-treedepth hits</strong>. Across all monitored parameters, maximum R̂ was 1.0137, minimum bulk ESS was 562 and minimum tail ESS was 1,256. Five fits (sample indices 14, 21, 41, 42 and 47) exceeded R̂ = 1.01 for study-level SD, precision and/or log posterior. These mild mixing warnings are retained in the diagnostic record rather than described as universally satisfactory convergence.</p>
 <p>For the reported quantities, maximum R̂ was <strong>1.0032 for H²</strong> and <strong>1.0013 for prevalence</strong>. Minimum bulk ESS was 1,435 and 5,491, respectively; minimum tail ESS was 1,442 and 8,020.</p>
 <p>As a diagnostic check, omitting the five flagged fits yielded <strong>H² = 0.851 [0.708, 0.952]</strong> and <strong>prevalence = 27.45% [7.38, 62.45]</strong>, close to the full mixture. All 50 trees remain in the reported analysis. The 45-tree check is not an alternative phylogenetic sample and does not establish convergence of every parameter.</p>
 </section>
-<section id="downloads-and-provenance" class="level2" data-number="10.5">
-<h2 data-number="10.5" class="anchored" data-anchor-id="downloads-and-provenance"><span class="header-section-number">10.5</span> Downloads and provenance</h2>
+<section id="downloads-and-provenance" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="downloads-and-provenance"><span class="header-section-number">9.5</span> Downloads and provenance</h2>
 <ul>
 <li><a href="tables/aves17_sensitivity/comparison.csv">Comparison table</a></li>
 <li><a href="tables/aves17_sensitivity/per_tree_estimates.csv">Per-tree estimates</a></li>
@@ -796,15 +797,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./07_figures.html" class="pagination-link" aria-label="Figures">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Figures</span></span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-  </div>
-</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<nav class="page-navigation"><div class="nav-page nav-page-previous"><a href="./07_multivariable_model.html" class="pagination-link" aria-label="Multivariable model"><i class="bi bi-arrow-left-short"></i><span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multivariable model</span></span></a></div><div class="nav-page nav-page-next"><a href="./07_figures.html" class="pagination-link" aria-label="Figures"><i class="bi bi-arrow-right-short"></i><span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Figures</span></span></a></div></nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Phylogenetic sensitivity: 50 Aves 1.7 trees"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
